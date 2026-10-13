@@ -143,6 +143,7 @@ class TextBox(Gtk.TextView):
         self._completion_popup = None
         # The tag table is shared (search highlight, gtkspell): remove only ours.
         self._placeable_tags = []
+        self._last_cursor_offset = 0
         self.undo_controller = main_controller.undo_controller
 
         self.__connect_default_handlers()
@@ -166,6 +167,7 @@ class TextBox(Gtk.TextView):
         self.buffer.connect('delete-range', self._on_delete_range)
         self.buffer.connect('begin-user-action', self._on_begin_user_action)
         self.buffer.connect('end-user-action', self._on_end_user_action)
+        self.buffer.connect('mark-set', self._on_mark_set)
 
 
     def _get_suggestion(self):
@@ -637,6 +639,32 @@ class TextBox(Gtk.TextView):
             return
         if not self.undo_controller.model.recording:
             self.undo_controller.record_start()
+
+    @staticmethod
+    def _is_inside_newline(itr):
+        """Whether C{itr} sits between a newline's pilcrow and its line break."""
+        if itr.get_char() != '\n' or itr.is_start():
+            return False
+        before = itr.copy()
+        before.backward_char()
+        anchor = before.get_child_anchor()
+        return anchor is not None and \
+            any(getattr(w, 'is_newline_marker', False) for w in anchor.get_widgets())
+
+    def _on_mark_set(self, buffer, itr, mark):
+        if mark is not buffer.get_insert():
+            return
+        offset = itr.get_offset()
+        previous, self._last_cursor_offset = self._last_cursor_offset, offset
+        if not self._is_inside_newline(itr):
+            return
+        # Moving right steps over the whole newline; anything else (Left,
+        # a click or End on the line) stays at the end of the line.
+        target = buffer.get_iter_at_offset(offset + 1 if previous == offset - 1 else offset - 1)
+        if buffer.get_iter_at_mark(buffer.get_selection_bound()).get_offset() == offset:
+            buffer.place_cursor(target)
+        else:
+            buffer.move_mark(mark, target)
 
     def _on_end_user_action(self, buffer):
         if not self.undo_controller:

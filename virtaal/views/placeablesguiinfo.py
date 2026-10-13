@@ -315,6 +315,7 @@ class NewlineGUI(StringElemGUI):
 
     def create_repr_widgets(self):
         lbl = Gtk.Label(label='¶')
+        lbl.is_newline_marker = True
         theme.set_widget_fg_color(lbl, self.fg)  # foreground is light grey
         font_desc = get_role_font_description(self.textbox.role)
         set_widget_font(lbl, font_desc)

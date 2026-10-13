@@ -86,6 +86,7 @@ class LanguageAddDialog:
         if clear:
             self.clear()
         self._update_ok_sensitivity()
+        (self.sbtn_nplurals if self._editing else self.ent_langname).grab_focus()
         self.dialog.show()
         self.dialog.present()
         transient_for = self.dialog.get_transient_for()

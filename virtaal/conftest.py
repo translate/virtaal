@@ -34,6 +34,7 @@ expect them to show up in _seen_messages.
 
 import builtins
 import faulthandler
+import gc
 import gettext
 import json
 import os
@@ -148,6 +149,10 @@ def _isolating():
 def pytest_configure(config):
     global _config, _stacks_file
     _config = config
+    # As in virtaal/main.py. The collector runs on whichever thread
+    # triggers it, and a GTK window freed off the main thread crashes
+    # AppKit on macOS (#4242).
+    gc.disable()
     _requeue_only_unfinished_work()
     path = os.environ.get(_STACKS_ENV)
     if not path and os.environ.get(_STACKS_DIR_ENV):

@@ -190,16 +190,16 @@ def test_open_startup_file_hides_the_loading_notice_and_defers_load_extras_on_su
         welcomescreen_controller=SimpleNamespace(activate=lambda: calls.append('activated')),
         view=SimpleNamespace(
             hide_loading_notice=lambda: calls.append('hidden'),
+            show_progress=lambda msg: calls.append(('progress', msg)),
             show_startup_open_failure_notice=lambda f, r: calls.append(('shown', f, r))))
     deferred = []
     v.defer = lambda func, *args: deferred.append((func, args))
 
-    v._open_startup_file('some.po')
+    v._open_startup_file('/files/some.po')
 
-    # No welcome screen re-activation and no failure notice on success -
-    # only the loading notice (shown synchronously earlier by __init__)
-    # gets torn down.
-    assert calls == ['hidden']
+    # No welcome screen re-activation and no failure notice on success.
+    # Progress stays up while the plugins load and process the file.
+    assert calls == ['hidden', ('progress', "Loading 'some.po'…")]
     assert deferred == [(v._load_extras, ())]
 
 
@@ -209,7 +209,7 @@ def test_open_startup_file_keeps_the_loading_notice_up_while_the_file_loads():
     calls = []
     v._open_with_file = lambda filename: calls.append('opened') or True
     v.main_controller = SimpleNamespace(
-        view=SimpleNamespace(hide_loading_notice=lambda: calls.append('hidden')))
+        view=SimpleNamespace(hide_loading_notice=lambda: calls.append('hidden'), show_progress=lambda msg: None))
     v.defer = lambda func, *args: None
 
     v._open_startup_file('some.po')
@@ -268,7 +268,7 @@ def test_open_with_welcome_defers_controller_construction_and_load_extras():
 def test_load_extras_defers_the_remaining_controllers_and_config_recovery(monkeypatch):
     monkeypatch.setattr(platform, 'is_frozen', False)
     v = Virtaal.__new__(Virtaal)
-    v.main_controller = SimpleNamespace(load_plugins='load-plugins')
+    v.main_controller = SimpleNamespace(load_plugins='load-plugins', view=SimpleNamespace(hide_progress='hide-progress'))
     deferred = []
     v.defer = lambda func, *args: deferred.append((func, args))
 
@@ -284,19 +284,20 @@ def test_load_extras_defers_the_remaining_controllers_and_config_recovery(monkey
     assert funcs == [
         ChecksController, UndoController, PluginController, PreferencesController,
         PropertiesController, DictionaryDownloadWatcher, 'load-plugins', v._check_for_config_recovery,
+        'hide-progress',
     ]
 
 
 def test_load_extras_also_defers_the_update_check_when_frozen(monkeypatch):
     monkeypatch.setattr(platform, 'is_frozen', True)
     v = Virtaal.__new__(Virtaal)
-    v.main_controller = SimpleNamespace(load_plugins=lambda: None)
+    v.main_controller = SimpleNamespace(load_plugins=lambda: None, view=SimpleNamespace(hide_progress='hide-progress'))
     deferred = []
     v.defer = lambda func, *args: deferred.append((func, args))
 
     v._load_extras()
 
-    assert v._check_for_update in [f for f, a in deferred]
+    assert [f for f, a in deferred][-2:] == [v._check_for_update, 'hide-progress']
 
 
 # Virtaal._check_for_config_recovery() / ._check_for_update() #

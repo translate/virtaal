@@ -913,7 +913,8 @@ msgid ""
 "file?"
 msgstr ""
 
-#: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
+#: virtaal/controllers/maincontroller.py virtaal/main.py
+#: virtaal/views/mainview.py
 #, python-format
 msgid "Loading '%s'…"
 msgstr ""

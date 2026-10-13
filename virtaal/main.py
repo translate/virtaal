@@ -146,7 +146,11 @@ class Virtaal:
         main_controller = self.main_controller
         opened = self._open_with_file(startupfile)
         main_controller.view.hide_loading_notice()
-        if not opened:
+        if opened:
+            # Plugins load next, and process the open file.
+            import os
+            main_controller.view.show_progress(_("Loading '%s'…") % os.path.basename(startupfile))
+        else:
             main_controller.welcomescreen_controller.activate()
             main_controller.view.show_startup_open_failure_notice(
                 startupfile, main_controller.last_open_error)
@@ -198,6 +202,8 @@ class Virtaal:
         # install can.
         if platform.is_frozen:
             defer(self._check_for_update)
+        # Deferred jobs run at low priority, after the plugins' own idle jobs.
+        defer(main_controller.view.hide_progress)
 
     def _check_for_config_recovery(self):
         from virtaal.common import pan_app

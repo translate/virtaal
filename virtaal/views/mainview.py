@@ -789,6 +789,7 @@ class MainView(BaseView):
             body blocks the main loop."""
         gdk_window = self.main_window.get_window()
         if gdk_window is not None:
+            previous = gdk_window.get_cursor()
             gdk_window.set_cursor(Gdk.Cursor.new_from_name(gdk_window.get_display(), 'wait'))
         self.status_bar.push(self.statusbar_context_id, msg)
         _wait_for_draw(self.status_bar)
@@ -796,8 +797,22 @@ class MainView(BaseView):
             yield
         finally:
             if gdk_window is not None:
-                gdk_window.set_cursor(None)
+                gdk_window.set_cursor(previous)
             self.status_bar.pop(self.statusbar_context_id)
+
+    def show_progress(self, msg):
+        """Show a progress cursor and C{msg} in the status bar while work
+            continues in a window that can still be used."""
+        gdk_window = self.main_window.get_window()
+        if gdk_window is not None:
+            gdk_window.set_cursor(Gdk.Cursor.new_from_name(gdk_window.get_display(), 'progress'))
+        self.status_bar.push(self.status_bar.get_context_id('progress'), msg)
+
+    def hide_progress(self):
+        gdk_window = self.main_window.get_window()
+        if gdk_window is not None:
+            gdk_window.set_cursor(None)
+        self.status_bar.remove_all(self.status_bar.get_context_id('progress'))
 
 
     # METHODS #

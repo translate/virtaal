@@ -2,7 +2,7 @@
 # po/priorities.toml's rules and what Virtaal shows - don't edit it. See
 # po/README.md.
 format: 1
-pot-creation-date: 2026-10-07 08:48+0100
+pot-creation-date: 2026-10-13 18:54+0100
 priorities:
 - id: '1'
   name: Level 1 core
@@ -287,6 +287,7 @@ domains:
     - Placeholders
     - Punctuation spacing
     - Pure punctuation
+    - Qt
     - Quality Check
     - Quality checks
     - Repeated word
@@ -570,6 +571,7 @@ domains:
     - XML tags, such as <b> and </i>
     - You can maintain a local terminology file to help you translate consistently. To add a term, select a word (or words), press Ctrl+T and fill in the details for the new term. Select the text below and add a term for it.
     - _Add Missing Language…
+    - _Edit Translation Language…
     - _OK
     - _Source term — %(langname)s
     - _Target term — %(langname)s
@@ -642,7 +644,9 @@ domains:
     - Download
     - Download %(language)s thesaurus…
     - Downloading %(language)s thesaurus…
+    - Edit Language
     - Edit with Virtaal
+    - Enter a language name.
     - Error
     - Error opening file
     - 'Existing translations: %(translations)s'
@@ -656,10 +660,11 @@ domains:
     - Identical entry already exists.
     - LANG
     - LOG
+    - Language code %s is already used.
     - Language code must be an ASCII string.
     - Language code must be at least 2 characters long.
+    - Language code must not contain spaces.
     - 'Language name:'
-    - Languages
     - Loading '%s'…
     - Loading thesaurus…
     - Local Files
@@ -677,6 +682,7 @@ domains:
     - 'Needs work:'
     - Next state
     - No translation found for language '%(lang)s'
+    - Not a valid file.
     - 'Number of plurals:'
     - PO Template Files
     - Placeable for "alt" attributes (as found in HTML)
@@ -684,9 +690,6 @@ domains:
     - Placeholders in Drupal strings
     - Please enter the number of noun forms (plurals) to use
     - Please enter the plural equation to use
-    - Please enter your e-mail address
-    - Please enter your name
-    - Please enter your team's information
     - 'Plural expression:'
     - Preview failed
     - Previous state
@@ -719,6 +722,8 @@ domains:
     - Spaces
     - Synonyms
     - Terminology Files
+    - The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. Open it with File > Open or from your file manager.
+    - The file does not exist.
     - Thesaurus
     - This file is read-only.
     - This might not affect your current work, but if it keeps happening, reporting it helps get it fixed.

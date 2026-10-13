@@ -124,9 +124,9 @@ class StoreModel(BaseModel):
         """Return totals for word and string counts."""
         if not self.filename:
             return {}
-        from virtaal.support import statsdb
-        totals = statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
-        return totals
+        from virtaal.support import statsdb, statsworker
+        statsworker.wait()
+        return statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
 
     def get_live_stats_totals(self):
         """Return totals like C{get_stats_totals()}, counted from the units
@@ -172,7 +172,8 @@ class StoreModel(BaseModel):
         self.checks = None
         # Indices of units that may differ from the file on disk.
         self._edited_units = set()
-        self.update_stats(filename=filename)
+        self.update_stats()
+        self._fill_stats_cache()
         #self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 
@@ -186,18 +187,21 @@ class StoreModel(BaseModel):
             self._trans_store.savefile(filename)
         self.filename = filename
         self._edited_units = set()
-        self.update_stats(filename=filename)
+        self.update_stats()
+        self._fill_stats_cache()
 
-    def update_stats(self, filename=None):
+    def _fill_stats_cache(self):
+        if os.path.isfile(self.filename):
+            from virtaal.support import statsworker
+            statsworker.fill_in_background(self.filename)
+
+    def update_stats(self):
         self.stats = None
         if self._trans_store is None:
             return
 
-        if filename is None:
-            filename = self.filename
-
-        from virtaal.support import statsdb
-        stats = statsdb.StatsCache().filestatestats(filename,  self._trans_store, extended=True)
+        from virtaal.support import statsworker
+        stats = statsworker.state_lists(self._trans_store)
         self._valid_units = stats['total']
         self.stats = fix_indexes(stats)
         return self.stats
@@ -245,7 +249,8 @@ class StoreModel(BaseModel):
         else:
             self._checker = checker
 
-        from virtaal.support import statsdb
+        from virtaal.support import statsdb, statsworker
+        statsworker.wait()
         errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
         # The stats cache only knows the file on disk.
         checks = fix_indexes(errors, self._valid_units)
@@ -284,33 +289,27 @@ class StoreModel(BaseModel):
         # Adapted from Document.__init__()
         from translate.storage import factory
 
-        from virtaal.support import statsdb
+        from virtaal.support import statsdb, statsworker
         newstore = factory.getobject(filename)
         oldfilename = self._trans_store.filename
         oldfileobj = self._trans_store.fileobj
 
         #get a copy of old stats before we convert
         from translate.filters import checks
+        statsworker.wait()
         oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
 
         from translate.convert import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
 
-        #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
-        import os
-        import tempfile
-        tempfd, tempfilename = tempfile.mkstemp()
-        os.close(tempfd)  # savefile() reopens the path itself
-        self._trans_store.savefile(tempfilename)
-        self.update_stats(filename=tempfilename)
-        os.remove(tempfilename)
+        self.update_stats()
         self.checks = None
         self._edited_units = set(range(len(self)))
 
         self.controller.compare_stats(oldstats, self.stats)
 
-        # store filename/fileobj or else save is confused (#3808) -
-        # savefile() above rebound both to the now-removed stats tempfile.
+        # convert_stores() returns a store without them, which confuses
+        # save (#3808).
         self._trans_store.filename = oldfilename
         self._trans_store.fileobj = oldfileobj
         self._correct_header(self._trans_store)

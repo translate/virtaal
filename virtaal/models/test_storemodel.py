@@ -5,7 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
+
 from virtaal.models.storemodel import StoreModel
+from virtaal.support import statsdb, statsworker
 
 
 class _FakeController:
@@ -52,9 +55,8 @@ def test_update_file_merges_a_newer_template(tmp_path):
 
 
 def test_update_file_then_save_writes_back_to_the_original_path(tmp_path):
-    # Real bug (#3808): the tempfile-based stats hack left .fileobj bound
-    # to its own removed tempfile, so save() wrote to a stale path
-    # instead of old_path.
+    # #3808: the merged store from pot2po has no filename or fileobj of
+    # its own.
     old_path = tmp_path / "old.po"
     new_path = tmp_path / "new.po"
     old_path.write_bytes(_OLD_PO)
@@ -68,6 +70,62 @@ def test_update_file_then_save_writes_back_to_the_original_path(tmp_path):
         saved = f.read()
     assert b"World" in saved
     assert set(tmp_path.iterdir()) == {old_path, new_path}
+
+
+@pytest.fixture
+def fills(monkeypatch):
+    queued = []
+    monkeypatch.setattr(statsworker, 'fill_in_background', queued.append)
+    return queued
+
+
+def test_opening_a_file_leaves_the_stats_cache_to_the_worker(tmp_path, monkeypatch, fills):
+    path = tmp_path / "old.po"
+    path.write_bytes(_OLD_PO)
+    monkeypatch.setattr(statsdb, 'StatsCache', lambda *a: pytest.fail('stats cache used on open'))
+
+    model = StoreModel(str(path), _FakeController())
+
+    assert model.stats['translated'] == [0]
+    assert fills == [str(path)]
+
+
+def test_saving_fills_the_stats_cache_for_the_saved_file(tmp_path, monkeypatch, fills):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: None)
+    path = tmp_path / "old.po"
+    path.write_bytes(_OLD_PO)
+    model = StoreModel(str(path), _SavingController('af'))
+
+    model.save_file(str(tmp_path / "saved.po"))
+
+    assert fills == [str(path), str(tmp_path / "saved.po")]
+
+
+def test_update_file_compares_the_old_stats_with_the_merged_ones(tmp_path):
+    old_path = tmp_path / "old.po"
+    new_path = tmp_path / "new.po"
+    old_path.write_bytes(_OLD_PO)
+    new_path.write_bytes(_NEW_PO)
+    compared = []
+    controller = _FakeController()
+    controller.compare_stats = lambda old, new: compared.append(
+        {key: (len(old[key]), len(new[key])) for key in ('total', 'translated', 'untranslated')})
+
+    model = StoreModel(str(old_path), controller)
+    model.update_file(str(new_path))
+
+    assert compared == [{'total': (1, 2), 'translated': (1, 1), 'untranslated': (0, 1)}]
+
+
+def test_without_a_file_there_are_no_stats(tmp_path):
+    model = StoreModel.__new__(StoreModel)
+    model.filename = None
+    model._trans_store = None
+
+    assert model.get_stats_totals() == {}
+    assert model.update_stats() is None
+    assert model.stats is None
 
 
 _STATES_PO = b'''msgid ""

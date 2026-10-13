@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
 from types import SimpleNamespace
 
 import pytest
@@ -242,3 +243,14 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
     cache.cur.execute("SELECT count(*) FROM files")
     assert cache.cur.fetchone()[0] == 0
 
+
+def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
+    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
+    monkeypatch.setenv('HOME', str(tmp_path))
+    monkeypatch.setenv('USERPROFILE', str(tmp_path))
+
+    statsdb.StatsCache()
+
+    assert statsdb.StatsCache.defaultfile.startswith(os.path.realpath(str(tmp_path)))
+    assert os.path.exists(statsdb.StatsCache.defaultfile)

@@ -48,8 +48,6 @@ from translate.misc.multistring import multistring
 from translate.storage import factory
 from translate.storage.workflow import StateEnum
 
-from virtaal.common.platform import platform
-
 logger = logging.getLogger(__name__)
 
 #kdepluralre = re.compile("^_n: ") #Restore this if you really need support for old kdeplurals
@@ -335,6 +333,9 @@ class StatsCache:
 
         if not statsfile:
             if not cls.defaultfile:
+                # Not at the top: virtaal.common starts GTK, which the
+                # statsworker child process mustn't.
+                from virtaal.common.platform import platform
                 userdir = os.path.expanduser("~")
                 cachedir = None
                 if platform.is_windows:

@@ -151,6 +151,16 @@ its own concrete evidence, not a guess:
   the specific thing asked for (a window-position-persistence request
   closed by pointing at the exact feature now working;
   `git log --grep`, not just "this feels done").
+- **A feature that "already works" may predate the report**: run
+  `git tag --contains <sha>` on the commit that added it and compare
+  with the version the report was filed against. If the feature had
+  already shipped by then, the reporter was asking for something else.
+  Reread the ask and say which part is covered and which isn't.
+  translate/virtaal#1328 (0.5.0, PgUp/PgDn to scroll without changing
+  the active unit): Ctrl+PgUp/PgDn moves 10 units and was already in
+  0.2, so it never answered the scroll-only ask. Closed as covered by
+  the navigation shortcuts, with the scroll-only part declined in the
+  comment.
 - **A dependency/plugin fully removed**: if the report is scoped to a
   library that's since been dropped entirely (`grep -rl
   <libraryname> virtaal/` returning nothing), the issue no longer

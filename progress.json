@@ -1,15 +1,15 @@
 {
  "format": 1,
- "generated": "2026-10-11T17:50:47Z",
- "commit": "b8d827632b3618aeefe8a352ee0e4c44e2b38fc2",
+ "generated": "2026-10-13T22:48:48Z",
+ "commit": "d10c1551caf6e36e89ff82698fe766b3d2fc2756",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
  "totals": {
   "core": 105,
-  "rest": 86,
-  "level2": 242,
-  "level3": 140
+  "rest": 87,
+  "level2": 243,
+  "level3": 147
  },
  "languages": [
   {
@@ -17,10 +17,10 @@
    "name": "Afrikaans",
    "endonym": "Afrikaans",
    "core_missing": 28,
-   "rest_missing": 6,
-   "needed": 31,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 7,
+   "needed": 32,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -28,10 +28,10 @@
    "name": "Akan",
    "endonym": "Akan",
    "core_missing": 39,
-   "rest_missing": 32,
-   "needed": 68,
-   "level2_missing": 132,
-   "level3_missing": 70,
+   "rest_missing": 33,
+   "needed": 69,
+   "level2_missing": 133,
+   "level3_missing": 75,
    "ships": null
   },
   {
@@ -39,10 +39,10 @@
    "name": "Amharic",
    "endonym": "አማርኛ",
    "core_missing": 71,
-   "rest_missing": 57,
-   "needed": 125,
-   "level2_missing": 134,
-   "level3_missing": 78,
+   "rest_missing": 58,
+   "needed": 126,
+   "level2_missing": 135,
+   "level3_missing": 85,
    "ships": null
   },
   {
@@ -50,10 +50,10 @@
    "name": "Arabic",
    "endonym": "العربية",
    "core_missing": 29,
-   "rest_missing": 5,
-   "needed": 31,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 32,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -61,10 +61,10 @@
    "name": "Asturian",
    "endonym": "asturianu",
    "core_missing": 35,
-   "rest_missing": 9,
-   "needed": 41,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 10,
+   "needed": 42,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -72,10 +72,10 @@
    "name": "Belarusian",
    "endonym": "беларуская",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
-   "level2_missing": 125,
-   "level3_missing": 50,
+   "rest_missing": 7,
+   "needed": 26,
+   "level2_missing": 126,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -83,10 +83,10 @@
    "name": "Bulgarian",
    "endonym": "български",
    "core_missing": 37,
-   "rest_missing": 53,
-   "needed": 87,
-   "level2_missing": 137,
-   "level3_missing": 70,
+   "rest_missing": 54,
+   "needed": 88,
+   "level2_missing": 138,
+   "level3_missing": 75,
    "ships": null
   },
   {
@@ -94,10 +94,10 @@
    "name": "Bangla (India)",
    "endonym": "বাংলা (ভারত)",
    "core_missing": 44,
-   "rest_missing": 58,
-   "needed": 99,
-   "level2_missing": 137,
-   "level3_missing": 70,
+   "rest_missing": 59,
+   "needed": 100,
+   "level2_missing": 138,
+   "level3_missing": 75,
    "ships": null
   },
   {
@@ -105,10 +105,10 @@
    "name": "Catalan",
    "endonym": "català",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -116,10 +116,10 @@
    "name": "Catalan (Spain, Valencian)",
    "endonym": "català (Espanya, valencià)",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -127,10 +127,10 @@
    "name": "Chiga",
    "endonym": "Rukiga",
    "core_missing": 39,
-   "rest_missing": 43,
-   "needed": 79,
-   "level2_missing": 132,
-   "level3_missing": 73,
+   "rest_missing": 44,
+   "needed": 80,
+   "level2_missing": 133,
+   "level3_missing": 78,
    "ships": null
   },
   {
@@ -138,10 +138,10 @@
    "name": "Czech",
    "endonym": "čeština",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -149,10 +149,10 @@
    "name": "Danish",
    "endonym": "dansk",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 86,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 87,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -160,10 +160,10 @@
    "name": "German",
    "endonym": "Deutsch",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -171,10 +171,10 @@
    "name": "Greek",
    "endonym": "Ελληνικά",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -182,10 +182,10 @@
    "name": "Spanish",
    "endonym": "español",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 89,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 90,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -193,10 +193,10 @@
    "name": "Basque",
    "endonym": "euskara",
    "core_missing": 23,
-   "rest_missing": 5,
-   "needed": 25,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 26,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -204,10 +204,10 @@
    "name": "Fula",
    "endonym": "Pulaar",
    "core_missing": 33,
-   "rest_missing": 5,
-   "needed": 35,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 36,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -215,10 +215,10 @@
    "name": "Finnish",
    "endonym": "suomi",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -226,10 +226,10 @@
    "name": "Faroese",
    "endonym": "føroyskt",
    "core_missing": 36,
-   "rest_missing": 7,
-   "needed": 40,
-   "level2_missing": 122,
-   "level3_missing": 51,
+   "rest_missing": 8,
+   "needed": 41,
+   "level2_missing": 123,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -237,10 +237,10 @@
    "name": "French",
    "endonym": "français",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -248,10 +248,10 @@
    "name": "Galician",
    "endonym": "galego",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -259,10 +259,10 @@
    "name": "Hebrew",
    "endonym": "עברית",
    "core_missing": 23,
-   "rest_missing": 5,
-   "needed": 25,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 26,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -270,10 +270,10 @@
    "name": "Hungarian",
    "endonym": "magyar",
    "core_missing": 35,
-   "rest_missing": 63,
-   "needed": 95,
-   "level2_missing": 200,
-   "level3_missing": 130,
+   "rest_missing": 64,
+   "needed": 96,
+   "level2_missing": 201,
+   "level3_missing": 137,
    "ships": null
   },
   {
@@ -281,10 +281,10 @@
    "name": "Icelandic",
    "endonym": "íslenska",
    "core_missing": 28,
-   "rest_missing": 5,
-   "needed": 30,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 31,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -292,10 +292,10 @@
    "name": "Italian",
    "endonym": "italiano",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -303,10 +303,10 @@
    "name": "Japanese",
    "endonym": "日本語",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -314,10 +314,10 @@
    "name": "Korean",
    "endonym": "한국어",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 86,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 87,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -325,10 +325,10 @@
    "name": "Ganda",
    "endonym": "Luganda",
    "core_missing": 37,
-   "rest_missing": 42,
-   "needed": 76,
-   "level2_missing": 132,
-   "level3_missing": 70,
+   "rest_missing": 43,
+   "needed": 77,
+   "level2_missing": 133,
+   "level3_missing": 75,
    "ships": null
   },
   {
@@ -336,10 +336,10 @@
    "name": "Lithuanian",
    "endonym": "lietuvių",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -347,10 +347,10 @@
    "name": "Nepali",
    "endonym": "नेपाली",
    "core_missing": 54,
-   "rest_missing": 65,
-   "needed": 116,
-   "level2_missing": 200,
-   "level3_missing": 117,
+   "rest_missing": 66,
+   "needed": 117,
+   "level2_missing": 201,
+   "level3_missing": 124,
    "ships": null
   },
   {
@@ -358,10 +358,10 @@
    "name": "Dutch",
    "endonym": "Nederlands",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -369,10 +369,10 @@
    "name": "Northern Sotho",
    "endonym": "Sesotho sa Leboa",
    "core_missing": 32,
-   "rest_missing": 5,
-   "needed": 34,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 35,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -380,10 +380,10 @@
    "name": "Occitan",
    "endonym": "occitan",
    "core_missing": 28,
-   "rest_missing": 5,
-   "needed": 30,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 31,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -391,10 +391,10 @@
    "name": "Punjabi",
    "endonym": "ਪੰਜਾਬੀ",
    "core_missing": 39,
-   "rest_missing": 55,
-   "needed": 91,
-   "level2_missing": 149,
-   "level3_missing": 85,
+   "rest_missing": 56,
+   "needed": 92,
+   "level2_missing": 150,
+   "level3_missing": 90,
    "ships": null
   },
   {
@@ -402,10 +402,10 @@
    "name": "Polish",
    "endonym": "polski",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -413,10 +413,10 @@
    "name": "Portuguese",
    "endonym": "português",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -424,10 +424,10 @@
    "name": "Portuguese (Brazil)",
    "endonym": "português (Brasil)",
    "core_missing": 12,
-   "rest_missing": 1,
+   "rest_missing": 2,
    "needed": 12,
-   "level2_missing": 28,
-   "level3_missing": 20,
+   "level2_missing": 29,
+   "level3_missing": 25,
    "ships": "50%"
   },
   {
@@ -435,10 +435,10 @@
    "name": "Russian",
    "endonym": "русский",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -446,10 +446,10 @@
    "name": "Sinhala",
    "endonym": "සිංහල",
    "core_missing": 82,
-   "rest_missing": 66,
-   "needed": 145,
-   "level2_missing": 139,
-   "level3_missing": 70,
+   "rest_missing": 67,
+   "needed": 146,
+   "level2_missing": 140,
+   "level3_missing": 77,
    "ships": null
   },
   {
@@ -457,10 +457,10 @@
    "name": "Slovak",
    "endonym": "slovenčina",
    "core_missing": 23,
-   "rest_missing": 5,
-   "needed": 25,
-   "level2_missing": 125,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 26,
+   "level2_missing": 126,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -468,10 +468,10 @@
    "name": "Songhai languages",
    "endonym": "Songhai languages",
    "core_missing": 33,
-   "rest_missing": 5,
-   "needed": 35,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 36,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -479,10 +479,10 @@
    "name": "Serbian",
    "endonym": "српски",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -490,10 +490,10 @@
    "name": "Southern Sotho",
    "endonym": "Sesotho",
    "core_missing": 54,
-   "rest_missing": 55,
-   "needed": 106,
-   "level2_missing": 138,
-   "level3_missing": 70,
+   "rest_missing": 56,
+   "needed": 107,
+   "level2_missing": 139,
+   "level3_missing": 77,
    "ships": null
   },
   {
@@ -501,10 +501,10 @@
    "name": "Swedish",
    "endonym": "svenska",
    "core_missing": 22,
-   "rest_missing": 9,
-   "needed": 28,
-   "level2_missing": 122,
-   "level3_missing": 53,
+   "rest_missing": 10,
+   "needed": 29,
+   "level2_missing": 123,
+   "level3_missing": 58,
    "ships": "50%"
   },
   {
@@ -512,10 +512,10 @@
    "name": "Swahili",
    "endonym": "Kiswahili",
    "core_missing": 72,
-   "rest_missing": 69,
-   "needed": 138,
-   "level2_missing": 148,
-   "level3_missing": 95,
+   "rest_missing": 70,
+   "needed": 139,
+   "level2_missing": 149,
+   "level3_missing": 102,
    "ships": null
   },
   {
@@ -523,10 +523,10 @@
    "name": "Telugu",
    "endonym": "తెలుగు",
    "core_missing": 35,
-   "rest_missing": 48,
-   "needed": 80,
-   "level2_missing": 181,
-   "level3_missing": 95,
+   "rest_missing": 49,
+   "needed": 81,
+   "level2_missing": 182,
+   "level3_missing": 100,
    "ships": null
   },
   {
@@ -534,10 +534,10 @@
    "name": "Thai",
    "endonym": "ไทย",
    "core_missing": 36,
-   "rest_missing": 48,
-   "needed": 81,
-   "level2_missing": 136,
-   "level3_missing": 74,
+   "rest_missing": 49,
+   "needed": 82,
+   "level2_missing": 137,
+   "level3_missing": 79,
    "ships": null
   },
   {
@@ -545,10 +545,10 @@
    "name": "Turkish",
    "endonym": "Türkçe",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -556,10 +556,10 @@
    "name": "Ukrainian",
    "endonym": "українська",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -567,10 +567,10 @@
    "name": "Vietnamese",
    "endonym": "Tiếng Việt",
    "core_missing": 31,
-   "rest_missing": 50,
-   "needed": 78,
-   "level2_missing": 137,
-   "level3_missing": 70,
+   "rest_missing": 51,
+   "needed": 79,
+   "level2_missing": 138,
+   "level3_missing": 75,
    "ships": null
   },
   {
@@ -578,10 +578,10 @@
    "name": "Chinese (Simplified, China)",
    "endonym": "中文 (简体, 中国)",
    "core_missing": 1,
-   "rest_missing": 0,
+   "rest_missing": 1,
    "needed": 1,
-   "level2_missing": 2,
-   "level3_missing": 5,
+   "level2_missing": 3,
+   "level3_missing": 10,
    "ships": "50%"
   },
   {
@@ -589,10 +589,10 @@
    "name": "Chinese (Traditional, Taiwan)",
    "endonym": "中文 (繁體, 台灣)",
    "core_missing": 22,
-   "rest_missing": 5,
-   "needed": 24,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 25,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   },
   {
@@ -600,12 +600,12 @@
    "name": "Zulu",
    "endonym": "isiZulu",
    "core_missing": 32,
-   "rest_missing": 5,
-   "needed": 34,
-   "level2_missing": 122,
-   "level3_missing": 50,
+   "rest_missing": 6,
+   "needed": 35,
+   "level2_missing": 123,
+   "level3_missing": 55,
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38161125364"
+ "packs": "https://github.com/translate/virtaal/actions/runs/38479910051"
 }

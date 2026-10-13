@@ -128,6 +128,11 @@ jobs:
           done
           exit $status
 
+      - name: Check metainfo URLs
+        # Fails on a 404 or a missing screenshot; a site that is down
+        # is only a warning.
+        run: python devsupport/packaging/check_metainfo_urls.py
+
       - name: Report release readiness
         # Each shipped translation against po/update-linguas.py's
         # release rule, with the level-1 strings it still needs -

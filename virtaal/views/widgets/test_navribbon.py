@@ -31,15 +31,13 @@ class FakeStore:
 
 class FakeStoreController:
     def __init__(self, stats=None, checks=None, cursor=None, store=None,
-                 raise_no_store=False, raise_attribute_error=False,
-                 raise_checks_not_ready=False):
+                 raise_no_store=False, raise_attribute_error=False):
         self._stats = stats
         self._checks = checks
         self.cursor = cursor
         self._store = store
         self._raise_no_store = raise_no_store
         self._raise_attribute_error = raise_attribute_error
-        self._raise_checks_not_ready = raise_checks_not_ready
 
     def get_store_stats(self):
         if self._raise_attribute_error:
@@ -56,10 +54,13 @@ class FakeStoreController:
         return self._store
 
     def get_store_checks(self):
-        if self._raise_attribute_error or self._raise_checks_not_ready:
+        if self._raise_attribute_error:
             raise AttributeError("'StoreModel' object has no attribute 'checks'")
         if self._raise_no_store:
             raise ValueError('No store to get checker from')
+        # The real StoreController.get_store_checks() returns
+        # store.checks directly - None (not a raise) is the real
+        # "not computed yet" case (StoreModel.checks starts as None).
         return self._checks
 
     def connect(self, *_args, **_kwargs):
@@ -99,10 +100,10 @@ class FakeCursor:
 
 
 def make_ribbon(stats=None, checks=None, cursor=None, units=None, raise_no_store=False,
-                 raise_attribute_error=False, raise_checks_not_ready=False):
+                 raise_attribute_error=False):
     store_controller = FakeStoreController(
         stats, checks, cursor, FakeStore(units or []),
-        raise_no_store, raise_attribute_error, raise_checks_not_ready)
+        raise_no_store, raise_attribute_error)
     main_controller = FakeMainController(store_controller)
     scrolled_window = Gtk.ScrolledWindow()
     ribbon = NavRibbon(main_controller, scrolled_window)
@@ -157,11 +158,13 @@ def test_refresh_marks_handles_store_controller_mid_construction():
 
 def test_refresh_marks_shows_stats_before_checks_are_computed():
     # store.checks isn't computed until QualityCheckMode first runs (mode
-    # selection or a save) - a fresh file load must still show
-    # untranslated/fuzzy/translated marks meanwhile, not go blank.
+    # selection or a save) - get_store_checks() then returns None, not a
+    # raise (StoreModel.checks starts as None) - a fresh file load must
+    # still show untranslated/fuzzy/translated marks meanwhile, not
+    # crash or go blank.
     stats = {'total': [0, 1]}
     units = [FakeUnit(StateEnum.EMPTY), FakeUnit(StateEnum.UNREVIEWED)]
-    ribbon, _, _ = make_ribbon(stats, units=units, raise_checks_not_ready=True)
+    ribbon, _, _ = make_ribbon(stats, checks=None, units=units)
 
     assert ribbon._marks == [
         (0, 0, StateEnum.EMPTY),

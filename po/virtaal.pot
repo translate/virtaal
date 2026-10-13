@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-10-07 08:48+0100\n"
+"POT-Creation-Date: 2026-10-13 12:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -911,6 +911,11 @@ msgstr ""
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
+msgstr ""
+
+#: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
+#, python-format
+msgid "Loading '%s'…"
 msgstr ""
 
 #: virtaal/controllers/maincontroller.py
@@ -2145,11 +2150,6 @@ msgstr ""
 msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
-msgstr ""
-
-#: virtaal/views/mainview.py
-#, python-format
-msgid "Loading '%s'…"
 msgstr ""
 
 #: virtaal/views/mainview.py

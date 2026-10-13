@@ -18,6 +18,7 @@ did nothing, no error.
 import ctypes
 import os
 import sys
+import time
 from types import SimpleNamespace
 from urllib.parse import quote
 
@@ -2290,6 +2291,101 @@ def test_hide_loading_notice_does_nothing_when_none_shown():
     view = MainView.__new__(MainView)
 
     view.hide_loading_notice()  # must not raise
+
+
+# busy() - wait cursor and status bar message around a blocking load #
+
+def _view_for_busy():
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+    view.main_window.realize()
+    view.status_bar = Gtk.Statusbar()
+    view.statusbar_context_id = view.status_bar.get_context_id('statusbar')
+    return view
+
+
+def _statusbar_text(status_bar):
+    return status_bar.get_message_area().get_children()[0].get_text()
+
+
+def test_busy_shows_a_wait_cursor_and_message_only_while_the_body_runs():
+    view = _view_for_busy()
+    seen = []
+    try:
+        with view.busy("Loading 'af.xlf'…"):
+            cursor = view.main_window.get_window().get_cursor()
+            seen.append((cursor is not None, _statusbar_text(view.status_bar)))
+
+        assert seen == [(True, "Loading 'af.xlf'…")]
+        assert view.main_window.get_window().get_cursor() is None
+        assert _statusbar_text(view.status_bar) == ''
+    finally:
+        view.main_window.destroy()
+
+
+def test_busy_restores_the_cursor_and_message_when_the_body_raises():
+    view = _view_for_busy()
+    try:
+        with pytest.raises(ValueError), view.busy('Loading'):
+            raise ValueError('bad file')
+
+        assert view.main_window.get_window().get_cursor() is None
+        assert _statusbar_text(view.status_bar) == ''
+    finally:
+        view.main_window.destroy()
+
+
+def test_busy_works_before_the_window_is_realized():
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(get_window=lambda: None)
+    view.status_bar = Gtk.Statusbar()
+    view.statusbar_context_id = view.status_bar.get_context_id('statusbar')
+
+    with view.busy('Loading'):
+        pass
+
+    assert _statusbar_text(view.status_bar) == ''
+
+
+def test_busy_draws_the_message_before_the_body_runs(monkeypatch):
+    # Recent Files on macOS: a native menu action, where
+    # Gtk.events_pending() reports nothing to draw.
+    monkeypatch.setattr(Gtk, 'events_pending', lambda: False)
+    view = _view_for_busy()
+    view.main_window.add(view.status_bar)
+    view.main_window.show_all()
+    drawn = []
+    view.status_bar.connect_after('draw', lambda *a: drawn.append(_statusbar_text(view.status_bar)))
+    try:
+        with view.busy("Loading 'af.xlf'…"):
+            seen = list(drawn)
+
+        assert "Loading 'af.xlf'…" in seen
+    finally:
+        view.main_window.destroy()
+
+
+def test_wait_for_draw_returns_at_once_for_a_widget_that_cannot_draw():
+    start = time.monotonic()
+
+    mainview._wait_for_draw(Gtk.Label(label='hidden'))
+
+    assert time.monotonic() - start < 0.05
+
+
+def test_wait_for_draw_returns_soon_after_the_widget_draws():
+    window = Gtk.Window()
+    label = Gtk.Label(label='shown')
+    window.add(label)
+    window.show_all()
+    try:
+        start = time.monotonic()
+
+        mainview._wait_for_draw(label, timeout=2000)
+
+        assert time.monotonic() - start < 1
+    finally:
+        window.destroy()
 
 
 # show_startup_open_failure_notice() - same dismissable-InfoBar pattern

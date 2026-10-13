@@ -102,6 +102,7 @@ class ChecksController(BaseController):
               "openoffice":  _('LibreOffice'),
               "mozilla": _('Mozilla'),
               "kde": _('KDE'),
+              "qt": _('Qt'),
               "gnome": _('GNOME'),
               "drupal": _('Drupal'),
         }
@@ -131,6 +132,8 @@ class ChecksController(BaseController):
                 'drupal':     checks.DrupalChecker,
                 'gnome':      checks.GnomeChecker,
                 'kde':        checks.KdeChecker,
+                # Qt shares KDE's "&" accelerators and %1 placeholders
+                'qt':         checks.KdeChecker,
             }
         return self._checker_info
     checker_info = property(_get_checker_info)
@@ -150,6 +153,21 @@ class ChecksController(BaseController):
             self._unitview.show()
         return self._unitview
     unitview = property(_get_unitview)
+
+    def default_checker_code(self, store):
+        """The project style for C{store}: its own, else its format's."""
+        code = store.getprojectstyle()
+        if code:
+            return code
+        from translate.storage import qm, ts2
+        format_codes = (
+            (ts2.tsfile, 'qt'),
+            (qm.qmfile, 'qt'),
+        )
+        for store_class, code in format_codes:
+            if isinstance(store, store_class):
+                return code
+        return None
 
     def get_checker(self):
         return self._checker
@@ -232,7 +250,7 @@ class ChecksController(BaseController):
                self.check_unit(self.last_unit)
 
     def _on_store_loaded(self, store_controller):
-        self.set_checker_by_code(store_controller.store._trans_store.getprojectstyle())
+        self.set_checker_by_code(self.default_checker_code(store_controller.store._trans_store))
         if self._cursor_connection:
             widget, connect_id = self._cursor_connection
             widget.disconnect(connect_id)

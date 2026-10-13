@@ -123,6 +123,8 @@ class ChecksController(BaseController):
     def _get_checker_info(self):
         if not self._checker_info:
             from translate.filters import checks
+
+            from virtaal.support.qtchecks import QtChecker
             self._checker_info = {
                 # XXX: Add other checkers below with a localisable string as key
                 #      (used on the GUI) and a checker class as the value.
@@ -132,8 +134,7 @@ class ChecksController(BaseController):
                 'drupal':     checks.DrupalChecker,
                 'gnome':      checks.GnomeChecker,
                 'kde':        checks.KdeChecker,
-                # Qt shares KDE's "&" accelerators and %1 placeholders
-                'qt':         checks.KdeChecker,
+                'qt':         QtChecker,
             }
         return self._checker_info
     checker_info = property(_get_checker_info)

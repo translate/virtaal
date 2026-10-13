@@ -50,9 +50,9 @@ green (next section).
 Pushing a `v*` tag to `translate/virtaal` triggers `ci.yml`'s `release`
 job: it takes the `build-windows-installer`/`build-macos-app` artifacts
 already produced by that same commit's CI run (no rebuild), runs
-`gh release create` attaching the Windows installer and both macOS
-`.dmg`s (arm64/x86_64), and marks pre-release whenever the tag contains
-`-beta`/`-rc`/`-alpha`.
+`gh release create` attaching the Windows installer, both macOS
+`.dmg`s (arm64/x86_64) and the translation-packs zip, and marks
+pre-release whenever the tag contains `-beta`/`-rc`/`-alpha`.
 
 **Because it reuses that commit's own CI artifacts rather than
 rebuilding, the tagged commit's CI run must already be green before you
@@ -70,7 +70,7 @@ git tag -a v1.0.0-beta1 <sha> -m "v1.0.0-beta1"
 git push upstream v1.0.0-beta1
 ```
 
-Confirm the release actually landed with all three assets before
+Confirm the release actually landed with all four assets before
 telling anyone it shipped:
 
 ```
@@ -137,12 +137,11 @@ step, easy to forget:
   got pushed to `dwaynebailey/virtaal`, not `translate/virtaal` - diff
   `git ls-remote --tags upstream` against `git ls-remote --tags origin`
   before assuming upstream's tag list is complete.
-- **Translation packs on an rc release.** The release job attaches only
-  the installers. Download the `translation-packs` artifact (one zip per
-  language) from the tagged commit's CI run and upload the zips with
-  `gh release upload <tag> --repo translate/virtaal <zips>` - translators
-  are pointed at them. rc1 also starts the string freeze: any msgid
-  change after it needs Dwayne's explicit go-ahead.
+- **The string freeze.** rc1 starts it: any msgid change after it
+  needs Dwayne's explicit go-ahead. Translators get their packs from the
+  release itself - the release job attaches
+  `virtaal-translation-packs-<tag>.zip` (every language's pack) next to
+  the installers.
 - **When 1.0.0 itself (not a beta/rc) ships**: the 12 historic SourceForge
   releases (`0.2` through `0.7.1`, backstopped 2026-09-11 with their
   original SourceForge files as assets) were all created with

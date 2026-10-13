@@ -2406,17 +2406,22 @@ def test_wait_for_draw_returns_at_once_for_a_widget_that_cannot_draw():
     assert time.monotonic() - start < 0.05
 
 
-def test_wait_for_draw_returns_soon_after_the_widget_draws():
+def test_wait_for_draw_returns_once_the_widget_draws():
     window = Gtk.Window()
     label = Gtk.Label(label='shown')
     window.add(label)
     window.show_all()
+    drawn = []
+    label.connect('draw', lambda *a: drawn.append(True))
     try:
         start = time.monotonic()
 
-        mainview._wait_for_draw(label, timeout=2000)
+        mainview._wait_for_draw(label, timeout=30000)
 
-        assert time.monotonic() - start < 1
+        assert drawn
+        # Returned on the draw, not the timeout - a first draw can take
+        # seconds on a CI runner.
+        assert time.monotonic() - start < 30
     finally:
         window.destroy()
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-10-13 12:29+0100\n"
+"POT-Creation-Date: 2026-10-13 18:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2347,11 +2347,24 @@ msgid "Edit Language"
 msgstr ""
 
 #: virtaal/views/widgets/langadddialog.py
+msgid "Enter a language name."
+msgstr ""
+
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
 msgstr ""
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be at least 2 characters long."
+msgstr ""
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Language code must not contain spaces."
+msgstr ""
+
+#: virtaal/views/widgets/langadddialog.py
+#, python-format
+msgid "Language code %s is already used."
 msgstr ""
 
 #: virtaal/views/widgets/langselectdialog.py

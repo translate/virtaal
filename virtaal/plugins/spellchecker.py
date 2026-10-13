@@ -31,6 +31,19 @@ def _is_dictionary_entry(label):
     return re.fullmatch(add, label) is not None
 
 
+def _in_placeable(textbox, start, end):
+    """Whether the text from C{start} to C{end} is in a placeable that
+        isn't translated, such as a variable."""
+    gui_info = getattr(getattr(textbox, 'elem', None), 'gui_info', None)
+    if gui_info is None:
+        return False
+    for offset in (start.get_offset(), end.get_offset() - 1):
+        elem = gui_info.elem_at_offset(offset)
+        if elem is not None and not elem.istranslatable:
+            return True
+    return False
+
+
 class Plugin(BasePlugin):
     """A plugin to control spell checking."""
 
@@ -117,6 +130,7 @@ class Plugin(BasePlugin):
             # removed before the menu is ever shown, instead of shrinking
             # an already-visible popup (which GTK doesn't support cleanly).
             self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup, after=True)
+            self._signal_tracker.connect(textbox.get_buffer(), 'apply-tag', self._on_apply_tag, textbox)
 
 
     # METHODS #
@@ -208,6 +222,11 @@ class Plugin(BasePlugin):
             logging.exception("Could not initialize spell checking: %s", e)
             self.gtkspell = None
             #TODO: unload plugin
+
+    def _on_apply_tag(self, buffer, tag, start, end, textbox):
+        """Don't mark words in placeables (variables, tags) as misspelled."""
+        if tag.props.name == 'gtkspell-misspelled' and _in_placeable(textbox, start, end):
+            buffer.stop_emission_by_name('apply-tag')
 
     def _on_populate_popup(self, textbox, menu):
         editable = textbox.get_editable()

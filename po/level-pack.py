@@ -15,9 +15,10 @@
     po/<lang>.po merged into level 1 of virtaal.pot; <lang>-level2.po,
     levels 1 and 2; and the priority file they name in their header.
     With --libraries, also <domain>-<lang>-level1.po (and -level2) for
-    each library (GTK, GLib, ...) and the language names: only the
-    messages neither the library's catalog on this host nor the lite
-    catalog in po/lite translates. Run that where Virtaal runs.
+    each library (GTK, GLib, ...) and the language names: everything in
+    the lite catalog in po/lite, translations included, plus the messages
+    neither it nor the library's catalog on this host translates. Run that
+    where Virtaal runs.
 
     po/level-pack.py --merge LANG FILE.po
 
@@ -97,6 +98,16 @@ def _new_catalog(domain, lang, path):
                         '"Content-Transfer-Encoding: 8bit\\n"\n' % lang, encoding='utf-8', newline='\n')
 
 
+def lite_ids(domain, lang):
+    """The messages lang's lite catalog for domain has."""
+    from translate.storage import po
+    catalog = LITE_DIR / domain / (lang + '.po')
+    if not catalog.is_file():
+        return set()
+    return {unit.getid() for unit in po.pofile.parsefile(str(catalog)).units
+            if not unit.isheader() and not unit.isobsolete()}
+
+
 def write_library_pack(domain, lang, keys, path):
     """path: the lite catalog for lang cut down to keys."""
     from translate.storage import po
@@ -135,8 +146,14 @@ def _set_header_field(path, name, value):
 
 def pack(lang, out_dir, gaps=None):
     """Writes out_dir/<lang>.zip, and returns its path. gaps:
-        library_gaps()[lang], for the library packs."""
+        library_gaps()[lang], for the library packs, which also hold
+        everything lang's lite catalogs have."""
     out_dir.mkdir(parents=True, exist_ok=True)
+    library = {}
+    if gaps is not None:
+        library = {domain: set(keys) for domain, keys in gaps.items()}
+        for catalog in LITE_DIR.glob('*/%s.po' % lang):
+            library.setdefault(catalog.parent.name, set()).update(lite_ids(catalog.parent.name, lang))
     archive = out_dir / (lang + '.zip')
     with tempfile.TemporaryDirectory() as tmp, zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as zf:
         for level in PACK_LEVELS:
@@ -148,7 +165,7 @@ def pack(lang, out_dir, gaps=None):
             _run('msgattrib', '--no-obsolete', merged, '-o', Path(tmp) / name)
             _set_header_field(Path(tmp) / name, 'X-Priority-File', PRIORITIES.name)
             zf.write(Path(tmp) / name, name)
-            for domain, keys in sorted((gaps or {}).items()):
+            for domain, keys in sorted(library.items()):
                 keys = keys & level_keys(level, domain)
                 if keys:
                     name = '%s-%s-level%d.po' % (domain, lang, level)
@@ -220,7 +237,7 @@ def main():
         parser.error('name languages, or use --all')
     gaps = library_gaps() if args.libraries else {}
     for lang in languages:
-        print(pack(lang, args.out, gaps.get(lang)))
+        print(pack(lang, args.out, gaps.get(lang, {}) if args.libraries else None))
     return 0
 
 

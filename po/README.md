@@ -93,9 +93,10 @@ A translation pack is one language's catalog cut down to what users see
 most, for a translator to finish first: `<lang>-level1.po` (level 1) and
 `<lang>-level2.po` (levels 1 and 2), with the priority file, zipped.
 With `--libraries`, it also holds `<domain>-<lang>-level1.po` (and
-`-level2`) for GTK and the other libraries, and for language names: only
-the messages neither the library's catalog on this host nor its lite
-catalog translates. Run that where Virtaal runs:
+`-level2`) for GTK and the other libraries, and for language names:
+everything in the language's lite catalog, translations included, plus
+the messages neither it nor the library's catalog on this host
+translates. Run that where Virtaal runs:
 
 ```sh
 po/level-pack.py zu --libraries     # or --all; written to dist/level-packs/

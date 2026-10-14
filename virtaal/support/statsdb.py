@@ -340,6 +340,8 @@ class StatsCache:
                 cachedir = None
                 if platform.is_windows:
                     cachedir = os.path.join(userdir, "Translate Toolkit")
+                elif platform.is_flatpak:
+                    cachedir = os.path.join(os.environ['XDG_CACHE_HOME'], "translate_toolkit")
                 else:
                     cachedir = os.path.join(userdir, ".translate_toolkit")
                 if not os.path.exists(cachedir):

@@ -7,7 +7,9 @@
 # is the background's 600x440 plus the title bar.
 files = ["dist/Virtaal.app"]
 symlinks = {"Applications": "/Applications"}
-hide_extensions = ["Virtaal.app"]
+# No hide_extensions: it sets a Finder flag on the already-signed app,
+# which breaks its signature under codesign --strict (#4280). Finder hides
+# an application's .app anyway.
 
 volume_icon = "devsupport/mac-bundle/icons/VolumeIcon_virtaal.icns"
 background = "devsupport/mac-bundle/virtaal_DMG_background.png"

@@ -38,7 +38,10 @@ that call themselves the previous version (rc1 was nearly tagged with
 
 For an rc (string freeze): also refresh `po/virtaal.priorities.yaml`
 in full from `main`'s latest `translation-priorities` artifact, as its
-own PR, after the last string-changing PR. For the final release:
+own PR, after the last string-changing PR. Then merge every `po/*.po`
+with the template (`msgmerge --previous --update`, as `make po/<lang>.po`
+does; #4278): translators who send PRs edit those files, and the packs
+alone don't update them. For the final release:
 remove the release-candidate notice at the top of
 `docs/releases/1.0.0-github-notes.md`.
 
@@ -118,7 +121,8 @@ step, easy to forget:
   `releases` - `download.html` pulls the newest one automatically).
   `gh-pages` requires a PR (branch-protected, one required `build`
   check that validates the Jekyll build via `actions/jekyll-build-pages`)
-  - no direct pushes.
+  - no direct pushes. Its `.readthedocs.yaml` cancels Read the Docs'
+  build (#4274), so that check passes too.
 - **`docs.translatehouse.org`** (Read the Docs, a *different* site -
   built by RTD's own webhook on this repo, not by anything in
   `ci.yml`). Nothing to do here per release, but worth a periodic
@@ -141,7 +145,11 @@ step, easy to forget:
   needs Dwayne's explicit go-ahead. Translators get their packs from the
   release itself - the release job attaches
   `virtaal-translation-packs-<tag>.zip` (every language's pack) next to
-  the installers.
+  the installers. A pack's level 2 files include level 1, so tell
+  translators to pick one level, never "level 1, then level 2". Quote
+  completion from `po/update-linguas.py --report` (level-1 strings
+  needed): `msgfmt --statistics` on an unmerged `.po` overstates it.
+  Translators with no public email get an @mention on their own PR.
 - **When 1.0.0 itself (not a beta/rc) ships**: the 12 historic SourceForge
   releases (`0.2` through `0.7.1`, backstopped 2026-09-11 with their
   original SourceForge files as assets) were all created with

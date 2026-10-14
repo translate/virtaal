@@ -2,13 +2,11 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Florence Tushabe <tushabe@cit.mak.ac.ug>, 2011.
-#: ../virtaal/support/native_widgets.py:49
-#: ../virtaal/support/native_widgets.py:50
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-02-11 21:11+0000\n"
+"POT-Creation-Date: 2026-10-13 18:54+0100\n"
 "PO-Revision-Date: 2011-05-14 10:18+0000\n"
 "Last-Translator: Florence <tushabe@cit.mak.ac.ug>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,25 +15,616 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
-#: ../virtaal/views/mainview.py:842
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Virtaal"
 msgstr "Virtaal"
 
-#: ../share/applications/virtaal.desktop.in.h:2
+#: share/applications/io.github.translate.Virtaal.desktop.in
 msgid "Translation Tool"
 msgstr "Ekikwato kyokuvunuura"
 
-#: ../share/applications/virtaal.desktop.in.h:3
+#. l10n: The summary should be less than 100 characters
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid ""
+#| "A translation tool to help a human translator translate files into other "
+#| "languages"
 msgid ""
-"A translation tool to help a human translator translate files into other "
+"Translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
 "Ekikwato kyokuvunuura kyokuyamba omuvunuuzi avunuure ebihandiko kuzita "
 "omundimi ezindi"
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:1
+#: share/virtaal/virtaal.ui
+msgid "Add Missing Language"
+msgstr "Geita orurimi orurikuburaho"
+
+#: share/virtaal/virtaal.ui
+msgid "Language name:"
+msgstr "Eiziina rworurimi:"
+
+#: share/virtaal/virtaal.ui
+msgid "ISO code:"
+msgstr "Akabonero ka ISO:"
+
+#: share/virtaal/virtaal.ui
+msgid "Plural expression:"
+msgstr "Enshusha yebintu omubwingi:"
+
+#: share/virtaal/virtaal.ui
+msgid "Number of plurals:"
+msgstr "Okubara omubwingi:"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr "Kurugirira ahaahamirimu gyokuvunuura, obwingi bwamakuru tikiragiiro."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Language Information</b>"
+msgstr "<b>Amakuru ahari orurimi</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "New Language Pair"
+msgstr "Omufungo omusya gworurimi"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr ""
+"<b>Orikubanza</b> nirwo rurimi orwori kuvunuura, abandi orubareeta orurimi "
+"orikubanza.\n"
+"Waaba novunuura kuruga omurujungu kuta omurufaransa, nahabweekyo Orujungu "
+"niro rurimi rwawe orikubanza."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Original</b>"
+msgstr "<b>Orikubanza</b>"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr ""
+"<b>oruvuunwirwe</b> nirwo rurimi oruvuunwirwe, abandi orubareeta orurimi "
+"oruvuunwirwe.\n"
+"Waaba novunuura kuruga omurujungu kuta omurufaransa, nahabweekyo Orufaransa "
+"nirwo rurimi rwawe oruvuunwirwe."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translation</b>"
+msgstr "<b>Okuvunuura</b>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Add Missing Language"
+msgid "_Add Missing Language…"
+msgstr "Geita orurimi orurikuburaho"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit Translation Language…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_File"
+msgstr "_Ekihandiko"
+
+#: share/virtaal/virtaal.ui
+msgid "Re_vert to Saved"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "_Update to Template"
+msgid "_Update from Template"
+msgstr "_Garuzya busya omu byokureberaho"
+
+#: share/virtaal/virtaal.ui
+msgid "_Export"
+msgstr "_Tuuma"
+
+#: share/virtaal/virtaal.ui
+msgid "_Recent Files"
+msgstr "_Ebihandiko byajuba"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit"
+msgstr "_Shwijuma"
+
+#: share/virtaal/virtaal.ui
+msgid "_Redo"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Find…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Ne_xt"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Pre_vious"
+msgstr ""
+
+#. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
+#: share/virtaal/virtaal.ui
+msgid "Transfer From Source"
+msgstr "Furura kuruga ahaburugo"
+
+#. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "_Next Placeable"
+msgid "_Insert Placeable"
+msgstr "_Ekyorikubasa kutaho ekiragarukaho"
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: share/virtaal/virtaal.ui
+msgid "P_revious Placeable"
+msgstr "Ekyorikubasa kutaho ekya_ahanyima"
+
+#: share/virtaal/virtaal.ui
+msgid "_Next Placeable"
+msgstr "_Ekyorikubasa kutaho ekiragarukaho"
+
+#: share/virtaal/virtaal.ui
+msgid "_View"
+msgstr "_Shomamu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Full Screen"
+msgstr "_Orutimbe rwona"
+
+#: share/virtaal/virtaal.ui
+msgid "_Quality Checks"
+msgstr "_Kuchebera Omutindo"
+
+#: share/virtaal/virtaal.ui
+msgid "_Navigation"
+msgstr "_Shayaaya"
+
+#: share/virtaal/virtaal.ui
+msgid "P_age Up"
+msgstr "A_heiguru yo'rupapura"
+
+#: share/virtaal/virtaal.ui
+msgid "_Page Down"
+msgstr "_Ahansi yo'rupapura"
+
+#: share/virtaal/virtaal.ui
+msgid "_First Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Last Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Next Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Advance State"
+msgstr ""
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Reverse State"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Help"
+msgstr "_Obuyambi"
+
+#: share/virtaal/virtaal.ui
+msgid "_Online Help"
+msgstr "_Obuyambi kuruga aharutimbe"
+
+#: share/virtaal/virtaal.ui
+msgid "_Tutorial"
+msgstr "_Akarashomesa"
+
+#: share/virtaal/virtaal.ui
+msgid "_Localization Guide"
+msgstr "_Endagiriro yokuvunuura"
+
+#: share/virtaal/virtaal.ui
+msgid "Report a _Bug"
+msgstr "Roopa _enshobe"
+
+#: share/virtaal/virtaal.ui
+msgid "Show Lo_gs"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Keyboard _Shortcuts"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Virtaal Preferences"
+msgstr "Ebitoreine omuri Virtaal"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The name stored in the file header"
+msgstr "Eiziina ririndirwe ahamutwe gwekihandiiko"
+
+#. l10n: This label is for the name of the translator
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Name:"
+msgstr "Eiziina:"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The e-mail address stored in the file header"
+msgstr "Endagiriro ryebaruha ririndirwe ahamutwe gwekihandiiko"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "E-mail address:"
+msgstr "Endagiriro ryebaruha:"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
+"Amakuru agebirakwata ahabaruha birindirwe ahamutwe gwekihandiiko. Eki "
+"nikibaasa kuba endagiriro yebaruha nainga URL ekyokureeberaho."
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Team:"
+msgstr "Ekibiina:"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translator Information</b>"
+msgstr "Amakuru aha muvunuuzi"
+
+#: share/virtaal/virtaal.ui
+msgid "Source text:"
+msgstr "Ebihandiko bya haburugo:"
+
+#: share/virtaal/virtaal.ui
+msgid "Target text:"
+msgstr "Ebihandiko ebigyendereirwe"
+
+#: share/virtaal/virtaal.ui
+msgid "Use _Default Fonts"
+msgstr "Kozesa _empandiika eteirweho"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Fonts</b>"
+msgstr "<b>Empandiika</b>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Language"
+msgid "Language:"
+msgstr "Orurimi"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "<b>Language Information</b>"
+msgid "<b>Language</b>"
+msgstr "<b>Amakuru ahari orurimi</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: share/virtaal/virtaal.ui
+msgid "General"
+msgstr "Okutwarira hamwe"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Ebirikuteebwamu nebiccweeka byomutaano ebyekihandiiko ebiri kwerambakandi "
+"kirateebwamu juba omukuvunuura."
+
+#: share/virtaal/virtaal.ui
+msgid "Placeables"
+msgstr "Ebirikuteebwamu"
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Plug-ins"
+msgstr "EbiraJwekwamu"
+
+#: share/virtaal/virtaal.ui
+msgid "Properties"
+msgstr "Ebirakikwataho"
+
+#: share/virtaal/virtaal.ui
+msgid "Saved file"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "With unsaved changes"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Words</b> (total):"
+msgstr "<b>Ebigambo</b> (total):"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Ebigambo</b> (total):"
+
+#: share/virtaal/virtaal.ui
+msgid "File type:"
+msgstr "Ekika kyekihandiiko:"
+
+#: share/virtaal/virtaal.ui
+msgid "File size:"
+msgstr "Ekipimo kyekihandiiko:"
+
+#: share/virtaal/virtaal.ui
+msgid "Location:"
+msgstr "Ahikibiikire:"
+
+#: share/virtaal/virtaal.ui
+msgid "Add Term"
+msgstr "Yongyeraho ekigambo"
+
+#. l10n: This label refers to comments about a new term that is added
+#: share/virtaal/virtaal.ui
+msgid "C_omments"
+msgstr "T_eekateeka"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology _file:"
+msgstr "Ekihandiiko _ekirashoborora:"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology Files"
+msgstr "Ebihandiiko ebirashoborora"
+
+#: share/virtaal/virtaal.ui
+msgid "Add URL"
+msgstr "Yongyera URL"
+
+#: share/virtaal/virtaal.ui
+msgid "URL:"
+msgstr "URL:"
+
+#: share/virtaal/virtaal.ui
+msgid "Put queries in quotes"
+msgstr "Ote ebibuuzo omubusibo"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Options</b>"
+msgstr "<b>Toorana</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Web Look-ups"
+msgstr "Ekyokusherura omu weebu"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages will not need to change this. Translate the word Open normally.
+#: share/virtaal/virtaal.ui
+msgid "<u>Open</u>"
+msgstr "<u>Iguraho</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Ekihandiiko kyajuba</big></b>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Tutorial</u>"
+msgstr "<u>Akarashomesa</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Ekicweeka kyebyayiba</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "<u>More...</u>"
+msgid "<u>More…</u>"
+msgstr "<u>Ebindi...</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Features</u>"
+msgstr "<u>Ebirimu</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Tandika</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Manual</u>"
+msgstr "<u>Okyekorereho</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Amakuru omuri kuvunuura</u>"
+
+# 81%
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Feedback</u>"
+msgstr "<u>Garukamu</u>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "Report a bug on GitHub"
+msgstr "Roopa _enshobe"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "<u>Report a Bug</u>"
+msgstr "Roopa _enshobe"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Okubangira</big></b>"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Machine translation"
+msgid "Base translation store"
+msgstr "Okuvunuura kwe'byooma"
+
+#: devsupport/tmp_strings.py
+msgid "Comma Separated Value"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Fluent file"
+msgstr "Ekihandiko ekiriho"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext MO file"
+msgstr "Reeta ekihandiko MO"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext PO file"
+msgstr "Reeta ekihandiko PO"
+
+#: devsupport/tmp_strings.py
+msgid "Haiku catkeys file"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Mozilla Corporation"
+msgid "Mozilla .lang"
+msgstr "Ekigombe kya Mozilla"
+
+#: devsupport/tmp_strings.py
+msgid "OmegaT Glossary"
+msgstr "Orukarara rwe'bwomutwe ebirimu OmegaT"
+
+#: devsupport/tmp_strings.py
+msgid "Qt .qm file"
+msgstr "Ekihandiko Qt .qm"
+
+#: devsupport/tmp_strings.py
+msgid "Qt Linguist Translation File"
+msgstr "Ekihandiko kyo'kuvunuura omugambi wo'rurimi Qt"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Phrase Book"
+msgstr "Ekitabo ekijwire ebigambirwe omuri Qt"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX Glossary"
+msgstr "Orukarara rwe'bwomutwe ebirimu TBX"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX Translation Memory"
+msgstr "Akokwijusya omukuvunuura TMX"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "TMX Translation Memory"
+msgid "Trados Translation Memory"
+msgstr "Akokwijusya omukuvunuura TMX"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX Dictionary"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "_Localization Guide"
+msgid "WiX Localization File"
+msgstr "_Endagiriro yokuvunuura"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Wordfast Translation Memory"
+msgstr "Akokwijusya omukuvunuura kwe'bigambo byajuba"
+
+#: devsupport/tmp_strings.py
+msgid "XLIFF Translation File"
+msgstr "Ekihandiko kyokuvunuura XLIFF"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "XLIFF Translation File"
+msgid "SDL XLIFF Translation File"
+msgstr "Ekihandiko kyokuvunuura XLIFF"
+
+#: devsupport/tmp_strings.py
+msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Edit with Virtaal"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Usage: %s\n"
+msgid "usage: "
+msgstr "Enkozesa: %s\n"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "%s option requires an argument"
+msgid "positional arguments"
+msgstr "ekyokutoranamu %s nikyeteega ekukihajanaho"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Options"
+msgid "options"
+msgstr "Ebyokutooranamu"
+
+#: devsupport/tmp_strings.py
+msgid "show this help message and exit"
+msgstr "Yoreka obutumwa obwobuyambi reero oshohore"
+
+#: devsupport/tmp_strings.py
+msgid "show program's version number and exit"
+msgstr "Yoreka eshuura ya puroguramu reero oshohore"
+
+#. l10n: The name should be less than 30 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid "Translation Tool"
+msgid "Virtaal Translation Tool"
+msgstr "Ekikwato kyokuvunuura"
+
+#. l10n: Paragraphs should be less than 600 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid ""
 "Virtaal is a program for doing translation. It aims for a delightful "
 "combination of simplicity and power. It integrates with selected online "
@@ -43,7 +632,7 @@ msgid ""
 "quality."
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:2
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
@@ -57,658 +646,349 @@ msgstr ""
 "Ekyokutandikiraho nokuvunuura za puroguramu (omundiimi ziitu), kyonka "
 "turakyendezakukozesibwa nkekikozesezo kyokuvunuura aha kanyabwengye."
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:3
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:4
+#. l10n: These list items should be less than 100 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
 msgstr "Ebivunwirwe ebiriho: %(translations)s"
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:5
-#: ../virtaal/views/widgets/welcomescreen.py:80
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Terminology assistance"
 msgstr "Obuyambi omu ebyokushoborora"
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:6
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:7
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:1
-msgid "Add Missing Language"
-msgstr "Geita orurimi orurikuburaho"
-
-#: ../share/virtaal/virtaal.ui.h:2
-msgid "Language name:"
-msgstr "Eiziina rworurimi:"
-
-#: ../share/virtaal/virtaal.ui.h:3
-msgid "ISO code:"
-msgstr "Akabonero ka ISO:"
-
-#: ../share/virtaal/virtaal.ui.h:4
-msgid "Plural expression:"
-msgstr "Enshusha yebintu omubwingi:"
-
-#: ../share/virtaal/virtaal.ui.h:5
-msgid "Number of plurals:"
-msgstr "Okubara omubwingi:"
-
-#: ../share/virtaal/virtaal.ui.h:6
-msgid ""
-"Depending on the translation task, the plural information might be optional."
-msgstr "Kurugirira ahaahamirimu gyokuvunuura, obwingi bwamakuru tikiragiiro."
-
-#: ../share/virtaal/virtaal.ui.h:7
-msgid "<b>Language Information</b>"
-msgstr "<b>Amakuru ahari orurimi</b>"
-
-#: ../share/virtaal/virtaal.ui.h:8
-msgid "New Language Pair"
-msgstr "Omufungo omusya gworurimi"
-
-#: ../share/virtaal/virtaal.ui.h:9
-msgid ""
-"The <b>Original</b> is the language from which you are translating, also "
-"called the source language.\n"
-"\n"
-"If you are translating from English to French then English would be your "
-"original or source language."
+#. l10n: Captions should be shorter than 50 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Easy access to recent files and documentation"
 msgstr ""
-"<b>Orikubanza</b> nirwo rurimi orwori kuvunuura, abandi orubareeta orurimi "
-"orikubanza.\n"
-"Waaba novunuura kuruga omurujungu kuta omurufaransa, nahabweekyo Orujungu "
-"niro rurimi rwawe orikubanza."
 
-#: ../share/virtaal/virtaal.ui.h:12
-msgid "<b>Original</b>"
-msgstr "<b>Orikubanza</b>"
-
-#: ../share/virtaal/virtaal.ui.h:13
-msgid ""
-"The <b>Translation</b> is the language into which you are translating, also "
-"called the target language.\n"
-"\n"
-"If you are translating from English to French then French would be your "
-"translation or target language."
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Recognized elements don't need to be typed"
 msgstr ""
-"<b>oruvuunwirwe</b> nirwo rurimi oruvuunwirwe, abandi orubareeta orurimi "
-"oruvuunwirwe.\n"
-"Waaba novunuura kuruga omurujungu kuta omurufaransa, nahabweekyo Orufaransa "
-"nirwo rurimi rwawe oruvuunwirwe."
 
-#: ../share/virtaal/virtaal.ui.h:16
-msgid "<b>Translation</b>"
-msgstr "<b>Okuvunuura</b>"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid "Automatically correct text while you type"
+msgid "Quality checks while you type"
+msgstr "Hatariho kushabwa teereza ebigambo omukuhandika"
 
-#: ../share/virtaal/virtaal.ui.h:17
-msgid "_Add Missing Language..."
-msgstr "_Geita orurimi orurikuburaho..."
+# 78%
+#. l10n: The developer/organisation name "Translate", not the verb "to translate"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+msgid "Translate"
+msgstr "Kyavunuurwa: %d"
 
-#: ../share/virtaal/virtaal.ui.h:19
-msgid "_File"
-msgstr "_Ekihandiko"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX"
+msgstr "TMX"
 
-#: ../share/virtaal/virtaal.ui.h:20
-msgid "_Update to Template"
-msgstr "_Garuzya busya omu byokureberaho"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Translation Memory eXchange"
+msgstr "Okuhanisana akokwijusya omukuvunuura"
 
-#: ../share/virtaal/virtaal.ui.h:21
-msgid "_Export"
-msgstr "_Tuuma"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX"
+msgstr "TBX"
 
-#: ../share/virtaal/virtaal.ui.h:22
-msgid "_Recent Files"
-msgstr "_Ebihandiko byajuba"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TermBase eXchange"
+msgstr "Okuhanisana kwebigambo ekiri"
 
-#: ../share/virtaal/virtaal.ui.h:23
-msgid "_Edit"
-msgstr "_Shwijuma"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Message File"
+msgstr "Amakuru ahari Qt"
 
-#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.ui.h:25
-msgid "Transfer From Source"
-msgstr "Furura kuruga ahaburugo"
-
-#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.ui.h:27
-msgid "P_revious Placeable"
-msgstr "Ekyorikubasa kutaho ekya_ahanyima"
-
-#: ../share/virtaal/virtaal.ui.h:28
-msgid "_Next Placeable"
-msgstr "_Ekyorikubasa kutaho ekiragarukaho"
-
-#: ../share/virtaal/virtaal.ui.h:29
-msgid "_View"
-msgstr "_Shomamu"
-
-#: ../share/virtaal/virtaal.ui.h:30
-msgid "_Full Screen"
-msgstr "_Orutimbe rwona"
-
-#: ../share/virtaal/virtaal.ui.h:31
-msgid "_Quality Checks"
-msgstr "_Kuchebera Omutindo"
-
-#: ../share/virtaal/virtaal.ui.h:32
-msgid "_Navigation"
-msgstr "_Shayaaya"
-
-#: ../share/virtaal/virtaal.ui.h:33
-msgid "P_age Up"
-msgstr "A_heiguru yo'rupapura"
-
-#: ../share/virtaal/virtaal.ui.h:34
-msgid "_Page Down"
-msgstr "_Ahansi yo'rupapura"
-
-#: ../share/virtaal/virtaal.ui.h:35
-msgid "_Help"
-msgstr "_Obuyambi"
-
-#: ../share/virtaal/virtaal.ui.h:36
-msgid "_Online Help"
-msgstr "_Obuyambi kuruga aharutimbe"
-
-#: ../share/virtaal/virtaal.ui.h:37
-msgid "_Tutorial"
-msgstr "_Akarashomesa"
-
-#: ../share/virtaal/virtaal.ui.h:38
-msgid "_Localization Guide"
-msgstr "_Endagiriro yokuvunuura"
-
-#: ../share/virtaal/virtaal.ui.h:39
-msgid "Report a _Bug"
-msgstr "Roopa _enshobe"
-
-#: ../share/virtaal/virtaal.ui.h:40
-msgid "Virtaal Preferences"
-msgstr "Ebitoreine omuri Virtaal"
-
-#: ../share/virtaal/virtaal.ui.h:41
-msgid "The name stored in the file header"
-msgstr "Eiziina ririndirwe ahamutwe gwekihandiiko"
-
-#. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.ui.h:43
-msgid "Name:"
-msgstr "Eiziina:"
-
-#: ../share/virtaal/virtaal.ui.h:44
-msgid "The e-mail address stored in the file header"
-msgstr "Endagiriro ryebaruha ririndirwe ahamutwe gwekihandiiko"
-
-#: ../share/virtaal/virtaal.ui.h:45
-msgid "E-mail address:"
-msgstr "Endagiriro ryebaruha:"
-
-#: ../share/virtaal/virtaal.ui.h:46
-msgid ""
-"The team information stored in the file header. This can be an e-mail "
-"address or a URL, for example."
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX"
 msgstr ""
-"Amakuru agebirakwata ahabaruha birindirwe ahamutwe gwekihandiiko. Eki "
-"nikibaasa kuba endagiriro yebaruha nainga URL ekyokureeberaho."
 
-#: ../share/virtaal/virtaal.ui.h:47
-msgid "Team:"
-msgstr "Ekibiina:"
-
-#: ../share/virtaal/virtaal.ui.h:48
-msgid "<b>Translator Information</b>"
-msgstr "Amakuru aha muvunuuzi"
-
-#: ../share/virtaal/virtaal.ui.h:49
-msgid "Source text:"
-msgstr "Ebihandiko bya haburugo:"
-
-#: ../share/virtaal/virtaal.ui.h:50
-msgid "Target text:"
-msgstr "Ebihandiko ebigyendereirwe"
-
-#: ../share/virtaal/virtaal.ui.h:51
-msgid "Use _Default Fonts"
-msgstr "Kozesa _empandiika eteirweho"
-
-#: ../share/virtaal/virtaal.ui.h:52
-msgid "<b>Fonts</b>"
-msgstr "<b>Empandiika</b>"
-
-#. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.ui.h:54
-msgid "General"
-msgstr "Okutwarira hamwe"
-
-#: ../share/virtaal/virtaal.ui.h:55
-msgid ""
-"Placeables are special parts of the text that can be automatically "
-"highlighted and easily inserted into the translation."
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Universal Terminology eXchange"
 msgstr ""
-"Ebirikuteebwamu nebiccweeka byomutaano ebyekihandiiko ebiri kwerambakandi "
-"kirateebwamu juba omukuvunuura."
 
-#: ../share/virtaal/virtaal.ui.h:56
-msgid "Placeables"
-msgstr "Ebirikuteebwamu"
+#: virtaal/cli.py
+msgid "LOG"
+msgstr "EBYABAHO"
 
-#: ../share/virtaal/virtaal.ui.h:57
-msgid "Plug-ins"
-msgstr "EbiraJwekwamu"
-
-#: ../share/virtaal/virtaal.ui.h:58
-msgid "Properties"
-msgstr "Ebirakikwataho"
-
-#: ../share/virtaal/virtaal.ui.h:59
-msgid "<b>Words</b> (total):"
-msgstr "<b>Ebigambo</b> (total):"
-
-#: ../share/virtaal/virtaal.ui.h:60
-msgid "<b>Strings</b> (total):"
-msgstr "<b>Ebigambo</b> (total):"
-
-#: ../share/virtaal/virtaal.ui.h:61
-msgid "File type:"
-msgstr "Ekika kyekihandiiko:"
-
-#: ../share/virtaal/virtaal.ui.h:62
-msgid "File size:"
-msgstr "Ekipimo kyekihandiiko:"
-
-#: ../share/virtaal/virtaal.ui.h:63
-msgid "Location:"
-msgstr "Ahikibiikire:"
-
-#: ../share/virtaal/virtaal.ui.h:64
-msgid "Add Term"
-msgstr "Yongyeraho ekigambo"
-
-#. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.ui.h:66
-msgid "C_omments"
-msgstr "T_eekateeka"
-
-#: ../share/virtaal/virtaal.ui.h:67
-msgid "Terminology _file:"
-msgstr "Ekihandiiko _ekirashoborora:"
-
-#: ../share/virtaal/virtaal.ui.h:68
-msgid "Terminology Files"
-msgstr "Ebihandiiko ebirashoborora"
-
-#: ../share/virtaal/virtaal.ui.h:69
-msgid "Add URL"
-msgstr "Yongyera URL"
-
-#: ../share/virtaal/virtaal.ui.h:70
-msgid "URL:"
-msgstr "URL:"
-
-#: ../share/virtaal/virtaal.ui.h:71
-msgid "Put queries in quotes"
-msgstr "Ote ebibuuzo omubusibo"
-
-#: ../share/virtaal/virtaal.ui.h:72
-msgid "<b>Options</b>"
-msgstr "<b>Toorana</b>"
-
-#: ../share/virtaal/virtaal.ui.h:73
-msgid "Web Look-ups"
-msgstr "Ekyokusherura omu weebu"
-
-#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
-#: ../share/virtaal/virtaal.ui.h:75
-msgid "<u>Open</u>"
-msgstr "<u>Iguraho</u>"
-
-#: ../share/virtaal/virtaal.ui.h:76
-msgid "<b><big>Recent Files</big></b>"
-msgstr "<b><big>Ekihandiiko kyajuba</big></b>"
-
-#: ../share/virtaal/virtaal.ui.h:77
-msgid "<u>Tutorial</u>"
-msgstr "<u>Akarashomesa</u>"
-
-#: ../share/virtaal/virtaal.ui.h:78
-msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Ekicweeka kyebyayiba</u>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:80
-#: ../virtaal/controllers/welcomescreencontroller.py:38
-msgid "http://translate.sourceforge.net/wiki/virtaal/features"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
-
-#: ../share/virtaal/virtaal.ui.h:81
-msgid "<u>More...</u>"
-msgstr "<u>Ebindi...</u>"
-
-#: ../share/virtaal/virtaal.ui.h:82
-msgid "<u>Features</u>"
-msgstr "<u>Ebirimu</u>"
-
-#: ../share/virtaal/virtaal.ui.h:83
-msgid "<b><big>Getting Started</big></b>"
-msgstr "<b><big>Tandika</big></b>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:85
-#: ../virtaal/controllers/welcomescreencontroller.py:34
-msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
-
-#: ../share/virtaal/virtaal.ui.h:86
-msgid "<u>Manual</u>"
-msgstr "<u>Okyekorereho</u>"
-
-# 75%
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:88
-#: ../virtaal/controllers/welcomescreencontroller.py:35
-msgid "http://translate.sourceforge.net/wiki/guide/start"
-msgstr "http://translate.sourceforge.net/wiki/guide/start"
-
-#: ../share/virtaal/virtaal.ui.h:89
-msgid "<u>Localization Guide</u>"
-msgstr "<u>Amakuru omuri kuvunuura</u>"
-
-# 81%
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:91
-#: ../virtaal/controllers/welcomescreencontroller.py:37
-msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
-
-#: ../share/virtaal/virtaal.ui.h:92
-msgid "<u>Feedback</u>"
-msgstr "<u>Garukamu</u>"
-
-#: ../share/virtaal/virtaal.ui.h:93
-msgid "<b><big>Support</big></b>"
-msgstr "<b><big>Okubangira</big></b>"
-
-#: ../virtaal/tips.py:27
-msgid ""
-"At the end of a translation, simply press <Enter> to continue with the next "
-"one."
-msgstr "Ahamuheru gwokuvunuura, fakunyiga <Enter> kugumizamu"
-
-#: ../virtaal/tips.py:28
-msgid ""
-"To copy the original string into the target field, simply press <Alt+Down>."
+#: virtaal/cli.py
+msgid "turn on logging, storing the result to the supplied filename."
 msgstr ""
-"Okutoreeza ekirunga ekyabanza okuta omumwanya ogugyendereirwe, fakunyiga <Alt"
-"+Down>."
+"Taaho okukunganya ebyabaho noku obiika ebyarugamu omu kihandiko ekyahebwa."
 
-#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
-#: ../virtaal/tips.py:31
-msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Okucebera ekiwavunuurwa nkekitarikwetegyerezibwa, fakunyiga <Alt+U>."
+#: virtaal/cli.py
+msgid "CONFIG"
+msgstr "TEREEZA"
 
-#: ../virtaal/tips.py:32
-msgid ""
-"To mark the current translation as incomplete, simply press <Ctrl+Shift"
-"+Enter>."
-msgstr "Okucebera ekiwavunuurwa nkekitayijwire, fakunyiga <Ctrl+Shift+Enter>."
+#: virtaal/cli.py
+msgid "use the configuration file given by the supplied filename."
+msgstr "Kozesa ekihandiko kyo'kutereeza omu kihandiko ekyahebwa."
 
-# 75%
-#: ../virtaal/tips.py:33
-msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+#: virtaal/cli.py
+msgid "enable debugging features"
+msgstr "Basiza enkora yokutereeza enshobe"
+
+#: virtaal/cli.py
+msgid "LANG"
 msgstr ""
-"Okucebera ekiwavunuurwa nkekitarikwetegyerezibwa, fakunyiga <Alt+Enter>."
 
-#: ../virtaal/tips.py:34
-msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Kozesa Ctrl+Up nainga Ctrl+Down kurabira ahagati yebyavunuurwa."
-
-#: ../virtaal/tips.py:35
+#: virtaal/cli.py
 msgid ""
-"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+"override the UI language for this run (e.g. \"fr\"; \"en\" for the "
+"untranslated source strings; \"system\" for the OS's own default), without "
+"changing the saved Preferences setting"
 msgstr ""
-"Kozesa Ctrl+PgUp nainga Ctrl+PgDown kuruka entumbe enpango omuri "
-"ebyavunuurwa."
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open log file '%(filename)s'"
+msgstr "Tikyabaasa okwigura ekihandiko eky'ebyabaho '%(filename)s'"
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Tikyabaasa okushoma ekihandiko kyo'kutereeza '%(filename)s'"
+
+#: virtaal/cli.py
+#, python-format
+msgid "No translation found for language '%(lang)s'"
+msgstr ""
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Tikyabaasa okwigura ekihandiko eky'ebyakungwanya '%(filename)s'"
 
 # 83%
-#: ../virtaal/controllers/checkscontroller.py:29
+#: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
 msgid "Fuzzy"
 msgstr "Ekitarikwetegyerezibwa"
 
 # 75%
-#: ../virtaal/controllers/checkscontroller.py:30
-#: ../virtaal/controllers/unitcontroller.py:83
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Untranslated"
 msgstr "Ekitavunwire"
 
-#: ../virtaal/controllers/checkscontroller.py:31
+#: virtaal/controllers/checkscontroller.py
 msgid "Accelerators"
 msgstr "Ebirayongyeza sipidi"
 
-#: ../virtaal/controllers/checkscontroller.py:32
+#: virtaal/controllers/checkscontroller.py
 msgid "Acronyms"
 msgstr "Omubugufu"
 
-#: ../virtaal/controllers/checkscontroller.py:33
+#: virtaal/controllers/checkscontroller.py
 msgid "Blank"
 msgstr "Busha"
 
-#: ../virtaal/controllers/checkscontroller.py:34
+#: virtaal/controllers/checkscontroller.py
 msgid "Brackets"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:35
+#: virtaal/controllers/checkscontroller.py
 msgid "Compendium conflict"
 msgstr ""
 
 # 88%
-#: ../virtaal/controllers/checkscontroller.py:36
+#: virtaal/controllers/checkscontroller.py
 #, fuzzy
 msgid "Translator credits"
 msgstr "Ebihembo byomuvunuuzi"
 
-#: ../virtaal/controllers/checkscontroller.py:37
+#: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:38
+#: virtaal/controllers/checkscontroller.py
 msgid "Double spaces"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:39
+#: virtaal/controllers/checkscontroller.py
 msgid "Repeated word"
 msgstr "Ekigambo ekigarujirwemu"
 
-#: ../virtaal/controllers/checkscontroller.py:40
-#: ../virtaal/controllers/placeablescontroller.py:97
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "E-mail"
 msgstr "Ebaruha"
 
-#: ../virtaal/controllers/checkscontroller.py:41
+#: virtaal/controllers/checkscontroller.py
 msgid "Ending punctuation"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:42
+#: virtaal/controllers/checkscontroller.py
 msgid "Ending whitespace"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:43
+#: virtaal/controllers/checkscontroller.py
 msgid "Escapes"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:44
+#: virtaal/controllers/checkscontroller.py
 msgid "File paths"
 msgstr "Emihanda ye'bihandiiko"
 
-#: ../virtaal/controllers/checkscontroller.py:45
+#: virtaal/controllers/checkscontroller.py
 msgid "Functions"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:46
+#: virtaal/controllers/checkscontroller.py
 msgid "GConf values"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:47
+#: virtaal/controllers/checkscontroller.py
 msgid "Old KDE comment"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:48
+#: virtaal/controllers/checkscontroller.py
 msgid "Long"
 msgstr "Kireingwa"
 
-#: ../virtaal/controllers/checkscontroller.py:49
+#: virtaal/controllers/checkscontroller.py
 msgid "Must translate words"
 msgstr "Nootekwa kuvunuura ebigambo"
 
-#: ../virtaal/controllers/checkscontroller.py:50
+#: virtaal/controllers/checkscontroller.py
 msgid "Newlines"
 msgstr ""
 
 # 94%
-#: ../virtaal/controllers/checkscontroller.py:51
+#: virtaal/controllers/checkscontroller.py
 #, fuzzy
 msgid "Number of plurals"
 msgstr "Okubara omubwingi:"
 
-#: ../virtaal/controllers/checkscontroller.py:52
+#: virtaal/controllers/checkscontroller.py
 msgid "Don't translate words"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:53
-#: ../virtaal/controllers/placeablescontroller.py:121
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "Numbers"
 msgstr "Eshuura zo'kubara"
 
-#: ../virtaal/controllers/checkscontroller.py:54
-#: ../devsupport/optparse.py:1612
+#: virtaal/controllers/checkscontroller.py
 msgid "Options"
 msgstr "Ebyokutooranamu"
 
-#: ../virtaal/controllers/checkscontroller.py:55
+#: virtaal/controllers/checkscontroller.py
 msgid "printf()"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:56
+#: virtaal/controllers/checkscontroller.py
 msgid "Punctuation spacing"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:57
+#: virtaal/controllers/checkscontroller.py
 msgid "Pure punctuation"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:58
+#: virtaal/controllers/checkscontroller.py
 msgid "Number of sentences"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:59
+#: virtaal/controllers/checkscontroller.py
 msgid "Short"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:60
+#: virtaal/controllers/checkscontroller.py
 msgid "Simple capitalization"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:61
+#: virtaal/controllers/checkscontroller.py
 msgid "Simple plural(s)"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:62
+#: virtaal/controllers/checkscontroller.py
 msgid "Single quotes"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:63
+#: virtaal/controllers/checkscontroller.py
 msgid "Spelling"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:64
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting capitalization"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:65
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting punctuation"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:66
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting whitespace"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:67
+#: virtaal/controllers/checkscontroller.py
 msgid "Tabs"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:68
+#: virtaal/controllers/checkscontroller.py
 msgid "Unchanged"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:69
-#: ../virtaal/controllers/placeablescontroller.py:130
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "URLs"
 msgstr "Za URL"
 
-#: ../virtaal/controllers/checkscontroller.py:70
+#: virtaal/controllers/checkscontroller.py
 msgid "Valid characters"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:71
+#: virtaal/controllers/checkscontroller.py
 msgid "Placeholders"
 msgstr ""
 
 # 87%
-#: ../virtaal/controllers/checkscontroller.py:72
+#: virtaal/controllers/checkscontroller.py
 #, fuzzy
 msgid "XML tags"
 msgstr "Ebyayongyebwa ahari XML"
 
-#: ../virtaal/controllers/checkscontroller.py:111
+#: virtaal/controllers/checkscontroller.py
 msgid "Default"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:112
-msgid "OpenOffice.org"
+#: virtaal/controllers/checkscontroller.py
+msgid "LibreOffice"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:113
+#: virtaal/controllers/checkscontroller.py
 msgid "Mozilla"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:114
+#: virtaal/controllers/checkscontroller.py
 msgid "KDE"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:115
+#: virtaal/controllers/checkscontroller.py
+msgid "Qt"
+msgstr ""
+
+#: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
 msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:116
+#: virtaal/controllers/checkscontroller.py
 msgid "Drupal"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:80
-#: ../virtaal/controllers/maincontroller.py:89
-#: ../virtaal/controllers/maincontroller.py:98
-msgid "Header information"
-msgstr "Amakuru gahamutwe gwekihandiiko"
-
-#: ../virtaal/controllers/maincontroller.py:81
-msgid "Please enter your name"
-msgstr "Nyabura tamu eiziina ryaawe"
-
-#: ../virtaal/controllers/maincontroller.py:90
-msgid "Please enter your e-mail address"
-msgstr "Nyabura tamu endagiriro ryebaruha yaawe"
-
-#: ../virtaal/controllers/maincontroller.py:99
-msgid "Please enter your team's information"
-msgstr "Nyabura tamu amakuru ge'kibiina kyawe"
-
-#: ../virtaal/controllers/maincontroller.py:203
-#: ../virtaal/controllers/maincontroller.py:341
+#: virtaal/controllers/maincontroller.py
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
@@ -716,9 +996,13 @@ msgstr ""
 "Watoorana okwiguraho ekihandiiko ekyiigwire. Nooyenda kugarukamu kutaho "
 "ekihandiiko eki?"
 
-#: ../virtaal/controllers/maincontroller.py:215
-#: ../virtaal/controllers/maincontroller.py:325
-#: ../virtaal/controllers/maincontroller.py:353
+#: virtaal/controllers/maincontroller.py virtaal/main.py
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Loading '%s'…"
+msgstr ""
+
+#: virtaal/controllers/maincontroller.py
 #, fuzzy, python-format
 msgid ""
 "Could not open file.\n"
@@ -733,14 +1017,24 @@ msgstr ""
 "\n"
 "Gyezaho okwigura ekihandiiko ekindi."
 
-#: ../virtaal/controllers/maincontroller.py:238
-#: ../virtaal/support/native_widgets.py:145
-#: ../virtaal/support/native_widgets.py:204
-#: ../virtaal/support/native_widgets.py:255 ../virtaal/views/mainview.py:323
+#: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
 msgid "Save"
 msgstr "Biika"
 
-#: ../virtaal/controllers/maincontroller.py:258
+#: virtaal/controllers/maincontroller.py
+#, fuzzy, python-format
+msgid ""
+"%(filename)s is read-only.\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Tikyabaasa kubiika ekihandiiko.\n"
+"\n"
+"%(amakuru_aha'nshobe)\n"
+"\n"
+"Gyezaho okubiika ekihandiiko ahamwanya ogundi."
+
+#: virtaal/controllers/maincontroller.py
 #, fuzzy, python-format
 msgid ""
 "Could not save file.\n"
@@ -755,7 +1049,7 @@ msgstr ""
 "\n"
 "Gyezaho okubiika ekihandiiko ahamwanya ogundi."
 
-#: ../virtaal/controllers/maincontroller.py:264
+#: virtaal/controllers/maincontroller.py
 #, fuzzy, python-format
 msgid ""
 "Could not save file.\n"
@@ -766,16 +1060,16 @@ msgstr ""
 "\n"
 "%(amakuru_aha'nshobe)\n"
 
-#: ../virtaal/controllers/maincontroller.py:275
+#: virtaal/controllers/maincontroller.py
 msgid "Can only export Gettext PO files"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:284
+#: virtaal/controllers/maincontroller.py
 msgid "Export"
 msgstr ""
 
 # 77%
-#: ../virtaal/controllers/maincontroller.py:292
+#: virtaal/controllers/maincontroller.py
 #, fuzzy, python-format
 msgid ""
 "Could not export file.\n"
@@ -791,7 +1085,7 @@ msgstr ""
 "Gyezaho okwigura ekihandiiko ekindi."
 
 # 85%
-#: ../virtaal/controllers/maincontroller.py:298
+#: virtaal/controllers/maincontroller.py
 #, fuzzy, python-format
 msgid ""
 "Could not export file.\n"
@@ -802,524 +1096,519 @@ msgstr ""
 "\n"
 "%(amakuru_aha'nshobe)\n"
 
-#: ../virtaal/controllers/maincontroller.py:314
-msgid "Reload File"
-msgstr "Garuka otandike ekihandiiko"
+#: virtaal/controllers/maincontroller.py
+msgid "Revert to Saved"
+msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:314
-msgid "Reload file from last saved copy and lose all changes?"
+#: virtaal/controllers/maincontroller.py
+#, fuzzy
+#| msgid "Reload file from last saved copy and lose all changes?"
+msgid "Revert to the last saved copy and lose all changes?"
 msgstr ""
 "Garuka otandika ekihandiiko kuruga kuruga omukyaheruka kubiikwa haza ofeerwe "
 "empindura zoona"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
-#: ../virtaal/controllers/placeablescontroller.py:84
+#: virtaal/controllers/placeablescontroller.py
 msgid "CamelCase"
 msgstr "CamelCase"
 
-#: ../virtaal/controllers/placeablescontroller.py:85
+#: virtaal/controllers/placeablescontroller.py
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 
-#: ../virtaal/controllers/placeablescontroller.py:88
+#: virtaal/controllers/placeablescontroller.py
 msgid "Capitals"
 msgstr "Omukipande"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-#: ../virtaal/controllers/placeablescontroller.py:90
+#: virtaal/controllers/placeablescontroller.py
 msgid "Words containing uppercase letters only"
 msgstr "Ebigambo ebiri omunyuguta eze kyapa kusha"
 
-#: ../virtaal/controllers/placeablescontroller.py:93
+#: virtaal/controllers/placeablescontroller.py
 msgid "Command Line Options"
 msgstr "Entoorane eyamateeka"
 
-#: ../virtaal/controllers/placeablescontroller.py:94
+#: virtaal/controllers/placeablescontroller.py
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Entoorana eya puroguraamu nka --obuyambi, -h na -I"
 
-#: ../virtaal/controllers/placeablescontroller.py:98
+#: virtaal/controllers/placeablescontroller.py
 msgid "E-mail addresses"
 msgstr "Endagiriro yebaruha"
 
-#: ../virtaal/controllers/placeablescontroller.py:101
+#: virtaal/controllers/placeablescontroller.py
 msgid "File Names"
 msgstr "Amaziina gebihandiiko"
 
-#: ../virtaal/controllers/placeablescontroller.py:102
+#: virtaal/controllers/placeablescontroller.py
 msgid "Paths referring to file locations"
 msgstr "Obuhanda burikworeka omwanya gwe kihandiiko"
 
-#: ../virtaal/controllers/placeablescontroller.py:105
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (printf)"
 msgstr "Ebikwatirira Omwanya (printf)"
 
-#: ../virtaal/controllers/placeablescontroller.py:106
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders used in \"printf\" strings"
 msgstr "Ebikwatirira Omwanya bikozesibwe omu bigambo \"printf\""
 
-#: ../virtaal/controllers/placeablescontroller.py:109
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Python)"
 msgstr "Ebikwatirira Omwanya (Python)"
 
-#: ../virtaal/controllers/placeablescontroller.py:110
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Python strings"
 msgstr "Ebikwatirira Omwanya omumirya ya Python"
 
-#: ../virtaal/controllers/placeablescontroller.py:113
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Java)"
 msgstr "Ebikwatirira Omwanya (Java)"
 
-#: ../virtaal/controllers/placeablescontroller.py:114
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Java strings"
 msgstr "Ebikwatirira Omwanya omumirya ya Java"
 
-#: ../virtaal/controllers/placeablescontroller.py:117
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Qt)"
 msgstr "Ebikwatirira Omwanya (Qt)"
 
-#: ../virtaal/controllers/placeablescontroller.py:118
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Qt strings"
 msgstr "Ebikwatirira Omwanya omumirya ya Qt"
 
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
-#: ../virtaal/controllers/placeablescontroller.py:123
+#: virtaal/controllers/placeablescontroller.py
 msgid "Integer numbers and decimal fractions"
 msgstr "Eshuura zo'kubara ezijwire hamwe nebicweeka"
 
-#: ../virtaal/controllers/placeablescontroller.py:126
+#: virtaal/controllers/placeablescontroller.py
 msgid "Punctuation"
 msgstr "Embaganisa ye'bigambo"
 
-#: ../virtaal/controllers/placeablescontroller.py:127
+#: virtaal/controllers/placeablescontroller.py
 msgid "Symbols and less frequently used punctuation marks"
 msgstr "Obubonero hamwe nobugabanisamu ebyarondwaho"
 
-#: ../virtaal/controllers/placeablescontroller.py:131
+#: virtaal/controllers/placeablescontroller.py
 msgid "URLs, hostnames and IP addresses"
 msgstr "Za URL, amazina ga batebekanisa na endagiriro ya IP"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
-#: ../virtaal/controllers/placeablescontroller.py:135
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML Entities"
 msgstr "Ebya XML"
 
-#: ../virtaal/controllers/placeablescontroller.py:136
+#: virtaal/controllers/placeablescontroller.py
 msgid "Entity references, such as &amp; and &#169;"
 msgstr "Ebyokujuriza bymutaano &amp; and &#169"
 
-#: ../virtaal/controllers/placeablescontroller.py:139
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML Tags"
 msgstr "Ebyayongyebwa ahari XML"
 
-#: ../virtaal/controllers/placeablescontroller.py:140
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML tags, such as <b> and </i>"
 msgstr "Ebyayongyebwa ahari XML nka <b> and </i>"
 
-#: ../virtaal/controllers/placeablescontroller.py:154
+#: virtaal/controllers/placeablescontroller.py
 msgid "Spaces"
 msgstr "Emyanya"
 
-#: ../virtaal/controllers/placeablescontroller.py:155
+#: virtaal/controllers/placeablescontroller.py
 msgid "Double spaces and spaces in unexpected positions"
 msgstr "Emyanya yamahasha nemyanya omwetateekirwe"
 
-#: ../virtaal/controllers/placeablescontroller.py:156
+#: virtaal/controllers/placeablescontroller.py
 msgid "\"alt\" Attributes"
 msgstr "Ebikorwa \"alt\""
 
-#: ../virtaal/controllers/placeablescontroller.py:157
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Ebikwatirira Omwanya ahari ebikorwa \"alt\"(nkokubishangwa omu HTML)"
 
 # 76%
-#: ../virtaal/controllers/placeablescontroller.py:158
+#: virtaal/controllers/placeablescontroller.py
 #, fuzzy
 msgid "Placeholders (Drupal)"
 msgstr "Ebikwatirira Omwanya (Java)"
 
 # 83%
-#: ../virtaal/controllers/placeablescontroller.py:159
+#: virtaal/controllers/placeablescontroller.py
 #, fuzzy
 msgid "Placeholders in Drupal strings"
 msgstr "Ebikwatirira Omwanya omumirya ya Java"
 
-#: ../virtaal/controllers/storecontroller.py:198
-msgid "No source or translatable files in bundle"
-msgstr ""
-
-#: ../virtaal/controllers/storecontroller.py:230
-msgid "The file contains nothing to translate."
-msgstr "Ekihandiiko tikirimu ekyokuvunuura."
-
-#. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:435
-msgid "Before:"
-msgstr "Kareho:"
-
-#. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:437
-msgid "After:"
-msgstr "Ahanyima:"
-
-#: ../virtaal/controllers/storecontroller.py:438
-#, python-format
-msgid "Translated: %d"
-msgstr "Kyavunuurwa: %d"
-
-#: ../virtaal/controllers/storecontroller.py:439
-#, python-format
-msgid "Fuzzy: %d"
-msgstr "Ekitarikwetegyerezibwa: %d"
-
-#: ../virtaal/controllers/storecontroller.py:440
-#, python-format
-msgid "Untranslated: %d"
-msgstr "Ekitavunwire: %d"
-
-#: ../virtaal/controllers/storecontroller.py:441
-#, python-format
-msgid "Total: %d"
-msgstr "Byona Hamwe: %d"
-
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:459
+#: virtaal/controllers/storecontroller.py
 msgid "File Updated"
 msgstr "Ekihandiiko ekigarwize busya"
 
-#: ../virtaal/controllers/unitcontroller.py:84
+#: virtaal/controllers/unitcontroller.py
 msgid "Needs work"
 msgstr ""
 
-#: ../virtaal/controllers/unitcontroller.py:85
+#: virtaal/controllers/unitcontroller.py
 msgid "Rejected"
 msgstr ""
 
-#: ../virtaal/controllers/unitcontroller.py:86
+#: virtaal/controllers/unitcontroller.py
 msgid "Needs review"
 msgstr ""
 
-#: ../virtaal/controllers/unitcontroller.py:87
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
 msgstr ""
 
-#: ../virtaal/controllers/unitcontroller.py:88
+#: virtaal/controllers/unitcontroller.py
 msgid "Reviewed"
 msgstr ""
 
-# 89%
-#: ../virtaal/controllers/welcomescreencontroller.py:65
-#, fuzzy
-msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+#: virtaal/models/storemodel.py
+msgid ""
+"The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
+"Open it with File > Open or from your file manager."
+msgstr ""
 
-#: ../virtaal/modes/defaultmode.py:28
+#: virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr "Ekihandiko tikirimu."
+
+#: virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr "Ekihandiko ekitarikirizibwa"
+
+#. l10n: Context: show every unit, not only the matching ones
+#: virtaal/modes/defaultmode.py virtaal/views/modeview.py
 msgid "All"
 msgstr "Byona"
 
-#: ../virtaal/modes/qualitycheckmode.py:33
+#: virtaal/modes/qualitycheckmode.py
 msgid "Quality Checks"
 msgstr ""
 
 #. l10n: This is the button where the user can select units by failing quality checks
-#: ../virtaal/modes/qualitycheckmode.py:131
+#: virtaal/modes/qualitycheckmode.py
 msgid "Select Checks"
 msgstr ""
 
 #. l10n: This refers to quality checks
-#: ../virtaal/modes/qualitycheckmode.py:134
+#: virtaal/modes/qualitycheckmode.py
 msgid "All Checks"
 msgstr ""
 
-#: ../virtaal/modes/quicktransmode.py:31
+#: virtaal/modes/quicktransmode.py
 msgid "Incomplete"
 msgstr "Tikihwire"
 
-#: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
+#: virtaal/modes/searchmode.py virtaal/views/widgets/shortcutswindow.py
 msgid "Search"
 msgstr "Ronda"
 
-#: ../virtaal/modes/searchmode.py:70
+#: virtaal/modes/searchmode.py
 msgid "_Case sensitive"
 msgstr "_Kirarugirira aha'nshanga ye'bigambo"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
-#: ../virtaal/modes/searchmode.py:74
+#: virtaal/modes/searchmode.py
 msgid "_Regular expression"
 msgstr "_Entwaza ya'buliijo"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
-#. If this sentence construction is hard to use, consdider translating this as
+#. If this sentence construction is hard to use, consider translating this as
 #. "Replacement"
-#: ../virtaal/modes/searchmode.py:82
+#: virtaal/modes/searchmode.py
 msgid "Replace with"
 msgstr "Hingana na"
 
 #. l10n: Button text
-#: ../virtaal/modes/searchmode.py:85
+#: virtaal/modes/searchmode.py
 msgid "Replace"
 msgstr "Hingana"
 
 #. l10n: Check box
-#: ../virtaal/modes/searchmode.py:88
+#: virtaal/modes/searchmode.py
 msgid "Replace _All"
 msgstr "Hingana _Byona"
 
-#: ../virtaal/modes/workflowmode.py:34
+#: virtaal/modes/workflowmode.py
 msgid "Workflow"
 msgstr ""
 
 #. l10n: This is the button where the user can select units by workflow state
-#: ../virtaal/modes/workflowmode.py:112
+#: virtaal/modes/workflowmode.py
 msgid "Select States"
 msgstr ""
 
 #. l10n: This refers to workflow states
-#: ../virtaal/modes/workflowmode.py:115
+#: virtaal/modes/workflowmode.py
 msgid "All States"
 msgstr ""
 
-#: ../virtaal/plugins/autocompletor.py:214
+#: virtaal/plugins/autocompletor.py
 msgid "Automatically complete long words while you type"
 msgstr "Hatariho kushabwa mara ebigambo ebiringwa omukuhandika"
 
-#: ../virtaal/plugins/autocompletor.py:215
+#: virtaal/plugins/autocompletor.py
 msgid "AutoCompletor"
 msgstr "Ekyemarisa kyonka"
 
-#: ../virtaal/plugins/autocorrector.py:259
+#: virtaal/plugins/autocorrector.py
 msgid "Automatically correct text while you type"
 msgstr "Hatariho kushabwa teereza ebigambo omukuhandika"
 
-#: ../virtaal/plugins/autocorrector.py:260
+#: virtaal/plugins/autocorrector.py
 msgid "AutoCorrector"
 msgstr "Ekyeteereza kyona"
 
-#: ../virtaal/plugins/spellchecker.py:48
-msgid "Spell Checker"
-msgstr ""
-
-#: ../virtaal/plugins/spellchecker.py:49
-msgid "Check spelling and provide suggestions"
-msgstr ""
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:347
-msgid "<i>(no suggestions)</i>"
-msgstr ""
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:351
-msgid "Ignore All"
-msgstr ""
-
-#. l10n: This refers to spelling suggestions
-#: ../virtaal/plugins/spellchecker.py:355
-msgid "More..."
-msgstr ""
-
-#. l10n: This refers to the spell checking dictionary
-#: ../virtaal/plugins/spellchecker.py:361
-#, python-format
-msgid "Add \"%s\" to Dictionary"
-msgstr ""
-
-# 88%
-#: ../virtaal/plugins/spellchecker.py:364
-#, fuzzy
-msgid "Languages"
-msgstr "Orurimi"
-
-#: ../virtaal/plugins/lookup/__init__.py:29
+#: virtaal/plugins/lookup/__init__.py
 msgid "Perform look-ups on selected text"
 msgstr "Condooza ebihandiko ebitoreinwe"
 
-#: ../virtaal/plugins/lookup/__init__.py:30
+#: virtaal/plugins/lookup/__init__.py
 msgid "External Look-up"
 msgstr "Okucondoza kwaheeru"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
-#: ../virtaal/plugins/lookup/lookupview.py:70
+#: virtaal/plugins/lookup/lookupview.py
 msgid "Select Look-up Services"
 msgstr "Torana obuheereza bwokucondoza"
 
-#: ../virtaal/plugins/lookup/lookupview.py:71
+#: virtaal/plugins/lookup/lookupview.py
 msgid "Select the services that should be used to perform look-ups"
 msgstr "Torana obuheereza obuteekwa kukozesibwa okucondooza"
 
-#: ../virtaal/plugins/lookup/lookupview.py:131
+#: virtaal/plugins/lookup/lookupview.py
 #, fuzzy, python-format
 msgid "Look-up \"%(selection)s\""
 msgstr "Condooza \"%(ebitorainwe)\""
 
 #. l10n: plugin name
-#: ../virtaal/plugins/lookup/models/weblookup.py:40
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Thesaurus"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Look up synonyms for the selected word"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Loading thesaurus…"
+msgstr ""
+
+#. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Checking for thesaurus…"
+msgstr ""
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Downloading %(language)s thesaurus…"
+msgstr ""
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Download %(language)s thesaurus…"
+msgstr ""
+
+#. l10n: The menu entry offering synonyms for the selected word.
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, fuzzy
+#| msgid "Acronyms"
+msgid "Synonyms"
+msgstr "Omubugufu"
+
+#. l10n: plugin name
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Web Look-up"
 msgstr "Condooza weebu"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:41
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Look-up the selected text on a web site"
 msgstr "Condooza ebigambo ebitorainwe aha kibanja aha weebu"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
-#: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:144
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:50
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:55
-#: ../virtaal/plugins/terminology/models/opentran.py:42
-#: ../virtaal/plugins/tm/models/opentran.py:37
-msgid "Open-Tran.eu"
-msgstr "Iguraho Tran.eu"
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Wiktionary"
+msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:171
-#: ../virtaal/views/widgets/selectview.py:74
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Bing"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Yahoo"
+msgstr ""
+
+#. l10n: Whether this look-up is offered at all
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
+msgid "Enabled"
+msgstr "Kyabasika"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
 msgid "Name"
 msgstr "Eiziina"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:180
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "URL"
 msgstr "URL"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
-#: ../virtaal/plugins/lookup/models/weblookup.py:191
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Quote Query"
 msgstr "Juriza ekibuuzo"
 
-#: ../virtaal/plugins/migration.py:57
+#. l10n: "virtaal-" is a literal prefix - leave it untranslated
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Names starting with \"virtaal-\" are reserved."
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "A web look-up with this name already exists."
+msgstr ""
+
+#: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""
 "Furura entekateeka kuruga ahari KBabel, Lokalize nainga Poedit to Virtaal."
 
-#: ../virtaal/plugins/migration.py:58
+#: virtaal/plugins/migration.py
 msgid "Migration Assistant"
 msgstr "Omuhwezi webyokufurura"
 
-#: ../virtaal/plugins/migration.py:72
+#: virtaal/plugins/migration.py
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
 "Virtaal egyezeho kutasyamu enteekateeka nobutumwa kuruga omuri puroguramu "
 "ezindi?"
 
-#: ../virtaal/plugins/migration.py:73
+#: virtaal/plugins/migration.py
 msgid "Import data from other applications?"
 msgstr "Tasyamu obutumwa kuruga omuri puroguramu ezindi?"
 
-#: ../virtaal/plugins/migration.py:101
+#: virtaal/plugins/migration.py
 msgid "Migration was successfully completed"
 msgstr "Okufurura kwamarwa nobusinguzi"
 
-#: ../virtaal/plugins/migration.py:102
+#: virtaal/plugins/migration.py
 msgid "The following items were migrated:"
 msgstr "Ebintu ebi byafururwa"
 
-#: ../virtaal/plugins/migration.py:105
+#: virtaal/plugins/migration.py
 msgid "Migration completed"
 msgstr "Okufurura kwahwa"
 
-#: ../virtaal/plugins/migration.py:107
+#: virtaal/plugins/migration.py
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Virtaal tiyabaasa kufurura enteekateeka nainga onbutumwa"
 
-#: ../virtaal/plugins/migration.py:108
+#: virtaal/plugins/migration.py
 msgid "Nothing migrated"
 msgstr "Tihariho ekyafururwa"
 
-#: ../virtaal/plugins/migration.py:178
+#: virtaal/plugins/migration.py
 msgid "Poedit settings"
 msgstr "Enteekateeka ya Poedit"
 
-#: ../virtaal/plugins/migration.py:207
-#, python-format
-msgid "Poedit's Translation Memory: %(database_language_code)s"
-msgstr "Akaijusya ebyokuvunuurwa omuri Poedit: %(database_language_code)s"
-
-#: ../virtaal/plugins/migration.py:232
-#, python-format
-msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr "Akaijusya ebyokuvunuurwa omuri KBable: %(database_language_code)s"
-
-#: ../virtaal/plugins/migration.py:250
+#: virtaal/plugins/migration.py
 msgid "Lokalize settings"
 msgstr "Hindura enteekateeka"
 
-#: ../virtaal/plugins/migration.py:274
+#: virtaal/plugins/migration.py
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Hindura akaijusya ebyokuvunuurwa: %(database_name)s"
 
-#: ../virtaal/plugins/terminology/__init__.py:27
+#: virtaal/plugins/spellchecker.py
+msgid "Spell Checker"
+msgstr ""
+
+#: virtaal/plugins/spellchecker.py
+msgid "Check spelling and provide suggestions"
+msgstr ""
+
+#: virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
 msgstr "Obuyambi omukushoborora"
 
-#: ../virtaal/plugins/terminology/__init__.py:28
+#: virtaal/plugins/terminology/__init__.py
 msgid "Terminology suggestions"
 msgstr "Enteekateeka omukushoborora"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:41
+#: virtaal/plugins/terminology/models/autoterm.py
 msgid "Localization Terminology"
 msgstr "Hindura obushoborozi"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:42
+#: virtaal/plugins/terminology/models/autoterm.py
 msgid "Selected localization terminology"
 msgstr "Obushoborozi ezatoranwa"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+#: virtaal/plugins/terminology/models/localfile/__init__.py
 msgid "Local Files"
 msgstr "Ebihandiko ebibiikirwa ahakanyabwengye yaawe"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+#: virtaal/plugins/terminology/models/localfile/__init__.py
 msgid "Local terminology files"
 msgstr "Ebihandiko ebiri ahakushoborora ebibiikirwa ahakanyabwengye yaawe"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
-msgid "Terminology _Files..."
-msgstr "Ekihandiiko _ekirashoborora..."
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy
+#| msgid "Terminology Files"
+msgid "Terminology _Files…"
+msgstr "Ebihandiiko ebirashoborora"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
-msgid "Add _Term..."
-msgstr "Yongyeraho _ekigambo..."
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy
+#| msgid "Add Term"
+msgid "Add _Term…"
+msgstr "Yongyeraho ekigambo"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy, python-format
+msgid "Add Term \"%(selection)s\"…"
+msgstr "Condooza \"%(ebitorainwe)\""
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
 msgstr "Ekihandiko"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:155
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Extendable"
 msgstr "Nikyongyezibwayo"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Add Files"
 msgstr "Yongyeraho Ekihandiko"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
-#: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
 msgid "All Supported Files"
 msgstr "Ebihandiko ezikirizibwe zoona"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
-#: ../virtaal/support/native_widgets.py:171
-#: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
 msgid "All Files"
 msgstr "Ebihandiko Byona"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
-#, python-format
-msgid "\"%s\" is not a usable file."
-msgstr "\"%s\" tikiri kihandiko ekirakozesibwa."
-
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -1330,250 +1619,222 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Error opening file"
 msgstr "Enshobe omukwigura fayiro"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Oburugo bwe'kigambo — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Ekigambo kigyendereirwe — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Identical entry already exists."
 msgstr "Ekyaterwamu kirimu."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:463
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "Ebivunwirwe ebiriho: %(translations)s"
 
-#: ../virtaal/plugins/terminology/models/opentran.py:43
-msgid "Terms from Open-Tran.eu"
-msgstr "Ebigambo kuruga ahari Open-Trans.eu"
+#: virtaal/plugins/terminology/models/pontoon.py
+#, fuzzy
+#| msgid "Mozilla Corporation"
+msgid "Mozilla Pontoon"
+msgstr "Ekigombe kya Mozilla"
 
-#: ../virtaal/plugins/terminology/termview.py:166
+#: virtaal/plugins/terminology/models/pontoon.py
+msgid "Community localization terminology from Mozilla Pontoon"
+msgstr ""
+
+#: virtaal/plugins/terminology/termview.py
 msgid "Select Terminology Sources"
 msgstr "Torana oburugo bwe'byokushoborora"
 
-#: ../virtaal/plugins/terminology/termview.py:167
+#: virtaal/plugins/terminology/termview.py
 msgid "Select the sources of terminology suggestions"
 msgstr "Torana oburugo bwe'biteekateeko ahari ebyokushoborora"
 
-#: ../virtaal/plugins/tm/__init__.py:27
+#: virtaal/plugins/tm/__init__.py
 msgid "Translation Memory"
 msgstr "Akokwijusya omukuvunuura"
 
-#: ../virtaal/plugins/tm/__init__.py:28
+#: virtaal/plugins/tm/__init__.py
 msgid "Translation memory suggestions"
 msgstr "Ebiteekateeko ebyaruga omu akokwijusya omukuvunuura"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/amagama.py:28
-#: ../virtaal/plugins/tm/models/amagama.py:31
+#: virtaal/plugins/tm/models/amagama.py
 msgid "Amagama"
 msgstr ""
 
-#: ../virtaal/plugins/tm/models/amagama.py:29
-#: ../virtaal/plugins/tm/models/opentran.py:38
+#: virtaal/plugins/tm/models/amagama.py
 msgid "Previous translations for Free and Open Source Software"
 msgstr "Ebivunwirwe ebyenyima ahabwa za puroguramu eza busya"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:30
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Apertium"
+msgstr "Apertium"
+
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu Apertium"
+
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "Current File"
 msgstr "Ekihandiko ekiriho"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:31
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "Translated units from the currently open file"
 msgstr "Obuntu obuvunwirwe kuruga omu kihandiko ekiriho"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:97
-#: ../virtaal/plugins/tm/models/currentfile.py:117
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "This file"
 msgstr "Ekihandiko eki"
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:55
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Google Translate"
 msgstr "Vunuura omu Google"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:56
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye ya Google"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:46
-msgid "Microsoft Translator"
-msgstr "Omuvunuuzi wa Microsoft"
-
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:47
-msgid "Unreviewed machine translations from Microsoft Translator"
-msgstr ""
-"Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye ya Microsoft"
-
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:114
-msgid "Microsoft"
-msgstr "Microsoft"
-
-#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/libtranslate.py:45
-#: ../virtaal/plugins/tm/models/libtranslate.py:101
-msgid "libtranslate"
-msgstr "libtranslate"
-
-#: ../virtaal/plugins/tm/models/libtranslate.py:46
-msgid "Unreviewed machine translations from various services"
-msgstr ""
-"Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye za hanu na hari"
-
-#: ../virtaal/plugins/tm/models/localtm.py:35
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Local Translation Memory"
 msgstr "Akokwijusya omukuvunuura akakurihihi"
 
-#: ../virtaal/plugins/tm/models/localtm.py:36
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Previous translations you have made"
 msgstr "Ebivunwirwe ebiwakozire"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/localtm.py:38
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Local TM"
 msgstr "Ebivunwire ebyahaihi"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/moses.py:32
-#: ../virtaal/plugins/tm/models/moses.py:82
+#: virtaal/plugins/tm/models/moses.py
 msgid "Moses"
 msgstr "Musa"
 
-#: ../virtaal/plugins/tm/models/moses.py:33
+#: virtaal/plugins/tm/models/moses.py
 msgid "Unreviewed machine translations from a Moses server"
 msgstr "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye ya Musa"
 
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/opentran.py:77
-#: ../virtaal/plugins/tm/models/opentran.py:79
-msgid "OpenTran"
-msgstr "OpenTran"
-
-#: ../virtaal/plugins/tm/models/remotetm.py:28
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "Remote Server"
 msgstr "Kanyabwengye etari eyaaha"
 
-#: ../virtaal/plugins/tm/models/remotetm.py:29
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "A translation memory server"
 msgstr "Kanyabwengye akokwijusya omukuvunuura"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/remotetm.py:31
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "Remote TM"
 msgstr "Ebivunwire ebyahare"
 
-#: ../virtaal/plugins/tm/models/tinytm.py:36
-msgid "TinyTM"
-msgstr "Ebivunwire ebikye munonga"
-
-#: ../virtaal/plugins/tm/models/tinytm.py:37
-msgid "A TinyTM translation memory server"
-msgstr "Kanyabwengye akokwijusya omukuvunuura akakye munonga"
-
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/apertium.py:43
-#: ../virtaal/plugins/tm/models/apertium.py:126
-msgid "Apertium"
-msgstr "Apertium"
-
-#: ../virtaal/plugins/tm/models/apertium.py:44
-msgid "Unreviewed machine translations from Apertium"
-msgstr "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu Apertium"
-
-#: ../virtaal/plugins/tm/tmview.py:110
+#: virtaal/plugins/tm/tmview.py
 msgid "Translation _Suggestions"
 msgstr "Ebiteekateko ahari _Okuvunuura"
 
-#: ../virtaal/plugins/tm/tmview.py:151
+#: virtaal/plugins/tm/tmview.py
+msgid "Suggestions for This _Unit"
+msgstr ""
+
+#: virtaal/plugins/tm/tmview.py
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:175
+#: virtaal/plugins/tm/tmview.py
 msgid "Select sources of Translation Memory"
 msgstr "Torana oburugo bw'Akokwijusya omukuvunuura"
 
-#: ../virtaal/plugins/tm/tmview.py:176
+#: virtaal/plugins/tm/tmview.py
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Torana oburugo obwakubaire nibubuzibwa ahari akokwijusya omukuvunuura"
 
 #. l10n: match quality column label
-#: ../virtaal/plugins/tm/tmwidgets.py:64
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "%"
 msgstr "%"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:66
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "Matches"
 msgstr "Kukwatagana"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:68
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "TM Source"
 msgstr "Oburugo bwo'bivunwire "
 
-#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:138
-#, python-format
-msgid "%(match_quality)s%%"
-msgstr "%(match_quality)s%%"
-
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
-#: ../virtaal/plugins/tm/tmwidgets.py:148
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "?"
 msgstr ""
 
-#: ../virtaal/support/native_widgets.py:132
-#: ../virtaal/support/native_widgets.py:172
-#: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
-msgid "Choose a Translation File"
-msgstr "Torana ekihandiko ekyokuvunuura"
-
-#: ../virtaal/support/native_widgets.py:152
-msgid ""
-"A file named \"%1\" already exists. Are you sure you want to overwrite it?"
+#: virtaal/support/crash_dialog.py
+msgid "Virtaal hit an unexpected error"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:38
+#: virtaal/support/crash_dialog.py
+msgid ""
+"This might not affect your current work, but if it keeps happening, "
+"reporting it helps get it fixed."
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+msgid "Details"
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+msgid "Close"
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "Report This Bug…"
+msgstr "Roopa _enshobe"
+
+#: virtaal/support/tutorial.py
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:43
+#: virtaal/support/tutorial.py
 msgid ""
 "Translate this slightly longer message. If a spell checker is available, "
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:50
+#: virtaal/support/tutorial.py
 msgid ""
 "This tutorial will show you some of the things you might want to pay "
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:57
+#: virtaal/support/tutorial.py
 msgid ""
 "Some of the advice will only be relevant to some languages. For example, if "
 "your language does not use the Latin alphabet, some of the advice might not "
@@ -1581,14 +1842,14 @@ msgid ""
 "established translation rules."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:64
+#: virtaal/support/tutorial.py
 msgid ""
 "The correct use of capital letters are important in many languages. "
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:70
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the English uses a capital letter for almost every word. "
 "Almost no other language uses this style. Unless your language definitely "
@@ -1597,48 +1858,48 @@ msgid ""
 "language does not use capital letters, simply translate it normally."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:79
+#: virtaal/support/tutorial.py
 msgid ""
 "If you translated the previous message you should see a window with that "
 "translation and a percentage indicating how similar the source strings "
-"(English) are. It is Virtaal's translation memory at work. Press Control+1 "
-"to copy the suggested translation to the current translation. Remember to "
+"(English) are. It is Virtaal's translation memory at work. Press Ctrl+1 to "
+"copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:88
+#: virtaal/support/tutorial.py
 msgid ""
 "This is a simple message that starts with a capital letter in English. If "
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:95
+#: virtaal/support/tutorial.py
 msgid ""
 "This is a simple message that starts with a lower case letter in English. If "
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:102
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:107
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:112
+#: virtaal/support/tutorial.py
 msgid ""
 "If the source will remain mostly or completely unchanged it is convenient to "
-"copy the entire source string with Alt+Down. Here is almost nothing to "
-"translate, so just press Alt+Down and make corrections if necessary."
+"copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
+"translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:119
+#: virtaal/support/tutorial.py
 #, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
@@ -1651,35 +1912,35 @@ msgstr ""
 "Ebirikuteebwamu nebiccweeka byomutaano ebyekihandiiko ebiri kwerambakandi "
 "kirateebwamu juba omukuvunuura."
 
-#: ../virtaal/support/tutorial.py:126
+#: virtaal/support/tutorial.py
 msgid ""
-"Recognised placeables include special symbols, numbers, variable place "
-"holders, acronyms and many more. Move to each one with Alt+Right and "
+"Recognised placeables include special symbols, numbers, variable "
+"placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:132
+#: virtaal/support/tutorial.py
 msgid ""
 "This message ends with ... to indicate that clicking on this text will cause "
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:138
+#: virtaal/support/tutorial.py
 msgid ""
 "This message ends with a special character that looks like three dots. "
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:145
+#: virtaal/support/tutorial.py
 msgid ""
 "This message has two sentences. Translate them and make sure you start each "
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:151
+#: virtaal/support/tutorial.py
 msgid ""
 "This message marks the word \"now\" as important with bold tags. These tags "
 "can be transferred from the source with Alt+Right and Alt+Down. Leave the "
@@ -1687,14 +1948,14 @@ msgid ""
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:159
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is very similar to the previous message. Use the suggestion of "
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:166
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message \"%d\" is a placeholder (variable) that represents a number. "
@@ -1704,28 +1965,28 @@ msgid ""
 "refer to a percentage."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:174
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message, \"%d\" refers again to the number of files, but note how "
 "the \"(s)\" is used to show that we don't know how many it will be. This is "
 "often hard to translate well. If you encounter this in software translation, "
 "you might want to hear from developers if this can be avoided. Read more "
-"about this and decide how to do it in your language: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"about this and decide how to do it in your language: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:185
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the proper way of translating plurals are seen. You need to "
 "enter between 1 and 6 different versions of the translation to ensure the "
-"correct grammar in your language. Read more about this here: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"correct grammar in your language. Read more about this here: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:196
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message, \"%s\" is a placeholder (variable) that represents a file "
@@ -1734,17 +1995,17 @@ msgid ""
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:204
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message the variable is surrounded by double quotes. Make sure your "
 "translation contains the variable %s and surround it similarly with quotes "
 "in the way required by your language. If your language uses the same quotes "
 "as English, type it exactly as shown for the English. If your language uses "
-"different characters you can just type them around the variable."
+"different quoting characters you can just type them around the variable."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:213
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
 "is part of the variable, and the whole variable from '%' to the 's' should "
@@ -1752,27 +2013,27 @@ msgid ""
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:221
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the user of the software is asked to do something. Make sure "
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:227
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message there is reference to \"Linux\" (a product name). Many "
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:234
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:239
+#: virtaal/support/tutorial.py
 msgid ""
 "This message refers to a website with more information. Sometimes you might "
 "be allowed or encouraged to change the URL (web address) to a website in "
@@ -1781,14 +2042,14 @@ msgid ""
 "article in your language about XML."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:248
+#: virtaal/support/tutorial.py
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:255
+#: virtaal/support/tutorial.py
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
 "Make sure you can see the context information showing that this is a noun (a "
@@ -1797,153 +2058,179 @@ msgid ""
 "definitely appropriate in this case as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:264
+#: virtaal/support/tutorial.py
 msgid ""
-"An accelerator key is a key on your keyboard that you can press to to "
-"quickly access a menu or function. It is also called a hot key, access key "
-"or mnemonic. In program interfaces they are shown as an underlined letter in "
+"An accelerator key is a key on your keyboard that you can press to quickly "
+"access a menu or function. It is also called a hot key, access key or "
+"mnemonic. In program interfaces they are shown as an underlined letter in "
 "the text label. In the translatable text they are marked using some "
 "character like the underscore here, but other characters are used for this "
-"as well. In this case the the accelerator key is \"f\" since the underscore "
-"is before this letter and it means that this accelerator could be triggered "
-"by pressing Alt+F."
+"as well. In this case the accelerator key is \"f\" since the underscore is "
+"before this letter and it means that this accelerator could be triggered by "
+"pressing Alt+F."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:276
+#: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:280
+#: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:285
+#: virtaal/support/tutorial.py
 msgid ""
-"Virtaal is able to provide suggestions from several terminology glossaries "
-"and provides easy shortcuts to allow paste them in the translation field. "
-"Right now Virtaal has only one empty terminology glossary, but you can start "
-"filling it. In order to do that select the original text, press Ctrl+T, "
-"provide a translation for your language, and save."
+"You can maintain a local terminology file to help you translate "
+"consistently. To add a term, select a word (or words), press Ctrl+T and fill "
+"in the details for the new term. Select the text below and add a term for it."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:295
+#: virtaal/support/tutorial.py
 msgid ""
-"In the previous entry you have created one terminology entry for the the "
+"In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:300
+#: virtaal/support/tutorial.py
 msgid ""
-"If you have created any terminology in the previous entries you may may now "
-"see some of the words with a green background (or other color depending on "
-"your theme). This means that Virtaal has terminology suggestions for that "
-"word. Use Alt+Right to select the highlighted word, and then press Alt+Down. "
-"If only one suggestions is provided Alt+Down just copies the suggestion to "
+"If you have created any terminology in the previous entries you may now see "
+"some of the words with a green background (or other color depending on your "
+"theme). This means that Virtaal has terminology suggestions for that word. "
+"Use Alt+Right to select the highlighted word, and then press Alt+Down. If "
+"only one suggestion is provided then Alt+Down just copies the suggestion to "
 "the translation field. But if several suggestions are available Alt+Down "
 "shows a suggestion list which you can navigate using Down and Up keys. Once "
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:313
+#: virtaal/support/tutorial.py
 msgid ""
 "This message has two lines. Make sure that your translation also contains "
-"two lines. You can separate lines with Shift+Enter or copying new-line "
+"two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:320
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:325
+#: virtaal/support/tutorial.py
 msgid ""
-"This message contains a large number that is formatted according to to "
-"American convention. Translate this but be sure to format the number "
-"according to the convention for your language. You might need to change the "
-"comma (,) and full stop (.) to other characters, and you might need to use a "
+"This message contains a large number that is formatted according to the "
+"American convention. Translate this but make sure to format the number "
+"according to your language's convention. You might need to change the comma "
+"(,) and full stop (.) to other characters, and you also might need to use a "
 "different number system. Make sure that you understand the American "
-"formatting: the number is bigger than one thousand."
+"formatting: this number is bigger than one thousand."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:335
+#: virtaal/support/tutorial.py
 msgid ""
 "This message refers to miles. If the programmers encourage it, you might "
-"want to change this to kilometres in your translation, if kilometres are "
+"want to change this to kilometres in your translation, if kilometers are "
 "more commonly used in your language. Note that 1 mile is about 1.6 "
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
-"number is changed, but in this case it is safe to do."
+"number is changed, but in this case it is safe to do so."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:344
+#: virtaal/support/tutorial.py
 msgid ""
-"This message contains a link that the user will be able to click on on to "
-"visit the help page. Make sure you maintain the information between the "
-"angle brackets (<...>) correctly. The double quotes (\") should never be "
-"changed in tags, even if your language uses a different type of quotation "
-"marks."
+"This message contains a link that the user will be able to click on to visit "
+"the help page. Make sure you correctly keep the information between the "
+"angle brackets (<...>). The double quotes (\") should never be changed in "
+"tags, even if your language uses a different type of quotation marks."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:354
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
-"This message contains a similar link, but the programmers decided to to "
-"rather insert the tags with variables so that translators can't change them. "
+"This message contains a similar link, but the programmers decided to rather "
+"insert the tags by using variables so that translators can't change them. "
 "Make sure you position the two variables (%s) so that they correspond to the "
-"opening and closing tag of the previous translation."
+"opening and closing tags of the previous translation."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:362
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains the <b> and </b> tags to emphasize a word, while "
-"everything is inside <p> and </p> tags. Make sure your whole translation is "
-"inside <p> and </p> tags."
+"everything is within the <p> and </p> tags. Make sure your whole translation "
+"is within the <p> and </p> tags."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:368
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains a similar link that is contained within <span> and </"
-"span>. Make sure you maintain all the tags (<...>) correctly, and that the "
-"link is contained completely inside the <span> and </span> tags in your "
+"span>. Make sure you correctly keep all the tags (<...>), and that the link "
+"is completely contained within the <span> and </span> tags in your "
 "translation. Make sure that the text inside the \"a\" tags correspond to "
 "\"help page\" and that your translation corresponding to the second sentence "
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
 
-#: ../virtaal/views/checksunitview.py:73
-msgid "No issues"
-msgstr ""
-
-#: ../virtaal/views/checksunitview.py:80
-msgid "Quality Check"
-msgstr ""
-
-#: ../virtaal/views/checksunitview.py:86
-msgid "Description"
-msgstr ""
-
-#: ../virtaal/views/checksprojview.py:40
+#: virtaal/views/checksprojview.py
 msgid "Project Type"
 msgstr ""
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
-#: ../virtaal/views/checksprojview.py:63
+#: virtaal/views/checksprojview.py
 #, python-format
 msgid "Checks: %(checker_name)s"
 msgstr ""
 
-#: ../virtaal/views/langview.py:76
-msgid "_New Language Pair..."
-msgstr "_Endimi ensya ibiri..."
+#: virtaal/views/checksunitview.py
+msgid "Quality Check"
+msgstr ""
 
-#: ../virtaal/views/mainview.py:230
+#: virtaal/views/checksunitview.py
+msgid "Description"
+msgstr ""
+
+#: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
+msgid "Quality checks"
+msgstr ""
+
+#: virtaal/views/langview.py
+#, fuzzy
+#| msgid "New Language Pair"
+msgid "_New Language Pair…"
+msgstr "Omufungo omusya gworurimi"
+
+#: virtaal/views/mainview.py
+msgid "_Cancel"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "_OK"
+msgstr ""
+
+#. l10n: macOS app menu item that opens the Preferences dialog
+#: virtaal/views/mainview.py
+msgid "Settings…"
+msgstr ""
+
+#: virtaal/views/mainview.py
 msgid "Error"
 msgstr "Enshobe"
 
-#: ../virtaal/views/mainview.py:342
+#: virtaal/views/mainview.py
+msgid "Choose a Translation File"
+msgstr "Torana ekihandiko ekyokuvunuura"
+
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Choose a Translation File"
+msgid "Choose a PO Template File"
+msgstr "Torana ekihandiko ekyokuvunuura"
+
+#: virtaal/views/mainview.py
+msgid "PO Template Files"
+msgstr ""
+
+#: virtaal/views/mainview.py
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1951,125 +2238,254 @@ msgstr ""
 "Ekihandiko kyahati kyahindurwa.\n"
 "Nooyenda kubiika ebiwahindura?"
 
-#: ../virtaal/views/mainview.py:345
+#: virtaal/views/mainview.py virtaal/views/propertiesview.py
+#, fuzzy
+#| msgid "Save"
+msgid "_Save"
+msgstr "Biika"
+
+#: virtaal/views/mainview.py
 msgid "_Discard"
 msgstr "_Kireeka"
+
+#: virtaal/views/mainview.py
+msgid "Could not open the dropped file - its file name could not be decoded."
+msgstr ""
 
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:430
+#: virtaal/views/mainview.py
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
-#: ../virtaal/views/mainview.py:455
+#. l10n: This is the title of the main window of Virtaal, without the app name
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgid "%(modified_marker)s%(current_file)s"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+
+#: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Nyabura tasyamu omuhendo gw'amaziina (omubwingi) gokukozesa"
 
-#: ../virtaal/views/mainview.py:461
+#: virtaal/views/mainview.py
 msgid "Please enter the plural equation to use"
 msgstr "Nyabura tasyamu ebigambo bingi byokukozesa"
 
+#: virtaal/views/mainview.py
+msgid "Header information"
+msgstr "Amakuru gahamutwe gwekihandiiko"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Virtaal %s is available (you have %s)"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Release Notes"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Download"
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid ""
+"Your settings file could not be read, so Virtaal started with default "
+"settings. The old file was kept at: %s"
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "Could not open log file '%(filename)s'"
+msgid "Couldn't open '%(file)s': %(reason)s"
+msgstr "Tikyabaasa okwigura ekihandiko eky'ebyabaho '%(filename)s'"
+
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "Could not open log file '%(filename)s'"
+msgid "Couldn't open '%(file)s'."
+msgstr "Tikyabaasa okwigura ekihandiko eky'ebyabaho '%(filename)s'"
+
+#: virtaal/views/mainview.py
+msgid "Restart Virtaal for the new language to take effect."
+msgstr ""
+
+#. l10n: Column heading: unit counts before updating to the new template
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Before:"
+msgid "Before"
+msgstr "Kareho:"
+
+#. l10n: Column heading: unit counts after updating to the new template
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "After:"
+msgid "After"
+msgstr "Ahanyima:"
+
+#. l10n: Column heading: difference between the before and after unit counts
+#: virtaal/views/mainview.py
+msgid "Change"
+msgstr ""
+
+#. l10n: Row heading: total number of units in the file
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Total: %d"
+msgid "Total"
+msgstr "Byona Hamwe: %d"
+
+#: virtaal/views/mainview.py
+msgid "Source and target language are the same."
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "New Language Pair"
+msgid "Change Language Pair"
+msgstr "Omufungo omusya gworurimi"
+
+#: virtaal/views/mainview.py
+msgid "This file is read-only."
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Save As…"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Logs"
+msgstr ""
+
+#: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
+msgid "_Close"
+msgstr ""
+
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
-#: ../virtaal/views/modeview.py:62
+#: virtaal/views/modeview.py
 msgid "N_avigation:"
 msgstr "O_kushayaaya"
 
+#. l10n: Context: show no units around the one being edited
+#: virtaal/views/modeview.py
+msgid "None"
+msgstr ""
+
+#. l10n: How many units to show around the one being edited, when a
+#. navigation mode only goes to some units
+#: virtaal/views/modeview.py
+msgid "Conte_xt:"
+msgstr ""
+
+#: virtaal/views/prefsview.py
+#, fuzzy
+#| msgid "Poedit settings"
+msgid "Settings"
+msgstr "Enteekateeka ya Poedit"
+
+#: virtaal/views/prefsview.py
+msgid "System default"
+msgstr ""
+
+#. l10n: A UI language: its name in your language, then in
+#. itself, e.g. "French - Français"
+#: virtaal/views/prefsview.py
+#, python-format
+msgid "%(language)s - %(endonym)s"
+msgstr ""
+
 # 81%
-#: ../virtaal/views/propertiesview.py:32
+#: virtaal/views/propertiesview.py
 #, fuzzy
 msgid "Untranslated:"
 msgstr "Ekitavunwire: %d"
 
-#: ../virtaal/views/propertiesview.py:33
+#: virtaal/views/propertiesview.py
 msgid "Needs work:"
 msgstr ""
 
-#: ../virtaal/views/propertiesview.py:34
+#: virtaal/views/propertiesview.py
 msgid "Rejected:"
 msgstr ""
 
-#: ../virtaal/views/propertiesview.py:35
+#: virtaal/views/propertiesview.py
 msgid "Needs review:"
 msgstr ""
 
 # 78%
-#: ../virtaal/views/propertiesview.py:36
+#: virtaal/views/propertiesview.py
 #, fuzzy
 msgid "Translated:"
 msgstr "Kyavunuurwa: %d"
 
-#: ../virtaal/views/propertiesview.py:37
+#: virtaal/views/propertiesview.py
 msgid "Reviewed:"
 msgstr ""
 
-#: ../virtaal/views/propertiesview.py:59
-msgid "(0%)"
-msgstr ""
-
-#: ../virtaal/views/propertiesview.py:61
-msgid "(100%)"
-msgstr ""
-
-#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
-#: ../virtaal/views/propertiesview.py:64
+#. l10n: A percentage in the file properties, e.g. "(25.5%)"
+#: virtaal/views/propertiesview.py
 #, python-format
-msgid "(%04.1f%%)"
+msgid "(%s)"
 msgstr ""
 
-#: ../virtaal/views/propertiesview.py:134
-msgid "Save the file for up-to-date information"
+#: virtaal/views/propertiesview.py
+msgid "This file has unsaved changes."
 msgstr ""
 
-# 88%
-#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
-#: ../virtaal/views/propertiesview.py:191
-#: ../virtaal/views/propertiesview.py:192
-#, fuzzy, python-format
-msgid "<b>%d</b>"
-msgstr "<b>%s</b>"
-
-#: ../virtaal/views/propertiesview.py:203
-#, python-format
-msgid "%.1f KB"
-msgstr ""
-
-#: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
+#: virtaal/views/storeview.py
 msgid "Export failed"
 msgstr ""
 
-#: ../virtaal/views/storeview.py:156
+#: virtaal/views/storeview.py
 msgid "Preview failed"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:613
+#: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:614
+#: virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:615
+#: virtaal/views/unitview.py
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr ""
 
-# 95%
-#: ../virtaal/views/widgets/aboutdialog.py:34
+#: virtaal/views/unitview.py
 #, fuzzy
-msgid "Copyright © 2007-2010 Zuza Software Foundation"
+#| msgid "P_revious Placeable"
+msgid "Previous state"
+msgstr "Ekyorikubasa kutaho ekya_ahanyima"
+
+#: virtaal/views/unitview.py
+msgid "Next state"
+msgstr ""
+
+# 95%
+#: virtaal/views/widgets/aboutdialog.py
+#, fuzzy
+msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Omukama wekintu © 2007-2009 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/views/widgets/aboutdialog.py:37
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal is a program for doing translation."
 msgstr "Virtaal ni puroguraamu eyokuvunuura"
 
-#: ../virtaal/views/widgets/aboutdialog.py:38
+#: virtaal/views/widgets/aboutdialog.py
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
@@ -2078,339 +2494,517 @@ msgstr ""
 "Ekyokutandikiraho nokuvunuura za puroguramu (omundiimi ziitu), kyonka "
 "turakyendezakukozesibwa nkekikozesezo kyokuvunuura aha kanyabwengye."
 
-#: ../virtaal/views/widgets/aboutdialog.py:52
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal website"
 msgstr "Ebibanja kya Virtaal"
 
-#: ../virtaal/views/widgets/aboutdialog.py:65
+#: virtaal/views/widgets/aboutdialog.py
 msgid "We thank our donors:"
 msgstr "Nitwebaza abayambi beitu:"
 
-#: ../virtaal/views/widgets/aboutdialog.py:66
+#: virtaal/views/widgets/aboutdialog.py
 msgid "The International Development Research Centre"
 msgstr "Omwanya gwensi yoona omubyentunguka nokucondooza"
 
-#: ../virtaal/views/widgets/aboutdialog.py:68
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Mozilla Corporation"
 msgstr "Ekigombe kya Mozilla"
 
 #. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/views/widgets/aboutdialog.py:73
+#: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
 msgstr "Ebihembo byomuvunuuzi"
 
-#: ../virtaal/views/widgets/langadddialog.py:103
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language"
+msgid "Edit Language"
+msgstr "Orurimi"
+
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language name:"
+msgid "Enter a language name."
+msgstr "Eiziina rworurimi:"
+
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
 msgstr "Akabonero ko'rurimi nikateekwa kuba omu ASCII."
 
-#: ../virtaal/views/widgets/langadddialog.py:106
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be at least 2 characters long."
 msgstr "Akabonero ko'rurimi nikateekwa kuba nobwokureeberaho 2."
 
-#: ../virtaal/views/widgets/langselectdialog.py:79
-#: ../virtaal/views/widgets/langselectdialog.py:86
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language code must be an ASCII string."
+msgid "Language code must not contain spaces."
+msgstr "Akabonero ko'rurimi nikateekwa kuba omu ASCII."
+
+#: virtaal/views/widgets/langadddialog.py
+#, python-format
+msgid "Language code %s is already used."
+msgstr ""
+
+#: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
 msgstr "Orurimi"
 
 #. l10n: This is the column heading for the language code
-#: ../virtaal/views/widgets/langselectdialog.py:94
-#: ../virtaal/views/widgets/langselectdialog.py:101
+#: virtaal/views/widgets/langselectdialog.py
 msgid "Code"
 msgstr "Akabonero"
 
-#: ../virtaal/views/widgets/selectview.py:66
-msgid "Enabled"
-msgstr "Kyabasika"
-
-#: ../virtaal/views/widgets/selectview.py:113
-msgid "Configure..."
+#: virtaal/views/widgets/selectview.py
+#, fuzzy
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Shoronzya..."
 
-#: ../virtaal/views/widgets/welcomescreen.py:79
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Global"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Open a file"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Save the current file"
+msgstr "Ekihandiko ekiriho"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Save the current file under a new name"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Close the current file"
+msgstr "Ekihandiko ekiriho"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Virtaal"
+msgid "Quit Virtaal"
+msgstr "Virtaal"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show preferences dialog"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show file properties and statistics"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Toggle fullscreen mode"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show this Keyboard Shortcuts window"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "_Navigation"
+msgid "Navigation"
+msgstr "_Shayaaya"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Machine translation"
+msgid "Move to next translation"
+msgstr "Okuvunuura kwe'byooma"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units up"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units down"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to first unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to last unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next search match"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous search match"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Units"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "P_revious Placeable"
+msgid "Select previous placeable"
+msgstr "Ekyorikubasa kutaho ekya_ahanyima"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "_Next Placeable"
+msgid "Select next placeable"
+msgstr "_Ekyorikubasa kutaho ekiragarukaho"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Insert the selected placeable"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Replace the translation with the source"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Copy the source, if nothing is selected"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Enter a new line"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Undo the last change"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Redo the last undone change"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Use the first translation suggestion"
+msgstr "Ebiteekateko ahari _Okuvunuura"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show/Hide checks"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Show translation suggestions for this unit"
+msgstr "Ebiteekateko ahari _Okuvunuura"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Turn translation suggestions on or off"
+msgstr "Ebiteekateko ahari _Okuvunuura"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Hide translation suggestions, if shown"
+msgstr "Ebiteekateko ahari _Okuvunuura"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Local terminology files"
+msgid "Add a term to the local terminology file"
+msgstr "Ebihandiko ebiri ahakushoborora ebibiikirwa ahakanyabwengye yaawe"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Moving focus"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the next target field"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the previous target field"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the language-pair selector"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the \"Navigation:\" mode selector"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Close the search bar and return to normal editing"
+msgstr ""
+
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"
 msgstr "Akokwijusya omukuvunuura"
 
-#: ../virtaal/views/widgets/welcomescreen.py:81
-msgid "Quality checks"
-msgstr ""
-
-#: ../virtaal/views/widgets/welcomescreen.py:82
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Machine translation"
 msgstr "Okuvunuura kwe'byooma"
 
-#: ../virtaal/views/widgets/welcomescreen.py:83
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Highlighting and insertion of placeables"
 msgstr "Okuyamba nokutasyamu ebikwatirira omwanya"
 
-#: ../virtaal/views/widgets/welcomescreen.py:84
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Many plugins and options for customization"
 msgstr "Ebyokujwekamu ne'ntoraana ahabwokutereza nkoku orenda"
 
-#: ../virtaal/models/storemodel.py:132
-msgid "The file does not exist."
-msgstr "Ekihandiko tikirimu."
+#~ msgid "_Add Missing Language..."
+#~ msgstr "_Geita orurimi orurikuburaho..."
 
-#: ../virtaal/models/storemodel.py:134
-msgid "Not a valid file."
-msgstr "Ekihandiko ekitarikirizibwa"
+# 75%
+#~ msgid "http://translate.sourceforge.net/wiki/guide/start"
+#~ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
-msgid "TMX Translation Memory"
-msgstr "Akokwijusya omukuvunuura TMX"
+#~ msgid ""
+#~ "At the end of a translation, simply press <Enter> to continue with the "
+#~ "next one."
+#~ msgstr "Ahamuheru gwokuvunuura, fakunyiga <Enter> kugumizamu"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
-msgid "TMX"
-msgstr "TMX"
+#~ msgid ""
+#~ "To copy the original string into the target field, simply press "
+#~ "<Alt+Down>."
+#~ msgstr ""
+#~ "Okutoreeza ekirunga ekyabanza okuta omumwanya ogugyendereirwe, fakunyiga "
+#~ "<Alt+Down>."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
-msgid "Translation Memory eXchange"
-msgstr "Okuhanisana akokwijusya omukuvunuura"
+#~ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+#~ msgstr ""
+#~ "Okucebera ekiwavunuurwa nkekitarikwetegyerezibwa, fakunyiga <Alt+U>."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
-msgid "TBX Glossary"
-msgstr "Orukarara rwe'bwomutwe ebirimu TBX"
+#~ msgid ""
+#~ "To mark the current translation as incomplete, simply press "
+#~ "<Ctrl+Shift+Enter>."
+#~ msgstr ""
+#~ "Okucebera ekiwavunuurwa nkekitayijwire, fakunyiga <Ctrl+Shift+Enter>."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
-msgid "TBX"
-msgstr "TBX"
+# 75%
+#~ msgid ""
+#~ "To mark the current translation as complete, simply press <Ctrl+Enter>."
+#~ msgstr ""
+#~ "Okucebera ekiwavunuurwa nkekitarikwetegyerezibwa, fakunyiga <Alt+Enter>."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
-msgid "TermBase eXchange"
-msgstr "Okuhanisana kwebigambo ekiri"
+#~ msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+#~ msgstr "Kozesa Ctrl+Up nainga Ctrl+Down kurabira ahagati yebyavunuurwa."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
-msgid "Wordfast Translation Memory"
-msgstr "Akokwijusya omukuvunuura kwe'bigambo byajuba"
+#~ msgid ""
+#~ "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+#~ msgstr ""
+#~ "Kozesa Ctrl+PgUp nainga Ctrl+PgDown kuruka entumbe enpango omuri "
+#~ "ebyavunuurwa."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
-msgid "Qt Linguist Translation File"
-msgstr "Ekihandiko kyo'kuvunuura omugambi wo'rurimi Qt"
+#~ msgid "Please enter your name"
+#~ msgstr "Nyabura tamu eiziina ryaawe"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
-msgid "Qt Message File"
-msgstr "Amakuru ahari Qt"
+#~ msgid "Please enter your e-mail address"
+#~ msgstr "Nyabura tamu endagiriro ryebaruha yaawe"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
-msgid "Qt Phrase Book"
-msgstr "Ekitabo ekijwire ebigambirwe omuri Qt"
+#~ msgid "Please enter your team's information"
+#~ msgstr "Nyabura tamu amakuru ge'kibiina kyawe"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
-msgid "INI File"
-msgstr "Ekihandiko kya INI"
+#~ msgid "Reload File"
+#~ msgstr "Garuka otandike ekihandiiko"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
-msgid "INI"
-msgstr "INI"
+#~ msgid "The file contains nothing to translate."
+#~ msgstr "Ekihandiiko tikirimu ekyokuvunuura."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
-msgid "Initialization"
-msgstr "Kutandika"
+#, python-format
+#~ msgid "Translated: %d"
+#~ msgstr "Kyavunuurwa: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
-msgid "Java Properties File"
-msgstr "Ekihandiko kyebirakwata ahari Java"
+#, python-format
+#~ msgid "Fuzzy: %d"
+#~ msgstr "Ekitarikwetegyerezibwa: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
-msgid "OpenOffice.org Translation File"
-msgstr "Ekihandiko kyokuvunuura OpenOffice.org"
+#, python-format
+#~ msgid "Untranslated: %d"
+#~ msgstr "Ekitavunwire: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
-msgid "XLIFF Translation File"
-msgstr "Ekihandiko kyokuvunuura XLIFF"
+# 89%
+#, fuzzy
+#~ msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+#~ msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
-msgid "XLIFF"
-msgstr "XLIFF"
+# 88%
+#, fuzzy
+#~ msgid "Languages"
+#~ msgstr "Orurimi"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
-msgid "XML Localization Interchange File Format"
-msgstr "Endeebeka yebihandiko nokuhanisigana enkora ya XML"
+#~ msgid "Open-Tran.eu"
+#~ msgstr "Iguraho Tran.eu"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
-msgid "C++ RC File"
-msgstr "Ekihandiko C++ RC"
+#, python-format
+#~ msgid "Poedit's Translation Memory: %(database_language_code)s"
+#~ msgstr "Akaijusya ebyokuvunuurwa omuri Poedit: %(database_language_code)s"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
-msgid "RC"
-msgstr "RC"
+#, python-format
+#~ msgid "KBabel's Translation Memory: %(database_language_code)s"
+#~ msgstr "Akaijusya ebyokuvunuurwa omuri KBable: %(database_language_code)s"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
-msgid "Resource Compiler"
-msgstr "Ekirakunganya ebikwato"
+#~ msgid "Terminology _Files..."
+#~ msgstr "Ekihandiiko _ekirashoborora..."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
-msgid "Tcl Translation File"
-msgstr "Ekihandiko kyokuvunuura Tcl"
+#~ msgid "Add _Term..."
+#~ msgstr "Yongyeraho _ekigambo..."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
-msgid "JavaScript error message file"
-msgstr "Obutumwa buri ahari enshobe omu bihandiko bya Java"
+#, python-format
+#~ msgid "\"%s\" is not a usable file."
+#~ msgstr "\"%s\" tikiri kihandiko ekirakozesibwa."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
-msgid "Gettext Translation Template"
-msgstr "Reeta ebigambo ebyokureberaho omukuvunuura"
+#~ msgid "Terms from Open-Tran.eu"
+#~ msgstr "Ebigambo kuruga ahari Open-Trans.eu"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
-msgid "Trados Tag Editor"
-msgstr "Akakyencuzo kebigambo Trados"
+#~ msgid "Microsoft Translator"
+#~ msgstr "Omuvunuuzi wa Microsoft"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
-msgid "OS X Strings File"
-msgstr ""
+#~ msgid "Unreviewed machine translations from Microsoft Translator"
+#~ msgstr ""
+#~ "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye ya Microsoft"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
-msgid "UTX Dictionary"
-msgstr ""
+#~ msgid "Microsoft"
+#~ msgstr "Microsoft"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
-msgid "UTX"
-msgstr ""
+#~ msgid "libtranslate"
+#~ msgstr "libtranslate"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
-msgid "Universal Terminology eXchange"
-msgstr ""
+#~ msgid "Unreviewed machine translations from various services"
+#~ msgstr ""
+#~ "Ebivunwirwe kyonka ebitakarabirwemu kuruga omu kanyabwengye za hanu na "
+#~ "hari"
 
-#: ../devsupport/tmp_strings.py:23
-msgid "Gettext PO file"
-msgstr "Reeta ekihandiko PO"
+#~ msgid "OpenTran"
+#~ msgstr "OpenTran"
 
-#: ../devsupport/tmp_strings.py:24
-msgid "Gettext MO file"
-msgstr "Reeta ekihandiko MO"
+#~ msgid "TinyTM"
+#~ msgstr "Ebivunwire ebikye munonga"
 
-#: ../devsupport/tmp_strings.py:25
-msgid "Qt .qm file"
-msgstr "Ekihandiko Qt .qm"
+#~ msgid "A TinyTM translation memory server"
+#~ msgstr "Kanyabwengye akokwijusya omukuvunuura akakye munonga"
 
-#: ../devsupport/tmp_strings.py:26
-msgid "OmegaT Glossary"
-msgstr "Orukarara rwe'bwomutwe ebirimu OmegaT"
+#, python-format
+#~ msgid "%(match_quality)s%%"
+#~ msgstr "%(match_quality)s%%"
 
-#: ../bin/virtaal:93
+#~ msgid "_New Language Pair..."
+#~ msgstr "_Endimi ensya ibiri..."
+
+# 88%
+#, fuzzy, python-format
+#~ msgid "<b>%d</b>"
+#~ msgstr "<b>%s</b>"
+
+#~ msgid "INI File"
+#~ msgstr "Ekihandiko kya INI"
+
+#~ msgid "INI"
+#~ msgstr "INI"
+
+#~ msgid "Initialization"
+#~ msgstr "Kutandika"
+
+#~ msgid "Java Properties File"
+#~ msgstr "Ekihandiko kyebirakwata ahari Java"
+
+#~ msgid "OpenOffice.org Translation File"
+#~ msgstr "Ekihandiko kyokuvunuura OpenOffice.org"
+
+#~ msgid "XLIFF"
+#~ msgstr "XLIFF"
+
+#~ msgid "XML Localization Interchange File Format"
+#~ msgstr "Endeebeka yebihandiko nokuhanisigana enkora ya XML"
+
+#~ msgid "C++ RC File"
+#~ msgstr "Ekihandiko C++ RC"
+
+#~ msgid "RC"
+#~ msgstr "RC"
+
+#~ msgid "Resource Compiler"
+#~ msgstr "Ekirakunganya ebikwato"
+
+#~ msgid "Tcl Translation File"
+#~ msgstr "Ekihandiko kyokuvunuura Tcl"
+
+#~ msgid "JavaScript error message file"
+#~ msgstr "Obutumwa buri ahari enshobe omu bihandiko bya Java"
+
+#~ msgid "Gettext Translation Template"
+#~ msgstr "Reeta ebigambo ebyokureberaho omukuvunuura"
+
+#~ msgid "Trados Tag Editor"
+#~ msgstr "Akakyencuzo kebigambo Trados"
+
 #, c-format
-msgid "%prog [options] [translation_file]"
-msgstr "%prog [options] [translation_file]"
+#~ msgid "%prog [options] [translation_file]"
+#~ msgstr "%prog [options] [translation_file]"
 
-#: ../bin/virtaal:96
-msgid "LOG"
-msgstr "EBYABAHO"
+#~ msgid "PROFILE"
+#~ msgstr "KUNGANYA"
 
-#: ../bin/virtaal:97
-msgid "turn on logging, storing the result to the supplied filename."
-msgstr ""
-"Taaho okukunganya ebyabaho noku obiika ebyarugamu omu kihandiko ekyahebwa."
+#~ msgid "perform profiling, storing the result to the supplied filename."
+#~ msgstr "Kunganya kandi obiike ebyarugamu omu kihandiko ekyahebwa."
 
-#: ../bin/virtaal:99
-msgid "CONFIG"
-msgstr "TEREEZA"
+#~ msgid "invalid number of arguments"
+#~ msgstr "Enamba yempaka enfu"
 
-#: ../bin/virtaal:100
-msgid "use the configuration file given by the supplied filename."
-msgstr "Kozesa ekihandiko kyo'kutereeza omu kihandiko ekyahebwa."
-
-#: ../bin/virtaal:103
-msgid "enable debugging features"
-msgstr "Basiza enkora yokutereeza enshobe"
-
-#: ../bin/virtaal:109
-msgid "PROFILE"
-msgstr "KUNGANYA"
-
-#: ../bin/virtaal:111
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "Kunganya kandi obiike ebyarugamu omu kihandiko ekyahebwa."
-
-#: ../bin/virtaal:135
-msgid "Could not open log file '%(filename)s'"
-msgstr "Tikyabaasa okwigura ekihandiko eky'ebyabaho '%(filename)s'"
-
-#: ../bin/virtaal:143
-msgid "Could not read configuration file '%(filename)s'"
-msgstr "Tikyabaasa okushoma ekihandiko kyo'kutereeza '%(filename)s'"
-
-#: ../bin/virtaal:147
-msgid "invalid number of arguments"
-msgstr "Enamba yempaka enfu"
-
-#: ../bin/virtaal:173
-msgid "Profiling support is not available"
-msgstr ""
-
-#: ../bin/virtaal:185
-msgid "Could not open profile file '%(filename)s'"
-msgstr "Tikyabaasa okwigura ekihandiko eky'ebyakungwanya '%(filename)s'"
-
-#: ../devsupport/optparse.py:134
 #, python-format
-msgid "no such option: %s"
-msgstr "Tihariho ekyokusharaho: %s"
+#~ msgid "no such option: %s"
+#~ msgstr "Tihariho ekyokusharaho: %s"
 
-#: ../devsupport/optparse.py:145
 #, python-format
-msgid "ambiguous option: %s (%s?)"
-msgstr "Ekyokusharaho ekitaretegyerezibwa: %s (%s?)"
+#~ msgid "ambiguous option: %s (%s?)"
+#~ msgstr "Ekyokusharaho ekitaretegyerezibwa: %s (%s?)"
 
-#: ../devsupport/optparse.py:368
+#~ msgid "Usage"
+#~ msgstr "Enkozesa"
+
+#~ msgid "integer"
+#~ msgstr "Eshuura eyijwire"
+
+#~ msgid "long integer"
+#~ msgstr "Eshuura eyijwire endingwa"
+
+#~ msgid "floating-point"
+#~ msgstr "Enshonga erikuzereera"
+
+#~ msgid "complex"
+#~ msgstr "eshuura ezigumire"
+
 #, python-format
-msgid "Usage: %s\n"
-msgstr "Enkozesa: %s\n"
+#~ msgid "option %s: invalid %s value: %r"
+#~ msgstr "ekyokutoranamu %s: enfu %s eshuura: %r"
 
-#: ../devsupport/optparse.py:387
-msgid "Usage"
-msgstr "Enkozesa"
-
-#: ../devsupport/optparse.py:412
-msgid "integer"
-msgstr "Eshuura eyijwire"
-
-#: ../devsupport/optparse.py:413
-msgid "long integer"
-msgstr "Eshuura eyijwire endingwa"
-
-#: ../devsupport/optparse.py:414
-msgid "floating-point"
-msgstr "Enshonga erikuzereera"
-
-#: ../devsupport/optparse.py:415
-msgid "complex"
-msgstr "eshuura ezigumire"
-
-#: ../devsupport/optparse.py:423
 #, python-format
-msgid "option %s: invalid %s value: %r"
-msgstr "ekyokutoranamu %s: enfu %s eshuura: %r"
+#~ msgid "option %s: invalid choice: %r (choose from %s)"
+#~ msgstr "ekyokutoranamu %s: ekirondirwe ekifu: %r (choose from %s)"
 
-#: ../devsupport/optparse.py:431
+#~ msgid "%prog [options]"
+#~ msgstr "%prog [options]"
+
 #, python-format
-msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr "ekyokutoranamu %s: ekirondirwe ekifu: %r (choose from %s)"
+#~ msgid "%s option requires %d arguments"
+#~ msgstr "Ekyokutoranamu %s kiretaaga empaka %d"
 
-#: ../devsupport/optparse.py:1246
-msgid "show this help message and exit"
-msgstr "Yoreka obutumwa obwobuyambi reero oshohore"
-
-#: ../devsupport/optparse.py:1251
-msgid "show program's version number and exit"
-msgstr "Yoreka eshuura ya puroguramu reero oshohore"
-
-#: ../devsupport/optparse.py:1274
-msgid "%prog [options]"
-msgstr "%prog [options]"
-
-#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
-msgid "%s option requires an argument"
-msgstr "ekyokutoranamu %s nikyeteega ekukihajanaho"
-
-#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
-#, python-format
-msgid "%s option requires %d arguments"
-msgstr "Ekyokutoranamu %s kiretaaga empaka %d"
-
-#: ../devsupport/optparse.py:1495
-#, python-format
-msgid "%s option does not take a value"
-msgstr "Ekyokutoranamu %s tikine muhendo"
+#~ msgid "%s option does not take a value"
+#~ msgstr "Ekyokutoranamu %s tikine muhendo"
 
 #~ msgid ""
 #~ "Words with internal capitalisation, such as some brand names and WikiWords"

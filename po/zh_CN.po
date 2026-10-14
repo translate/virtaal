@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-10-07 08:48+0100\n"
+"POT-Creation-Date: 2026-10-13 18:54+0100\n"
 "PO-Revision-Date: 2026-10-07 20:01+0800\n"
 "Last-Translator: CodeFreer <egoog-dev@yahoo.com>\n"
 "Language-Team: zh-CN\n"
@@ -102,8 +102,14 @@ msgid "<b>Translation</b>"
 msgstr "<b>翻译</b>"
 
 #: share/virtaal/virtaal.ui
-msgid "_Add Missing Language..."
-msgstr "加入缺少的语言(_A)..."
+#, fuzzy
+#| msgid "Add Missing Language"
+msgid "_Add Missing Language…"
+msgstr "添加缺少的语言"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit Translation Language…"
+msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -240,30 +246,30 @@ msgstr "快捷键(_S)"
 msgid "Virtaal Preferences"
 msgstr "Virtaal 偏好选项"
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "The name stored in the file header"
 msgstr "存储在文件头的名称"
 
 #. l10n: This label is for the name of the translator
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Name:"
 msgstr "名称："
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "The e-mail address stored in the file header"
 msgstr "存儲在文件头的电子邮件地址"
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "E-mail address:"
 msgstr "电子邮件地址："
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr "存储在文件头的团队信息。例如这可以是电子邮件地址或网址。"
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Team:"
 msgstr "团队："
 
@@ -498,7 +504,7 @@ msgstr "OmegaT 术语表"
 msgid "Qt .qm file"
 msgstr "Qt .qm 文件"
 
-#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+#: devsupport/tmp_strings.py
 msgid "Qt Linguist Translation File"
 msgstr "Qt Linguist 翻译文件"
 
@@ -530,9 +536,27 @@ msgstr "WiX 本地化文件"
 msgid "Wordfast Translation Memory"
 msgstr "Wordfast 翻译记忆库"
 
-#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+#: devsupport/tmp_strings.py
 msgid "XLIFF Translation File"
 msgstr "XLIFF 翻译文件"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "XLIFF Translation File"
+msgid "SDL XLIFF Translation File"
+msgstr "XLIFF 翻译文件"
+
+#: devsupport/tmp_strings.py
+msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
+msgstr ""
+
+# Chinese translators:
+# Virtaal作者群認为软件名稱不一定要維持原文，如果翻成中文效果更好，那也不介意将名子翻成中文。我對此沒什麼主意，其他中文譯者看到這段留言就自己評估吧。By 劉書源 2009-12-13
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Quit Virtaal"
+msgid "Edit with Virtaal"
+msgstr "退出 Virtaal"
 
 #: devsupport/tmp_strings.py
 msgid "usage: "
@@ -640,66 +664,6 @@ msgid "Qt Message File"
 msgstr "Qt 消息文件"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
-msgid "INI File"
-msgstr "INI 文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "INI"
-msgstr "INI"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Initialization"
-msgstr "初始化"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Java Properties File"
-msgstr "Java Properties 文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "OpenOffice.org Translation File"
-msgstr "OpenOffice.org 翻译文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "XLIFF"
-msgstr "XLIFF"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "XML Localization Interchange File Format"
-msgstr "XML 本地化互换文件格式(XLIFF)"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "C++ RC File"
-msgstr "C++ 资源文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "RC"
-msgstr "RC"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Resource Compiler"
-msgstr "资源編译器"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Tcl Translation File"
-msgstr "Tcl 翻译文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "JavaScript error message file"
-msgstr "JavaScript 错误信息文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Gettext Translation Template"
-msgstr "Gettext 翻译模板"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Trados Tag Editor"
-msgstr "Trados 标记编辑器"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "OS X Strings File"
-msgstr "OS X 字符串文件"
-
-#: share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX"
 msgstr "UTX"
 
@@ -728,26 +692,6 @@ msgid "enable debugging features"
 msgstr "启用调试功能"
 
 #: virtaal/cli.py
-msgid ""
-"use a synthetic pseudo-translation for every UI string (see devsupport/"
-"pseudo-translation/generate_pseudo_translation.py)"
-msgstr ""
-"对每个 UI 字符串使用合成的伪翻译（参阅 devsupport/pseudo-translation/"
-"generate_pseudo_translation.py）"
-
-#: virtaal/cli.py
-msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
-msgstr "类似 --pseudo-translation，但还模拟从右到左的界面布局"
-
-#: virtaal/cli.py
-msgid ""
-"like --pseudo-translation, but prefixes every string with the catalog it "
-"comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
-msgstr ""
-"类似 --pseudo-translation，但在每个字符串前加上它锁来自的目录前缀 (例如 \"vt:"
-"\" 表示 Virtaal 自身的，\"gtk:\" 表示 GTK 的)"
-
-#: virtaal/cli.py
 msgid "LANG"
 msgstr "语言"
 
@@ -759,15 +703,6 @@ msgid ""
 msgstr ""
 "在这次运行中改写界面语言 (例如 \"fr\"; \"en\" 用于未翻译的来源字符串; "
 "\"system\" 表示系统本身的默认设置)，无需更改已保存的偏好选项设置"
-
-#: virtaal/cli.py
-msgid "PROFILE"
-msgstr "分析档"
-
-#. l10n: 'profiling' refers to performance testing
-#: virtaal/cli.py
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "执行分析，存储結果到提供的文件名。"
 
 #: virtaal/cli.py
 #, python-format
@@ -991,6 +926,10 @@ msgid "KDE"
 msgstr "KDE"
 
 #: virtaal/controllers/checkscontroller.py
+msgid "Qt"
+msgstr ""
+
+#: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
 msgstr "GNOME"
 
@@ -999,26 +938,16 @@ msgid "Drupal"
 msgstr "Drupal"
 
 #: virtaal/controllers/maincontroller.py
-msgid "Header information"
-msgstr "标头信息"
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your name"
-msgstr "请输入您的名称"
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your e-mail address"
-msgstr "请输入您的电子邮件地址"
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your team's information"
-msgstr "请输入您的团队信息"
-
-#: virtaal/controllers/maincontroller.py
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "您选择了当前打开的文件要打开。您想要重载文件吗？"
+
+#: virtaal/controllers/maincontroller.py virtaal/main.py
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Loading '%s'…"
+msgstr "正在加载‘%s’…"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1276,6 +1205,21 @@ msgstr "已翻译"
 msgid "Reviewed"
 msgstr "已审阅"
 
+#: virtaal/models/storemodel.py
+msgid ""
+"The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
+"Open it with File > Open or from your file manager."
+msgstr ""
+
+# 82%
+#: virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr "文件不存在。"
+
+#: virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr "不是有效文件。"
+
 #. l10n: Context: show every unit, not only the matching ones
 #: virtaal/modes/defaultmode.py virtaal/views/modeview.py
 msgid "All"
@@ -1470,6 +1414,15 @@ msgstr "网址"
 msgid "Quote Query"
 msgstr "引号查询"
 
+#. l10n: "virtaal-" is a literal prefix - leave it untranslated
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Names starting with \"virtaal-\" are reserved."
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "A web look-up with this name already exists."
+msgstr ""
+
 #: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr "从 KBabel、Lokalize 和/或 poEdit 迁移设置到 Virtaal 中。"
@@ -1526,32 +1479,6 @@ msgstr "拼字检查程序"
 #: virtaal/plugins/spellchecker.py
 msgid "Check spelling and provide suggestions"
 msgstr "检查拼写和提供建议"
-
-#. l10n: This refers to spell checking
-#: virtaal/plugins/spellchecker.py
-msgid "<i>(no suggestions)</i>"
-msgstr "<i>(不建议)</i>"
-
-#. l10n: This refers to spell checking
-#: virtaal/plugins/spellchecker.py
-msgid "Ignore All"
-msgstr "忽略全部"
-
-#. l10n: This refers to spelling suggestions
-#: virtaal/plugins/spellchecker.py
-msgid "More…"
-msgstr "更多..."
-
-#. l10n: This refers to the spell checking dictionary
-#: virtaal/plugins/spellchecker.py
-#, python-format
-msgid "Add \"%s\" to Dictionary"
-msgstr "添加 \"%s\" 到词典"
-
-# 88%
-#: virtaal/plugins/spellchecker.py
-msgid "Languages"
-msgstr "语言"
 
 #: virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
@@ -1787,12 +1714,6 @@ msgstr "匹配"
 msgid "TM Source"
 msgstr "记忆库来源"
 
-#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: virtaal/plugins/tm/tmwidgets.py
-#, python-format
-msgid "%(match_quality)s%%"
-msgstr "%(match_quality)s%%"
-
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
 #: virtaal/plugins/tm/tmwidgets.py
 msgid "?"
@@ -1820,13 +1741,6 @@ msgstr "关闭"
 #: virtaal/support/crash_dialog.py
 msgid "Report This Bug…"
 msgstr "报告这个错误..."
-
-#. l10n: The digits zero to nine of your language's number system, in
-#. order, e.g. "٠١٢٣٤٥٦٧٨٩" for Arabic-Indic digits. Leave untranslated
-#. to use the Unicode CLDR's default digits for your language.
-#: virtaal/support/libi18n/numbers.py
-msgid "0123456789"
-msgstr "〇一二三四五六七八九"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2020,23 +1934,23 @@ msgid ""
 "the \"(s)\" is used to show that we don't know how many it will be. This is "
 "often hard to translate well. If you encounter this in software translation, "
 "you might want to hear from developers if this can be avoided. Read more "
-"about this and decide how to do it in your language: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"about this and decide how to do it in your language: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 "在这条消息中，“%d”再次指代文件的数量，但注意这里使用了“(s)”来表示我们不知道具"
 "体是几个。这通常很难翻译得很自然。如果你在软件翻译中遇到这种情况，可能需要与"
-"开发人员确认是否可避免。阅读更多内容并在你的语言中决定如何处理：http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"开发人员确认是否可避免。阅读更多内容并在你的语言中决定如何处理：http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In this message the proper way of translating plurals are seen. You need to "
 "enter between 1 and 6 different versions of the translation to ensure the "
-"correct grammar in your language. Read more about this here: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"correct grammar in your language. Read more about this here: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 "在这条消息中，可以看到复数的正确翻译方法。你需要输入1到6个不同版本的翻译，以"
 "确保你语言的语法正确。在这里可以了解更多信息：http://docs.translatehouse.org/"
@@ -2051,8 +1965,8 @@ msgid ""
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
 "在这条消息中，\"%s\" 是一个表示文件名的占位符（变量）。确保你的翻译中包含 "
-"%s。当这条消息被使用时，%s 会被替换为一个文件名，例如 '文件将保存为 example."
-"odt'。注意，\"%s\" 并不是指百分比。"
+"%s。当这条消息被使用时，%s 会被替换为一个文件名，例如 '文件将保存为 "
+"example.odt'。注意，\"%s\" 并不是指百分比。"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2173,8 +2087,8 @@ msgstr ""
 
 #: virtaal/support/tutorial.py
 msgid ""
-"In the previous entry you have created one terminology entry for the \"filter"
-"\" verb. Now do the same for \"filter\" noun."
+"In the previous entry you have created one terminology entry for the "
+"\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
 "在上一条目中，你已经为“filter”这个动词创建了一个术语条目。现在也为“filter”这"
 "个名词做同样的事。"
@@ -2294,16 +2208,16 @@ msgid "Checks: %(checker_name)s"
 msgstr "检查：%(checker_name)s"
 
 #: virtaal/views/checksunitview.py
-msgid "No issues"
-msgstr "没有问题"
-
-#: virtaal/views/checksunitview.py
 msgid "Quality Check"
 msgstr "质量检查"
 
 #: virtaal/views/checksunitview.py
 msgid "Description"
 msgstr "描述"
+
+#: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
+msgid "Quality checks"
+msgstr "质量检查"
 
 #: virtaal/views/langview.py
 msgid "_New Language Pair…"
@@ -2316,6 +2230,13 @@ msgstr "取消(_C)"
 #: virtaal/views/mainview.py
 msgid "_OK"
 msgstr "确定(_O)"
+
+#. l10n: macOS app menu item that opens the Preferences dialog
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Settings"
+msgid "Settings…"
+msgstr "设置"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2380,6 +2301,10 @@ msgid "Please enter the plural equation to use"
 msgstr "请输入要使用的复数方程式"
 
 #: virtaal/views/mainview.py
+msgid "Header information"
+msgstr "标头信息"
+
+#: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
 msgstr "Virtaal %s 可用 (你拥有 %s)"
@@ -2399,11 +2324,6 @@ msgid ""
 "settings. The old file was kept at: %s"
 msgstr ""
 "你的设置文件无法被读取，所以 Virtaal 以默认设置启动。旧的文件保留在: %s"
-
-#: virtaal/views/mainview.py
-#, python-format
-msgid "Loading '%s'…"
-msgstr "正在加载‘%s’…"
 
 #: virtaal/views/mainview.py
 #, python-format
@@ -2521,30 +2441,15 @@ msgstr "已翻译:"
 msgid "Reviewed:"
 msgstr "已审阅:"
 
-#: virtaal/views/propertiesview.py
-msgid "(0%)"
-msgstr "(0%)"
-
-#: virtaal/views/propertiesview.py
-msgid "(100%)"
-msgstr "(100%)"
-
-#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#. l10n: A percentage in the file properties, e.g. "(25.5%)"
 #: virtaal/views/propertiesview.py
 #, python-format
-msgid "(%04.1f%%)"
-msgstr "(%04.1f%%)"
+msgid "(%s)"
+msgstr ""
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
 msgstr "这个文件有未保存的更改。"
-
-# 88%
-#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
-#: virtaal/views/propertiesview.py
-#, python-format
-msgid "<b>%d</b>"
-msgstr "<b>%d</b>"
 
 #: virtaal/views/storeview.py
 msgid "Export failed"
@@ -2615,12 +2520,35 @@ msgid "translator-credits"
 msgstr "egfree"
 
 #: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language"
+msgid "Edit Language"
+msgstr "语言"
+
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Enter a new line"
+msgid "Enter a language name."
+msgstr "输入一个新行符"
+
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
 msgstr "语言代码必须是ASCII字串。"
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be at least 2 characters long."
 msgstr "语言代码必须至少 2 个字符长。"
+
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language code must be an ASCII string."
+msgid "Language code must not contain spaces."
+msgstr "语言代码必须是ASCII字串。"
+
+#: virtaal/views/widgets/langadddialog.py
+#, python-format
+msgid "Language code %s is already used."
+msgstr ""
 
 #: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
@@ -2807,10 +2735,6 @@ msgid "Translation memory"
 msgstr "翻译记忆库"
 
 #: virtaal/views/widgets/welcomescreen.py
-msgid "Quality checks"
-msgstr "质量检查"
-
-#: virtaal/views/widgets/welcomescreen.py
 msgid "Machine translation"
 msgstr "机器翻译"
 
@@ -2821,6 +2745,129 @@ msgstr "可替换项的高亮和插入"
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Many plugins and options for customization"
 msgstr "多个插件和定制的选项"
+
+#~ msgid "_Add Missing Language..."
+#~ msgstr "加入缺少的语言(_A)..."
+
+#~ msgid "INI File"
+#~ msgstr "INI 文件"
+
+#~ msgid "INI"
+#~ msgstr "INI"
+
+#~ msgid "Initialization"
+#~ msgstr "初始化"
+
+#~ msgid "Java Properties File"
+#~ msgstr "Java Properties 文件"
+
+#~ msgid "OpenOffice.org Translation File"
+#~ msgstr "OpenOffice.org 翻译文件"
+
+#~ msgid "XLIFF"
+#~ msgstr "XLIFF"
+
+#~ msgid "XML Localization Interchange File Format"
+#~ msgstr "XML 本地化互换文件格式(XLIFF)"
+
+#~ msgid "C++ RC File"
+#~ msgstr "C++ 资源文件"
+
+#~ msgid "RC"
+#~ msgstr "RC"
+
+#~ msgid "Resource Compiler"
+#~ msgstr "资源編译器"
+
+#~ msgid "Tcl Translation File"
+#~ msgstr "Tcl 翻译文件"
+
+#~ msgid "JavaScript error message file"
+#~ msgstr "JavaScript 错误信息文件"
+
+#~ msgid "Gettext Translation Template"
+#~ msgstr "Gettext 翻译模板"
+
+#~ msgid "Trados Tag Editor"
+#~ msgstr "Trados 标记编辑器"
+
+#~ msgid "OS X Strings File"
+#~ msgstr "OS X 字符串文件"
+
+#~ msgid ""
+#~ "use a synthetic pseudo-translation for every UI string (see devsupport/"
+#~ "pseudo-translation/generate_pseudo_translation.py)"
+#~ msgstr ""
+#~ "对每个 UI 字符串使用合成的伪翻译（参阅 devsupport/pseudo-translation/"
+#~ "generate_pseudo_translation.py）"
+
+#~ msgid ""
+#~ "like --pseudo-translation, but also simulates a right-to-left UI layout"
+#~ msgstr "类似 --pseudo-translation，但还模拟从右到左的界面布局"
+
+#~ msgid ""
+#~ "like --pseudo-translation, but prefixes every string with the catalog it "
+#~ "comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
+#~ msgstr ""
+#~ "类似 --pseudo-translation，但在每个字符串前加上它锁来自的目录前缀 (例如 "
+#~ "\"vt:\" 表示 Virtaal 自身的，\"gtk:\" 表示 GTK 的)"
+
+#~ msgid "PROFILE"
+#~ msgstr "分析档"
+
+#~ msgid "perform profiling, storing the result to the supplied filename."
+#~ msgstr "执行分析，存储結果到提供的文件名。"
+
+#~ msgid "Please enter your name"
+#~ msgstr "请输入您的名称"
+
+#~ msgid "Please enter your e-mail address"
+#~ msgstr "请输入您的电子邮件地址"
+
+#~ msgid "Please enter your team's information"
+#~ msgstr "请输入您的团队信息"
+
+#~ msgid "<i>(no suggestions)</i>"
+#~ msgstr "<i>(不建议)</i>"
+
+#~ msgid "Ignore All"
+#~ msgstr "忽略全部"
+
+#~ msgid "More…"
+#~ msgstr "更多..."
+
+#, python-format
+#~ msgid "Add \"%s\" to Dictionary"
+#~ msgstr "添加 \"%s\" 到词典"
+
+# 88%
+#~ msgid "Languages"
+#~ msgstr "语言"
+
+#, python-format
+#~ msgid "%(match_quality)s%%"
+#~ msgstr "%(match_quality)s%%"
+
+#~ msgid "0123456789"
+#~ msgstr "〇一二三四五六七八九"
+
+#~ msgid "No issues"
+#~ msgstr "没有问题"
+
+#~ msgid "(0%)"
+#~ msgstr "(0%)"
+
+#~ msgid "(100%)"
+#~ msgstr "(100%)"
+
+#, python-format
+#~ msgid "(%04.1f%%)"
+#~ msgstr "(%04.1f%%)"
+
+# 88%
+#, python-format
+#~ msgid "<b>%d</b>"
+#~ msgstr "<b>%d</b>"
 
 #~ msgid ""
 #~ "A translation tool to help a human translator translate files into other "
@@ -2880,13 +2927,6 @@ msgstr "多个插件和定制的选项"
 #~ msgid "Show/Hide translation suggestions"
 #~ msgstr "显示/隐藏翻译建议"
 
-# 82%
-#~ msgid "The file does not exist."
-#~ msgstr "文件不存在。"
-
-#~ msgid "Not a valid file."
-#~ msgstr "不是有效文件。"
-
 #~ msgid ""
 #~ "override the UI language for this run (e.g. \"fr\"), without changing the "
 #~ "saved Preferences setting"
@@ -2904,16 +2944,16 @@ msgstr "多个插件和定制的选项"
 #~ msgstr "翻译完成后，只要按下 <Enter> 即可继续下一条。"
 
 #~ msgid ""
-#~ "To copy the original string into the target field, simply press <Alt"
-#~ "+Down>."
+#~ "To copy the original string into the target field, simply press "
+#~ "<Alt+Down>."
 #~ msgstr "要将原文字串复制到目标字段，只要按下 <Alt+↓>。"
 
 #~ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 #~ msgstr "要标记当前翻译为模糊，只需按 <Alt+U>。"
 
 #~ msgid ""
-#~ "To mark the current translation as incomplete, simply press <Ctrl+Shift"
-#~ "+Enter>."
+#~ "To mark the current translation as incomplete, simply press "
+#~ "<Ctrl+Shift+Enter>."
 #~ msgstr "要标记当前翻译为不完整翻译，只需按 <Ctrl+Shift+Enter>。"
 
 # 75%

@@ -1,15 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: gtkspell3 lite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-06 00:51+0100\n"
-"PO-Revision-Date: 2011-05-03 16:35+0000\n"
-"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
 
 #. Seen in: menus
 msgid "<i>(no suggestions)</i>"

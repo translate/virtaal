@@ -24,7 +24,6 @@ import os
 import re
 import subprocess
 import sys
-import time
 
 from translate.misc.multistring import multistring
 from translate.storage import factory, pypo
@@ -96,26 +95,27 @@ def harvested(paths):
 
 
 def write_template(domain, originals):
-    """Rewrite domain's template, keeping its header and developer
-    comments."""
+    """Rewrite domain's template, keeping its Project-Id-Version and
+    developer comments."""
     path = os.path.join(LITE_DIR, domain, domain + ".pot")
     store = pypo.pofile()
     old_notes = {}
+    project = "%s lite" % domain
     if os.path.exists(path):
         old = factory.getobject(path)
         old_notes = {(unit.getcontext() or "", str(unit.source)):
                      "\n".join(line for line in unit.getnotes("developer").splitlines()
                                if not line.startswith("Seen in: "))
                      for unit in old.units if not unit.isheader()}
-        store.units = [old.header()] if old.header() else []
+        project = old.parseheader().get("Project-Id-Version", "PACKAGE VERSION")
+        if project == "PACKAGE VERSION":
+            project = "%s lite" % domain
     else:
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        store.init_headers(charset="UTF-8", encoding="8bit", project_id_version="%s lite" % domain)
-    store.updateheader(pot_creation_date=time.strftime("%Y-%m-%d %H:%M%z"))
-    if store.units:
-        # pot2po copies the template's Language over each merged .po's own.
-        store.units[0].target = "".join(
-            line for line in store.units[0].target.splitlines(True) if not line.startswith("Language:"))
+    # ttk's base header, so no translator, revision date or Language (pot2po
+    # would copy that over each merged .po's own), and no generator.
+    store.updateheader(add=True, Project_Id_Version=project, Content_Type="text/plain; charset=UTF-8",
+                       X_Generator=None)
     for original in sorted(originals, key=lambda o: (o.rpartition("\x04")[2].lower(), o)):
         context, _, msgid = original.rpartition("\x04")
         forms = msgid.split("\0")

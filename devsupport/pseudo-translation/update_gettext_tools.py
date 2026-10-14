@@ -144,7 +144,7 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     template = pypo.pofile()
     template.updateheader(add=True, Project_Id_Version="gettext-tools %s" % version,
-                          Content_Type="text/plain; charset=UTF-8")
+                          Content_Type="text/plain; charset=UTF-8", X_Generator=None)
     for unit in units:
         template.addunit(unit)
     with open(os.path.join(OUT_DIR, DOMAIN + ".pot"), "wb") as f:

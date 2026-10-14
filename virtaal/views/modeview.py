@@ -10,6 +10,7 @@ from gi.repository import GObject, Gtk
 from virtaal.common import GObjectWrapper
 from virtaal.support.libi18n.numbers import format_number
 
+from . import rendering
 from .baseview import BaseView
 
 
@@ -54,7 +55,7 @@ class ModeView(GObjectWrapper, BaseView):
         #l10n: This refers to the 'mode' that determines how Virtaal moves
         #between units.
         self.lbl_mode.set_markup_with_mnemonic(_('N_avigation:'))
-        self.lbl_mode.props.xpad = 3
+        self.lbl_mode.set_margin_end(3)
         self.lbl_mode.set_mnemonic_widget(self.cmb_modes)
         # The mnemonic opens the list, so a keyboard choice is made from it.
         self.cmb_modes.connect('mnemonic-activate', self._on_cmbmode_mnemonic)
@@ -89,7 +90,8 @@ class ModeView(GObjectWrapper, BaseView):
         self.context_box.pack_start(lbl_context, False, False, 0)
         self.context_box.pack_start(self.cmb_context, False, False, 0)
         self.context_box.set_valign(Gtk.Align.START)
-        self.context_box.set_margin_end(6)
+        top_bar.set_margin_start(rendering.UNIT_MARGIN)
+        top_bar.set_margin_end(rendering.UNIT_MARGIN)
         top_bar.pack_end(self.context_box, False, False, 0)
 
     def _load_modes(self):

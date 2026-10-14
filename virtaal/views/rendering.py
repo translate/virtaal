@@ -10,6 +10,10 @@ from gi.repository import Gtk, Pango
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
 
+# Space between the window's sides and the units, the unit editor and the
+# navigation bar, and between a unit's source and target (#4287).
+UNIT_MARGIN = 12
+
 # Scripts Pango finds no font for from the platform's own fonts: from
 # macOS's system UI font (#4107), and from any font on Windows, where
 # Pango only falls back to a fixed list of families (#4208).

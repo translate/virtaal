@@ -74,6 +74,15 @@ def _context_view():
     return view, selected
 
 
+def test_navigation_bar_keeps_off_the_window_sides():
+    # #4287
+    from virtaal.views import rendering
+    view, _selected = _context_view()
+
+    assert view.top_bar.get_margin_start() == rendering.UNIT_MARGIN
+    assert view.top_bar.get_margin_end() == rendering.UNIT_MARGIN
+
+
 def test_context_selector_offers_none_to_all(monkeypatch):
     from virtaal.common import pan_app
     monkeypatch.setattr(pan_app, 'ui_language', 'en')

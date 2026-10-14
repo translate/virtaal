@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import cairo
 import pytest
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, Gtk, Pango
 from translate.storage.placeables import StringElem
 
 from virtaal.views import rendering
@@ -226,6 +226,20 @@ def test_compute_optimal_height_grid_only_recomputes_its_middle_column_children(
     assert middle.get_size_request()[0] == 100  # width / 2
     assert below.get_size_request()[0] == 100
     assert other.get_size_request() == (-1, -1)
+
+
+def test_compute_optimal_height_grid_leaves_out_its_own_margins():
+    # The unit editor's grid has the window margins (#4287).
+    grid = Gtk.Grid()
+    grid.set_margin_start(12)
+    grid.set_margin_end(12)
+    middle = Gtk.Label(label='middle')
+    middle.set_name('vbox_middle')
+    grid.attach(middle, 0, 0, 1, 1)
+
+    compute_optimal_height(grid, 224)
+
+    assert middle.get_size_request()[0] == 100
 
 
 def test_compute_optimal_height_invisible_textview_is_a_noop():
@@ -781,6 +795,35 @@ def test_do_render_paints_the_source_and_target_layouts(monkeypatch):
     assert paints[0]['layout'] is renderer.source_layout
     assert paints[1]['layout'] is renderer.target_layout
     assert paints[1]['x'] > paints[0]['x']  # target sits right of source (LTR)
+
+
+@pytest.mark.parametrize('direction', [Gtk.TextDirection.LTR, Gtk.TextDirection.RTL])
+def test_do_render_keeps_the_text_off_the_row_edges_and_apart(monkeypatch, direction):
+    # #4287: the source text touched the window's left side.
+    paints = []
+    monkeypatch.setattr(
+        Gtk, 'render_layout',
+        lambda context, cr, x, y, layout: paints.append({'x': x, 'layout': layout}))
+    renderer = _renderer_with_view()
+    renderer.editable = False
+    widget = _toplevel_widget()
+    widget.set_direction(direction)
+    _x, _y, width, _height = renderer.do_get_size(widget, None)
+    margin = rendering.UNIT_MARGIN
+    column_width = (width - 3 * margin) / 2
+
+    renderer.do_render(object(), widget, _rectangle(width, 50), _rectangle(width, 50), Gtk.CellRendererState(0))
+
+    first, second = margin, margin + column_width + margin
+    if direction == Gtk.TextDirection.LTR:
+        expected = {'source': first, 'target': second}
+    else:
+        expected = {'source': second, 'target': first}
+    assert paints[0]['layout'] is renderer.source_layout
+    assert paints[0]['x'] == expected['source']
+    assert paints[1]['x'] == expected['target']
+    assert renderer.source_layout.get_width() == int(column_width * Pango.SCALE)
+    assert renderer.target_layout.get_width() == int(column_width * Pango.SCALE)
 
 
 def test_do_render_forces_a_real_layout_for_a_row_do_get_size_only_estimated(monkeypatch):

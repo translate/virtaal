@@ -81,8 +81,6 @@ def test_find_asset_url_mac_x86_64():
 
 
 def test_find_asset_url_linux_has_no_asset_to_pick():
-    """Linux ships as a Flatpak, never a direct release asset - see
-        build-flatpak in ci.yml, which never publishes to a release."""
     plat = Platform(os_name='posix', sys_platform='linux', machine='x86_64')
     assert find_asset_url(_REAL_ASSETS, plat) is None
 

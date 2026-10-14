@@ -59,6 +59,9 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._init_plugins_page()
 
     def _init_language_gui(self):
+        # Any wrap width opens the menu below the combo box, instead of
+        # over it lined up with the active language.
+        self._widgets['cmb_ui_language'].set_wrap_width(1)
         self._widgets['cmb_ui_language'].append('', _('System default'))
         for code, name in pan_app.get_available_ui_languages():
             endonym = pan_app.get_language_endonym(code)

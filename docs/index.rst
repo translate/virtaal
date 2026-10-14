@@ -40,11 +40,16 @@ Help menu.
 
 Installation
 ============
-Download the latest release (Windows installer, macOS `.dmg`) from the
-`Releases page <https://github.com/translate/virtaal/releases>`_.
-Linux users can build a `Flatpak
-<https://github.com/translate/virtaal/tree/main/devsupport/packaging/flatpak>`_,
-or build from source - see :doc:`building`.
+Download the latest release (Windows installer, macOS `.dmg`, Linux
+Flatpak) from the `Releases page <https://github.com/translate/virtaal/releases>`_.
+On Linux, pick the ``.flatpak`` for your machine (``x86_64`` or
+``aarch64``) and install it with::
+
+  flatpak install --user Virtaal-linux-x86_64.flatpak
+
+This also installs the GNOME runtime from Flathub if it's missing. The
+bundle doesn't update itself: install each new release the same way.
+To build from source, see :doc:`building`.
 
 .. _index#contact:
 

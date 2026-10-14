@@ -15,9 +15,9 @@ References
 
 Installation
 ------------
-Download the latest release (Windows installer, macOS ``.dmg``) from
-the `Releases page <https://github.com/translate/virtaal/releases>`_.
-Linux users can build a Flatpak, or build from source - see
+Download the latest release (Windows installer, macOS ``.dmg``, Linux
+Flatpak) from the `Releases page <https://github.com/translate/virtaal/releases>`_.
+To build from source, see
 http://docs.translatehouse.org/projects/virtaal/en/latest/building.html
 
 Note that you will probably already want the Translate Toolkit installed and

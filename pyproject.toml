@@ -81,7 +81,7 @@ test = ["pytest==9.1.1", "pytest-cov==7.1.0", "pytest-xdist==3.8.0", "pytest-tim
 docs = ["Sphinx==9.1.0; python_version >= '3.12'"]
 # Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
 # enough yet for a repo-wide rollout.
-type-check = ["ty==0.0.84"]
+type-check = ["ty==0.0.86"]
 
 [project.urls]
 Homepage = "https://virtaal.translatehouse.org"

@@ -441,6 +441,7 @@ jobs:
         with:
           packages: >-
             at-spi2-core
+            gettext
             gir1.2-gtk-3.0
             gir1.2-gtkspell3-3.0
             gobject-introspection
@@ -448,6 +449,7 @@ jobs:
             libcairo2-dev
             libcurl4-gnutls-dev
             libenchant-2-dev
+            libgettextpo0
             libgirepository-2.0-dev
             libglib2.0-dev
             libgnutls28-dev

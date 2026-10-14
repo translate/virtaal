@@ -1242,3 +1242,21 @@ def test_compute_optimal_height_leaves_out_a_containers_margins():
     compute_optimal_height(box, 300)
 
     assert label.get_size_request()[0] == 276
+
+
+@pytest.mark.parametrize('width', [-1, -0.5, 10])
+def test_compute_optimal_height_never_requests_a_width_below_minus_one(width):
+    # Before the window is allocated the editor width is -1 ("unknown");
+    # taking the margins off that gave GTK an invalid -25 (Gtk-CRITICAL).
+    box = Gtk.Box()
+    box.set_margin_start(12)
+    box.set_margin_end(12)
+    label = Gtk.Label(label='A note')
+    box.add(label)
+    box.show_all()
+    requested = []
+    label.set_size_request = lambda w, h: requested.append(w)
+
+    compute_optimal_height(box, width)
+
+    assert requested and all(int(w) >= -1 for w in requested)

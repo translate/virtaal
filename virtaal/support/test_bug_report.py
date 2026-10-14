@@ -6,8 +6,11 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
+import re
 from urllib.parse import parse_qs, urlsplit
 
+from virtaal import __version__
 from virtaal.common.platform import Platform
 from virtaal.support.bug_report import REPO_URL, build_bug_report_url
 
@@ -47,3 +50,14 @@ def test_extra_fields_override_builtin():
         extra_fields={'logs': 'Traceback...', 'os': 'Other'}, plat=Platform()))
     assert fields['logs'] == 'Traceback...'
     assert fields['os'] == 'Other'
+
+
+def test_template_version_placeholder_is_current():
+    # 5e7cca9 is no real commit, so a report that copied the placeholder
+    # stands out.
+    template = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir,
+                            '.github', 'ISSUE_TEMPLATE', 'bug_report.yml')
+    with open(template, encoding='utf-8') as f:
+        placeholder = re.search(
+            r'id: version\n(?:.*\n)*?\s+placeholder: (.*)', f.read()).group(1)
+    assert placeholder == "%s (5e7cca9)" % __version__.ver

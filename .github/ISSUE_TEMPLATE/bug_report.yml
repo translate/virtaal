@@ -25,10 +25,10 @@ body:
     id: version
     attributes:
       label: Virtaal version
-      description: Run `virtaal --version` (or Help → About), and paste the full output here.
-      placeholder: 1.0.0-beta1 (5bb637f)
+      description: Help → About, or run `virtaal --version`. Not sure? Leave it blank.
+      placeholder: 1.0.0-rc1 (5bb637f)
     validations:
-      required: true
+      required: false
 
   - type: input
     id: install-method
@@ -36,7 +36,7 @@ body:
       label: How did you install Virtaal?
       placeholder: e.g. Windows installer, macOS .dmg, Flatpak, pip install, Linux distro package
     validations:
-      required: true
+      required: false
 
   - type: input
     id: os
@@ -44,7 +44,7 @@ body:
       label: Operating system
       placeholder: e.g. Windows, macOS, Linux
     validations:
-      required: true
+      required: false
 
   - type: input
     id: os-version

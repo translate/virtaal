@@ -5,7 +5,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: \.pot?$|^devsupport/packaging/windows/languages/
+        exclude: \.pot?$|\.patch$|^devsupport/packaging/windows/languages/
       - id: end-of-file-fixer
         exclude: \.pot?$|^devsupport/packaging/windows/languages/
       - id: check-yaml

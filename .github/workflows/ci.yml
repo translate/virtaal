@@ -1499,6 +1499,13 @@ jobs:
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --version
 
+      - name: Smoke test - the spell checker's GtkSpell loads
+        working-directory: devsupport/packaging/flatpak
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
+            python3 -c "import gi; gi.require_version('GtkSpell', '3.0'); from gi.repository import GtkSpell; GtkSpell.Checker()"
+
       - name: Smoke test - the msgfmt check's library loads
         working-directory: devsupport/packaging/flatpak
         # The runtime's libgettextpo. Its message stays English: the

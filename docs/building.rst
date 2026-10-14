@@ -120,10 +120,16 @@ This produces a local build in ``build-dir``, runnable directly with::
 <https://github.com/flatpak/flatpak-builder-tools/tree/master/pip>`_
 and shouldn't be hand-edited except where noted in its own comments.
 
+To make the single-file bundle CI attaches to each release::
+
+  flatpak build-bundle \
+    --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
+    repo Virtaal-linux-x86_64.flatpak io.github.translate.Virtaal
+
 flatpak-builder builds for whatever CPU architecture it runs on - a
 real aarch64 CI runner and an aarch64 ``org.gnome.Platform`` runtime
-both already exist, so CI builds and smoke-tests both x86_64 and
-aarch64 as a matrix, rather than shipping only one.
+both already exist, so CI builds, smoke-tests and bundles both x86_64
+and aarch64 as a matrix, rather than shipping only one.
 
 .. _building#windows:
 

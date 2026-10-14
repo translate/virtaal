@@ -1509,13 +1509,36 @@ jobs:
             virtaal --run-module virtaal.support.gettextpo | tee gettextpo.txt
           grep -q "^library: lib" gettextpo.txt
 
+      - name: Export the single-file bundle
+        working-directory: devsupport/packaging/flatpak
+        # --runtime-repo: installing the bundle fetches the GNOME runtime
+        # from Flathub.
+        run: |
+          flatpak build-bundle \
+            --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
+            repo Virtaal-linux-${{ matrix.arch }}.flatpak io.github.translate.Virtaal
+
+      - name: Smoke test - the bundle installs and runs
+        working-directory: devsupport/packaging/flatpak
+        # Uninstalled afterwards so the runtime cache doesn't keep it.
+        run: |
+          flatpak install --user -y --noninteractive --reinstall \
+            Virtaal-linux-${{ matrix.arch }}.flatpak
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak run io.github.translate.Virtaal --version
+          flatpak uninstall --user -y --noninteractive io.github.translate.Virtaal
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Virtaal-flatpak-${{ matrix.arch }}
+          path: devsupport/packaging/flatpak/Virtaal-linux-${{ matrix.arch }}.flatpak
+          if-no-files-found: error
+
   linux:
     # Endpoint standing in for `test` + `build-flatpak`, which now run
     # in parallel rather than one gating the other (see build-flatpak's
     # own comment). See the `windows` endpoint's own comment for why no
-    # `if: always()` is needed here. `release` depends on this even
-    # though nothing here publishes a flatpak yet - a broken flatpak
-    # build shouldn't ship a release either.
+    # `if: always()` is needed here.
     needs: [test, build-flatpak]
     runs-on: ubuntu-24.04
     timeout-minutes: 1
@@ -1556,9 +1579,7 @@ jobs:
     # already requires its own test-*/build-* pair to have passed (see
     # those endpoints' own comments), so by the time this job's
     # dependencies are satisfied, every artifact is already proven
-    # working by the same run's own test suite. `linux` (build-flatpak)
-    # is included even though nothing here publishes a flatpak yet -
-    # a broken flatpak build shouldn't ship a release either.
+    # working by the same run's own test suite.
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     if: startsWith(github.ref, 'refs/tags/v')
@@ -1605,6 +1626,13 @@ jobs:
           mv release-assets/arm64/Virtaal.dmg release-assets/Virtaal-macos-arm64.dmg
           mv release-assets/x86_64/Virtaal.dmg release-assets/Virtaal-macos-x86_64.dmg
           rmdir release-assets/arm64 release-assets/x86_64
+
+      - name: Download Flatpak bundles
+        uses: actions/download-artifact@v8
+        with:
+          pattern: Virtaal-flatpak-*
+          path: release-assets
+          merge-multiple: true
 
       - name: Download translation packs (release candidates)
         # Translators are called on at each release candidate.

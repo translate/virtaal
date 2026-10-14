@@ -62,8 +62,8 @@ def is_newer(remote_version, local_version):
 def find_asset_url(assets, plat=platform):
     """Pick the release asset's browser_download_url matching this
         platform, or None if no confident match exists - either an
-        unsupported platform (e.g. Linux, which ships no direct asset -
-        see build-flatpak in ci.yml) or a release missing the expected
+        unsupported platform (e.g. Linux, whose Flatpak isn't frozen
+        and so never checks) or a release missing the expected
         asset. Names are exactly what .github/workflows/ci.yml's
         release job produces: 'virtaal-<version>-setup.exe' and the
         version-independent 'Virtaal-macos-<arch>.dmg'."""

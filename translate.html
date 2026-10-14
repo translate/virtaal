@@ -23,19 +23,27 @@ title: Translate
   <p>Virtaal ships a language once its <strong>level 1</strong> is
     translated: what everyone sees, from the welcome screen and menus to
     editing a file. Level 2 is settings and screens seen once, level 3
-    everything else. Translate level 1 first and your language ships in
-    the next release.</p>
+    everything else. Finish level 1 and your language ships in the next
+    release.</p>
 
   <ol>
-    <li>Download your language's translation pack. <code>LANG-level1.po</code>
-      is level 1, <code>LANG-level2.po</code> levels 1 and 2. Files such
-      as <code>gtk30-LANG-level1.po</code> hold toolkit messages your
-      system doesn't translate yet.</li>
+    <li>Download your language's translation pack and pick
+      <strong>one</strong> level: the <code>-level1.po</code> files hold
+      level 1, the <code>-level2.po</code> files levels 1 and 2 together.
+      Work in one doesn't carry over to the other, so don't do both. Next
+      to <code>LANG-level1.po</code>, a pack can have files such as
+      <code>gtk30-LANG-level1.po</code>: toolkit messages your system
+      doesn't translate yet. Translate those too.</li>
     <li>Translate it, in Virtaal or any PO editor.</li>
     <li>Zip it and send it with the
       <a href="{{ site.gh_url }}/issues/new?template=translation_update.yml">Translation update</a>
       form.</li>
   </ol>
+
+  <p>Comfortable with git? Skip the pack and send a
+    <a href="{{ site.gh_url }}/pulls">pull request</a> that updates
+    <code>po/LANG.po</code>, and <code>po/lite/&lt;library&gt;/LANG.po</code>
+    for toolkit messages.</p>
 
   <p>
     <a class="btn btn-success" id="release-packs" href="{{ site.gh_url }}/releases">Translation packs

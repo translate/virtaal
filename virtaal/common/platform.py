@@ -45,7 +45,10 @@ class Platform:
         # bundle_dir when frozen (see above), sys.prefix otherwise
         # (gettext's own default search path is keyed off
         # sys.base_prefix, missing a venv's own installed translations).
-        prefix = prefix if prefix is not None else sys.prefix
+        # A Flatpak runs the runtime's Python (sys.prefix /usr); the app
+        # itself is installed in /app.
+        if prefix is None:
+            prefix = '/app' if self.is_flatpak else sys.prefix
         self.locale_dir = os.path.join(self.bundle_dir or prefix, 'share', 'locale')
 
     def use_app_name_in_title(self):

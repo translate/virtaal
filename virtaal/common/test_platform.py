@@ -82,6 +82,11 @@ def test_locale_dir_uses_sys_prefix_when_not_frozen():
     assert p.locale_dir == os.path.join('/fake/venv', 'share', 'locale')
 
 
+def test_locale_dir_is_under_app_in_flatpak():
+    p = Platform(frozen=False, environ={'FLATPAK_ID': 'io.github.translate.Virtaal'})
+    assert p.locale_dir == os.path.join('/app', 'share', 'locale')
+
+
 def test_intel():
     p = Platform(machine='x86_64')
     assert p.is_intel

@@ -1533,6 +1533,9 @@ jobs:
             Virtaal-linux-${{ matrix.arch }}.flatpak
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak run io.github.translate.Virtaal --version
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak run --command=python3 io.github.translate.Virtaal -c \
+            "from virtaal.common import pan_app; n = len(pan_app.get_available_ui_languages()); print(n, 'UI languages'); assert n > 20"
           flatpak uninstall --user -y --noninteractive io.github.translate.Virtaal
 
       - uses: actions/upload-artifact@v7

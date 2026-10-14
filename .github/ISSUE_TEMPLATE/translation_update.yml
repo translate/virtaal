@@ -8,7 +8,7 @@ body:
       value: |
         Thank you for translating Virtaal. [Translate Virtaal](https://virtaal.translatehouse.org/translate.html) shows how far each language is and has the translation packs to start from. Pick one level and translate all of that level's files in your pack (the level 1 files or the level 2 files): level 2 already includes level 1, so there's no need to do both.
 
-        Comfortable with git? A pull request that updates `po/LANG.po`, and `po/lite/<library>/LANG.po` for toolkit messages, is just as welcome, instead of this form.
+        Comfortable with git? A pull request that updates `po/LANG.po`, and `po/lite/<library>/LANG.po` for GTK and other libraries' messages, is just as welcome, instead of this form.
 
         GitHub doesn't accept .po files here, so put your files in a .zip and attach that.
 

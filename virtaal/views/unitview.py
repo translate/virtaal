@@ -147,6 +147,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         vbox_editor = self._widgets['vbox_editor']
         vbox_editor.get_parent().remove(vbox_editor)
         self.add(vbox_editor)
+        tbl_editor = self.gui.get_object('tbl_editor')
+        tbl_editor.set_margin_start(rendering.UNIT_MARGIN)
+        tbl_editor.set_margin_end(rendering.UNIT_MARGIN)
         self._setup_menus()
         self.unit = None
 

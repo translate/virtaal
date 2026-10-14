@@ -43,6 +43,7 @@ def gtk_container_compute_optimal_height(widget, width):
 
 @compute_optimal_height.register(Gtk.Grid)
 def gtk_table_compute_optimal_height(widget, width):
+    width -= widget.get_margin_start() + widget.get_margin_end()
     for child in widget.get_children():
         if child.props.name not in ("vbox_middle", "vbox_below"):
             continue
@@ -383,14 +384,14 @@ class StoreCellRenderer(Gtk.CellRenderer):
             # marked estimated for the revalidation to correct.
             self._compute_exact_height(widget, width)
             self.view._treeview.schedule_revalidate_visible_estimated_rows()
-        x = cell_area.x + x_offset
+        x = cell_area.x + x_offset + rendering.UNIT_MARGIN
         y = cell_area.y + y_offset
         source_x = x
         target_x = x
         if widget.get_direction() == Gtk.TextDirection.LTR:
-            target_x += width/2
+            target_x += self._column_width(width) + rendering.UNIT_MARGIN
         else:
-            source_x += (width/2) + 10
+            source_x += self._column_width(width) + rendering.UNIT_MARGIN
         # NORMAL regardless of selection - _paint_state_background_if_selected()
         # already handles the selected-row background, text shouldn't also
         # pick up a "selected" style on top of it.
@@ -424,9 +425,9 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self.source_layout = None
             self.target_layout = None
             treeview.mark_row_estimated(self.unit)
-            source_height = self._estimate_text_height(widget, self.unit.source, width / 2,
+            source_height = self._estimate_text_height(widget, self.unit.source, self._column_width(width),
                     rendering.get_source_font_description())
-            target_height = self._estimate_text_height(widget, self.unit.target, width / 2,
+            target_height = self._estimate_text_height(widget, self.unit.target, self._column_width(width),
                     rendering.get_target_font_description())
             return max(source_height, target_height) + self.ROW_PADDING
 
@@ -437,10 +438,10 @@ class StoreCellRenderer(Gtk.CellRenderer):
         lang_controller = self.view.controller.main_controller.lang_controller
         srclang = lang_controller.source_lang.code
         tgtlang = lang_controller.target_lang.code
-        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2,
+        self.source_layout = self._get_pango_layout(widget, self.unit.source, self._column_width(width),
                 rendering.get_source_font_description())
         self.source_layout.get_context().set_language(rendering.get_language(srclang))
-        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2,
+        self.target_layout = self._get_pango_layout(widget, self.unit.target, self._column_width(width),
                 rendering.get_target_font_description())
         self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
         # This makes no sense, but has the desired effect to align things correctly for
@@ -451,6 +452,11 @@ class StoreCellRenderer(Gtk.CellRenderer):
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
         return max(source_height, target_height) + self.ROW_PADDING
+
+    @staticmethod
+    def _column_width(width):
+        """The width of the source or target text in a row this wide."""
+        return (width - 3 * rendering.UNIT_MARGIN) / 2
 
     def _row_needs_exact_height(self, treeview, store):
         if not store:

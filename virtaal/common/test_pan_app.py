@@ -555,6 +555,18 @@ def test_get_config_dir_on_windows(monkeypatch, tmp_path):
     assert os.path.isdir(confdir)
 
 
+def test_get_config_dir_in_flatpak_is_under_xdg_config_home(monkeypatch, tmp_path):
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    monkeypatch.setattr(pan_app.platform, 'is_flatpak', True)
+    monkeypatch.setenv('XDG_CONFIG_HOME', str(tmp_path))
+
+    confdir = get_config_dir()
+
+    assert confdir == os.path.join(str(tmp_path), 'virtaal')
+    assert os.path.isdir(confdir)
+
+
 # _repo_root() #
 
 def test_repo_root_resolves_to_the_real_checkout_root():

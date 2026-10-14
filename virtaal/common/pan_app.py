@@ -54,6 +54,9 @@ def get_config_dir():
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
     elif platform.is_mac:
         confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
+    elif platform.is_flatpak:
+        # The sandbox's home is discarded on exit; XDG_CONFIG_HOME persists.
+        confdir = os.path.join(os.environ['XDG_CONFIG_HOME'], 'virtaal')
     else:
         #TODO: move to ~/.config/virtaal and migrate
         confdir = os.path.expanduser('~/.virtaal')

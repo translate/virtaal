@@ -254,3 +254,17 @@ def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
 
     assert statsdb.StatsCache.defaultfile.startswith(os.path.realpath(str(tmp_path)))
     assert os.path.exists(statsdb.StatsCache.defaultfile)
+
+
+def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch):
+    from virtaal.common.platform import platform
+    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(platform, 'is_flatpak', True)
+    monkeypatch.setenv('XDG_CACHE_HOME', str(tmp_path))
+
+    statsdb.StatsCache()
+
+    assert statsdb.StatsCache.defaultfile == \
+        os.path.join(os.path.realpath(str(tmp_path)), 'translate_toolkit', 'stats.db')

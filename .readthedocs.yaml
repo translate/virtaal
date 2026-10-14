@@ -1,0 +1,11 @@
+# Read the Docs builds every pull request, but this branch is the Jekyll
+# website, not the Sphinx docs (those live on main). Exit code 183 cancels
+# the build, and Read the Docs reports a cancelled build as passing.
+# https://docs.readthedocs.com/platform/stable/guides/build/skip-or-cancel-builds.html
+
+version: 2
+
+build:
+  os: ubuntu-24.04
+  commands:
+    - exit 183

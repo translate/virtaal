@@ -21,8 +21,7 @@ def _get_build_commit():
        into git (see .gitignore). The only source that works in a
        frozen build, which has no .git directory or git binary.
     2. A live `git rev-parse HEAD`, for everything else (running from
-       a checkout directly, e.g. bin/virtaal or the run-virtaal
-       skill).
+       a checkout directly, e.g. bin/virtaal).
     """
     try:
         from virtaal._build_info import commit

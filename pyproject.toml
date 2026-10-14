@@ -29,7 +29,7 @@ classifiers = [
 # GTK3/PyGObject deliberately NOT listed here: `pip install pygobject`
 # only succeeds if GTK3's own headers/libs are already present on the
 # system, which varies wildly by platform (apt/Homebrew/gvsbuild) - see
-# each CI job and .claude/skills/run-virtaal/SKILL.md's prerequisites.
+# each CI job's prerequisites.
 # It's a documented system prerequisite, not a normal pip dependency,
 # same reason most GTK Python projects don't declare it either.
 dependencies = [

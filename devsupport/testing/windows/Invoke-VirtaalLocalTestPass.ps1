@@ -276,9 +276,7 @@ function Open-VirtaalFileViaDialog {
     more diagnostics to instead of three.
 
     History: originally typed a bare filename directly into the file
-    list, relying on GTK's interactive/type-ahead search (the same
-    mechanism the run-virtaal skill's macOS driver relies on for its
-    native NSOpenPanel) - a saved screenshot from a live failure
+    list, relying on GTK's interactive/type-ahead search - a saved screenshot from a live failure
     (2026-08-24) showed the dialog's search UI itself active with
     "af.po" typed and "No Results Found": GTK3's file chooser search is
     a broader, non-recursive-by-default search feature, not a simple
@@ -932,8 +930,7 @@ Invoke-VirtaalCheck "Welcome screen: open dialog + Recent Files" {
     # off the dialog); Send-VirtaalPopupKeys targets the dialog's own
     # HWND instead. Typing a filename with no field explicitly focused
     # relies on GTK's built-in interactive/type-ahead search in the file
-    # list, the same mechanism the run-virtaal skill's macOS driver
-    # relies on for its native NSOpenPanel.
+    # list.
     #
     # History: originally drove File > Recent Files via Alt+F, a "r"
     # mnemonic jump, Right to open the submenu, Enter to activate its

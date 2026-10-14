@@ -40,6 +40,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         self.add(child)
 
         self._get_widgets()
+        self.widgets['img_banner'].get_parent().connect('size-allocate', self._on_banner_allocate)
         self._init_feature_view()
         self._init_features_expander()
 
@@ -126,7 +127,19 @@ class WelcomeScreen(Gtk.ScrolledWindow):
 
     # METHODS #
     def set_banner_image(self, filename):
-        self.widgets['img_banner'].set_from_file(filename)
+        banner = self.widgets['img_banner']
+        banner.set_from_file(filename)
+        layout = banner.get_parent()
+        layout.set_size(banner.get_pixbuf().get_width(), layout.get_size()[1])
+
+    def _on_banner_allocate(self, layout, allocation):
+        # A Gtk.Layout shows its left end in either direction, and a
+        # right-to-left banner has its logo at its right end.
+        hadjustment = layout.props.hadjustment
+        value = 0
+        if layout.get_direction() == Gtk.TextDirection.RTL:
+            value = hadjustment.get_upper() - hadjustment.get_page_size()
+        hadjustment.set_value(value)
 
 
     # SIGNAL HANDLERS #

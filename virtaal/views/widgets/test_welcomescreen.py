@@ -40,14 +40,39 @@ def test_button_click_emits_button_clicked_with_its_name():
     assert emitted == ['tutorial']
 
 
-def test_set_banner_image_loads_the_given_file(monkeypatch):
+def test_set_banner_image_loads_the_file_and_scrolls_over_all_of_it():
     screen = WelcomeScreen(_real_builder())
-    calls = []
-    monkeypatch.setattr(screen.widgets['img_banner'], 'set_from_file', calls.append)
+    banner = screen.widgets['img_banner']
 
-    screen.set_banner_image('/path/to/banner.png')
+    screen.set_banner_image('share/virtaal/welcome_screen_banner.png')
 
-    assert calls == ['/path/to/banner.png']
+    assert banner.get_pixbuf().get_width() == 2000
+    assert banner.get_parent().get_size()[0] == 2000
+
+
+@pytest.mark.parametrize('direction', [Gtk.TextDirection.LTR, Gtk.TextDirection.RTL])
+def test_the_banner_shows_the_end_its_logo_is_at(direction):
+    # The banners are 2000px wide; the right-to-left ones have the logo
+    # at the right end.
+    screen = WelcomeScreen(_real_builder())
+    screen.set_banner_image('share/virtaal/welcome_screen_banner_rtl.png')
+    window = Gtk.OffscreenWindow()
+    window.set_direction(direction)
+    screen.set_direction(direction)
+    banner = screen.widgets['img_banner']
+    banner.get_parent().set_direction(direction)
+    window.add(screen)
+    window.set_size_request(400, 300)
+    window.show_all()
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+
+    layout = banner.get_parent()
+    width = layout.get_allocation().width
+    scrolled_to = 0 if direction == Gtk.TextDirection.LTR else 2000 - width
+    assert 0 < width < 2000
+    assert layout.props.hadjustment.get_value() == scrolled_to
+    window.destroy()
 
 
 def test_raises_when_the_builder_has_no_welcome_screen_object():

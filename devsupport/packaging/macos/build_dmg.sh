@@ -38,4 +38,11 @@ if [ -n "${CODESIGN_IDENTITY:-}" ]; then
   codesign --verify --verbose=2 dist/Virtaal.dmg
 fi
 
+# The app must still pass a strict check inside the image: anything
+# dmgbuild writes onto it after signing breaks its seal (#4280).
+MOUNT=$(mktemp -d)
+hdiutil attach -nobrowse -readonly -mountpoint "$MOUNT" dist/Virtaal.dmg >/dev/null
+trap 'hdiutil detach "$MOUNT" -quiet; rmdir "$MOUNT"' EXIT
+codesign --verify --deep --strict "$MOUNT/Virtaal.app"
+
 echo "Built dist/Virtaal.dmg"

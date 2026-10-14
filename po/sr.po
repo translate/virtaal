@@ -3,13 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../virtaal/support/native_widgets.py:49
-#: ../virtaal/support/native_widgets.py:50
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-02-11 21:11+0000\n"
+"POT-Creation-Date: 2026-10-13 18:54+0100\n"
 "PO-Revision-Date: 2013-05-27 00:23+0000\n"
 "Last-Translator: Rancher <theranchcowboy@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +15,618 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
-#: ../virtaal/views/mainview.py:842
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Virtaal"
 msgstr "Virtaal"
 
-#: ../share/applications/virtaal.desktop.in.h:2
+#: share/applications/io.github.translate.Virtaal.desktop.in
 msgid "Translation Tool"
 msgstr "Алатка за превођење"
 
-#: ../share/applications/virtaal.desktop.in.h:3
+#. l10n: The summary should be less than 100 characters
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid ""
+#| "A translation tool to help a human translator translate files into other "
+#| "languages"
 msgid ""
-"A translation tool to help a human translator translate files into other "
+"Translation tool to help a human translator translate files into other "
 "languages"
 msgstr "Алатка која помаже преводиоцима да преведу датотеке на друге језике."
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:1
+#: share/virtaal/virtaal.ui
+msgid "Add Missing Language"
+msgstr "Додавање језика који недостаје"
+
+#: share/virtaal/virtaal.ui
+msgid "Language name:"
+msgstr "Име језика:"
+
+#: share/virtaal/virtaal.ui
+msgid "ISO code:"
+msgstr "ISO кôд:"
+
+#: share/virtaal/virtaal.ui
+msgid "Plural expression:"
+msgstr "Израз за множину:"
+
+#: share/virtaal/virtaal.ui
+msgid "Number of plurals:"
+msgstr "Број множина:"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"У зависности од преводилачког пројекта, подаци о множини могу а и не морају "
+"бити обавезни."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Language Information</b>"
+msgstr "<b>Подаци о језику</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "New Language Pair"
+msgstr "Нови језички пар"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr ""
+"<b>Изворни</b> је језик са ког преводите. Ако преводите са енглеског на "
+"српски, енглески је изворни језик."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Original</b>"
+msgstr "<b>Изворни</b>"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr ""
+"<b>Циљни</b> је језик на који преводите. Ако преводите са енглеског на "
+"српски, српски је циљни језик или превод."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translation</b>"
+msgstr "<b>Циљни</b>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Add Missing Language"
+msgid "_Add Missing Language…"
+msgstr "Додавање језика који недостаје"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit Translation Language…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_File"
+msgstr "_Датотека"
+
+#: share/virtaal/virtaal.ui
+msgid "Re_vert to Saved"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "_Update to Template"
+msgid "_Update from Template"
+msgstr "_Ажурирај из…"
+
+#: share/virtaal/virtaal.ui
+msgid "_Export"
+msgstr "_Извези…"
+
+#: share/virtaal/virtaal.ui
+msgid "_Recent Files"
+msgstr "_Недавне датотеке"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit"
+msgstr "_Уређивање"
+
+#: share/virtaal/virtaal.ui
+msgid "_Redo"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Find…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Ne_xt"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Pre_vious"
+msgstr ""
+
+#. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
+#: share/virtaal/virtaal.ui
+msgid "Transfer From Source"
+msgstr "Копирај из извора"
+
+#. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "_Next Placeable"
+msgid "_Insert Placeable"
+msgstr "_Следећи уметак"
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: share/virtaal/virtaal.ui
+msgid "P_revious Placeable"
+msgstr "_Претходни уметак"
+
+#: share/virtaal/virtaal.ui
+msgid "_Next Placeable"
+msgstr "_Следећи уметак"
+
+#: share/virtaal/virtaal.ui
+msgid "_View"
+msgstr "_Приказ"
+
+#: share/virtaal/virtaal.ui
+msgid "_Full Screen"
+msgstr "_Цео екран"
+
+#: share/virtaal/virtaal.ui
+msgid "_Quality Checks"
+msgstr "Провере _квалитета"
+
+#: share/virtaal/virtaal.ui
+msgid "_Navigation"
+msgstr "_Навигација"
+
+#: share/virtaal/virtaal.ui
+msgid "P_age Up"
+msgstr "На_горе за једну страницу"
+
+#: share/virtaal/virtaal.ui
+msgid "_Page Down"
+msgstr "На_доле за једну страницу"
+
+#: share/virtaal/virtaal.ui
+msgid "_First Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Last Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Next Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Advance State"
+msgstr ""
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Reverse State"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Help"
+msgstr "_Помоћ"
+
+#: share/virtaal/virtaal.ui
+msgid "_Online Help"
+msgstr "Помоћ на _мрежи"
+
+#: share/virtaal/virtaal.ui
+msgid "_Tutorial"
+msgstr "_Упутство"
+
+#: share/virtaal/virtaal.ui
+msgid "_Localization Guide"
+msgstr "_Водич кроз локализацију"
+
+#: share/virtaal/virtaal.ui
+msgid "Report a _Bug"
+msgstr "Пријави _грешку"
+
+#: share/virtaal/virtaal.ui
+msgid "Show Lo_gs"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Keyboard _Shortcuts"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Virtaal Preferences"
+msgstr "Жељене поставке Virtaal-а"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The name stored in the file header"
+msgstr "Име које ће бити смештено у заглавље датотеке."
+
+#. l10n: This label is for the name of the translator
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Name:"
+msgstr "Име:"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The e-mail address stored in the file header"
+msgstr "Е-адреса која ће бити смештена у заглавље датотеке."
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "E-mail address:"
+msgstr "Е-адреса:"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
+"Подаци о тиму који ће бити смештени у заглавље датотеке. Можете унети "
+"електронску или URL адресу, на пример."
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Team:"
+msgstr "Тим:"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translator Information</b>"
+msgstr "<b>Подаци о преводиоцу</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Source text:"
+msgstr "Изворни текст:"
+
+#: share/virtaal/virtaal.ui
+msgid "Target text:"
+msgstr "Циљни текст:"
+
+#: share/virtaal/virtaal.ui
+msgid "Use _Default Fonts"
+msgstr "_Подразумевани фонтови"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Fonts</b>"
+msgstr "<b>Фонтови</b>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Language"
+msgid "Language:"
+msgstr "Језик"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "<b>Language Information</b>"
+msgid "<b>Language</b>"
+msgstr "<b>Подаци о језику</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: share/virtaal/virtaal.ui
+msgid "General"
+msgstr "Опште"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Умеци су делови текста које програм аутоматски препозна и означи ради лакшег "
+"уноса у превод."
+
+#: share/virtaal/virtaal.ui
+msgid "Placeables"
+msgstr "Умеци"
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Plug-ins"
+msgstr "Прикључци"
+
+#: share/virtaal/virtaal.ui
+msgid "Properties"
+msgstr "Својства"
+
+#: share/virtaal/virtaal.ui
+msgid "Saved file"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "With unsaved changes"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Words</b> (total):"
+msgstr "Укупно <b>речи</b>:"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Strings</b> (total):"
+msgstr "Укупно <b>порука</b>:"
+
+#: share/virtaal/virtaal.ui
+msgid "File type:"
+msgstr "Тип датотеке:"
+
+#: share/virtaal/virtaal.ui
+msgid "File size:"
+msgstr "Величина датотеке:"
+
+#: share/virtaal/virtaal.ui
+msgid "Location:"
+msgstr "Локација:"
+
+#: share/virtaal/virtaal.ui
+msgid "Add Term"
+msgstr "Додавање термина"
+
+#. l10n: This label refers to comments about a new term that is added
+#: share/virtaal/virtaal.ui
+msgid "C_omments"
+msgstr "_Коментари"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology _file:"
+msgstr "Терминолошка _датотека:"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology Files"
+msgstr "Терминолошке датотеке"
+
+#: share/virtaal/virtaal.ui
+msgid "Add URL"
+msgstr "Додај URL адресу"
+
+#: share/virtaal/virtaal.ui
+msgid "URL:"
+msgstr "URL адреса:"
+
+#: share/virtaal/virtaal.ui
+msgid "Put queries in quotes"
+msgstr "Ставите упите под наводнике"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Options</b>"
+msgstr "<b>Опције</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Web Look-ups"
+msgstr "Веб проналажења"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages will not need to change this. Translate the word Open normally.
+#: share/virtaal/virtaal.ui
+msgid "<u>Open</u>"
+msgstr "<u>Отвори</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Недавне датотеке</big></b>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Tutorial</u>"
+msgstr "<u>Упутство</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Пушкица</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
+msgstr ""
+"http://docs.translatehouse.org/projects/virtaal/en/latest/features.html?"
+"id=virtaal/features"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "<u>More...</u>"
+msgid "<u>More…</u>"
+msgstr "<u>Више…</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Features</u>"
+msgstr "<u>Могућности</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Први кораци</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
+msgstr ""
+"http://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html?"
+"id=virtaal/using_virtaal"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Manual</u>"
+msgstr "<u>Приручник</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Водич кроз локализацију</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+#, fuzzy
+#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
+msgstr "http://virtaal.translatehouse.org/?id=virtaal/index#contact"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Feedback</u>"
+msgstr "<u>Повратне информације</u>"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "Report a bug on GitHub"
+msgstr "Пријави _грешку"
+
+#: share/virtaal/virtaal.ui
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "<u>Report a Bug</u>"
+msgstr "Пријави _грешку"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Подршка</big></b>"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Machine translation"
+msgid "Base translation store"
+msgstr "Машински превод"
+
+#: devsupport/tmp_strings.py
+msgid "Comma Separated Value"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Fluent file"
+msgstr "Тренутна датотека"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext MO file"
+msgstr "Gettext MO датотека"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext PO file"
+msgstr "Gettext PO датотека"
+
+#: devsupport/tmp_strings.py
+msgid "Haiku catkeys file"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Mozilla"
+msgid "Mozilla .lang"
+msgstr "Mozilla"
+
+#: devsupport/tmp_strings.py
+msgid "OmegaT Glossary"
+msgstr "OmegaT речник"
+
+#: devsupport/tmp_strings.py
+msgid "Qt .qm file"
+msgstr "Qt .qm датотека"
+
+#: devsupport/tmp_strings.py
+msgid "Qt Linguist Translation File"
+msgstr "Qt Linguist датотека превода"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Phrase Book"
+msgstr "Qt збирка израза"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX Glossary"
+msgstr "TBX речник"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX Translation Memory"
+msgstr "TMX преводилачка меморија"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "TMX Translation Memory"
+msgid "Trados Translation Memory"
+msgstr "TMX преводилачка меморија"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX Dictionary"
+msgstr "UTX речник"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "_Localization Guide"
+msgid "WiX Localization File"
+msgstr "_Водич кроз локализацију"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Wordfast Translation Memory"
+msgstr "Wordfast преводилачка меморија"
+
+#: devsupport/tmp_strings.py
+msgid "XLIFF Translation File"
+msgstr "XLIFF датотека превода"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "XLIFF Translation File"
+msgid "SDL XLIFF Translation File"
+msgstr "XLIFF датотека превода"
+
+#: devsupport/tmp_strings.py
+msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Edit with Virtaal"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Usage: %s\n"
+msgid "usage: "
+msgstr "Употреба: %s\n"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "%s option requires an argument"
+msgid "positional arguments"
+msgstr "Опција %s захтева цео број"
+
+#: devsupport/tmp_strings.py
+#, fuzzy
+#| msgid "Options"
+msgid "options"
+msgstr "Опције"
+
+#: devsupport/tmp_strings.py
+msgid "show this help message and exit"
+msgstr "прикажи ову поруку помоћи и изађи"
+
+#: devsupport/tmp_strings.py
+msgid "show program's version number and exit"
+msgstr "прикажи верзију програма и изађи"
+
+#. l10n: The name should be less than 30 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid "Translation Tool"
+msgid "Virtaal Translation Tool"
+msgstr "Алатка за превођење"
+
+#. l10n: Paragraphs should be less than 600 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid ""
 "Virtaal is a program for doing translation. It aims for a delightful "
 "combination of simplicity and power. It integrates with selected online "
@@ -44,7 +634,7 @@ msgid ""
 "quality."
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:2
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
@@ -59,658 +649,352 @@ msgstr ""
 "је и да оспособимо програм да обавља функције алатке за превођење помоћу "
 "рачунара (CAT)."
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:3
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:4
+#. l10n: These list items should be less than 100 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
 msgstr "Постојећи преводи: %(translations)s"
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:5
-#: ../virtaal/views/widgets/welcomescreen.py:80
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Terminology assistance"
 msgstr "Помоћ око терминологије"
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:6
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
 msgstr ""
 
-#: ../share/appdata/virtaal.appdata.xml.in.h:7
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:1
-msgid "Add Missing Language"
-msgstr "Додавање језика који недостаје"
+#. l10n: Captions should be shorter than 50 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Easy access to recent files and documentation"
+msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:2
-msgid "Language name:"
-msgstr "Име језика:"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Recognized elements don't need to be typed"
+msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:3
-msgid "ISO code:"
-msgstr "ISO кôд:"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid "Automatically correct text while you type"
+msgid "Quality checks while you type"
+msgstr "Аутоматски исправите текст док куцате."
 
-#: ../share/virtaal/virtaal.ui.h:4
-msgid "Plural expression:"
-msgstr "Израз за множину:"
+#. l10n: The developer/organisation name "Translate", not the verb "to translate"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#, fuzzy
+#| msgid "Translated"
+msgid "Translate"
+msgstr "Преведено"
 
-#: ../share/virtaal/virtaal.ui.h:5
-msgid "Number of plurals:"
-msgstr "Број множина:"
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX"
+msgstr "TMX"
 
-#: ../share/virtaal/virtaal.ui.h:6
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Translation Memory eXchange"
+msgstr "Translation Memory eXchange"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX"
+msgstr "TBX"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TermBase eXchange"
+msgstr "TermBase eXchange"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Message File"
+msgstr "Qt датотека поруке"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX"
+msgstr "UTX"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Universal Terminology eXchange"
+msgstr "Universal Terminology eXchange"
+
+#: virtaal/cli.py
+msgid "LOG"
+msgstr "Евиденција"
+
+#: virtaal/cli.py
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "омогућите евидентирање и сместите резултат у наведену датотеку."
+
+#: virtaal/cli.py
+msgid "CONFIG"
+msgstr "Подешавање"
+
+#: virtaal/cli.py
+msgid "use the configuration file given by the supplied filename."
+msgstr "користите датотеку подешавања коју је креирала наведена датотека."
+
+#: virtaal/cli.py
+msgid "enable debugging features"
+msgstr "омогући функције за отклањање грешака"
+
+#: virtaal/cli.py
+msgid "LANG"
+msgstr ""
+
+#: virtaal/cli.py
 msgid ""
-"Depending on the translation task, the plural information might be optional."
+"override the UI language for this run (e.g. \"fr\"; \"en\" for the "
+"untranslated source strings; \"system\" for the OS's own default), without "
+"changing the saved Preferences setting"
 msgstr ""
-"У зависности од преводилачког пројекта, подаци о множини могу а и не морају "
-"бити обавезни."
 
-#: ../share/virtaal/virtaal.ui.h:7
-msgid "<b>Language Information</b>"
-msgstr "<b>Подаци о језику</b>"
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open log file '%(filename)s'"
+msgstr "Не могу да отворим датотеку евиденције „%(filename)s“"
 
-#: ../share/virtaal/virtaal.ui.h:8
-msgid "New Language Pair"
-msgstr "Нови језички пар"
+#: virtaal/cli.py
+#, python-format
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Не могу да прочитам датотеку подешавања „%(filename)s“"
 
-#: ../share/virtaal/virtaal.ui.h:9
-msgid ""
-"The <b>Original</b> is the language from which you are translating, also "
-"called the source language.\n"
-"\n"
-"If you are translating from English to French then English would be your "
-"original or source language."
+#: virtaal/cli.py
+#, python-format
+msgid "No translation found for language '%(lang)s'"
 msgstr ""
-"<b>Изворни</b> је језик са ког преводите. Ако преводите са енглеског на "
-"српски, енглески је изворни језик."
 
-#: ../share/virtaal/virtaal.ui.h:12
-msgid "<b>Original</b>"
-msgstr "<b>Изворни</b>"
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Не могу да отворим датотеку профила „%(filename)s“"
 
-#: ../share/virtaal/virtaal.ui.h:13
-msgid ""
-"The <b>Translation</b> is the language into which you are translating, also "
-"called the target language.\n"
-"\n"
-"If you are translating from English to French then French would be your "
-"translation or target language."
-msgstr ""
-"<b>Циљни</b> је језик на који преводите. Ако преводите са енглеског на "
-"српски, српски је циљни језик или превод."
-
-#: ../share/virtaal/virtaal.ui.h:16
-msgid "<b>Translation</b>"
-msgstr "<b>Циљни</b>"
-
-#: ../share/virtaal/virtaal.ui.h:17
-msgid "_Add Missing Language..."
-msgstr "_Додај језик који недостаје…"
-
-#: ../share/virtaal/virtaal.ui.h:19
-msgid "_File"
-msgstr "_Датотека"
-
-#: ../share/virtaal/virtaal.ui.h:20
-msgid "_Update to Template"
-msgstr "_Ажурирај из…"
-
-#: ../share/virtaal/virtaal.ui.h:21
-msgid "_Export"
-msgstr "_Извези…"
-
-#: ../share/virtaal/virtaal.ui.h:22
-msgid "_Recent Files"
-msgstr "_Недавне датотеке"
-
-#: ../share/virtaal/virtaal.ui.h:23
-msgid "_Edit"
-msgstr "_Уређивање"
-
-#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.ui.h:25
-msgid "Transfer From Source"
-msgstr "Копирај из извора"
-
-#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.ui.h:27
-msgid "P_revious Placeable"
-msgstr "_Претходни уметак"
-
-#: ../share/virtaal/virtaal.ui.h:28
-msgid "_Next Placeable"
-msgstr "_Следећи уметак"
-
-#: ../share/virtaal/virtaal.ui.h:29
-msgid "_View"
-msgstr "_Приказ"
-
-#: ../share/virtaal/virtaal.ui.h:30
-msgid "_Full Screen"
-msgstr "_Цео екран"
-
-#: ../share/virtaal/virtaal.ui.h:31
-msgid "_Quality Checks"
-msgstr "Провере _квалитета"
-
-#: ../share/virtaal/virtaal.ui.h:32
-msgid "_Navigation"
-msgstr "_Навигација"
-
-#: ../share/virtaal/virtaal.ui.h:33
-msgid "P_age Up"
-msgstr "На_горе за једну страницу"
-
-#: ../share/virtaal/virtaal.ui.h:34
-msgid "_Page Down"
-msgstr "На_доле за једну страницу"
-
-#: ../share/virtaal/virtaal.ui.h:35
-msgid "_Help"
-msgstr "_Помоћ"
-
-#: ../share/virtaal/virtaal.ui.h:36
-msgid "_Online Help"
-msgstr "Помоћ на _мрежи"
-
-#: ../share/virtaal/virtaal.ui.h:37
-msgid "_Tutorial"
-msgstr "_Упутство"
-
-#: ../share/virtaal/virtaal.ui.h:38
-msgid "_Localization Guide"
-msgstr "_Водич кроз локализацију"
-
-#: ../share/virtaal/virtaal.ui.h:39
-msgid "Report a _Bug"
-msgstr "Пријави _грешку"
-
-#: ../share/virtaal/virtaal.ui.h:40
-msgid "Virtaal Preferences"
-msgstr "Жељене поставке Virtaal-а"
-
-#: ../share/virtaal/virtaal.ui.h:41
-msgid "The name stored in the file header"
-msgstr "Име које ће бити смештено у заглавље датотеке."
-
-#. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.ui.h:43
-msgid "Name:"
-msgstr "Име:"
-
-#: ../share/virtaal/virtaal.ui.h:44
-msgid "The e-mail address stored in the file header"
-msgstr "Е-адреса која ће бити смештена у заглавље датотеке."
-
-#: ../share/virtaal/virtaal.ui.h:45
-msgid "E-mail address:"
-msgstr "Е-адреса:"
-
-#: ../share/virtaal/virtaal.ui.h:46
-msgid ""
-"The team information stored in the file header. This can be an e-mail "
-"address or a URL, for example."
-msgstr ""
-"Подаци о тиму који ће бити смештени у заглавље датотеке. Можете унети "
-"електронску или URL адресу, на пример."
-
-#: ../share/virtaal/virtaal.ui.h:47
-msgid "Team:"
-msgstr "Тим:"
-
-#: ../share/virtaal/virtaal.ui.h:48
-msgid "<b>Translator Information</b>"
-msgstr "<b>Подаци о преводиоцу</b>"
-
-#: ../share/virtaal/virtaal.ui.h:49
-msgid "Source text:"
-msgstr "Изворни текст:"
-
-#: ../share/virtaal/virtaal.ui.h:50
-msgid "Target text:"
-msgstr "Циљни текст:"
-
-#: ../share/virtaal/virtaal.ui.h:51
-msgid "Use _Default Fonts"
-msgstr "_Подразумевани фонтови"
-
-#: ../share/virtaal/virtaal.ui.h:52
-msgid "<b>Fonts</b>"
-msgstr "<b>Фонтови</b>"
-
-#. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.ui.h:54
-msgid "General"
-msgstr "Опште"
-
-#: ../share/virtaal/virtaal.ui.h:55
-msgid ""
-"Placeables are special parts of the text that can be automatically "
-"highlighted and easily inserted into the translation."
-msgstr ""
-"Умеци су делови текста које програм аутоматски препозна и означи ради лакшег "
-"уноса у превод."
-
-#: ../share/virtaal/virtaal.ui.h:56
-msgid "Placeables"
-msgstr "Умеци"
-
-#: ../share/virtaal/virtaal.ui.h:57
-msgid "Plug-ins"
-msgstr "Прикључци"
-
-#: ../share/virtaal/virtaal.ui.h:58
-msgid "Properties"
-msgstr "Својства"
-
-#: ../share/virtaal/virtaal.ui.h:59
-msgid "<b>Words</b> (total):"
-msgstr "Укупно <b>речи</b>:"
-
-#: ../share/virtaal/virtaal.ui.h:60
-msgid "<b>Strings</b> (total):"
-msgstr "Укупно <b>порука</b>:"
-
-#: ../share/virtaal/virtaal.ui.h:61
-msgid "File type:"
-msgstr "Тип датотеке:"
-
-#: ../share/virtaal/virtaal.ui.h:62
-msgid "File size:"
-msgstr "Величина датотеке:"
-
-#: ../share/virtaal/virtaal.ui.h:63
-msgid "Location:"
-msgstr "Локација:"
-
-#: ../share/virtaal/virtaal.ui.h:64
-msgid "Add Term"
-msgstr "Додавање термина"
-
-#. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.ui.h:66
-msgid "C_omments"
-msgstr "_Коментари"
-
-#: ../share/virtaal/virtaal.ui.h:67
-msgid "Terminology _file:"
-msgstr "Терминолошка _датотека:"
-
-#: ../share/virtaal/virtaal.ui.h:68
-msgid "Terminology Files"
-msgstr "Терминолошке датотеке"
-
-#: ../share/virtaal/virtaal.ui.h:69
-msgid "Add URL"
-msgstr "Додај URL адресу"
-
-#: ../share/virtaal/virtaal.ui.h:70
-msgid "URL:"
-msgstr "URL адреса:"
-
-#: ../share/virtaal/virtaal.ui.h:71
-msgid "Put queries in quotes"
-msgstr "Ставите упите под наводнике"
-
-#: ../share/virtaal/virtaal.ui.h:72
-msgid "<b>Options</b>"
-msgstr "<b>Опције</b>"
-
-#: ../share/virtaal/virtaal.ui.h:73
-msgid "Web Look-ups"
-msgstr "Веб проналажења"
-
-#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
-#: ../share/virtaal/virtaal.ui.h:75
-msgid "<u>Open</u>"
-msgstr "<u>Отвори</u>"
-
-#: ../share/virtaal/virtaal.ui.h:76
-msgid "<b><big>Recent Files</big></b>"
-msgstr "<b><big>Недавне датотеке</big></b>"
-
-#: ../share/virtaal/virtaal.ui.h:77
-msgid "<u>Tutorial</u>"
-msgstr "<u>Упутство</u>"
-
-#: ../share/virtaal/virtaal.ui.h:78
-msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Пушкица</u>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:80
-#: ../virtaal/controllers/welcomescreencontroller.py:38
-msgid "http://translate.sourceforge.net/wiki/virtaal/features"
-msgstr ""
-"http://docs.translatehouse.org/projects/virtaal/en/latest/features.html?"
-"id=virtaal/features"
-
-#: ../share/virtaal/virtaal.ui.h:81
-msgid "<u>More...</u>"
-msgstr "<u>Више…</u>"
-
-#: ../share/virtaal/virtaal.ui.h:82
-msgid "<u>Features</u>"
-msgstr "<u>Могућности</u>"
-
-#: ../share/virtaal/virtaal.ui.h:83
-msgid "<b><big>Getting Started</big></b>"
-msgstr "<b><big>Први кораци</big></b>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:85
-#: ../virtaal/controllers/welcomescreencontroller.py:34
-msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
-msgstr ""
-"http://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html?"
-"id=virtaal/using_virtaal"
-
-#: ../share/virtaal/virtaal.ui.h:86
-msgid "<u>Manual</u>"
-msgstr "<u>Приручник</u>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:88
-#: ../virtaal/controllers/welcomescreencontroller.py:35
-msgid "http://translate.sourceforge.net/wiki/guide/start"
-msgstr ""
-"http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
-"start.html?id=guide/start"
-
-#: ../share/virtaal/virtaal.ui.h:89
-msgid "<u>Localization Guide</u>"
-msgstr "<u>Водич кроз локализацију</u>"
-
-#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:91
-#: ../virtaal/controllers/welcomescreencontroller.py:37
-msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
-msgstr "http://virtaal.translatehouse.org/?id=virtaal/index#contact"
-
-#: ../share/virtaal/virtaal.ui.h:92
-msgid "<u>Feedback</u>"
-msgstr "<u>Повратне информације</u>"
-
-#: ../share/virtaal/virtaal.ui.h:93
-msgid "<b><big>Support</big></b>"
-msgstr "<b><big>Подршка</big></b>"
-
-#: ../virtaal/tips.py:27
-msgid ""
-"At the end of a translation, simply press <Enter> to continue with the next "
-"one."
-msgstr ""
-"Када завршите с преводом, притисните <Enter> да пређете на следећу поруку."
-
-#: ../virtaal/tips.py:28
-msgid ""
-"To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Притисните <Alt+Down> да копирате изворну поруку у превод."
-
-#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
-#: ../virtaal/tips.py:31
-msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Притисните <Alt+U> да означите тренутни превод као приближан."
-
-#: ../virtaal/tips.py:32
-msgid ""
-"To mark the current translation as incomplete, simply press <Ctrl+Shift"
-"+Enter>."
-msgstr ""
-"Притисните <Ctrl+Shift+Enter> да означите тренутни превод као недовршен."
-
-#: ../virtaal/tips.py:33
-msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
-msgstr "Користите Ctrl+Up или Ctrl+Down да листате преводе."
-
-#: ../virtaal/tips.py:34
-msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Користите Ctrl+Up или Ctrl+Down да листате преводе."
-
-#: ../virtaal/tips.py:35
-msgid ""
-"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr ""
-"Користите Ctrl+PgUp или Ctrl+PgDown да померите неколико места нагоре или "
-"надоле."
-
-#: ../virtaal/controllers/checkscontroller.py:29
+#: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
 msgid "Fuzzy"
 msgstr "Приближан израз"
 
-#: ../virtaal/controllers/checkscontroller.py:30
-#: ../virtaal/controllers/unitcontroller.py:83
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Untranslated"
 msgstr "Непреведено"
 
-#: ../virtaal/controllers/checkscontroller.py:31
+#: virtaal/controllers/checkscontroller.py
 msgid "Accelerators"
 msgstr "Пречице на тастатури"
 
-#: ../virtaal/controllers/checkscontroller.py:32
+#: virtaal/controllers/checkscontroller.py
 msgid "Acronyms"
 msgstr "Акроними"
 
-#: ../virtaal/controllers/checkscontroller.py:33
+#: virtaal/controllers/checkscontroller.py
 msgid "Blank"
 msgstr "Празно"
 
-#: ../virtaal/controllers/checkscontroller.py:34
+#: virtaal/controllers/checkscontroller.py
 msgid "Brackets"
 msgstr "Заграде"
 
-#: ../virtaal/controllers/checkscontroller.py:35
+#: virtaal/controllers/checkscontroller.py
 msgid "Compendium conflict"
 msgstr "Сукоб у збирци превода"
 
-#: ../virtaal/controllers/checkscontroller.py:36
+#: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr "Заслуге преводилаца"
 
-#: ../virtaal/controllers/checkscontroller.py:37
+#: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"
 msgstr "Двоструки наводници"
 
-#: ../virtaal/controllers/checkscontroller.py:38
+#: virtaal/controllers/checkscontroller.py
 msgid "Double spaces"
 msgstr "Двоструки размаци"
 
-#: ../virtaal/controllers/checkscontroller.py:39
+#: virtaal/controllers/checkscontroller.py
 msgid "Repeated word"
 msgstr "Поновљена реч"
 
-#: ../virtaal/controllers/checkscontroller.py:40
-#: ../virtaal/controllers/placeablescontroller.py:97
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "E-mail"
 msgstr "Е-адреса"
 
-#: ../virtaal/controllers/checkscontroller.py:41
+#: virtaal/controllers/checkscontroller.py
 msgid "Ending punctuation"
 msgstr "Завршна интерпункција"
 
-#: ../virtaal/controllers/checkscontroller.py:42
+#: virtaal/controllers/checkscontroller.py
 msgid "Ending whitespace"
 msgstr "Завршна белина"
 
-#: ../virtaal/controllers/checkscontroller.py:43
+#: virtaal/controllers/checkscontroller.py
 msgid "Escapes"
 msgstr "Командни знакови"
 
-#: ../virtaal/controllers/checkscontroller.py:44
+#: virtaal/controllers/checkscontroller.py
 msgid "File paths"
 msgstr "Путање датотека"
 
-#: ../virtaal/controllers/checkscontroller.py:45
+#: virtaal/controllers/checkscontroller.py
 msgid "Functions"
 msgstr "Функције"
 
-#: ../virtaal/controllers/checkscontroller.py:46
+#: virtaal/controllers/checkscontroller.py
 msgid "GConf values"
 msgstr "Вредности GConf-а"
 
-#: ../virtaal/controllers/checkscontroller.py:47
+#: virtaal/controllers/checkscontroller.py
 msgid "Old KDE comment"
 msgstr "Стари коментар на KDE"
 
-#: ../virtaal/controllers/checkscontroller.py:48
+#: virtaal/controllers/checkscontroller.py
 msgid "Long"
 msgstr "Дуго"
 
-#: ../virtaal/controllers/checkscontroller.py:49
+#: virtaal/controllers/checkscontroller.py
 msgid "Must translate words"
 msgstr "Преводи речи"
 
-#: ../virtaal/controllers/checkscontroller.py:50
+#: virtaal/controllers/checkscontroller.py
 msgid "Newlines"
 msgstr "Нови редови"
 
-#: ../virtaal/controllers/checkscontroller.py:51
+#: virtaal/controllers/checkscontroller.py
 msgid "Number of plurals"
 msgstr "Број множина"
 
-#: ../virtaal/controllers/checkscontroller.py:52
+#: virtaal/controllers/checkscontroller.py
 msgid "Don't translate words"
 msgstr "Не преводи речи"
 
-#: ../virtaal/controllers/checkscontroller.py:53
-#: ../virtaal/controllers/placeablescontroller.py:121
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "Numbers"
 msgstr "Бројеви"
 
-#: ../virtaal/controllers/checkscontroller.py:54
-#: ../devsupport/optparse.py:1612
+#: virtaal/controllers/checkscontroller.py
 msgid "Options"
 msgstr "Опције"
 
-#: ../virtaal/controllers/checkscontroller.py:55
+#: virtaal/controllers/checkscontroller.py
 msgid "printf()"
 msgstr "printf()"
 
-#: ../virtaal/controllers/checkscontroller.py:56
+#: virtaal/controllers/checkscontroller.py
 msgid "Punctuation spacing"
 msgstr "Размак између интерпункција"
 
-#: ../virtaal/controllers/checkscontroller.py:57
+#: virtaal/controllers/checkscontroller.py
 msgid "Pure punctuation"
 msgstr "Неизмењена интерпункција"
 
-#: ../virtaal/controllers/checkscontroller.py:58
+#: virtaal/controllers/checkscontroller.py
 msgid "Number of sentences"
 msgstr "Број реченица"
 
-#: ../virtaal/controllers/checkscontroller.py:59
+#: virtaal/controllers/checkscontroller.py
 msgid "Short"
 msgstr "Кратко"
 
-#: ../virtaal/controllers/checkscontroller.py:60
+#: virtaal/controllers/checkscontroller.py
 msgid "Simple capitalization"
 msgstr "Једноставна капитализација"
 
-#: ../virtaal/controllers/checkscontroller.py:61
+#: virtaal/controllers/checkscontroller.py
 msgid "Simple plural(s)"
 msgstr "Једноставна множина"
 
-#: ../virtaal/controllers/checkscontroller.py:62
+#: virtaal/controllers/checkscontroller.py
 msgid "Single quotes"
 msgstr "Једноструки наводници"
 
-#: ../virtaal/controllers/checkscontroller.py:63
+#: virtaal/controllers/checkscontroller.py
 msgid "Spelling"
 msgstr "Правопис"
 
-#: ../virtaal/controllers/checkscontroller.py:64
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting capitalization"
 msgstr "Почетна капитализација"
 
-#: ../virtaal/controllers/checkscontroller.py:65
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting punctuation"
 msgstr "Почетна интерпункција"
 
-#: ../virtaal/controllers/checkscontroller.py:66
+#: virtaal/controllers/checkscontroller.py
 msgid "Starting whitespace"
 msgstr "Почетна белина"
 
-#: ../virtaal/controllers/checkscontroller.py:67
+#: virtaal/controllers/checkscontroller.py
 msgid "Tabs"
 msgstr "Картице"
 
-#: ../virtaal/controllers/checkscontroller.py:68
+#: virtaal/controllers/checkscontroller.py
 msgid "Unchanged"
 msgstr "Непромењено"
 
-#: ../virtaal/controllers/checkscontroller.py:69
-#: ../virtaal/controllers/placeablescontroller.py:130
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
 msgid "URLs"
 msgstr "URL адресе"
 
-#: ../virtaal/controllers/checkscontroller.py:70
+#: virtaal/controllers/checkscontroller.py
 msgid "Valid characters"
 msgstr "Исправни знакови"
 
-#: ../virtaal/controllers/checkscontroller.py:71
+#: virtaal/controllers/checkscontroller.py
 msgid "Placeholders"
 msgstr "Чувари места"
 
-#: ../virtaal/controllers/checkscontroller.py:72
+#: virtaal/controllers/checkscontroller.py
 msgid "XML tags"
 msgstr "XML ознаке"
 
-#: ../virtaal/controllers/checkscontroller.py:111
+#: virtaal/controllers/checkscontroller.py
 msgid "Default"
 msgstr "Подразумевано"
 
-#: ../virtaal/controllers/checkscontroller.py:112
-msgid "OpenOffice.org"
-msgstr "OpenOffice.org"
+#: virtaal/controllers/checkscontroller.py
+msgid "LibreOffice"
+msgstr ""
 
-#: ../virtaal/controllers/checkscontroller.py:113
+#: virtaal/controllers/checkscontroller.py
 msgid "Mozilla"
 msgstr "Mozilla"
 
-#: ../virtaal/controllers/checkscontroller.py:114
+#: virtaal/controllers/checkscontroller.py
 msgid "KDE"
 msgstr "KDE"
 
-#: ../virtaal/controllers/checkscontroller.py:115
+#: virtaal/controllers/checkscontroller.py
+msgid "Qt"
+msgstr ""
+
+#: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
 msgstr "GNOME"
 
-#: ../virtaal/controllers/checkscontroller.py:116
+#: virtaal/controllers/checkscontroller.py
 msgid "Drupal"
 msgstr "Drupal"
 
-#: ../virtaal/controllers/maincontroller.py:80
-#: ../virtaal/controllers/maincontroller.py:89
-#: ../virtaal/controllers/maincontroller.py:98
-msgid "Header information"
-msgstr "Подаци у заглављу"
-
-#: ../virtaal/controllers/maincontroller.py:81
-msgid "Please enter your name"
-msgstr "Унесите своје име"
-
-#: ../virtaal/controllers/maincontroller.py:90
-msgid "Please enter your e-mail address"
-msgstr "Унесите е-адресу"
-
-#: ../virtaal/controllers/maincontroller.py:99
-msgid "Please enter your team's information"
-msgstr "Унесите податке свог тима"
-
-#: ../virtaal/controllers/maincontroller.py:203
-#: ../virtaal/controllers/maincontroller.py:341
+#: virtaal/controllers/maincontroller.py
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "Изабрали сте већ отворену датотеку. Желите ли да је поново учитате?"
 
-#: ../virtaal/controllers/maincontroller.py:215
-#: ../virtaal/controllers/maincontroller.py:325
-#: ../virtaal/controllers/maincontroller.py:353
+#: virtaal/controllers/maincontroller.py virtaal/main.py
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Loading '%s'…"
+msgstr ""
+
+#: virtaal/controllers/maincontroller.py
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -725,14 +1009,30 @@ msgstr ""
 "\n"
 "Пробајте с другом датотеком."
 
-#: ../virtaal/controllers/maincontroller.py:238
-#: ../virtaal/support/native_widgets.py:145
-#: ../virtaal/support/native_widgets.py:204
-#: ../virtaal/support/native_widgets.py:255 ../virtaal/views/mainview.py:323
+#: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
 msgid "Save"
 msgstr "Сачувај"
 
-#: ../virtaal/controllers/maincontroller.py:258
+#: virtaal/controllers/maincontroller.py
+#, fuzzy, python-format
+#| msgid ""
+#| "Could not save file.\n"
+#| "\n"
+#| "%(error_message)s\n"
+#| "\n"
+#| "Try saving to a different location."
+msgid ""
+"%(filename)s is read-only.\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Не могу да сачувам датотеку.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Пробајте с другом локацијом."
+
+#: virtaal/controllers/maincontroller.py
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -747,7 +1047,7 @@ msgstr ""
 "\n"
 "Пробајте с другом локацијом."
 
-#: ../virtaal/controllers/maincontroller.py:264
+#: virtaal/controllers/maincontroller.py
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -758,15 +1058,15 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:275
+#: virtaal/controllers/maincontroller.py
 msgid "Can only export Gettext PO files"
 msgstr "Могу да се извозе само Gettext PO датотеке"
 
-#: ../virtaal/controllers/maincontroller.py:284
+#: virtaal/controllers/maincontroller.py
 msgid "Export"
 msgstr "Извези"
 
-#: ../virtaal/controllers/maincontroller.py:292
+#: virtaal/controllers/maincontroller.py
 #, python-format
 msgid ""
 "Could not export file.\n"
@@ -781,7 +1081,7 @@ msgstr ""
 "\n"
 "Пробајте да сачувате на другу локацију."
 
-#: ../virtaal/controllers/maincontroller.py:298
+#: virtaal/controllers/maincontroller.py
 #, python-format
 msgid ""
 "Could not export file.\n"
@@ -792,515 +1092,515 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:314
-msgid "Reload File"
-msgstr "Учитај поново"
+#: virtaal/controllers/maincontroller.py
+msgid "Revert to Saved"
+msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:314
-msgid "Reload file from last saved copy and lose all changes?"
+#: virtaal/controllers/maincontroller.py
+#, fuzzy
+#| msgid "Reload file from last saved copy and lose all changes?"
+msgid "Revert to the last saved copy and lose all changes?"
 msgstr "Желите ли да поново учитате датотеку и изгубите све измене?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
-#: ../virtaal/controllers/placeablescontroller.py:84
+#: virtaal/controllers/placeablescontroller.py
 msgid "CamelCase"
 msgstr "CamelCase"
 
-#: ../virtaal/controllers/placeablescontroller.py:85
+#: virtaal/controllers/placeablescontroller.py
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Капитализација унутар речи, која се јавља код имена робних марки и викиречи"
 
-#: ../virtaal/controllers/placeablescontroller.py:88
+#: virtaal/controllers/placeablescontroller.py
 msgid "Capitals"
 msgstr "Велика слова"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-#: ../virtaal/controllers/placeablescontroller.py:90
+#: virtaal/controllers/placeablescontroller.py
 msgid "Words containing uppercase letters only"
 msgstr "Само речи исписане великим словима"
 
-#: ../virtaal/controllers/placeablescontroller.py:93
+#: virtaal/controllers/placeablescontroller.py
 msgid "Command Line Options"
 msgstr "Опције командне линије"
 
-#: ../virtaal/controllers/placeablescontroller.py:94
+#: virtaal/controllers/placeablescontroller.py
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Опције командне линије програма, као што су --help, -h и -I"
 
-#: ../virtaal/controllers/placeablescontroller.py:98
+#: virtaal/controllers/placeablescontroller.py
 msgid "E-mail addresses"
 msgstr "Е-адресе"
 
-#: ../virtaal/controllers/placeablescontroller.py:101
+#: virtaal/controllers/placeablescontroller.py
 msgid "File Names"
 msgstr "Имена датотека"
 
-#: ../virtaal/controllers/placeablescontroller.py:102
+#: virtaal/controllers/placeablescontroller.py
 msgid "Paths referring to file locations"
 msgstr "Путање које воде до датотека"
 
-#: ../virtaal/controllers/placeablescontroller.py:105
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (printf)"
 msgstr "Чувари места (printf)"
 
-#: ../virtaal/controllers/placeablescontroller.py:106
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders used in \"printf\" strings"
 msgstr "Чувари места који се користе у printf нискама"
 
-#: ../virtaal/controllers/placeablescontroller.py:109
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Python)"
 msgstr "Чувари места (Python)"
 
-#: ../virtaal/controllers/placeablescontroller.py:110
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Python strings"
 msgstr "Чувари места у нискама Python-а"
 
-#: ../virtaal/controllers/placeablescontroller.py:113
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Java)"
 msgstr "Чувари места (Java)"
 
-#: ../virtaal/controllers/placeablescontroller.py:114
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Java strings"
 msgstr "Чувари места у нискама програмског језика Java"
 
-#: ../virtaal/controllers/placeablescontroller.py:117
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Qt)"
 msgstr "Чувари места (Qt)"
 
-#: ../virtaal/controllers/placeablescontroller.py:118
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Qt strings"
 msgstr "Чувари места у нискама Qt-а"
 
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
-#: ../virtaal/controllers/placeablescontroller.py:123
+#: virtaal/controllers/placeablescontroller.py
 msgid "Integer numbers and decimal fractions"
 msgstr "Цели бројеви и децимални разломци"
 
-#: ../virtaal/controllers/placeablescontroller.py:126
+#: virtaal/controllers/placeablescontroller.py
 msgid "Punctuation"
 msgstr "Интерпункција"
 
-#: ../virtaal/controllers/placeablescontroller.py:127
+#: virtaal/controllers/placeablescontroller.py
 msgid "Symbols and less frequently used punctuation marks"
 msgstr "Симболи и знакови интерпункције који се ретко користе"
 
-#: ../virtaal/controllers/placeablescontroller.py:131
+#: virtaal/controllers/placeablescontroller.py
 msgid "URLs, hostnames and IP addresses"
 msgstr "URL адресе, имена главних рачунара и IP адресе"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
-#: ../virtaal/controllers/placeablescontroller.py:135
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML Entities"
 msgstr "XML ентитети"
 
-#: ../virtaal/controllers/placeablescontroller.py:136
+#: virtaal/controllers/placeablescontroller.py
 msgid "Entity references, such as &amp; and &#169;"
 msgstr "Референце ентитета, као на пример &amp; и &#169;."
 
-#: ../virtaal/controllers/placeablescontroller.py:139
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML Tags"
 msgstr "XML ознаке"
 
-#: ../virtaal/controllers/placeablescontroller.py:140
+#: virtaal/controllers/placeablescontroller.py
 msgid "XML tags, such as <b> and </i>"
 msgstr "XML ознаке, као на пример <b> и </i>."
 
-#: ../virtaal/controllers/placeablescontroller.py:154
+#: virtaal/controllers/placeablescontroller.py
 msgid "Spaces"
 msgstr "Размаци"
 
-#: ../virtaal/controllers/placeablescontroller.py:155
+#: virtaal/controllers/placeablescontroller.py
 msgid "Double spaces and spaces in unexpected positions"
 msgstr "Двоструки размаци и размаци у неочекиваним положајима"
 
-#: ../virtaal/controllers/placeablescontroller.py:156
+#: virtaal/controllers/placeablescontroller.py
 msgid "\"alt\" Attributes"
 msgstr "Alt атрибути"
 
-#: ../virtaal/controllers/placeablescontroller.py:157
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Уметак за alt атрибуте (програмски језик HTML)"
 
-#: ../virtaal/controllers/placeablescontroller.py:158
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders (Drupal)"
 msgstr "Чувари места (Drupal)"
 
-#: ../virtaal/controllers/placeablescontroller.py:159
+#: virtaal/controllers/placeablescontroller.py
 msgid "Placeholders in Drupal strings"
 msgstr "Чувари места у нискама Drupal-а"
 
-#: ../virtaal/controllers/storecontroller.py:198
-msgid "No source or translatable files in bundle"
-msgstr "У пакету нема изворних или циљних датотека"
-
-#: ../virtaal/controllers/storecontroller.py:230
-msgid "The file contains nothing to translate."
-msgstr "Датотека нема текста за превођење."
-
-#. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:435
-msgid "Before:"
-msgstr "Пре:"
-
-#. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:437
-msgid "After:"
-msgstr "После:"
-
-#: ../virtaal/controllers/storecontroller.py:438
-#, python-format
-msgid "Translated: %d"
-msgstr "Преведено: %d"
-
-#: ../virtaal/controllers/storecontroller.py:439
-#, python-format
-msgid "Fuzzy: %d"
-msgstr "Приближно преведено: %d"
-
-#: ../virtaal/controllers/storecontroller.py:440
-#, python-format
-msgid "Untranslated: %d"
-msgstr "Непреведено: %d"
-
-#: ../virtaal/controllers/storecontroller.py:441
-#, python-format
-msgid "Total: %d"
-msgstr "Укупно: %d"
-
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:459
+#: virtaal/controllers/storecontroller.py
 msgid "File Updated"
 msgstr "Датотека ажурирана"
 
-#: ../virtaal/controllers/unitcontroller.py:84
+#: virtaal/controllers/unitcontroller.py
 msgid "Needs work"
 msgstr "Непоуздано"
 
-#: ../virtaal/controllers/unitcontroller.py:85
+#: virtaal/controllers/unitcontroller.py
 msgid "Rejected"
 msgstr "Одбијено"
 
-#: ../virtaal/controllers/unitcontroller.py:86
+#: virtaal/controllers/unitcontroller.py
 msgid "Needs review"
 msgstr "Нередиговано"
 
-#: ../virtaal/controllers/unitcontroller.py:87
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
 msgstr "Преведено"
 
-#: ../virtaal/controllers/unitcontroller.py:88
+#: virtaal/controllers/unitcontroller.py
 msgid "Reviewed"
 msgstr "Редиговано"
 
-#: ../virtaal/controllers/welcomescreencontroller.py:65
-msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+#: virtaal/models/storemodel.py
+msgid ""
+"The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
+"Open it with File > Open or from your file manager."
 msgstr ""
-"http://docs.translatehouse.org/projects/virtaal/en/latest/cheatsheet.html?"
-"id=virtaal/cheatsheet"
 
-#: ../virtaal/modes/defaultmode.py:28
+#: virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr "Датотека не постоји."
+
+#: virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr "Неисправна датотека."
+
+#. l10n: Context: show every unit, not only the matching ones
+#: virtaal/modes/defaultmode.py virtaal/views/modeview.py
 msgid "All"
 msgstr "Све"
 
-#: ../virtaal/modes/qualitycheckmode.py:33
+#: virtaal/modes/qualitycheckmode.py
 msgid "Quality Checks"
 msgstr "Провере квалитета"
 
 #. l10n: This is the button where the user can select units by failing quality checks
-#: ../virtaal/modes/qualitycheckmode.py:131
+#: virtaal/modes/qualitycheckmode.py
 msgid "Select Checks"
 msgstr "Изабери провере"
 
 #. l10n: This refers to quality checks
-#: ../virtaal/modes/qualitycheckmode.py:134
+#: virtaal/modes/qualitycheckmode.py
 msgid "All Checks"
 msgstr "Све провере"
 
-#: ../virtaal/modes/quicktransmode.py:31
+#: virtaal/modes/quicktransmode.py
 msgid "Incomplete"
 msgstr "Недовршено"
 
-#: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
+#: virtaal/modes/searchmode.py virtaal/views/widgets/shortcutswindow.py
 msgid "Search"
 msgstr "Претражи"
 
-#: ../virtaal/modes/searchmode.py:70
+#: virtaal/modes/searchmode.py
 msgid "_Case sensitive"
 msgstr "_Разликуј велика и мала слова"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
-#: ../virtaal/modes/searchmode.py:74
+#: virtaal/modes/searchmode.py
 msgid "_Regular expression"
 msgstr "_Регуларни израз"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
-#. If this sentence construction is hard to use, consdider translating this as
+#. If this sentence construction is hard to use, consider translating this as
 #. "Replacement"
-#: ../virtaal/modes/searchmode.py:82
+#: virtaal/modes/searchmode.py
 msgid "Replace with"
 msgstr "Замени са"
 
 #. l10n: Button text
-#: ../virtaal/modes/searchmode.py:85
+#: virtaal/modes/searchmode.py
 msgid "Replace"
 msgstr "Замени"
 
 #. l10n: Check box
-#: ../virtaal/modes/searchmode.py:88
+#: virtaal/modes/searchmode.py
 msgid "Replace _All"
 msgstr "Замени _све"
 
-#: ../virtaal/modes/workflowmode.py:34
+#: virtaal/modes/workflowmode.py
 msgid "Workflow"
 msgstr "Ток посла"
 
 #. l10n: This is the button where the user can select units by workflow state
-#: ../virtaal/modes/workflowmode.py:112
+#: virtaal/modes/workflowmode.py
 msgid "Select States"
 msgstr "Изабери стања"
 
 #. l10n: This refers to workflow states
-#: ../virtaal/modes/workflowmode.py:115
+#: virtaal/modes/workflowmode.py
 msgid "All States"
 msgstr "Сва стања"
 
-#: ../virtaal/plugins/autocompletor.py:214
+#: virtaal/plugins/autocompletor.py
 msgid "Automatically complete long words while you type"
 msgstr "Аутоматски доврши дуге речи при куцању"
 
-#: ../virtaal/plugins/autocompletor.py:215
+#: virtaal/plugins/autocompletor.py
 msgid "AutoCompletor"
 msgstr "AutoCompletor"
 
-#: ../virtaal/plugins/autocorrector.py:259
+#: virtaal/plugins/autocorrector.py
 msgid "Automatically correct text while you type"
 msgstr "Аутоматски исправите текст док куцате."
 
-#: ../virtaal/plugins/autocorrector.py:260
+#: virtaal/plugins/autocorrector.py
 msgid "AutoCorrector"
 msgstr "AutoCorrector"
 
-#: ../virtaal/plugins/spellchecker.py:48
-msgid "Spell Checker"
-msgstr "Провера правописа"
-
-#: ../virtaal/plugins/spellchecker.py:49
-msgid "Check spelling and provide suggestions"
-msgstr "Провери правопис и обезбеди предлоге"
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:347
-msgid "<i>(no suggestions)</i>"
-msgstr "<i>(нема предлога)</i>"
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:351
-msgid "Ignore All"
-msgstr "Занемари све"
-
-#. l10n: This refers to spelling suggestions
-#: ../virtaal/plugins/spellchecker.py:355
-msgid "More..."
-msgstr "Више…"
-
-#. l10n: This refers to the spell checking dictionary
-#: ../virtaal/plugins/spellchecker.py:361
-#, python-format
-msgid "Add \"%s\" to Dictionary"
-msgstr "Додај „%s“ у речник"
-
-#: ../virtaal/plugins/spellchecker.py:364
-msgid "Languages"
-msgstr "Језици"
-
-#: ../virtaal/plugins/lookup/__init__.py:29
+#: virtaal/plugins/lookup/__init__.py
 msgid "Perform look-ups on selected text"
 msgstr "Изврши проналажења на изабраном тексту"
 
-#: ../virtaal/plugins/lookup/__init__.py:30
+#: virtaal/plugins/lookup/__init__.py
 msgid "External Look-up"
 msgstr "Спољно проналажење"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
-#: ../virtaal/plugins/lookup/lookupview.py:70
+#: virtaal/plugins/lookup/lookupview.py
 msgid "Select Look-up Services"
 msgstr "Избор прикључака за проналажење"
 
-#: ../virtaal/plugins/lookup/lookupview.py:71
+#: virtaal/plugins/lookup/lookupview.py
 msgid "Select the services that should be used to perform look-ups"
 msgstr "Изаберите услуге које желите да користите при проналажењу."
 
-#: ../virtaal/plugins/lookup/lookupview.py:131
+#: virtaal/plugins/lookup/lookupview.py
 #, python-format
 msgid "Look-up \"%(selection)s\""
 msgstr "Пронађи „%(selection)s“"
 
 #. l10n: plugin name
-#: ../virtaal/plugins/lookup/models/weblookup.py:40
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Thesaurus"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Look up synonyms for the selected word"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Loading thesaurus…"
+msgstr ""
+
+#. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Checking for thesaurus…"
+msgstr ""
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Downloading %(language)s thesaurus…"
+msgstr ""
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Download %(language)s thesaurus…"
+msgstr ""
+
+#. l10n: The menu entry offering synonyms for the selected word.
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, fuzzy
+#| msgid "Acronyms"
+msgid "Synonyms"
+msgstr "Акроними"
+
+#. l10n: plugin name
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Web Look-up"
 msgstr "Веб проналажење"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:41
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Look-up the selected text on a web site"
 msgstr "Пронађите изабрани текст на веб-сајту."
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
-#: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:144
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:50
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:55
-#: ../virtaal/plugins/terminology/models/opentran.py:42
-#: ../virtaal/plugins/tm/models/opentran.py:37
-msgid "Open-Tran.eu"
-msgstr "Open-Tran.eu"
+#: virtaal/plugins/lookup/models/weblookup.py
+#, fuzzy
+#| msgid "UTX Dictionary"
+msgid "Wiktionary"
+msgstr "UTX речник"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:171
-#: ../virtaal/views/widgets/selectview.py:74
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Bing"
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Yahoo"
+msgstr ""
+
+#. l10n: Whether this look-up is offered at all
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
 msgid "Name"
 msgstr "Име"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:180
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "URL"
 msgstr "URL адреса"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
-#: ../virtaal/plugins/lookup/models/weblookup.py:191
+#: virtaal/plugins/lookup/models/weblookup.py
 msgid "Quote Query"
 msgstr "Стављање упита под наводнике"
 
-#: ../virtaal/plugins/migration.py:57
+#. l10n: "virtaal-" is a literal prefix - leave it untranslated
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Names starting with \"virtaal-\" are reserved."
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "A web look-up with this name already exists."
+msgstr ""
+
+#: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr "Пренеси поставке из програма KBabel, Lokalize или Poedit у Virtaal."
 
-#: ../virtaal/plugins/migration.py:58
+#: virtaal/plugins/migration.py
 msgid "Migration Assistant"
 msgstr "Помоћник за пренос података"
 
-#: ../virtaal/plugins/migration.py:72
+#: virtaal/plugins/migration.py
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
 "Желите ли да Virtaal проба да увезе поставке и податке из других програма?"
 
-#: ../virtaal/plugins/migration.py:73
+#: virtaal/plugins/migration.py
 msgid "Import data from other applications?"
 msgstr "Увести податке из других програма?"
 
-#: ../virtaal/plugins/migration.py:101
+#: virtaal/plugins/migration.py
 msgid "Migration was successfully completed"
 msgstr "Пренос података је успешно довршен."
 
-#: ../virtaal/plugins/migration.py:102
+#: virtaal/plugins/migration.py
 msgid "The following items were migrated:"
 msgstr "Следеће ставке су пренете:"
 
-#: ../virtaal/plugins/migration.py:105
+#: virtaal/plugins/migration.py
 msgid "Migration completed"
 msgstr "Пренос података је довршен"
 
-#: ../virtaal/plugins/migration.py:107
+#: virtaal/plugins/migration.py
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Не могу да пренесем поставке или податке."
 
-#: ../virtaal/plugins/migration.py:108
+#: virtaal/plugins/migration.py
 msgid "Nothing migrated"
 msgstr "Ништа није премештено"
 
-#: ../virtaal/plugins/migration.py:178
+#: virtaal/plugins/migration.py
 msgid "Poedit settings"
 msgstr "Поставке Poedit-а"
 
-#: ../virtaal/plugins/migration.py:207
-#, python-format
-msgid "Poedit's Translation Memory: %(database_language_code)s"
-msgstr "Poedit-ова преводилачка меморија: %(database_language_code)s"
-
-#: ../virtaal/plugins/migration.py:232
-#, python-format
-msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr "KBabel-ова преводилачка меморија: %(database_language_code)s"
-
-#: ../virtaal/plugins/migration.py:250
+#: virtaal/plugins/migration.py
 msgid "Lokalize settings"
 msgstr "Поставке Lokalize-а"
 
-#: ../virtaal/plugins/migration.py:274
+#: virtaal/plugins/migration.py
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Lokalize-ова преводилачка меморија: %(database_name)s"
 
-#: ../virtaal/plugins/terminology/__init__.py:27
+#: virtaal/plugins/spellchecker.py
+msgid "Spell Checker"
+msgstr "Провера правописа"
+
+#: virtaal/plugins/spellchecker.py
+msgid "Check spelling and provide suggestions"
+msgstr "Провери правопис и обезбеди предлоге"
+
+#: virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
 msgstr "Помоћ око терминологије"
 
-#: ../virtaal/plugins/terminology/__init__.py:28
+#: virtaal/plugins/terminology/__init__.py
 msgid "Terminology suggestions"
 msgstr "Предлози у вези са терминологијом."
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:41
+#: virtaal/plugins/terminology/models/autoterm.py
 msgid "Localization Terminology"
 msgstr "Терминологија за локализацију"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:42
+#: virtaal/plugins/terminology/models/autoterm.py
 msgid "Selected localization terminology"
 msgstr "Изабрана терминологија за локализацију"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+#: virtaal/plugins/terminology/models/localfile/__init__.py
 msgid "Local Files"
 msgstr "Локалне датотеке"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+#: virtaal/plugins/terminology/models/localfile/__init__.py
 msgid "Local terminology files"
 msgstr "Локалне датотеке терминологије"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
-msgid "Terminology _Files..."
-msgstr "Датотеке _терминологије…"
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy
+#| msgid "Terminology Files"
+msgid "Terminology _Files…"
+msgstr "Терминолошке датотеке"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
-msgid "Add _Term..."
-msgstr "Додај _термин…"
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy
+#| msgid "Add Term"
+msgid "Add _Term…"
+msgstr "Додавање термина"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, fuzzy, python-format
+#| msgid "Look-up \"%(selection)s\""
+msgid "Add Term \"%(selection)s\"…"
+msgstr "Пронађи „%(selection)s“"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
 msgstr "Датотека"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:155
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Extendable"
 msgstr "Прошириво"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Add Files"
 msgstr "Додавање датотека"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
-#: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
 msgid "All Supported Files"
 msgstr "Све подржане датотеке"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
-#: ../virtaal/support/native_widgets.py:171
-#: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
 msgid "All Files"
 msgstr "Све датотеке"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
-#, python-format
-msgid "\"%s\" is not a usable file."
-msgstr "Датотека „%s“ је неупотребљива."
-
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -1311,248 +1611,222 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Error opening file"
 msgstr "Грешка при отварању датотеке"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Изворни термин — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Циљни термин — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Identical entry already exists."
 msgstr "Већ постоји идентична ставка."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:463
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "Постојећи преводи: %(translations)s"
 
-#: ../virtaal/plugins/terminology/models/opentran.py:43
-msgid "Terms from Open-Tran.eu"
-msgstr "Термини са сајта Open-Tran.eu"
+#: virtaal/plugins/terminology/models/pontoon.py
+#, fuzzy
+#| msgid "Mozilla Corporation"
+msgid "Mozilla Pontoon"
+msgstr "Корпорација Mozilla"
 
-#: ../virtaal/plugins/terminology/termview.py:166
+#: virtaal/plugins/terminology/models/pontoon.py
+msgid "Community localization terminology from Mozilla Pontoon"
+msgstr ""
+
+#: virtaal/plugins/terminology/termview.py
 msgid "Select Terminology Sources"
 msgstr "Избор извора за терминологију"
 
-#: ../virtaal/plugins/terminology/termview.py:167
+#: virtaal/plugins/terminology/termview.py
 msgid "Select the sources of terminology suggestions"
 msgstr "Изаберите изворе предлога за терминологију."
 
-#: ../virtaal/plugins/tm/__init__.py:27
+#: virtaal/plugins/tm/__init__.py
 msgid "Translation Memory"
 msgstr "Преводилачка меморија"
 
-#: ../virtaal/plugins/tm/__init__.py:28
+#: virtaal/plugins/tm/__init__.py
 msgid "Translation memory suggestions"
 msgstr "Предлози за преводилачку меморију"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/amagama.py:28
-#: ../virtaal/plugins/tm/models/amagama.py:31
+#: virtaal/plugins/tm/models/amagama.py
 msgid "Amagama"
 msgstr "Amagama"
 
-#: ../virtaal/plugins/tm/models/amagama.py:29
-#: ../virtaal/plugins/tm/models/opentran.py:38
+#: virtaal/plugins/tm/models/amagama.py
 msgid "Previous translations for Free and Open Source Software"
 msgstr "Претходни преводи за слободан софтвер отвореног кода"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:30
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Apertium"
+msgstr "Apertium"
+
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Нередиговани машински преводи Apertium-а"
+
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "Current File"
 msgstr "Тренутна датотека"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:31
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "Translated units from the currently open file"
 msgstr "Преведене јединице из отворене датотеке"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:97
-#: ../virtaal/plugins/tm/models/currentfile.py:117
+#: virtaal/plugins/tm/models/currentfile.py
 msgid "This file"
 msgstr "Ова датотека"
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:55
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Google Translate"
 msgstr "Google преводилац"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:56
+#: virtaal/plugins/tm/models/google_translate.py
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Нередиговани машински преводи Google-овог преводиоца"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:46
-msgid "Microsoft Translator"
-msgstr "Microsoft преводилац"
-
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:47
-msgid "Unreviewed machine translations from Microsoft Translator"
-msgstr "Нередиговани преводи Microsoft-овог преводиоца"
-
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:114
-msgid "Microsoft"
-msgstr "Microsoft"
-
-#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/libtranslate.py:45
-#: ../virtaal/plugins/tm/models/libtranslate.py:101
-msgid "libtranslate"
-msgstr "Libtranslate"
-
-#: ../virtaal/plugins/tm/models/libtranslate.py:46
-msgid "Unreviewed machine translations from various services"
-msgstr "Нередиговани машински преводи из разних извора"
-
-#: ../virtaal/plugins/tm/models/localtm.py:35
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Local Translation Memory"
 msgstr "Локална преводилачка меморија"
 
-#: ../virtaal/plugins/tm/models/localtm.py:36
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Previous translations you have made"
 msgstr "Ваши претходни преводи"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/localtm.py:38
+#: virtaal/plugins/tm/models/localtm.py
 msgid "Local TM"
 msgstr "Локална TM база"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/moses.py:32
-#: ../virtaal/plugins/tm/models/moses.py:82
+#: virtaal/plugins/tm/models/moses.py
 msgid "Moses"
 msgstr "Moses"
 
-#: ../virtaal/plugins/tm/models/moses.py:33
+#: virtaal/plugins/tm/models/moses.py
 msgid "Unreviewed machine translations from a Moses server"
 msgstr "Нередиговани машински преводи са Moses-овог сервера"
 
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/opentran.py:77
-#: ../virtaal/plugins/tm/models/opentran.py:79
-msgid "OpenTran"
-msgstr "OpenTran"
-
-#: ../virtaal/plugins/tm/models/remotetm.py:28
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "Remote Server"
 msgstr "Удаљени сервер"
 
-#: ../virtaal/plugins/tm/models/remotetm.py:29
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "A translation memory server"
 msgstr "Сервер за преводилачку меморију"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/remotetm.py:31
+#: virtaal/plugins/tm/models/remotetm.py
 msgid "Remote TM"
 msgstr "Удаљени TM"
 
-#: ../virtaal/plugins/tm/models/tinytm.py:36
-msgid "TinyTM"
-msgstr "TinyTM"
-
-#: ../virtaal/plugins/tm/models/tinytm.py:37
-msgid "A TinyTM translation memory server"
-msgstr "Сервер TinyTM-а за преводилачку меморију"
-
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/apertium.py:43
-#: ../virtaal/plugins/tm/models/apertium.py:126
-msgid "Apertium"
-msgstr "Apertium"
-
-#: ../virtaal/plugins/tm/models/apertium.py:44
-msgid "Unreviewed machine translations from Apertium"
-msgstr "Нередиговани машински преводи Apertium-а"
-
-#: ../virtaal/plugins/tm/tmview.py:110
+#: virtaal/plugins/tm/tmview.py
 msgid "Translation _Suggestions"
 msgstr "_Предлози превода"
 
-#: ../virtaal/plugins/tm/tmview.py:151
+#: virtaal/plugins/tm/tmview.py
+msgid "Suggestions for This _Unit"
+msgstr ""
+
+#: virtaal/plugins/tm/tmview.py
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:175
+#: virtaal/plugins/tm/tmview.py
 msgid "Select sources of Translation Memory"
 msgstr "Изаберите изворе за преводилачку меморију."
 
-#: ../virtaal/plugins/tm/tmview.py:176
+#: virtaal/plugins/tm/tmview.py
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Изаберите изворе које желите да користите за преводилачку меморију."
 
 #. l10n: match quality column label
-#: ../virtaal/plugins/tm/tmwidgets.py:64
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "%"
 msgstr "%"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:66
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "Matches"
 msgstr "Поклапања"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:68
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "TM Source"
 msgstr "TM извор"
 
-#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:138
-#, python-format
-msgid "%(match_quality)s%%"
-msgstr "%(match_quality)s%%"
-
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
-#: ../virtaal/plugins/tm/tmwidgets.py:148
+#: virtaal/plugins/tm/tmwidgets.py
 msgid "?"
 msgstr "?"
 
-#: ../virtaal/support/native_widgets.py:132
-#: ../virtaal/support/native_widgets.py:172
-#: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
-msgid "Choose a Translation File"
-msgstr "Избор датотеке превода"
-
-#: ../virtaal/support/native_widgets.py:152
-msgid ""
-"A file named \"%1\" already exists. Are you sure you want to overwrite it?"
+#: virtaal/support/crash_dialog.py
+msgid "Virtaal hit an unexpected error"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:38
+#: virtaal/support/crash_dialog.py
+msgid ""
+"This might not affect your current work, but if it keeps happening, "
+"reporting it helps get it fixed."
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+msgid "Details"
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+msgid "Close"
+msgstr ""
+
+#: virtaal/support/crash_dialog.py
+#, fuzzy
+#| msgid "Report a _Bug"
+msgid "Report This Bug…"
+msgstr "Пријави _грешку"
+
+#: virtaal/support/tutorial.py
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:43
+#: virtaal/support/tutorial.py
 msgid ""
 "Translate this slightly longer message. If a spell checker is available, "
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:50
+#: virtaal/support/tutorial.py
 msgid ""
 "This tutorial will show you some of the things you might want to pay "
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:57
+#: virtaal/support/tutorial.py
 msgid ""
 "Some of the advice will only be relevant to some languages. For example, if "
 "your language does not use the Latin alphabet, some of the advice might not "
@@ -1560,14 +1834,14 @@ msgid ""
 "established translation rules."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:64
+#: virtaal/support/tutorial.py
 msgid ""
 "The correct use of capital letters are important in many languages. "
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:70
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the English uses a capital letter for almost every word. "
 "Almost no other language uses this style. Unless your language definitely "
@@ -1576,48 +1850,48 @@ msgid ""
 "language does not use capital letters, simply translate it normally."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:79
+#: virtaal/support/tutorial.py
 msgid ""
 "If you translated the previous message you should see a window with that "
 "translation and a percentage indicating how similar the source strings "
-"(English) are. It is Virtaal's translation memory at work. Press Control+1 "
-"to copy the suggested translation to the current translation. Remember to "
+"(English) are. It is Virtaal's translation memory at work. Press Ctrl+1 to "
+"copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:88
+#: virtaal/support/tutorial.py
 msgid ""
 "This is a simple message that starts with a capital letter in English. If "
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:95
+#: virtaal/support/tutorial.py
 msgid ""
 "This is a simple message that starts with a lower case letter in English. If "
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:102
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:107
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:112
+#: virtaal/support/tutorial.py
 msgid ""
 "If the source will remain mostly or completely unchanged it is convenient to "
-"copy the entire source string with Alt+Down. Here is almost nothing to "
-"translate, so just press Alt+Down and make corrections if necessary."
+"copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
+"translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:119
+#: virtaal/support/tutorial.py
 #, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
@@ -1630,35 +1904,35 @@ msgstr ""
 "Умеци су делови текста које програм аутоматски препозна и означи ради лакшег "
 "уноса у превод."
 
-#: ../virtaal/support/tutorial.py:126
+#: virtaal/support/tutorial.py
 msgid ""
-"Recognised placeables include special symbols, numbers, variable place "
-"holders, acronyms and many more. Move to each one with Alt+Right and "
+"Recognised placeables include special symbols, numbers, variable "
+"placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:132
+#: virtaal/support/tutorial.py
 msgid ""
 "This message ends with ... to indicate that clicking on this text will cause "
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:138
+#: virtaal/support/tutorial.py
 msgid ""
 "This message ends with a special character that looks like three dots. "
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:145
+#: virtaal/support/tutorial.py
 msgid ""
 "This message has two sentences. Translate them and make sure you start each "
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:151
+#: virtaal/support/tutorial.py
 msgid ""
 "This message marks the word \"now\" as important with bold tags. These tags "
 "can be transferred from the source with Alt+Right and Alt+Down. Leave the "
@@ -1666,14 +1940,14 @@ msgid ""
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:159
+#: virtaal/support/tutorial.py
 msgid ""
 "This message is very similar to the previous message. Use the suggestion of "
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:166
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message \"%d\" is a placeholder (variable) that represents a number. "
@@ -1683,28 +1957,28 @@ msgid ""
 "refer to a percentage."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:174
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message, \"%d\" refers again to the number of files, but note how "
 "the \"(s)\" is used to show that we don't know how many it will be. This is "
 "often hard to translate well. If you encounter this in software translation, "
 "you might want to hear from developers if this can be avoided. Read more "
-"about this and decide how to do it in your language: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"about this and decide how to do it in your language: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:185
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the proper way of translating plurals are seen. You need to "
 "enter between 1 and 6 different versions of the translation to ensure the "
-"correct grammar in your language. Read more about this here: http://docs."
-"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
-"plurals.html"
+"correct grammar in your language. Read more about this here: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:196
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message, \"%s\" is a placeholder (variable) that represents a file "
@@ -1713,17 +1987,17 @@ msgid ""
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:204
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
 "In this message the variable is surrounded by double quotes. Make sure your "
 "translation contains the variable %s and surround it similarly with quotes "
 "in the way required by your language. If your language uses the same quotes "
 "as English, type it exactly as shown for the English. If your language uses "
-"different characters you can just type them around the variable."
+"different quoting characters you can just type them around the variable."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:213
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
 "is part of the variable, and the whole variable from '%' to the 's' should "
@@ -1731,27 +2005,27 @@ msgid ""
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:221
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message the user of the software is asked to do something. Make sure "
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:227
+#: virtaal/support/tutorial.py
 msgid ""
 "In this message there is reference to \"Linux\" (a product name). Many "
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:234
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:239
+#: virtaal/support/tutorial.py
 msgid ""
 "This message refers to a website with more information. Sometimes you might "
 "be allowed or encouraged to change the URL (web address) to a website in "
@@ -1760,14 +2034,14 @@ msgid ""
 "article in your language about XML."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:248
+#: virtaal/support/tutorial.py
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:255
+#: virtaal/support/tutorial.py
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
 "Make sure you can see the context information showing that this is a noun (a "
@@ -1776,153 +2050,179 @@ msgid ""
 "definitely appropriate in this case as well."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:264
+#: virtaal/support/tutorial.py
 msgid ""
-"An accelerator key is a key on your keyboard that you can press to to "
-"quickly access a menu or function. It is also called a hot key, access key "
-"or mnemonic. In program interfaces they are shown as an underlined letter in "
+"An accelerator key is a key on your keyboard that you can press to quickly "
+"access a menu or function. It is also called a hot key, access key or "
+"mnemonic. In program interfaces they are shown as an underlined letter in "
 "the text label. In the translatable text they are marked using some "
 "character like the underscore here, but other characters are used for this "
-"as well. In this case the the accelerator key is \"f\" since the underscore "
-"is before this letter and it means that this accelerator could be triggered "
-"by pressing Alt+F."
+"as well. In this case the accelerator key is \"f\" since the underscore is "
+"before this letter and it means that this accelerator could be triggered by "
+"pressing Alt+F."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:276
+#: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:280
+#: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:285
+#: virtaal/support/tutorial.py
 msgid ""
-"Virtaal is able to provide suggestions from several terminology glossaries "
-"and provides easy shortcuts to allow paste them in the translation field. "
-"Right now Virtaal has only one empty terminology glossary, but you can start "
-"filling it. In order to do that select the original text, press Ctrl+T, "
-"provide a translation for your language, and save."
+"You can maintain a local terminology file to help you translate "
+"consistently. To add a term, select a word (or words), press Ctrl+T and fill "
+"in the details for the new term. Select the text below and add a term for it."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:295
+#: virtaal/support/tutorial.py
 msgid ""
-"In the previous entry you have created one terminology entry for the the "
+"In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:300
+#: virtaal/support/tutorial.py
 msgid ""
-"If you have created any terminology in the previous entries you may may now "
-"see some of the words with a green background (or other color depending on "
-"your theme). This means that Virtaal has terminology suggestions for that "
-"word. Use Alt+Right to select the highlighted word, and then press Alt+Down. "
-"If only one suggestions is provided Alt+Down just copies the suggestion to "
+"If you have created any terminology in the previous entries you may now see "
+"some of the words with a green background (or other color depending on your "
+"theme). This means that Virtaal has terminology suggestions for that word. "
+"Use Alt+Right to select the highlighted word, and then press Alt+Down. If "
+"only one suggestion is provided then Alt+Down just copies the suggestion to "
 "the translation field. But if several suggestions are available Alt+Down "
 "shows a suggestion list which you can navigate using Down and Up keys. Once "
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:313
+#: virtaal/support/tutorial.py
 msgid ""
 "This message has two lines. Make sure that your translation also contains "
-"two lines. You can separate lines with Shift+Enter or copying new-line "
+"two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:320
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:325
+#: virtaal/support/tutorial.py
 msgid ""
-"This message contains a large number that is formatted according to to "
-"American convention. Translate this but be sure to format the number "
-"according to the convention for your language. You might need to change the "
-"comma (,) and full stop (.) to other characters, and you might need to use a "
+"This message contains a large number that is formatted according to the "
+"American convention. Translate this but make sure to format the number "
+"according to your language's convention. You might need to change the comma "
+"(,) and full stop (.) to other characters, and you also might need to use a "
 "different number system. Make sure that you understand the American "
-"formatting: the number is bigger than one thousand."
+"formatting: this number is bigger than one thousand."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:335
+#: virtaal/support/tutorial.py
 msgid ""
 "This message refers to miles. If the programmers encourage it, you might "
-"want to change this to kilometres in your translation, if kilometres are "
+"want to change this to kilometres in your translation, if kilometers are "
 "more commonly used in your language. Note that 1 mile is about 1.6 "
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
-"number is changed, but in this case it is safe to do."
+"number is changed, but in this case it is safe to do so."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:344
+#: virtaal/support/tutorial.py
 msgid ""
-"This message contains a link that the user will be able to click on on to "
-"visit the help page. Make sure you maintain the information between the "
-"angle brackets (<...>) correctly. The double quotes (\") should never be "
-"changed in tags, even if your language uses a different type of quotation "
-"marks."
+"This message contains a link that the user will be able to click on to visit "
+"the help page. Make sure you correctly keep the information between the "
+"angle brackets (<...>). The double quotes (\") should never be changed in "
+"tags, even if your language uses a different type of quotation marks."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:354
+#: virtaal/support/tutorial.py
 #, python-format
 msgid ""
-"This message contains a similar link, but the programmers decided to to "
-"rather insert the tags with variables so that translators can't change them. "
+"This message contains a similar link, but the programmers decided to rather "
+"insert the tags by using variables so that translators can't change them. "
 "Make sure you position the two variables (%s) so that they correspond to the "
-"opening and closing tag of the previous translation."
+"opening and closing tags of the previous translation."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:362
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains the <b> and </b> tags to emphasize a word, while "
-"everything is inside <p> and </p> tags. Make sure your whole translation is "
-"inside <p> and </p> tags."
+"everything is within the <p> and </p> tags. Make sure your whole translation "
+"is within the <p> and </p> tags."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:368
+#: virtaal/support/tutorial.py
 msgid ""
 "This message contains a similar link that is contained within <span> and </"
-"span>. Make sure you maintain all the tags (<...>) correctly, and that the "
-"link is contained completely inside the <span> and </span> tags in your "
+"span>. Make sure you correctly keep all the tags (<...>), and that the link "
+"is completely contained within the <span> and </span> tags in your "
 "translation. Make sure that the text inside the \"a\" tags correspond to "
 "\"help page\" and that your translation corresponding to the second sentence "
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
 
-#: ../virtaal/views/checksunitview.py:73
-msgid "No issues"
-msgstr "Нема проблема"
-
-#: ../virtaal/views/checksunitview.py:80
-msgid "Quality Check"
-msgstr "Провера квалитета"
-
-#: ../virtaal/views/checksunitview.py:86
-msgid "Description"
-msgstr "Опис"
-
-#: ../virtaal/views/checksprojview.py:40
+#: virtaal/views/checksprojview.py
 msgid "Project Type"
 msgstr "Тип пројекта"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
-#: ../virtaal/views/checksprojview.py:63
+#: virtaal/views/checksprojview.py
 #, python-format
 msgid "Checks: %(checker_name)s"
 msgstr "Провере: %(checker_name)s"
 
-#: ../virtaal/views/langview.py:76
-msgid "_New Language Pair..."
-msgstr "_Нови језички пар…"
+#: virtaal/views/checksunitview.py
+msgid "Quality Check"
+msgstr "Провера квалитета"
 
-#: ../virtaal/views/mainview.py:230
+#: virtaal/views/checksunitview.py
+msgid "Description"
+msgstr "Опис"
+
+#: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
+msgid "Quality checks"
+msgstr "Провере квалитета"
+
+#: virtaal/views/langview.py
+#, fuzzy
+#| msgid "New Language Pair"
+msgid "_New Language Pair…"
+msgstr "Нови језички пар"
+
+#: virtaal/views/mainview.py
+msgid "_Cancel"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "_OK"
+msgstr ""
+
+#. l10n: macOS app menu item that opens the Preferences dialog
+#: virtaal/views/mainview.py
+msgid "Settings…"
+msgstr ""
+
+#: virtaal/views/mainview.py
 msgid "Error"
 msgstr "Грешка"
 
-#: ../virtaal/views/mainview.py:342
+#: virtaal/views/mainview.py
+msgid "Choose a Translation File"
+msgstr "Избор датотеке превода"
+
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Choose a Translation File"
+msgid "Choose a PO Template File"
+msgstr "Избор датотеке превода"
+
+#: virtaal/views/mainview.py
+msgid "PO Template Files"
+msgstr ""
+
+#: virtaal/views/mainview.py
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1930,118 +2230,254 @@ msgstr ""
 "Тренутна датотека је измењена.\n"
 "Желите ли да сачувате измене?"
 
-#: ../virtaal/views/mainview.py:345
+#: virtaal/views/mainview.py virtaal/views/propertiesview.py
+#, fuzzy
+#| msgid "Save"
+msgid "_Save"
+msgstr "Сачувај"
+
+#: virtaal/views/mainview.py
 msgid "_Discard"
 msgstr "_Одбаци"
+
+#: virtaal/views/mainview.py
+msgid "Could not open the dropped file - its file name could not be decoded."
+msgstr ""
 
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:430
+#: virtaal/views/mainview.py
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s – Virtaal"
 
-#: ../virtaal/views/mainview.py:455
+#. l10n: This is the title of the main window of Virtaal, without the app name
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgid "%(modified_marker)s%(current_file)s"
+msgstr "%(modified_marker)s%(current_file)s – Virtaal"
+
+#: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Унесите број именичких облика (множина)."
 
-#: ../virtaal/views/mainview.py:461
+#: virtaal/views/mainview.py
 msgid "Please enter the plural equation to use"
 msgstr "Унесите једначину за множину."
 
+#: virtaal/views/mainview.py
+msgid "Header information"
+msgstr "Подаци у заглављу"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Virtaal %s is available (you have %s)"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Release Notes"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Download"
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid ""
+"Your settings file could not be read, so Virtaal started with default "
+"settings. The old file was kept at: %s"
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "Could not open log file '%(filename)s'"
+msgid "Couldn't open '%(file)s': %(reason)s"
+msgstr "Не могу да отворим датотеку евиденције „%(filename)s“"
+
+#: virtaal/views/mainview.py
+#, fuzzy, python-format
+#| msgid "Could not open log file '%(filename)s'"
+msgid "Couldn't open '%(file)s'."
+msgstr "Не могу да отворим датотеку евиденције „%(filename)s“"
+
+#: virtaal/views/mainview.py
+msgid "Restart Virtaal for the new language to take effect."
+msgstr ""
+
+#. l10n: Column heading: unit counts before updating to the new template
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Before:"
+msgid "Before"
+msgstr "Пре:"
+
+#. l10n: Column heading: unit counts after updating to the new template
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "After:"
+msgid "After"
+msgstr "После:"
+
+#. l10n: Column heading: difference between the before and after unit counts
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Unchanged"
+msgid "Change"
+msgstr "Непромењено"
+
+#. l10n: Row heading: total number of units in the file
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "Total: %d"
+msgid "Total"
+msgstr "Укупно: %d"
+
+#: virtaal/views/mainview.py
+msgid "Source and target language are the same."
+msgstr ""
+
+#: virtaal/views/mainview.py
+#, fuzzy
+#| msgid "New Language Pair"
+msgid "Change Language Pair"
+msgstr "Нови језички пар"
+
+#: virtaal/views/mainview.py
+msgid "This file is read-only."
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Save As…"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Logs"
+msgstr ""
+
+#: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
+msgid "_Close"
+msgstr ""
+
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
-#: ../virtaal/views/modeview.py:62
+#: virtaal/views/modeview.py
 msgid "N_avigation:"
 msgstr "_Навигација:"
 
-#: ../virtaal/views/propertiesview.py:32
+#. l10n: Context: show no units around the one being edited
+#: virtaal/views/modeview.py
+msgid "None"
+msgstr ""
+
+#. l10n: How many units to show around the one being edited, when a
+#. navigation mode only goes to some units
+#: virtaal/views/modeview.py
+msgid "Conte_xt:"
+msgstr ""
+
+#: virtaal/views/prefsview.py
+#, fuzzy
+#| msgid "Poedit settings"
+msgid "Settings"
+msgstr "Поставке Poedit-а"
+
+#: virtaal/views/prefsview.py
+msgid "System default"
+msgstr ""
+
+#. l10n: A UI language: its name in your language, then in
+#. itself, e.g. "French - Français"
+#: virtaal/views/prefsview.py
+#, python-format
+msgid "%(language)s - %(endonym)s"
+msgstr ""
+
+#: virtaal/views/propertiesview.py
 msgid "Untranslated:"
 msgstr "Непреведено:"
 
-#: ../virtaal/views/propertiesview.py:33
+#: virtaal/views/propertiesview.py
 msgid "Needs work:"
 msgstr "Непоуздано:"
 
-#: ../virtaal/views/propertiesview.py:34
+#: virtaal/views/propertiesview.py
 msgid "Rejected:"
 msgstr "Одбијено:"
 
-#: ../virtaal/views/propertiesview.py:35
+#: virtaal/views/propertiesview.py
 msgid "Needs review:"
 msgstr "Нередиговано:"
 
-#: ../virtaal/views/propertiesview.py:36
+#: virtaal/views/propertiesview.py
 msgid "Translated:"
 msgstr "Преведено:"
 
-#: ../virtaal/views/propertiesview.py:37
+#: virtaal/views/propertiesview.py
 msgid "Reviewed:"
 msgstr "Редиговано:"
 
-#: ../virtaal/views/propertiesview.py:59
-msgid "(0%)"
-msgstr "(0%)"
-
-#: ../virtaal/views/propertiesview.py:61
-msgid "(100%)"
-msgstr "(100%)"
-
-#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
-#: ../virtaal/views/propertiesview.py:64
+#. l10n: A percentage in the file properties, e.g. "(25.5%)"
+#: virtaal/views/propertiesview.py
 #, python-format
-msgid "(%04.1f%%)"
-msgstr "(%04.1f%%)"
+msgid "(%s)"
+msgstr ""
 
-#: ../virtaal/views/propertiesview.py:134
-msgid "Save the file for up-to-date information"
-msgstr "Сачувајте датотеку ради ажурних информација."
+#: virtaal/views/propertiesview.py
+msgid "This file has unsaved changes."
+msgstr ""
 
-#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
-#: ../virtaal/views/propertiesview.py:191
-#: ../virtaal/views/propertiesview.py:192
-#, python-format
-msgid "<b>%d</b>"
-msgstr "<b>%d</b>"
-
-#: ../virtaal/views/propertiesview.py:203
-#, python-format
-msgid "%.1f KB"
-msgstr "%.1f kB"
-
-#: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
+#: virtaal/views/storeview.py
 msgid "Export failed"
 msgstr "Извоз није успео"
 
-#: ../virtaal/views/storeview.py:156
+#: virtaal/views/storeview.py
 msgid "Preview failed"
 msgstr "Преглед није успео"
 
-#: ../virtaal/views/unitview.py:613
+#: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Помери један корак уназад у току посла (Ctrl+Shift+Enter)"
 
-#: ../virtaal/views/unitview.py:614
+#: virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
 msgstr "Кликните да померите на одређено стање у току посла"
 
-#: ../virtaal/views/unitview.py:615
+#: virtaal/views/unitview.py
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Помери једно поље унапред у току посла (Ctrl+Enter)"
 
-#: ../virtaal/views/widgets/aboutdialog.py:34
-msgid "Copyright © 2007-2010 Zuza Software Foundation"
+#: virtaal/views/unitview.py
+#, fuzzy
+#| msgid "P_revious Placeable"
+msgid "Previous state"
+msgstr "_Претходни уметак"
+
+#: virtaal/views/unitview.py
+#, fuzzy
+#| msgid "Select States"
+msgid "Next state"
+msgstr "Изабери стања"
+
+#: virtaal/views/widgets/aboutdialog.py
+#, fuzzy
+#| msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Ауторска права © 2007–2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/views/widgets/aboutdialog.py:37
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal is a program for doing translation."
 msgstr "Virtaal је програм за израду превода."
 
-#: ../virtaal/views/widgets/aboutdialog.py:38
+#: virtaal/views/widgets/aboutdialog.py
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
@@ -2051,335 +2487,550 @@ msgstr ""
 "је и да оспособимо програм да обавља функције алатке за превођење помоћу "
 "рачунара (CAT)."
 
-#: ../virtaal/views/widgets/aboutdialog.py:52
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal website"
 msgstr "Веб-сајт Virtaal-а"
 
-#: ../virtaal/views/widgets/aboutdialog.py:65
+#: virtaal/views/widgets/aboutdialog.py
 msgid "We thank our donors:"
 msgstr "Захваљујемо се донаторима:"
 
-#: ../virtaal/views/widgets/aboutdialog.py:66
+#: virtaal/views/widgets/aboutdialog.py
 msgid "The International Development Research Centre"
 msgstr "Истраживачки центар за међународни развој (IDRC)"
 
-#: ../virtaal/views/widgets/aboutdialog.py:68
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Mozilla Corporation"
 msgstr "Корпорација Mozilla"
 
 #. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/views/widgets/aboutdialog.py:73
+#: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
 msgstr "Ђорђе Васиљевић <djordjevasiljevich@gmail.com>"
 
-#: ../virtaal/views/widgets/langadddialog.py:103
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language"
+msgid "Edit Language"
+msgstr "Језик"
+
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language name:"
+msgid "Enter a language name."
+msgstr "Име језика:"
+
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
 msgstr "Језички кôд мора да буде ниска у ASCII-ју."
 
-#: ../virtaal/views/widgets/langadddialog.py:106
+#: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be at least 2 characters long."
 msgstr "Језички кôд мора имати најмање два знака."
 
-#: ../virtaal/views/widgets/langselectdialog.py:79
-#: ../virtaal/views/widgets/langselectdialog.py:86
+#: virtaal/views/widgets/langadddialog.py
+#, fuzzy
+#| msgid "Language code must be an ASCII string."
+msgid "Language code must not contain spaces."
+msgstr "Језички кôд мора да буде ниска у ASCII-ју."
+
+#: virtaal/views/widgets/langadddialog.py
+#, python-format
+msgid "Language code %s is already used."
+msgstr ""
+
+#: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
 msgstr "Језик"
 
 #. l10n: This is the column heading for the language code
-#: ../virtaal/views/widgets/langselectdialog.py:94
-#: ../virtaal/views/widgets/langselectdialog.py:101
+#: virtaal/views/widgets/langselectdialog.py
 msgid "Code"
 msgstr "Кôд"
 
-#: ../virtaal/views/widgets/selectview.py:66
-msgid "Enabled"
-msgstr "Омогућено"
-
-#: ../virtaal/views/widgets/selectview.py:113
-msgid "Configure..."
+#: virtaal/views/widgets/selectview.py
+#, fuzzy
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Подеси…"
 
-#: ../virtaal/views/widgets/welcomescreen.py:79
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Global"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Open a file"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Save the current file"
+msgstr "Тренутна датотека"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Save the current file under a new name"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Current File"
+msgid "Close the current file"
+msgstr "Тренутна датотека"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Virtaal"
+msgid "Quit Virtaal"
+msgstr "Virtaal"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show preferences dialog"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show file properties and statistics"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Toggle fullscreen mode"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show this Keyboard Shortcuts window"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "_Navigation"
+msgid "Navigation"
+msgstr "_Навигација"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Machine translation"
+msgid "Move to next translation"
+msgstr "Машински превод"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units up"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units down"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to first unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to last unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next search match"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous search match"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Units"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "P_revious Placeable"
+msgid "Select previous placeable"
+msgstr "_Претходни уметак"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "_Next Placeable"
+msgid "Select next placeable"
+msgstr "_Следећи уметак"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Insert the selected placeable"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Replace the translation with the source"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Copy the source, if nothing is selected"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Enter a new line"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Undo the last change"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Redo the last undone change"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Use the first translation suggestion"
+msgstr "_Предлози превода"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show/Hide checks"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Show translation suggestions for this unit"
+msgstr "_Предлози превода"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Turn translation suggestions on or off"
+msgstr "_Предлози превода"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Translation _Suggestions"
+msgid "Hide translation suggestions, if shown"
+msgstr "_Предлози превода"
+
+#: virtaal/views/widgets/shortcutswindow.py
+#, fuzzy
+#| msgid "Local terminology files"
+msgid "Add a term to the local terminology file"
+msgstr "Локалне датотеке терминологије"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Moving focus"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the next target field"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the previous target field"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the language-pair selector"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the \"Navigation:\" mode selector"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Close the search bar and return to normal editing"
+msgstr ""
+
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"
 msgstr "Преводилачка меморија"
 
-#: ../virtaal/views/widgets/welcomescreen.py:81
-msgid "Quality checks"
-msgstr "Провере квалитета"
-
-#: ../virtaal/views/widgets/welcomescreen.py:82
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Machine translation"
 msgstr "Машински превод"
 
-#: ../virtaal/views/widgets/welcomescreen.py:83
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Highlighting and insertion of placeables"
 msgstr "Истицање и унос непроменљивих"
 
-#: ../virtaal/views/widgets/welcomescreen.py:84
+#: virtaal/views/widgets/welcomescreen.py
 msgid "Many plugins and options for customization"
 msgstr "Многи прикључци и опције ради прилагођавања"
 
-#: ../virtaal/models/storemodel.py:132
-msgid "The file does not exist."
-msgstr "Датотека не постоји."
+#~ msgid "_Add Missing Language..."
+#~ msgstr "_Додај језик који недостаје…"
 
-#: ../virtaal/models/storemodel.py:134
-msgid "Not a valid file."
-msgstr "Неисправна датотека."
+#~ msgid "http://translate.sourceforge.net/wiki/guide/start"
+#~ msgstr ""
+#~ "http://docs.translatehouse.org/projects/localization-guide/en/latest/"
+#~ "guide/start.html?id=guide/start"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
-msgid "TMX Translation Memory"
-msgstr "TMX преводилачка меморија"
+#~ msgid ""
+#~ "At the end of a translation, simply press <Enter> to continue with the "
+#~ "next one."
+#~ msgstr ""
+#~ "Када завршите с преводом, притисните <Enter> да пређете на следећу поруку."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
-msgid "TMX"
-msgstr "TMX"
+#~ msgid ""
+#~ "To copy the original string into the target field, simply press "
+#~ "<Alt+Down>."
+#~ msgstr "Притисните <Alt+Down> да копирате изворну поруку у превод."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
-msgid "Translation Memory eXchange"
-msgstr "Translation Memory eXchange"
+#~ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+#~ msgstr "Притисните <Alt+U> да означите тренутни превод као приближан."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
-msgid "TBX Glossary"
-msgstr "TBX речник"
+#~ msgid ""
+#~ "To mark the current translation as incomplete, simply press "
+#~ "<Ctrl+Shift+Enter>."
+#~ msgstr ""
+#~ "Притисните <Ctrl+Shift+Enter> да означите тренутни превод као недовршен."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
-msgid "TBX"
-msgstr "TBX"
+#~ msgid ""
+#~ "To mark the current translation as complete, simply press <Ctrl+Enter>."
+#~ msgstr "Користите Ctrl+Up или Ctrl+Down да листате преводе."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
-msgid "TermBase eXchange"
-msgstr "TermBase eXchange"
+#~ msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+#~ msgstr "Користите Ctrl+Up или Ctrl+Down да листате преводе."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
-msgid "Wordfast Translation Memory"
-msgstr "Wordfast преводилачка меморија"
+#~ msgid ""
+#~ "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+#~ msgstr ""
+#~ "Користите Ctrl+PgUp или Ctrl+PgDown да померите неколико места нагоре или "
+#~ "надоле."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
-msgid "Qt Linguist Translation File"
-msgstr "Qt Linguist датотека превода"
+#~ msgid "OpenOffice.org"
+#~ msgstr "OpenOffice.org"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
-msgid "Qt Message File"
-msgstr "Qt датотека поруке"
+#~ msgid "Please enter your name"
+#~ msgstr "Унесите своје име"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
-msgid "Qt Phrase Book"
-msgstr "Qt збирка израза"
+#~ msgid "Please enter your e-mail address"
+#~ msgstr "Унесите е-адресу"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
-msgid "INI File"
-msgstr "INI датотека"
+#~ msgid "Please enter your team's information"
+#~ msgstr "Унесите податке свог тима"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
-msgid "INI"
-msgstr "INI"
+#~ msgid "Reload File"
+#~ msgstr "Учитај поново"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
-msgid "Initialization"
-msgstr "Покретање"
+#~ msgid "No source or translatable files in bundle"
+#~ msgstr "У пакету нема изворних или циљних датотека"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
-msgid "Java Properties File"
-msgstr "Java Properties датотека"
+#~ msgid "The file contains nothing to translate."
+#~ msgstr "Датотека нема текста за превођење."
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
-msgid "OpenOffice.org Translation File"
-msgstr "OpenOffice.org датотека превода"
+#, python-format
+#~ msgid "Translated: %d"
+#~ msgstr "Преведено: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
-msgid "XLIFF Translation File"
-msgstr "XLIFF датотека превода"
+#, python-format
+#~ msgid "Fuzzy: %d"
+#~ msgstr "Приближно преведено: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
-msgid "XLIFF"
-msgstr "XLIFF"
+#, python-format
+#~ msgid "Untranslated: %d"
+#~ msgstr "Непреведено: %d"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
-msgid "XML Localization Interchange File Format"
-msgstr "XML Localization Interchange File Format"
+#~ msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+#~ msgstr ""
+#~ "http://docs.translatehouse.org/projects/virtaal/en/latest/cheatsheet.html?"
+#~ "id=virtaal/cheatsheet"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
-msgid "C++ RC File"
-msgstr "C++ RC датотека"
+#~ msgid "<i>(no suggestions)</i>"
+#~ msgstr "<i>(нема предлога)</i>"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
-msgid "RC"
-msgstr "RC"
+#~ msgid "Ignore All"
+#~ msgstr "Занемари све"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
-msgid "Resource Compiler"
-msgstr "Компилатор ресурса"
+#~ msgid "More..."
+#~ msgstr "Више…"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
-msgid "Tcl Translation File"
-msgstr "Tcl датотека превода"
+#, python-format
+#~ msgid "Add \"%s\" to Dictionary"
+#~ msgstr "Додај „%s“ у речник"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
-msgid "JavaScript error message file"
-msgstr "Датотека са поруком о грешци у JavaScript-у"
+#~ msgid "Languages"
+#~ msgstr "Језици"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
-msgid "Gettext Translation Template"
-msgstr "Шаблон Gettext превода"
+#~ msgid "Open-Tran.eu"
+#~ msgstr "Open-Tran.eu"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
-msgid "Trados Tag Editor"
-msgstr "Trados TagEditor"
+#, python-format
+#~ msgid "Poedit's Translation Memory: %(database_language_code)s"
+#~ msgstr "Poedit-ова преводилачка меморија: %(database_language_code)s"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
-msgid "OS X Strings File"
-msgstr "OS X датотека са нискама"
+#, python-format
+#~ msgid "KBabel's Translation Memory: %(database_language_code)s"
+#~ msgstr "KBabel-ова преводилачка меморија: %(database_language_code)s"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
-msgid "UTX Dictionary"
-msgstr "UTX речник"
+#~ msgid "Terminology _Files..."
+#~ msgstr "Датотеке _терминологије…"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
-msgid "UTX"
-msgstr "UTX"
+#~ msgid "Add _Term..."
+#~ msgstr "Додај _термин…"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
-msgid "Universal Terminology eXchange"
-msgstr "Universal Terminology eXchange"
+#, python-format
+#~ msgid "\"%s\" is not a usable file."
+#~ msgstr "Датотека „%s“ је неупотребљива."
 
-#: ../devsupport/tmp_strings.py:23
-msgid "Gettext PO file"
-msgstr "Gettext PO датотека"
+#~ msgid "Terms from Open-Tran.eu"
+#~ msgstr "Термини са сајта Open-Tran.eu"
 
-#: ../devsupport/tmp_strings.py:24
-msgid "Gettext MO file"
-msgstr "Gettext MO датотека"
+#~ msgid "Microsoft Translator"
+#~ msgstr "Microsoft преводилац"
 
-#: ../devsupport/tmp_strings.py:25
-msgid "Qt .qm file"
-msgstr "Qt .qm датотека"
+#~ msgid "Unreviewed machine translations from Microsoft Translator"
+#~ msgstr "Нередиговани преводи Microsoft-овог преводиоца"
 
-#: ../devsupport/tmp_strings.py:26
-msgid "OmegaT Glossary"
-msgstr "OmegaT речник"
+#~ msgid "Microsoft"
+#~ msgstr "Microsoft"
 
-#: ../bin/virtaal:93
+#~ msgid "libtranslate"
+#~ msgstr "Libtranslate"
+
+#~ msgid "Unreviewed machine translations from various services"
+#~ msgstr "Нередиговани машински преводи из разних извора"
+
+#~ msgid "OpenTran"
+#~ msgstr "OpenTran"
+
+#~ msgid "TinyTM"
+#~ msgstr "TinyTM"
+
+#~ msgid "A TinyTM translation memory server"
+#~ msgstr "Сервер TinyTM-а за преводилачку меморију"
+
+#, python-format
+#~ msgid "%(match_quality)s%%"
+#~ msgstr "%(match_quality)s%%"
+
+#~ msgid "No issues"
+#~ msgstr "Нема проблема"
+
+#~ msgid "_New Language Pair..."
+#~ msgstr "_Нови језички пар…"
+
+#~ msgid "(0%)"
+#~ msgstr "(0%)"
+
+#~ msgid "(100%)"
+#~ msgstr "(100%)"
+
+#, python-format
+#~ msgid "(%04.1f%%)"
+#~ msgstr "(%04.1f%%)"
+
+#~ msgid "Save the file for up-to-date information"
+#~ msgstr "Сачувајте датотеку ради ажурних информација."
+
+#, python-format
+#~ msgid "<b>%d</b>"
+#~ msgstr "<b>%d</b>"
+
+#, python-format
+#~ msgid "%.1f KB"
+#~ msgstr "%.1f kB"
+
+#~ msgid "INI File"
+#~ msgstr "INI датотека"
+
+#~ msgid "INI"
+#~ msgstr "INI"
+
+#~ msgid "Initialization"
+#~ msgstr "Покретање"
+
+#~ msgid "Java Properties File"
+#~ msgstr "Java Properties датотека"
+
+#~ msgid "OpenOffice.org Translation File"
+#~ msgstr "OpenOffice.org датотека превода"
+
+#~ msgid "XLIFF"
+#~ msgstr "XLIFF"
+
+#~ msgid "XML Localization Interchange File Format"
+#~ msgstr "XML Localization Interchange File Format"
+
+#~ msgid "C++ RC File"
+#~ msgstr "C++ RC датотека"
+
+#~ msgid "RC"
+#~ msgstr "RC"
+
+#~ msgid "Resource Compiler"
+#~ msgstr "Компилатор ресурса"
+
+#~ msgid "Tcl Translation File"
+#~ msgstr "Tcl датотека превода"
+
+#~ msgid "JavaScript error message file"
+#~ msgstr "Датотека са поруком о грешци у JavaScript-у"
+
+#~ msgid "Gettext Translation Template"
+#~ msgstr "Шаблон Gettext превода"
+
+#~ msgid "Trados Tag Editor"
+#~ msgstr "Trados TagEditor"
+
+#~ msgid "OS X Strings File"
+#~ msgstr "OS X датотека са нискама"
+
 #, c-format
-msgid "%prog [options] [translation_file]"
-msgstr "%prog [опције] [датотека_превода]"
+#~ msgid "%prog [options] [translation_file]"
+#~ msgstr "%prog [опције] [датотека_превода]"
 
-#: ../bin/virtaal:96
-msgid "LOG"
-msgstr "Евиденција"
+#~ msgid "PROFILE"
+#~ msgstr "Профил"
 
-#: ../bin/virtaal:97
-msgid "turn on logging, storing the result to the supplied filename."
-msgstr "омогућите евидентирање и сместите резултат у наведену датотеку."
+#~ msgid "perform profiling, storing the result to the supplied filename."
+#~ msgstr "извршите профилисање и сместите резултат у наведену датотеку."
 
-#: ../bin/virtaal:99
-msgid "CONFIG"
-msgstr "Подешавање"
+#~ msgid "invalid number of arguments"
+#~ msgstr "неисправан број аргумената"
 
-#: ../bin/virtaal:100
-msgid "use the configuration file given by the supplied filename."
-msgstr "користите датотеку подешавања коју је креирала наведена датотека."
+#~ msgid "Profiling support is not available"
+#~ msgstr "Профилисање није доступно"
 
-#: ../bin/virtaal:103
-msgid "enable debugging features"
-msgstr "омогући функције за отклањање грешака"
-
-#: ../bin/virtaal:109
-msgid "PROFILE"
-msgstr "Профил"
-
-#: ../bin/virtaal:111
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "извршите профилисање и сместите резултат у наведену датотеку."
-
-#: ../bin/virtaal:135
-msgid "Could not open log file '%(filename)s'"
-msgstr "Не могу да отворим датотеку евиденције „%(filename)s“"
-
-#: ../bin/virtaal:143
-msgid "Could not read configuration file '%(filename)s'"
-msgstr "Не могу да прочитам датотеку подешавања „%(filename)s“"
-
-#: ../bin/virtaal:147
-msgid "invalid number of arguments"
-msgstr "неисправан број аргумената"
-
-#: ../bin/virtaal:173
-msgid "Profiling support is not available"
-msgstr "Профилисање није доступно"
-
-#: ../bin/virtaal:185
-msgid "Could not open profile file '%(filename)s'"
-msgstr "Не могу да отворим датотеку профила „%(filename)s“"
-
-#: ../devsupport/optparse.py:134
 #, python-format
-msgid "no such option: %s"
-msgstr "нема такве опције: %s"
+#~ msgid "no such option: %s"
+#~ msgstr "нема такве опције: %s"
 
-#: ../devsupport/optparse.py:145
 #, python-format
-msgid "ambiguous option: %s (%s?)"
-msgstr "двосмислена опција: %s (%s?)"
+#~ msgid "ambiguous option: %s (%s?)"
+#~ msgstr "двосмислена опција: %s (%s?)"
 
-#: ../devsupport/optparse.py:368
+#~ msgid "Usage"
+#~ msgstr "Употреба"
+
+#~ msgid "integer"
+#~ msgstr "цео број"
+
+#~ msgid "long integer"
+#~ msgstr "дуг цео број"
+
+#~ msgid "floating-point"
+#~ msgstr "покретни зарез"
+
+#~ msgid "complex"
+#~ msgstr "сложено"
+
 #, python-format
-msgid "Usage: %s\n"
-msgstr "Употреба: %s\n"
+#~ msgid "option %s: invalid %s value: %r"
+#~ msgstr "опција %s: неисправна вредност %s: %r"
 
-#: ../devsupport/optparse.py:387
-msgid "Usage"
-msgstr "Употреба"
-
-#: ../devsupport/optparse.py:412
-msgid "integer"
-msgstr "цео број"
-
-#: ../devsupport/optparse.py:413
-msgid "long integer"
-msgstr "дуг цео број"
-
-#: ../devsupport/optparse.py:414
-msgid "floating-point"
-msgstr "покретни зарез"
-
-#: ../devsupport/optparse.py:415
-msgid "complex"
-msgstr "сложено"
-
-#: ../devsupport/optparse.py:423
 #, python-format
-msgid "option %s: invalid %s value: %r"
-msgstr "опција %s: неисправна вредност %s: %r"
+#~ msgid "option %s: invalid choice: %r (choose from %s)"
+#~ msgstr "опција %s: неисправан избор: %r (изаберите %s)"
 
-#: ../devsupport/optparse.py:431
+#~ msgid "%prog [options]"
+#~ msgstr "%prog [опције]"
+
 #, python-format
-msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr "опција %s: неисправан избор: %r (изаберите %s)"
+#~ msgid "%s option requires %d arguments"
+#~ msgstr "Опција %s захтева %d аргумента"
 
-#: ../devsupport/optparse.py:1246
-msgid "show this help message and exit"
-msgstr "прикажи ову поруку помоћи и изађи"
-
-#: ../devsupport/optparse.py:1251
-msgid "show program's version number and exit"
-msgstr "прикажи верзију програма и изађи"
-
-#: ../devsupport/optparse.py:1274
-msgid "%prog [options]"
-msgstr "%prog [опције]"
-
-#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
-msgid "%s option requires an argument"
-msgstr "Опција %s захтева цео број"
-
-#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
-#, python-format
-msgid "%s option requires %d arguments"
-msgstr "Опција %s захтева %d аргумента"
-
-#: ../devsupport/optparse.py:1495
-#, python-format
-msgid "%s option does not take a value"
-msgstr "Опција %s не узима вредност"
+#~ msgid "%s option does not take a value"
+#~ msgstr "Опција %s не узима вредност"

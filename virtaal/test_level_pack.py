@@ -139,6 +139,31 @@ def test_a_pack_adds_only_the_library_gaps_at_each_level(lite, tmp_path):
     assert 'msgid "English"\nmsgstr ""' in language_names
 
 
+def test_a_library_pack_holds_its_lite_catalog_translations_for_review(lite, tmp_path):
+    (tmp_path / "lite" / "gtk30" / "zu.po").write_text(
+        HEADER.replace("de", "zu") + '\nmsgid "Home"\nmsgstr "Ikhaya"\n\nmsgid "Bookmarks"\nmsgstr ""\n',
+        encoding="utf-8", newline="\n")
+
+    archive = lite.pack("zu", tmp_path / "out", {})
+
+    with zipfile.ZipFile(archive) as zf:
+        gtk = zf.read("gtk30-zu-level1.po").decode("utf-8")
+        level2 = zf.read("gtk30-zu-level2.po").decode("utf-8")
+    assert 'msgid "Home"\nmsgstr "Ikhaya"' in gtk
+    assert 'msgid "Bookmarks"' not in gtk
+    assert 'msgid "Bookmarks"' in level2
+
+
+def test_without_libraries_a_pack_has_no_library_files(lite, tmp_path):
+    (tmp_path / "lite" / "gtk30" / "zu.po").write_text(
+        HEADER.replace("de", "zu") + '\nmsgid "Home"\nmsgstr "Ikhaya"\n', encoding="utf-8", newline="\n")
+
+    archive = lite.pack("zu", tmp_path / "out")
+
+    with zipfile.ZipFile(archive) as zf:
+        assert not any(name.startswith("gtk30-") for name in zf.namelist())
+
+
 def test_a_returned_library_pack_goes_into_its_lite_catalog(lite, tmp_path):
     returned = tmp_path / "gtk30-zu-level1.po"
     returned.write_text(HEADER.replace("de", "zu") + '\nmsgctxt "keyboard label"\nmsgid "Shift"\nmsgstr "Shifu"\n',

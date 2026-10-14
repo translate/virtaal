@@ -24,6 +24,15 @@ def _isolate_pan_app_state(monkeypatch):
     monkeypatch.setattr(pan_app, 'DEBUG', pan_app.DEBUG)
 
 
+@pytest.fixture(autouse=True)
+def _restore_default_direction():
+    # cli.main() sets GTK's process-wide default direction.
+    from gi.repository import Gtk
+    direction = Gtk.Widget.get_default_direction()
+    yield
+    Gtk.Widget.set_default_direction(direction)
+
+
 def _run_cli(monkeypatch, argv):
     started = []
     monkeypatch.setattr(cli, 'run_virtaal', lambda startup_file: started.append(startup_file))
@@ -244,19 +253,23 @@ def test_rtl_locale_without_a_translation_is_forced_back_to_ltr(monkeypatch):
     assert directions == [Gtk.TextDirection.LTR]
 
 
-def test_rtl_locale_with_a_real_translation_is_left_alone(monkeypatch):
+@pytest.mark.parametrize('direction', ['RTL', 'LTR'])
+def test_a_translated_ui_takes_its_languages_direction(monkeypatch, direction):
+    # GTK set its direction from the locale it started in, before a
+    # saved or --lang UI language was installed (Arabic on an English
+    # system stayed left-to-right).
     monkeypatch.setattr(pan_app, 'has_ui_translation', True)
     from gi.repository import Gtk
-    monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: Gtk.TextDirection.RTL)
+    monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: getattr(Gtk.TextDirection, direction))
     directions = []
     monkeypatch.setattr(Gtk.Widget, 'set_default_direction', staticmethod(lambda d: directions.append(d)))
 
     _run_cli(monkeypatch, ['virtaal'])
 
-    assert directions == []
+    assert directions == [getattr(Gtk.TextDirection, direction)]
 
 
-def test_ltr_default_direction_is_left_alone_regardless_of_translation(monkeypatch):
+def test_an_untranslated_ui_is_left_to_right(monkeypatch):
     monkeypatch.setattr(pan_app, 'has_ui_translation', False)
     from gi.repository import Gtk
     monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: Gtk.TextDirection.LTR)
@@ -265,7 +278,7 @@ def test_ltr_default_direction_is_left_alone_regardless_of_translation(monkeypat
 
     _run_cli(monkeypatch, ['virtaal'])
 
-    assert directions == []
+    assert directions == [Gtk.TextDirection.LTR]
 
 
 def test_profile_runs_under_cprofile_and_writes_kcachegrind_output(monkeypatch, tmp_path):

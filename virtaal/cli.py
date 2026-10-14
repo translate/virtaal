@@ -186,10 +186,6 @@ def _set_pseudo_translation(options, parser):
     except OSError:
         parser.error("No '%s' locale found - run "
                       "devsupport/pseudo-translation/generate_pseudo_translation.py first" % lang)
-    if options.pseudo_translation_bidi:
-        # Must run before the first widget is constructed.
-        from gi.repository import Gtk
-        Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
 
 
 def _set_lang(options, parser):
@@ -201,15 +197,19 @@ def _set_lang(options, parser):
         parser.error(_("No translation found for language '%(lang)s'") % {"lang": options.lang})
 
 
-def _fix_rtl_without_translation():
-    """Must run after pan_app has finished installing the UI locale
-    and before the first widget is constructed - same constraint as
-    _set_pseudo_translation's own direction override."""
-    if pan_app.has_ui_translation:
-        return
+def _set_ui_direction(options):
+    """GTK takes its default direction from the locale it started in,
+    before the UI language was installed. Must run after pan_app has
+    installed it and before the first widget is constructed."""
     from gi.repository import Gtk
-    if Gtk.get_locale_direction() == Gtk.TextDirection.RTL:
-        Gtk.Widget.set_default_direction(Gtk.TextDirection.LTR)
+    if options is not None and options.pseudo_translation_bidi:
+        direction = Gtk.TextDirection.RTL
+    elif pan_app.has_ui_translation:
+        direction = Gtk.get_locale_direction()
+    else:
+        # An untranslated UI is English, even in a right-to-left locale.
+        direction = Gtk.TextDirection.LTR
+    Gtk.Widget.set_default_direction(direction)
 
 
 def _run_profiled(profile_file, startup_file):
@@ -273,7 +273,7 @@ def main(argv):
         # that could have happened on the command line
         pan_app.DEBUG = False
 
-    _fix_rtl_without_translation()
+    _set_ui_direction(options)
 
     if options and getattr(options, "profile", None) != None:
         _profile_runner(options, parser, startup_file)

@@ -83,6 +83,15 @@ def test_init_language_gui_adds_each_languages_own_name(monkeypatch):
     assert names == ['Französisch - français', 'Deutsch', 'zzz']
 
 
+def test_init_language_gui_opens_the_language_menu_below_the_combo_box(monkeypatch):
+    monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages', lambda: [])
+    view = _load_widgets()
+
+    view._init_language_gui()
+
+    assert view._widgets['cmb_ui_language'].get_wrap_width() == 1
+
+
 def test_get_language_endonym_names_a_language_in_itself():
     assert prefsview.pan_app.get_language_endonym('de') == 'Deutsch'
     assert prefsview.pan_app.get_language_endonym('zzz') is None

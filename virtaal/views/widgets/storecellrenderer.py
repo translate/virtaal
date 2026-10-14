@@ -175,6 +175,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         self._editor_height = None
         self._regrow_scheduled = False
         self._watched_buffers = set()
+        self._watched_textboxes = set()
         # store identity/length -> {id(unit): index}, rebuilt only when
         # the store itself changes.
         self._index_cache = None
@@ -293,7 +294,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self._editor_editing_done_id = editor.connect("editing-done", self._on_editor_done)
         if not getattr(self, '_editor_modified_id', None):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
-        self._watch_target_buffers(editor)
+        self._watch_editor_textboxes(editor)
         return editor
 
     def _paint_state_background_if_selected(self, cr, background_area, flags):
@@ -560,28 +561,34 @@ class StoreCellRenderer(Gtk.CellRenderer):
     def _on_modified(self, widget):
         self.emit("modified")
 
-    def _watch_target_buffers(self, editor):
+    def _watch_editor_textboxes(self, editor):
         # Not the editor's "modified": undo and redo block its signals.
         for target in editor.targets:
             buffer = target.get_buffer()
             if buffer not in self._watched_buffers:
                 self._watched_buffers.add(buffer)
                 buffer.connect("changed", self._on_target_buffer_changed, editor)
-                target.connect("size-allocate", self._on_target_size_allocate)
+        # Sources too: opening a unit selects its first placeable, which
+        # scrolls the source while its box still has the last unit's height.
+        for textbox in editor.targets + editor.sources:
+            if textbox not in self._watched_textboxes:
+                self._watched_textboxes.add(textbox)
+                textbox.connect("size-allocate", self._on_textbox_size_allocate)
 
-    def _on_target_size_allocate(self, target, allocation):
-        if getattr(target, '_regrow_height', None) == allocation.height:
+    def _on_textbox_size_allocate(self, textbox, allocation):
+        if getattr(textbox, '_regrow_height', None) == allocation.height:
             return
-        target._regrow_height = allocation.height
-        GLib.idle_add(self._refresh_target_scroll, target)
+        textbox._regrow_height = allocation.height
+        GLib.idle_add(self._refresh_textbox_scroll, textbox)
 
     @staticmethod
-    def _refresh_target_scroll(target):
+    def _refresh_textbox_scroll(textbox):
         # GtkTextView skips its scroll-page update while a scroll animates,
-        # as one does after a newline. set_value() ends the animation.
-        adjustment = target.get_parent().get_vadjustment()
+        # as one does after a newline or a placeable selection. set_value()
+        # ends the animation.
+        adjustment = textbox.get_parent().get_vadjustment()
         adjustment.set_value(adjustment.get_value())
-        target.queue_resize()
+        textbox.queue_resize()
         return GLib.SOURCE_REMOVE
 
     def _on_target_buffer_changed(self, _buffer, editor):

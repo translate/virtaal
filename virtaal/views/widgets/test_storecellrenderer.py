@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import cairo
 import pytest
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 from translate.storage.placeables import StringElem
 
 from virtaal.views import rendering
@@ -1046,9 +1046,9 @@ def test_a_target_buffer_change_schedules_one_regrow_per_burst_of_edits(monkeypa
         'virtaal.views.widgets.storecellrenderer.GLib.idle_add',
         lambda func, *args: scheduled.append((func, args)))
     target = Gtk.TextView()
-    editor = SimpleNamespace(targets=[target])
-    renderer._watch_target_buffers(editor)
-    renderer._watch_target_buffers(editor)
+    editor = SimpleNamespace(targets=[target], sources=[])
+    renderer._watch_editor_textboxes(editor)
+    renderer._watch_editor_textboxes(editor)
 
     target.get_buffer().set_text('a')
     target.get_buffer().set_text('ab')
@@ -1056,7 +1056,31 @@ def test_a_target_buffer_change_schedules_one_regrow_per_burst_of_edits(monkeypa
     assert scheduled == [(renderer._regrow_editor_row, (editor,))]
 
 
-def test_a_target_whose_height_changed_gets_its_scroll_refreshed_once(monkeypatch):
+def test_a_source_gets_its_scroll_refreshed_on_resize_but_never_regrows_the_row(monkeypatch):
+    # Opening a unit selects its first source placeable, scrolling the
+    # source while its box still has the previous unit's height.
+    renderer = _renderer_with_view()
+    scheduled = []
+    monkeypatch.setattr(
+        'virtaal.views.widgets.storecellrenderer.GLib.idle_add',
+        lambda func, *args: scheduled.append((func, args)))
+    allocated = []
+    monkeypatch.setattr(renderer, '_on_textbox_size_allocate', lambda textbox, _alloc: allocated.append(textbox))
+    source = Gtk.TextView()
+    editor = SimpleNamespace(targets=[], sources=[source])
+    renderer._watch_editor_textboxes(editor)
+    renderer._watch_editor_textboxes(editor)
+
+    source.get_buffer().set_text('a')
+    allocation = Gdk.Rectangle()
+    allocation.height = 40
+    source.emit('size-allocate', allocation)
+
+    assert allocated == [source]
+    assert scheduled == []
+
+
+def test_a_textbox_whose_height_changed_gets_its_scroll_refreshed_once(monkeypatch):
     renderer = _renderer_with_view()
     scheduled = []
     monkeypatch.setattr(
@@ -1064,14 +1088,14 @@ def test_a_target_whose_height_changed_gets_its_scroll_refreshed_once(monkeypatc
         lambda func, *args: scheduled.append((func, args)))
     target = SimpleNamespace()
 
-    renderer._on_target_size_allocate(target, SimpleNamespace(height=41))
-    renderer._on_target_size_allocate(target, SimpleNamespace(height=41))
-    renderer._on_target_size_allocate(target, SimpleNamespace(height=63))
+    renderer._on_textbox_size_allocate(target, SimpleNamespace(height=41))
+    renderer._on_textbox_size_allocate(target, SimpleNamespace(height=41))
+    renderer._on_textbox_size_allocate(target, SimpleNamespace(height=63))
 
-    assert scheduled == [(renderer._refresh_target_scroll, (target,))] * 2
+    assert scheduled == [(renderer._refresh_textbox_scroll, (target,))] * 2
 
 
-def test_refresh_target_scroll_ends_a_running_scroll_animation_then_resizes():
+def test_refresh_textbox_scroll_ends_a_running_scroll_animation_then_resizes():
     # GtkTextView skips its scroll-page update on an allocation while the
     # adjustment animates; set_value() is what ends the animation.
     calls = []
@@ -1080,7 +1104,7 @@ def test_refresh_target_scroll_ends_a_running_scroll_animation_then_resizes():
         get_parent=lambda: SimpleNamespace(get_vadjustment=lambda: adjustment),
         queue_resize=lambda: calls.append('queue_resize'))
 
-    StoreCellRenderer._refresh_target_scroll(target)
+    StoreCellRenderer._refresh_textbox_scroll(target)
 
     assert calls == [('set_value', 20), 'queue_resize']
 
@@ -1098,6 +1122,7 @@ def _editor_with_target(text):
     win.add(editor)
     win.show_all()
     editor.targets = [target]
+    editor.sources = []
     editor._widgets = {'notes': {}, 'sources': [], 'targets': [target]}
     editor._test_parent_refs = (win,)
     return editor

@@ -9,7 +9,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
 
 #: src/format-awk.c:518 src/format-boost.c:630 src/format-c++-brace.c:943
 #: src/format-elisp.c:358 src/format-gcc-internal.c:783 src/format-go.c:583

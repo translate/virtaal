@@ -173,6 +173,11 @@ queue, and re-enqueuing needs the new commit's CI to be green first.
 keep them in sync by hand on every edit, same content in RST vs.
 GitHub-flavoured Markdown.
 
+**Keep each paragraph of the GitHub notes on one line.** A release body
+renders a newline inside a paragraph as a line break, so a paragraph
+wrapped at 72 columns shows ragged on the release page (rc1's first
+three did, #4272). The RST page wraps normally.
+
 **Rebasing a long-stale draft of this file risks silently dropping
 real content, not just hitting conflict markers.** A commit that
 rewrites a whole prose section (replacing a bullet list with a

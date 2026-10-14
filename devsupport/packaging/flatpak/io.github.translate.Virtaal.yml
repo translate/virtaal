@@ -3,6 +3,9 @@ runtime: org.gnome.Platform
 runtime-version: "50"
 sdk: org.gnome.Sdk
 command: virtaal
+# Every UI language in the app itself: Preferences offers them all, and
+# a bundle doesn't carry a separate Locale extension.
+separate-locales: false
 
 finish-args:
   # No --filesystem=host: Gtk.FileChooserDialog already works through

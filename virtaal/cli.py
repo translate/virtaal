@@ -14,7 +14,7 @@
     imports happen at all."""
 
 import sys
-from os import path
+from os import environ, path
 
 # A frozen build needs pycairo's C-API initialized before GTK's
 # foreign-struct registration for cairo.Context runs, or every draw
@@ -24,7 +24,7 @@ import cairo  # noqa: F401
 from virtaal.common import pan_app
 
 # Some behaviour should vary, depending on whether Virtaal is packaged or not
-packaged = getattr(sys, 'frozen', False)
+packaged = getattr(sys, 'frozen', False) or 'FLATPAK_ID' in environ
 # Distributions can just set this value to True, if dependencies are taken care
 # of elsewhere:
 #packaged = True

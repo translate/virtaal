@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 18:10+0100\n"
+"POT-Creation-Date: 2026-10-14 07:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,6 +349,10 @@ msgstr "Δε βρέθηκαν γραμματοσειρές"
 msgid "No items found"
 msgstr "Δε βρέθηκαν αντικείμενα"
 
+#. Seen in: Keyboard Shortcuts window
+msgid "No Results Found"
+msgstr "Δε βρέθηκαν αποτελέσματα"
+
 #. Seen in: font chooser
 msgid "Number Case"
 msgstr ""
@@ -463,6 +467,10 @@ msgstr "Στηλοθέτης"
 #. Seen in: About dialog
 msgid "Translated by"
 msgstr "Μετάφραση από"
+
+#. Seen in: Keyboard Shortcuts window
+msgid "Try a different search"
+msgstr "Δοκιμάστε μια διαφορετική αναζήτηση"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically

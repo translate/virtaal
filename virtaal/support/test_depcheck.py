@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
+
 from virtaal.support import depcheck
 
 # test_import()
@@ -26,6 +28,26 @@ def test_sqlite3_version_is_met():
 
 def test_json_is_met():
     assert depcheck.test_json() is True
+
+
+# test_gtkspell()
+
+def test_gtkspell_is_met_when_its_typelib_is_installed():
+    import gi
+    try:
+        gi.require_version('GtkSpell', '3.0')
+    except ValueError:
+        pytest.skip("GtkSpell typelib not installed")
+    assert depcheck.test_gtkspell() is True
+
+
+def test_gtkspell_fails_without_its_typelib(monkeypatch):
+    import gi
+
+    def no_typelib(namespace, version):
+        raise ValueError('Namespace %s not available' % namespace)
+    monkeypatch.setattr(gi, 'require_version', no_typelib)
+    assert depcheck.test_gtkspell() is False
 
 
 # test_translate_toolkit_version()

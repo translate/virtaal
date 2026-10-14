@@ -54,12 +54,23 @@ def test_translate_toolkit_version():
         logging.debug("translate-toolkit dependency check failed", exc_info=True)
     return False
 
+def test_gtkspell():
+    try:
+        import gi
+        gi.require_version('Gtk', '3.0')
+        gi.require_version('GtkSpell', '3.0')
+        from gi.repository import GtkSpell  # noqa: F401
+    except (ImportError, ValueError):
+        return False
+    return True
+
 
 extra_tests = {
     'gtk': test_gtk_version,
     'sqlite3': test_sqlite3_version,
     'translate': test_translate_toolkit_version,
     'json': test_json,
+    'gtkspell': test_gtkspell,
 }
 
 

@@ -246,10 +246,9 @@ install/uninstall mechanics). The *list of what to test* (modified-flag
 correctness, undo behaviour, menu/dialog coverage, an install/uninstall
 cycle) is portable; the implementation isn't.
 
-- **macOS** already has a parallel, but much more limited: the
-  `run-virtaal` skill's `driver.sh` (launch + screenshot verification
-  only). Its own notes rule out AppleScript/System Events UI-scripting
-  as unreliable on this app (windows/processes it tries to address
+- **macOS** has nothing comparable beyond launching the app and
+  screenshotting it. AppleScript/System Events UI-scripting is
+  unreliable on this app (windows/processes it tries to address
   intermittently don't resolve, or report 0 windows for one plainly on
   screen) - there's no macOS equivalent yet of "click a button, type
   text, read a dialog title back". Building one would need real

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 18:10+0100\n"
+"POT-Creation-Date: 2026-10-14 07:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,6 +349,10 @@ msgstr "Không tìm thấy phông chữ nào"
 msgid "No items found"
 msgstr "Không tìm thấy"
 
+#. Seen in: Keyboard Shortcuts window
+msgid "No Results Found"
+msgstr "Không tìm thấy kết quả nào"
+
 #. Seen in: font chooser
 msgid "Number Case"
 msgstr ""
@@ -463,6 +467,10 @@ msgstr "Tab"
 #. Seen in: About dialog
 msgid "Translated by"
 msgstr "Bản dịch"
+
+#. Seen in: Keyboard Shortcuts window
+msgid "Try a different search"
+msgstr "Thử tìm kiếm khác"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically

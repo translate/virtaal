@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GTK+ lite 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 00:20+0100\n"
+"POT-Creation-Date: 2026-10-14 07:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -346,6 +346,10 @@ msgstr ""
 msgid "No items found"
 msgstr ""
 
+#. Seen in: Keyboard Shortcuts window
+msgid "No Results Found"
+msgstr ""
+
 #. Seen in: font chooser
 msgid "Number Case"
 msgstr ""
@@ -459,6 +463,10 @@ msgstr ""
 #. About Dialog - Credits dialog - Tab - Translated by
 #. Seen in: About dialog
 msgid "Translated by"
+msgstr ""
+
+#. Seen in: Keyboard Shortcuts window
+msgid "Try a different search"
 msgstr ""
 
 #. This is the text that should appear next to menu accelerators

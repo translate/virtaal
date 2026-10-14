@@ -21,6 +21,7 @@ check_names = {
     'blank': _("Blank"),
     'brackets': _("Brackets"),
     'compendiumconflicts': _("Compendium conflict"),
+    #l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
     'credits': _("Translator credits"),
     'doublequoting': _("Double quotes"),
     'doublespacing': _("Double spaces"),

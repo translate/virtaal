@@ -266,7 +266,7 @@ def _ensure_dev_locale_installed(lang, localedir):
         the exact compiler C{setup.py} itself uses, so this needs
         nothing beyond what's already installed, in a checkout that's
         never run C{pip install -e .} at all."""
-    if platform.is_frozen:
+    if platform.is_frozen or platform.is_flatpak:
         return
     _ensure_dev_library_catalogs(lang, localedir)
     target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')

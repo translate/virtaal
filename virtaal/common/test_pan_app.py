@@ -346,8 +346,11 @@ def test_ensure_dev_locale_installed_is_a_noop_when_already_present(tmp_path, mo
     assert (existing / 'virtaal.mo').read_bytes() == b'already-there'
 
 
-def test_ensure_dev_locale_installed_does_nothing_when_frozen(tmp_path, monkeypatch):
-    monkeypatch.setattr(pan_app.platform, 'is_frozen', True)
+@pytest.mark.parametrize('packaging', ['is_frozen', 'is_flatpak'])
+def test_ensure_dev_locale_installed_does_nothing_when_packaged(tmp_path, monkeypatch, packaging):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    monkeypatch.setattr(pan_app.platform, 'is_flatpak', False)
+    monkeypatch.setattr(pan_app.platform, packaging, True)
     repo_root = tmp_path / 'repo'
     (repo_root / 'mo' / 'xx').mkdir(parents=True)
     (repo_root / 'mo' / 'xx' / 'virtaal.mo').write_bytes(b'fake')

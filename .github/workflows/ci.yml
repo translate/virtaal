@@ -1091,7 +1091,7 @@ jobs:
           brew untap aws/tap || true
           brew install pygobject3 gtk+3 gtk-mac-integration \
             gobject-introspection cairo pkg-config gettext \
-            enchant gtkspell3
+            enchant gtkspell3 adwaita-icon-theme librsvg
 
       - name: Create venv with system site-packages
         run: |

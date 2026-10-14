@@ -103,6 +103,27 @@ GETTEXTPO_DEPS = [Path(line.split()[0]) for line in subprocess.run(
     ["otool", "-L", str(GETTEXTPO)], capture_output=True, text=True, check=True,
 ).stdout.splitlines()[2:] if line.split()[0].startswith(("/opt/homebrew/", "/usr/local/"))]
 
+
+
+def _brew_prefix(formula):
+    try:
+        return Path(subprocess.run(
+            ["brew", "--prefix", formula], capture_output=True, text=True, check=True,
+        ).stdout.strip())
+    except (OSError, subprocess.CalledProcessError):
+        return Path("/nonexistent")
+
+
+# Adwaita, as a run from source has (not its cursors: GTK uses macOS's).
+# Its icons are SVG, so they need librsvg's GdkPixbuf loader too.
+ADWAITA = _brew_prefix("adwaita-icon-theme") / "share" / "icons" / "Adwaita"
+ADWAITA_PARTS = ["index.theme", "symbolic", "scalable", "16x16"]
+SVG_LOADER = (_brew_prefix("librsvg") / "lib" / "gdk-pixbuf-2.0" / "2.10.0"
+              / "loaders" / "libpixbufloader_svg.so")
+for _required in [ADWAITA / part for part in ADWAITA_PARTS] + [SVG_LOADER]:
+    if not _required.exists():
+        raise SystemExit("Not found (brew install adwaita-icon-theme librsvg): %s" % _required)
+
 gtkmac_mo_files = [
     (str(p), str(Path("share", "locale") / p.relative_to(_gtkmac_locale_dir).parent))
     for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir and _gtkmac_locale_dir.is_dir() else [])
@@ -130,7 +151,12 @@ datas = [
     # stays a real top-level file (not under share/) so it's still
     # recognised by GitHub/the AUTHORS convention in a checkout too.
     (str(ROOT / "AUTHORS.md"), "."),
-] + mo_files + gtkmac_mo_files
+]
+datas += [
+    (str(ADWAITA / part), "share/icons/Adwaita" if part == "index.theme" else "share/icons/Adwaita/" + part)
+    for part in ADWAITA_PARTS
+]
+datas += mo_files + gtkmac_mo_files
 if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
 
@@ -157,7 +183,10 @@ def _not_enchant_dialog(name):
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
-    binaries=[(str(GETTEXTPO), ".")] + [(str(dep), ".") for dep in GETTEXTPO_DEPS],
+    binaries=(
+        [(str(GETTEXTPO), ".")] + [(str(dep), ".") for dep in GETTEXTPO_DEPS]
+        + [(str(SVG_LOADER), "lib/gdk-pixbuf/loaders")]
+    ),
     datas=datas,
     hiddenimports=(
         collect_submodules("virtaal", filter=_not_test)
@@ -177,6 +206,9 @@ a = Analysis(  # noqa: F821
                 "GtkosxApplication": "1.0",
             },
             "languages": bundle_languages(LANGUAGES),
+            # Not every theme in Homebrew's share/icons: Adwaita is
+            # bundled above, without its cursors.
+            "icons": ["hicolor"],
         },
     },
     # devsupport isn't needed at runtime in a frozen build - its one
@@ -195,6 +227,15 @@ a = Analysis(  # noqa: F821
     noarchive=False,
 )
 a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
+
+# The GdkPixbuf hook's loader cache lists gdk-pixbuf's own loaders only;
+# add the SVG one, at the path the hook uses for the rest.
+_LOADER_CACHE = next(src for dest, src, _kind in a.datas if dest == "lib/gdk-pixbuf/loaders.cache")
+_svg_entry = subprocess.run(
+    ["gdk-pixbuf-query-loaders", str(SVG_LOADER)], capture_output=True, text=True, check=True,
+).stdout.replace('"' + str(SVG_LOADER.parent.parent), '"@executable_path/lib/gdk-pixbuf')
+with open(_LOADER_CACHE, "a", encoding="utf-8") as _cache:
+    _cache.write("\n" + "\n".join(line for line in _svg_entry.splitlines() if not line.startswith("#")) + "\n")
 
 a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 

@@ -801,7 +801,7 @@ msgstr "Konflikt i kompendium"
 # 88%
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
-msgstr "Daniel Nylander"
+msgstr "Översättarerkännande"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

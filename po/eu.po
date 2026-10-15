@@ -2,21 +2,22 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Piarres Beobide <pi@beobide.net>, 2008.
-# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009, 2011.
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009, 2011, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2012-11-27 14:08+0000\n"
-"Last-Translator: leireagara <leireagara@yahoo.es>\n"
-"Language-Team: librezale@librezale.org\n"
+"PO-Revision-Date: 2026-10-15 15:28+0200\n"
+"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
+"Language-Team: librezale@librezale.eus\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
@@ -30,7 +31,6 @@ msgstr "Itzulpen-tresna"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "A translation tool to help a human translator translate files into other "
 #| "languages"
@@ -110,14 +110,13 @@ msgid "<b>Translation</b>"
 msgstr "<b>Itzulpena</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
-msgstr "Gehitu hizkuntza"
+msgstr "_Gehitu falta den hizkuntza…"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
-msgstr ""
+msgstr "_Editatu itzulpen-hizkuntza…"
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -125,13 +124,12 @@ msgstr "_Fitxategia"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr ""
+msgstr "Le_heneratu gordetakora"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Update to Template"
 msgid "_Update from Template"
-msgstr "Eg_uneratu txantiloira"
+msgstr "Eg_uneratu txantiloitik"
 
 #: share/virtaal/virtaal.ui
 msgid "_Export"
@@ -147,19 +145,19 @@ msgstr "_Editatu"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr ""
+msgstr "Be_rregin"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
-msgstr ""
+msgstr "_Bilatu…"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "Bilatu _hurrengoa"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr ""
+msgstr "Bilatu _aurrekoa"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -168,10 +166,9 @@ msgstr "Transferitu iturburutik"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "_Insert Placeable"
-msgstr "_Hurrengo elementu berezia"
+msgstr "_Txertatu elementu berezia"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
@@ -208,23 +205,23 @@ msgstr "O_rria behera"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr ""
+msgstr "_Lehen unitatea"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"
-msgstr ""
+msgstr "_Azken unitatea"
 
 #: share/virtaal/virtaal.ui
 msgid "Next Unit"
-msgstr ""
+msgstr "Hurrengo unitatea"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Advance State"
-msgstr ""
+msgstr "Hurrengo unitatea eta aurreratu egoera"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Reverse State"
-msgstr ""
+msgstr "Hurrengo unitatea eta alderantzikatu egoera"
 
 #: share/virtaal/virtaal.ui
 msgid "_Help"
@@ -248,11 +245,11 @@ msgstr "Eman programa-errore _baten berri"
 
 #: share/virtaal/virtaal.ui
 msgid "Show Lo_gs"
-msgstr ""
+msgstr "Erakutsi erre_gistroak"
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
-msgstr ""
+msgstr "Teklatuaren la_sterbideak"
 
 #: share/virtaal/virtaal.ui
 msgid "Virtaal Preferences"
@@ -308,16 +305,14 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Letra-tipoak</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Language"
 msgid "Language:"
-msgstr "Hizkuntza"
+msgstr "Hizkuntza:"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
-msgstr "<b>Hizkuntzaren informazioa</b>"
+msgstr "<b>Hizkuntza</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui
@@ -345,14 +340,13 @@ msgid "Properties"
 msgstr "Propietateak"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Local file"
 msgid "Saved file"
-msgstr "Fitxategi lokala"
+msgstr "Gordetako fitxategia"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
-msgstr ""
+msgstr "Gorde gabeko aldaketekin"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Words</b> (total):"
@@ -430,17 +424,16 @@ msgstr "<u>Txuleta</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
-msgstr "<u>Gehiago...</u>"
+msgstr "<u>Gehiago…</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Features</u>"
@@ -452,11 +445,11 @@ msgstr "<b><big>Hasiberrientzat</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Manual</u>"
@@ -465,7 +458,7 @@ msgstr "<u>Eskuliburua</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
 msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
-msgstr ""
+msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Localization Guide</u>"
@@ -473,47 +466,43 @@ msgstr "<u>Lokalizazio-gida</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Feedback</u>"
 msgstr "<u>Feedback-a</u>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
-msgstr "Eman programa-errore _baten berri"
+msgstr "Eman programa-errore baten berri GitHub-en"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
-msgstr "Eman programa-errore _baten berri"
+msgstr "<u>Eman programa-errore baten berri</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Laguntza</big></b>"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Base translation store"
-msgstr "Itzulpen automatikoa"
+msgstr "Funtsezko itzulpenen biltegia"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
-msgstr ""
+msgstr "Komaz bereizitako balioa"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Fluent file"
-msgstr "Uneko fitxategia"
+msgstr "Fluent fitxategia"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext MO file"
@@ -525,13 +514,12 @@ msgstr "Gettext PO fitxategia"
 
 #: devsupport/tmp_strings.py
 msgid "Haiku catkeys file"
-msgstr ""
+msgstr "Haiku catkeys fitxategia"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Mozilla"
 msgid "Mozilla .lang"
-msgstr "Mozilla"
+msgstr "Mozilla .lang"
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
@@ -558,20 +546,18 @@ msgid "TMX Translation Memory"
 msgstr "TMX itzulpen-memoria"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
-msgstr "TMX itzulpen-memoria"
+msgstr "Trados itzulpen-memoria"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX Dictionary"
 msgstr "UTX hiztegia"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "_Localization Guide"
 msgid "WiX Localization File"
-msgstr "_Lokalizazio gida"
+msgstr "WiX lokalizazio-fitxategia"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Wordfast Translation Memory"
@@ -582,36 +568,32 @@ msgid "XLIFF Translation File"
 msgstr "XLIFF itzulpen-fitxategia"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "XLIFF Translation File"
 msgid "SDL XLIFF Translation File"
-msgstr "XLIFF itzulpen-fitxategia"
+msgstr "SDL XLIFF itzulpen-fitxategia"
 
 #: devsupport/tmp_strings.py
 msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
-msgstr ""
+msgstr "Lotu Virtaal itzulpenetako fitxategi motekin (.po, .xlf, .tmx, …)"
 
 #: devsupport/tmp_strings.py
 msgid "Edit with Virtaal"
-msgstr ""
+msgstr "Editatu Virtaal-ekin"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Usage: %s\n"
 msgid "usage: "
-msgstr "Erabilera: %s\n"
+msgstr "erabilera:"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "%s option requires an argument"
 msgid "positional arguments"
-msgstr "%s aukerak argumentua behar du"
+msgstr "argumentu posizionalak"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Options"
 msgid "options"
-msgstr "Aukerak"
+msgstr "aukerak"
 
 #: devsupport/tmp_strings.py
 msgid "show this help message and exit"
@@ -623,10 +605,9 @@ msgstr "erakutsi programaren bertsio-zenbakia eta irten"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
-msgstr "Itzulpen-tresna"
+msgstr "Virtaal itzulpen-tresna"
 
 #. l10n: Paragraphs should be less than 600 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -636,9 +617,12 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Itzulpenak egiteko programa bat da Virtaal. Sinpletasun eta ahalmenaren "
+"arteko konbinazio goxoa du helburu. Hautatutako lineako baliabideekin "
+"integratzen da itzultzea dibertigarri egiteko, eta beti ere itzupenaren "
+"kalitatea hobetzen laguntzeko."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
 #| "we definitely intend it to be useful as a general purpose tool for "
@@ -648,54 +632,52 @@ msgid ""
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
-"Hasiera batean software itzulpengintzara bideraturik (lokalizazio edo l10n) "
-"dago, baina erabilera orokorrerako tresna bat egiten saiatzen ari gara."
+"Hasiera batean softwarearen itzulpengintzara bideratuta dago (lokalizazioa "
+"edo l10n), baina erabilera orokorrerako CAT (Computer Aided Translation) "
+"tresna izateko egina dago."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
-msgstr ""
+msgstr "Zenbait eginbide:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Dauden itzulpenak: %(translations)s"
+msgstr "Itzulpenen berrerabilpena (itzulpen-memoria)"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Terminology assistance"
-msgstr "Laguntza terminologian"
+msgstr "Terminologia-laguntza"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "Osatze- eta zuzentze-automatikoa"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Hainbat hizkuntzatarako pertsonaliza daitezkeen kalitate-egiaztapenak"
 
 #. l10n: Captions should be shorter than 50 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
-msgstr ""
+msgstr "Azken fitxategi eta dokumentaziorako sarbide erraza"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
-msgstr ""
+msgstr "Antzemandako elementuak ez dira idatzi behar"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
-msgstr "Zuzendu testua automatikoki idatzi ahala"
+msgstr "Burutu kalitate-egiaztapenak idatzi ahala"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translated"
 msgid "Translate"
-msgstr "Itzulita"
+msgstr "Itzuli"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
@@ -747,7 +729,7 @@ msgstr "gaitu arazteko funtzionaltasunak"
 
 #: virtaal/cli.py
 msgid "LANG"
-msgstr ""
+msgstr "LANG"
 
 #: virtaal/cli.py
 msgid ""
@@ -755,6 +737,9 @@ msgid ""
 "untranslated source strings; \"system\" for the OS's own default), without "
 "changing the saved Preferences setting"
 msgstr ""
+"baliogabetu exekuzio honetarako interfazearen hizkuntza (adib. \"fr\"; "
+"\"en\" itzuli gabeko iturburu-kateentzat; \"system\" SEaren "
+"lehenetsiarentzat), gordetako hobespenetako ezarpenak aldatu beharrik gabe"
 
 #: virtaal/cli.py
 #, python-format
@@ -769,7 +754,7 @@ msgstr "Ezin da '%(filename)s' fitxategitik konfigurazioa irakurri"
 #: virtaal/cli.py
 #, python-format
 msgid "No translation found for language '%(lang)s'"
-msgstr ""
+msgstr "Ez da itzulpenik aurkitu '%(lang)s' hizkuntzarako"
 
 #: virtaal/cli.py
 #, python-format
@@ -963,7 +948,7 @@ msgstr "Lehenetsia"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "LibreOffice"
-msgstr ""
+msgstr "LibreOffice"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Mozilla"
@@ -975,7 +960,7 @@ msgstr "KDE"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Qt"
-msgstr ""
+msgstr "Qt"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
@@ -997,7 +982,7 @@ msgstr ""
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Loading '%s'…"
-msgstr ""
+msgstr "'%s' kargatzen…"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1019,7 +1004,7 @@ msgid "Save"
 msgstr "Gorde"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "Could not save file.\n"
 #| "\n"
@@ -1031,9 +1016,7 @@ msgid ""
 "\n"
 "Try saving to a different location."
 msgstr ""
-"Ezin da fitxategia gorde.\n"
-"\n"
-"%(error_message)s\n"
+"%(filename)s irarkutzeko soilik da.\n"
 "\n"
 "Saiatu beste kokaleku batean gordetzen."
 
@@ -1099,14 +1082,12 @@ msgstr ""
 
 #: virtaal/controllers/maincontroller.py
 msgid "Revert to Saved"
-msgstr ""
+msgstr "Leheneratu gordetakora"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy
 #| msgid "Reload file from last saved copy and lose all changes?"
 msgid "Revert to the last saved copy and lose all changes?"
-msgstr ""
-"Fitxategia birkargatu gordetako azken kopiatik eta aldaketa guztiak galdu?"
+msgstr "Leheneratu gordetako azken kopiara eta galdu aldaketa guztiak?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: virtaal/controllers/placeablescontroller.py
@@ -1267,6 +1248,9 @@ msgid ""
 "The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
 "Open it with File > Open or from your file manager."
 msgstr ""
+"Fitxategia ez dago edo Virtaalek ezin du Flatpak isolamendu-ingurunetik "
+"atzitu. Ireki Fitxategia > Ireki menu-aukeratik edo zure fitxategi-"
+"kudeatzailetik."
 
 #: virtaal/models/storemodel.py
 msgid "The file does not exist."
@@ -1387,39 +1371,38 @@ msgstr "Bilatu \"%(selection)s\""
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Thesaurus"
-msgstr ""
+msgstr "Sinonimoak"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Look up synonyms for the selected word"
-msgstr ""
+msgstr "Bilatu hautatutako hitzaren sinonimoak"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Loading thesaurus…"
-msgstr ""
+msgstr "Sinonimoen hiztegia kargatzen…"
 
 #. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Checking for thesaurus…"
-msgstr ""
+msgstr "Sinonimoen hiztegia egiaztatzen…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Downloading %(language)s thesaurus…"
-msgstr ""
+msgstr "%(language)s hizkuntzarako sinonimoen-hiztegia deskargatzen…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Download %(language)s thesaurus…"
-msgstr ""
+msgstr "Deskargatu %(language)s hizkuntzarako sinonimoen-hiztegia…"
 
 #. l10n: The menu entry offering synonyms for the selected word.
 #: virtaal/plugins/lookup/models/thesaurus.py
-#, fuzzy
 #| msgid "Acronyms"
 msgid "Synonyms"
-msgstr "Akronimoak"
+msgstr "Sinonimoak"
 
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1441,18 +1424,17 @@ msgid "Wikipedia"
 msgstr "Wikipedia"
 
 #: virtaal/plugins/lookup/models/weblookup.py
-#, fuzzy
 #| msgid "UTX Dictionary"
 msgid "Wiktionary"
-msgstr "UTX hiztegia"
+msgstr "Wiktionary"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Bing"
-msgstr ""
+msgstr "Bing"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Yahoo"
-msgstr ""
+msgstr "Yahoo"
 
 #. l10n: Whether this look-up is offered at all
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1477,11 +1459,11 @@ msgstr "Bildu bilaketa kakotxen artean"
 #. l10n: "virtaal-" is a literal prefix - leave it untranslated
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Names starting with \"virtaal-\" are reserved."
-msgstr ""
+msgstr "Ezin dira \"virtaal-\" aurrizkia duten izenak erabili."
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "A web look-up with this name already exists."
-msgstr ""
+msgstr "Izen hau duen web-bilaketa badago lehendik ere."
 
 #: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1567,22 +1549,20 @@ msgid "Local terminology files"
 msgstr "Terminologia-fitxategi lokalak"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Terminology Files"
 msgid "Terminology _Files…"
-msgstr "Terminologia-fitxategiak"
+msgstr "Terminologia-_fitxategiak…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Add Term"
 msgid "Add _Term…"
-msgstr "Gehitu terminoa"
+msgstr "Gehitu _terminoa…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
-msgstr "Bilatu \"%(selection)s\""
+msgstr "Gehitu \"%(selection)s\" terminoa…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
@@ -1647,14 +1627,13 @@ msgid "Existing translations: %(translations)s"
 msgstr "Dauden itzulpenak: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#, fuzzy
 #| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
-msgstr "Mozilla Corporation"
+msgstr "Mozilla Pontoon"
 
 #: virtaal/plugins/terminology/models/pontoon.py
 msgid "Community localization terminology from Mozilla Pontoon"
-msgstr ""
+msgstr "Mozilla Pontoon-eko komunitateak lokalizatutako terminologia"
 
 #: virtaal/plugins/terminology/termview.py
 msgid "Select Terminology Sources"
@@ -1754,7 +1733,7 @@ msgstr "Itzulpen-g_omendioak"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Suggestions for This _Unit"
-msgstr ""
+msgstr "_Unitate honetarako gomendioak"
 
 #: virtaal/plugins/tm/tmview.py
 #, python-format
@@ -1791,33 +1770,36 @@ msgstr "?"
 
 #: virtaal/support/crash_dialog.py
 msgid "Virtaal hit an unexpected error"
-msgstr ""
+msgstr "Virtaal-ek espero gabeko errore bat aurkitu du"
 
 #: virtaal/support/crash_dialog.py
 msgid ""
 "This might not affect your current work, but if it keeps happening, "
 "reporting it helps get it fixed."
 msgstr ""
+"Litekeena da honek zure lanean eraginik ez izatea, baina berriro gertatzen "
+"bada, honen berri emateak konpontzen lagunduko du."
 
 #: virtaal/support/crash_dialog.py
 msgid "Details"
-msgstr ""
+msgstr "Xehetasunak"
 
 #: virtaal/support/crash_dialog.py
 msgid "Close"
-msgstr ""
+msgstr "Itxi"
 
 #: virtaal/support/crash_dialog.py
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report This Bug…"
-msgstr "Eman programa-errore _baten berri"
+msgstr "Eman programa-errore honen _berri…"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Ongi etorri Virtaal-en tutorialera. Lehenengo itzulpena egiteko idatzi "
+"\"Welcome\" hitzaren itzulpena. Gero sakatu Enter."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1825,6 +1807,10 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Itzuli pixka bat luzeagoa den mezu hau. Ortografia-egiaztatzailea "
+"erabilgarri badago, ortografia-akatsak testu-prozesadoreetan bezala agertuko "
+"dira. Ziurtatu hizkuntza egokia hautatuta dagoela leihoaren behean eskuineko "
+"aldean."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1832,6 +1818,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Software-programen itzulpenak egin ahala arreta jarri beharreko zenbait "
+"gauza erakutsiko dizkizu tutorial honek. Zenbait arazo ekidin eta kalitate "
+"handiagoko itzulpenak burutzen lagunduko dizu."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1840,6 +1829,9 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Zenbait aholku hizkuntza batzuei bakarrik dagokie. Adibidez, zure hizkuntzak "
+"ez badu alfabeto latina erabiltzen, aholku batzuk ez dira aproposak izango "
+"zure itzulpenetarako. Hizkuntza askotarako itzulpen-arau sendoak daude."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1847,6 +1839,8 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"Hizkuntza askotan letra larrien erabilera garrantzitsua da. Itzuli mezu hau "
+"arretaz \"Virtaal\" letra larriekin idazteko."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1856,6 +1850,12 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"Mezu honetan ingelesak letra larria erabiltzen du ia hitz guztietarako. Ez "
+"dago estilo hau erabiltzen duen beste hizkuntzarik ia. Ez bada zure "
+"hizkuntzak ingelesaren estilo hau jarraitzeko beharra duela (Title Case "
+"gisara ere ezagutzen da), itzuli zure hizkuntzaren letra larri eta xeheen "
+"arauak jarraituz. Zure hizkuntzak ez baditu letra larriak erabiltzen, itzul "
+"ezazu normal."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1865,6 +1865,11 @@ msgid ""
 "copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Aurreko mezua itzuli baduzu, itzulpena duen leihotxo bat ikusiko duzu, "
+"iturburu-katearekiko (ingelesa) antzekotasuna adierazten duen ehunekoarekin. "
+"Virtaal-en itzulpen-memoria da hau. Sakatu Ktrl+1 gomendatutako itzulpena "
+"uneko itzulpenera kopiatzeko. Gomendioak erabili aurretik, gogoratu hauek "
+"berrikusteaz."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1872,6 +1877,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Ingelesez letra larriz hasten den mezu sinple bat da hau. Zure hizkuntzak "
+"letra larriak erabiltzen baditu, ziurrenik letra larriz hasi nahiko duzu "
+"zure itzulpena ere."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1879,17 +1887,24 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Ingelesez letra xehez hasten den mezu sinple bat da hau. Zure hizkuntzak "
+"letra larriak erabiltzen baditu, ziurrenik letra larriz hasi nahiko duzu "
+"zure itzulpena ere."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Mezu hau galdera bat da. Ziurtatu itzulpenean ere galdera-ikur egokia "
+"erabiltzen duzula."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Mezu hau inprimaki bateko mezua da. Konturatu nola bi punturekin (:) "
+"amaitzen den."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1897,9 +1912,12 @@ msgid ""
 "copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
 "translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
+"Iturburua nagusiki edo osorik aldatu gabe geratuko bada, komenigarria da "
+"iturburu-kate osoa Ktrl+Shift+V konbinazioarekin kopiatzea. Hemen ia ez dago "
+"itzuli beharrekorik, beraz sakatu Ktrl+Shift+V eta egin zuzenketak behar "
+"ahala."
 
 #: virtaal/support/tutorial.py
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1908,8 +1926,10 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"Elementu bereziak testuaren zati ezohikoak dira eta automatikoki nabarmen "
-"daitezke, itzulpenean modu errazean txertatzeko."
+"Elementu bereziak testuaren zati ezohikoak dira, adibidez © sinboloa, eta "
+"automatikoki nabarmen daitezke, itzulpenean modu errazean txertatzeko. "
+"Hautatu © Alt+Eskuina konbinazioarekin eta txertatu testu-eremuan Alt+Behera "
+"erabiliz."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1917,6 +1937,9 @@ msgid ""
 "placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Antzemandako elementu bereziek sinboloak, zenbakiak, aldagaien leku-markak, "
+"akronimoak eta gehiago izan ditzakete. Aldatu lekuz hauen artean Alt+Eskuina "
+"konbinazioarekin eta txertatu behean Alt+Behera erabiliz."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1924,6 +1947,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Mezu hau etenpuntuekin (…) amaitzen da eta adierazten du testu honetan klik "
+"eginda elkarrizketa-koadro bat agertuko dela ekintza bat burutu beharrean. "
+"Ziurtatu zure mezua ere etenpuntuekin (…) amaitzen dela."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1931,6 +1957,10 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Mezu hau hiru punturen antza duen karaktere berezi batekin amaitzen da. "
+"Hautatu karaktere berezia Alt+Eskuina konbinazioarekin eta kopia ezazu "
+"itzulpenean Alt+Behera erabilita. Ez daukazu hiru puntuen karakterea idatzi "
+"beharrik."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1938,6 +1968,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Mezu honek bi esaldi ditu. Itzul itzazu eta ziurtatu bakoitza letra "
+"larriekin hasten dela, zure hizkuntzak hauek erabiltzen baditu, eta amaitu "
+"esaldi bakoitza behar bezala."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1946,6 +1979,11 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Mezu honek \"now\" hitza garrantzitsu gisa markatzen du etiketa lodiak "
+"erabiliz. Etiketa hauek iturburutik transferitu daitezke Alt+Eskuina eta "
+"Alt+Behera erabiliz. Utzi <b> eta </b> itzulpenean \"now\" hitzari dagokion "
+"zatiaren inguruan. XML markaketari buruzko argibide gehiago hemen: http://"
+"eu.wikipedia.org/wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1953,6 +1991,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Mezu hau aurrekoaren oso antzekoa da. Erabili aurreko itzulpenaren gomendioa "
+"Ktrl+1 bidez. Konturatu nola desberdintasun bakarra azken etiketaren "
+"ondorengo amaierako puntua dela."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1963,6 +2004,12 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"Mezu honetan \"%d\" leku-marka bat da (aldagaia) eta zenbaki bat adierazten "
+"du. Ziurtatu zure itzulpenak \"%d\" erabiltzen duela. Kasu honetan, "
+"fitxategien kopuruari egiten dio erreferentzia. Mezu hau erabiltzen denean, "
+"\"%d\" zenbaki batekin ordezkatuko da, adib. 'Kopiatutako fitxategien "
+"kopurua: 5'. Konturatu \"%d\" leku-markak ez duela inongo portzentaiaren "
+"erreferentziarik egiten."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1975,6 +2022,13 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"Mezu honetan, \"%d\" leku-markak fitxategien kopuruari egiten dio "
+"erreferentzia berriz ere, baina konturatu nola \"(s)\" erabiltzen den "
+"adierazteko ez dakigula zehazki kopurua zein izango den. Askotan itzultzeko "
+"zaila da hau. Software-itzulpenetan hau aurkitzen baduzu, garatzaileei galde "
+"diezaiekezu ea hau sahies daitekeen. Honi buruzko argibide gehiago dituzu "
+"helbide honetan: http://docs.translatehouse.org/projects/localization-guide/"
+"en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1984,6 +2038,11 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"Mezu honetan pluralak itzultzeko modu egokia ikusten da. Itzulpenaren "
+"bertsio desberdinak idatzi behar dituzu (1 eta 6 artean), zure hizkuntzaren "
+"gramatika egokia ziurtatzeko. Honi buruzko argibide gehiago dituzu hemen: "
+"http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1993,6 +2052,11 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"Mezu honetan, \"%s\" leku-marka bat da (aldagaia) eta fitxategi-izena "
+"adierazten du. Ziurtatu zure itzulpenak %s duela nonbait. Mezu hau "
+"erabiltzen denean, %s fitxategi-izen batekin ordezkatuko da, adib. "
+"'Fitxategia adibidea.odt gisa gordeko da'. Konturatu \"%s\" leku-markak ez "
+"duela inongo portzentaiaren erreferentziarik egiten."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2003,6 +2067,11 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different quoting characters you can just type them around the variable."
 msgstr ""
+"Mezu honetan aldagaia kakotxen artean dago. Ziurtatu zure itzulpenak %s "
+"aldagaia duela eta zure hizkuntzan egokiak diren aipu-markak erabiltzen "
+"dituzula. Zure hizkuntzak ingelesak bezalako kakotxak badarabiltza, kopiatu "
+"jatorrizkoan dagoen bezala. Zure hizkuntzak bestelako kakotxak badarabiltza, "
+"aldagaiaren inguruan idatz ditzakezu."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2011,6 +2080,10 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"Mezu honetan, \"%(name)s\" leku-marka bat da (aldagaia). Konturatu 's' "
+"aldagaiaren zati dela eta '%'tik 's'ra doan aldagai guztiak bere horretan "
+"agertu behar duela zure itzulpenean. Aldagai mota hauek edukiari buruzko "
+"ideia bat egiten laguntzen dizute. Kasu honetan, izen bat izango du."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2018,6 +2091,9 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"Mezu honetan softwarearen erabiltzaileari zerbait egiteko eskatu zaio. "
+"Ziurtatu zure hizkuntzarentzat beharrezkoa den modu zuzen eta adeitsuan "
+"itzultzen duzula."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2025,12 +2101,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"Mezu honetan \"Linux\" hitzaren erreferentzia dago (produktu-izen bat). "
+"Hizkuntza askok ez dute itzuliko, baina baliteke transliterazioa behar "
+"izatea zure hizkuntzak ez badu idazkera latina erabiltzen."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Mezu honek proiektuaren webgunearen URLa du (web helbidea). Elementu berezi "
+"gisa transferitu behar da edo bere horretan kopiatu."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2040,6 +2121,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Mezu honek informazio gehiago duen webgune bati egiten dio erreferentzia. "
+"Batzuetan URLa (web helbidea) aldatzeko gonbita edo baimena izan dezakezu. "
+"Kasu honetan, ordezkatu helbidearen hasierako \"en\" hori zure hizkuntzaren "
+"kodearekin, horrela helbideak zure hizkuntzan idatzitako XMLi buruzko "
+"artikuluari erreferentzia egin diezaion."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2047,6 +2133,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Itzulpen honek hitz anbiguo bat du — bi esanahi posible ditu. Ziurtatu "
+"testuinguruaren informazioa ikus dezakezula hau aditz bat dela jakiteko "
+"(ekintza bat, adibidez \"egin klik hemen ikusteko\")."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2056,6 +2145,11 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Itzulpen honek hitz anbiguo bat du — bi esanahi posible ditu. Ziurtatu "
+"testuinguruaren informazioa ikus dezakezula hau izen bat dela jakiteko "
+"(gauza bat, adibidez \"egin klik ikuspegia pantaila osora aldatzeko\"). "
+"Virtaal-ek aurreko itzulpena gomendatuko balu, kontuz ibili eta erabili "
+"soilik benetan egokia bada."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2068,14 +2162,22 @@ msgid ""
 "before this letter and it means that this accelerator could be triggered by "
 "pressing Alt+F."
 msgstr ""
+"Laster-teklak zure teklatuko tekla bat da, menu edo funtzio zehatz baterako "
+"sarbidea modu azkarrean izateko saka dezakezuna. Bizkortzaile edo "
+"mnemotekniko gisa ere ezagutzen da. Programen interfazeetan azpimarradun "
+"karaktere bidez adierazten dira testuan. Itzultzeko testuetan karaktere "
+"baten bidez markatzen dira, adibidez hemen bezala azpimarrarekin, baina "
+"beste karaktere batzuk ere erabil litezke. Kasu honetan laster-tekla \"f\" "
+"da, azpimarra letra honen aurretik dagoelako eta esan nahi du Alt+F sakatuta "
+"abiaraz daitekeela bizkortzailea."
 
 #: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "Sarrera honetan beste era baterako laster-tekla ikus dezakezu."
 
 #: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "Eta beste era baterako beste laster-tekla bat."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2083,12 +2185,18 @@ msgid ""
 "consistently. To add a term, select a word (or words), press Ctrl+T and fill "
 "in the details for the new term. Select the text below and add a term for it."
 msgstr ""
+"Terminologia-fitxategi lokala manten dezakezu modu kontsistentean itzultzen "
+"lagun zaitzan. Termino bat gehitzeko, hautatu hitz edo hitzak, sakatu Ktrl+T "
+"eta bete termino berriaren xehetasunak. Hautatu azpiko testua eta gehitu "
+"termino bat."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"Aurreko sarreran \"filter\" aditzarentzako terminologia-sarrera bat sortu "
+"duzu. Orain egizu berdina \"filter\" izenarentzat."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2102,6 +2210,15 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Aurreko sarreretan terminologiarik sortu baduzu, hitzetako batzuk atzeko "
+"plano berdearekin ikusiko dituzu (edo beste kolore batean, zure itxuraren "
+"arabera). Honek esan nahi du Virtaal-ek hitz horrentzat terminologia-"
+"gomendioak dituela. Erabili Alt+Eskuina nabarmendutako hitza hautatzeko eta "
+"gero sakatu Alt+Behera. Gomendio bakarra balego, orduan Alt+Behera "
+"konbinazioak gomendioa itzulpen-eremuan kopiatzen du. Baina hainbat gomendio "
+"baleude, Alt+Behera sakatzean zerrenda bat erakutsiko da, Behera eta Gora "
+"teklekin nabiga daitekeena. Behin nahi duzun gomendioa hautatuta, sakatu "
+"Enter itzulpen-eremuan kopiatzeko."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2109,12 +2226,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
+"Mezu honek bi lerro ditu. Ziurtatu zure itzulpenak ere bi lerro dituela. "
+"Lerroak Shift+Enter bidez banatu edo lerro berriaren elementu bereziak kopia "
+"ditzakezu (¶ gisa bistaratzen dira)."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Mezu honek goiburuak bereizteko tabulazio-karaktereak ditu. Ziurtatu zure "
+"itzulpenean modu berean bereizten dituzula."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2125,6 +2247,12 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: this number is bigger than one thousand."
 msgstr ""
+"Mezu honek AEBtako arauen arabera formateatutako zenbaki handi bat du. Itzul "
+"ezazu baina ziurtatu zenbakia zure hizkuntzaren arauen arabera idazten "
+"duzula. Litekeena da koma (,) eta puntua (.) beste karaktere batzuekin "
+"ordezkatu behar izatea, eta beharbada bestelako zenbaki-sistema bat erabili "
+"beharko duzu. Ziurtatu AEBtako formatua ulertzen duzula: zenbaki hau mila "
+"baino handiagoa da."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2134,6 +2262,12 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do so."
 msgstr ""
+"Mezu honek miliei egiten die erreferentzia. Programatzaileek hala iradokiko "
+"balute, kilometrotara alda dezakezu zure itzulpenean, kilometroak erabiltzen "
+"badira zure hizkuntzan noski. Konturatu milia bat 1,6 kilometro direla gutxi "
+"gorabehera. Konturatu halaber zenbakietarako egiaztapen automatikoak huts "
+"egingo duela zenbakia aldatzen bada, baina kasu honetan segurua da hau "
+"egitea."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2142,6 +2276,10 @@ msgid ""
 "angle brackets (<...>). The double quotes (\") should never be changed in "
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
+"Mezu honek laguntza-orria bisitatzeko erabiltzaileak klik egin dezakeen "
+"esteka bat du. Ziurtatu angeludun parentesien (<...>) arteko informazioa "
+"zuzen mantentzen duzula. Kakotx bikoitzak (\") ez dira inoiz aldatu behar "
+"etiketetan, nahiz eta zure hizkuntzak bestelako aipu-markak erabili."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2151,6 +2289,10 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tags of the previous translation."
 msgstr ""
+"Mezu honek antzerako esteka bat du, baina programatzaileek erabaki dute "
+"etiketen ordez aldagaiak erabiltzea, itzultzaileek hauek aldatzea ekiditeko. "
+"Ziurtatu bi aldagaiak (%s) aurreko itzulpenari dagozkien irekitze- eta ixte-"
+"etiketen kokalekuan jartzen dituzula."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2158,6 +2300,9 @@ msgid ""
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
+"Mezu honek <b> eta </b> etiketak ditu hitz bat nabarmentzeko, eta "
+"gainontzekoa <p> eta </p> etiketen artean dago. Ziurtatu zure itzulpen osoa "
+"<p> eta </p> etiketen artean dagoela."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2169,6 +2314,12 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Mezu honek <span> eta </span> artean antzeko esteka bat du. Ziurtatu etiketa "
+"guztiak (<...>) zuzen mantentzen dituzula eta esteka <span> eta </span> "
+"etiketen artean dagoela itzulpenean. Ziurtatu \"a\" etiketen barruko testuak "
+"\"help page\"-i dagokiola eta bigarren esaldiari dagokion zure itzulpena "
+"<span> etiketen artean doala. Konturatu nola bukaerako puntua </span> "
+"etiketaren barruan dagoen."
 
 #: virtaal/views/checksprojview.py
 msgid "Project Type"
@@ -2193,23 +2344,22 @@ msgid "Quality checks"
 msgstr "Kalitate-egiaztapenak"
 
 #: virtaal/views/langview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "_New Language Pair…"
-msgstr "Hizkuntza-pare berria"
+msgstr "Hizkuntza-pare _berria…"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
-msgstr ""
+msgstr "_Utzi"
 
 #: virtaal/views/mainview.py
 msgid "_OK"
-msgstr ""
+msgstr "_Ados"
 
 #. l10n: macOS app menu item that opens the Preferences dialog
 #: virtaal/views/mainview.py
 msgid "Settings…"
-msgstr ""
+msgstr "Ezarpenak…"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2220,14 +2370,13 @@ msgid "Choose a Translation File"
 msgstr "Aukeratu itzulpen-fitxategia"
 
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Choose a Translation File"
 msgid "Choose a PO Template File"
-msgstr "Aukeratu itzulpen-fitxategia"
+msgstr "Aukeratu PO txantiloi-fitxategia"
 
 #: virtaal/views/mainview.py
 msgid "PO Template Files"
-msgstr ""
+msgstr "PO txantiloi-fitxategiak"
 
 #: virtaal/views/mainview.py
 msgid ""
@@ -2238,10 +2387,9 @@ msgstr ""
 "Aldaketak gorde nahi dituzu?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#, fuzzy
 #| msgid "Save"
 msgid "_Save"
-msgstr "Gorde"
+msgstr "_Gorde"
 
 #: virtaal/views/mainview.py
 msgid "_Discard"
@@ -2250,6 +2398,8 @@ msgstr "_Baztertu"
 #: virtaal/views/mainview.py
 msgid "Could not open the dropped file - its file name could not be decoded."
 msgstr ""
+"Ezin da jaregindako fitxategia ireki — ezin da bere fitxategi-izena "
+"deskodetu."
 
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
@@ -2265,10 +2415,10 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -2285,15 +2435,15 @@ msgstr "Goiburuko informazioa"
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
-msgstr ""
+msgstr "Virtaal %s erabilgarri dago (%s duzu)"
 
 #: virtaal/views/mainview.py
 msgid "Release Notes"
-msgstr ""
+msgstr "Bertsio-oharrak"
 
 #: virtaal/views/mainview.py
 msgid "Download"
-msgstr ""
+msgstr "Deskargatu"
 
 #: virtaal/views/mainview.py
 #, python-format
@@ -2301,76 +2451,73 @@ msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
 msgstr ""
+"Ezin da zure ezarpenen fitxategia irakurri, eta Virtaal ezarpen "
+"lehenetsiekin abiatu da. Fitxategi zaharra hemen mantendu da: %s"
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s': %(reason)s"
-msgstr "Ezin da '%(filename)s' erregistro-fitxategia ireki"
+msgstr "Ezin da '%(file)s' ireki: %(reason)s"
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s'."
-msgstr "Ezin da '%(filename)s' erregistro-fitxategia ireki"
+msgstr "Ezin da '%(file)s' ireki."
 
 #: virtaal/views/mainview.py
 msgid "Restart Virtaal for the new language to take effect."
-msgstr ""
+msgstr "Berrabiarazi Virtaal hizkuntza berriak eragina har dezan."
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Before:"
 msgid "Before"
-msgstr "Aurretik:"
+msgstr "Aurretik"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "After:"
 msgid "After"
-msgstr "Ondoren:"
+msgstr "Ondoren"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Unchanged"
 msgid "Change"
-msgstr "Aldatu gabea"
+msgstr "Aldaketa"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Total: %d"
 msgid "Total"
-msgstr "Guztira: %d"
+msgstr "Guztira"
 
 #: virtaal/views/mainview.py
 msgid "Source and target language are the same."
-msgstr ""
+msgstr "Iturburu- eta helburu-hizkuntzak berdinak dira."
 
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "Change Language Pair"
-msgstr "Hizkuntza-pare berria"
+msgstr "Aldatu hizkuntza-parea"
 
 #: virtaal/views/mainview.py
 msgid "This file is read-only."
-msgstr ""
+msgstr "Fitxategi hau irakurtzeko soilik da."
 
 #: virtaal/views/mainview.py
 msgid "Save As…"
-msgstr ""
+msgstr "Gorde honela…"
 
 #: virtaal/views/mainview.py
 msgid "Logs"
-msgstr ""
+msgstr "Erregistroak"
 
 #: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
 msgid "_Close"
-msgstr ""
+msgstr "_Itxi"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
@@ -2381,32 +2528,30 @@ msgstr "N_abigazioa:"
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
 msgid "None"
-msgstr ""
+msgstr "Bat ere ez"
 
 #. l10n: How many units to show around the one being edited, when a
 #. navigation mode only goes to some units
 #: virtaal/views/modeview.py
 msgid "Conte_xt:"
-msgstr ""
+msgstr "Te_stuingurua:"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
 #| msgid "Poedit settings"
 msgid "Settings"
-msgstr "Poedit-eko ezarpenak"
+msgstr "Ezarpenak"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
 #| msgid "Use default fonts"
 msgid "System default"
-msgstr "Erabili letra-tipo lehenetsiak"
+msgstr "Sistemaren lehenetsia"
 
 #. l10n: A UI language: its name in your language, then in
 #. itself, e.g. "French - Français"
 #: virtaal/views/prefsview.py
 #, python-format
 msgid "%(language)s - %(endonym)s"
-msgstr ""
+msgstr "%(language)s - %(endonym)s"
 
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
@@ -2436,11 +2581,11 @@ msgstr "Berrikusita:"
 #: virtaal/views/propertiesview.py
 #, python-format
 msgid "(%s)"
-msgstr ""
+msgstr "(%s)"
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
+msgstr "Fitxategi honek gorde gabeko aldaketak ditu."
 
 #: virtaal/views/storeview.py
 msgid "Export failed"
@@ -2463,22 +2608,19 @@ msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Mugitu urrats bat aurrera laneko fluxuan (Ktrl+Shift+Enter)"
 
 #: virtaal/views/unitview.py
-#, fuzzy
 #| msgid "P_revious Placeable"
 msgid "Previous state"
-msgstr "Au_rreko elementu berezia"
+msgstr "Aurreko egoera"
 
 #: virtaal/views/unitview.py
-#, fuzzy
 #| msgid "Select States"
 msgid "Next state"
-msgstr "Hautatu egoerak"
+msgstr "Hurrengo egoera"
 
 #: virtaal/views/widgets/aboutdialog.py
-#, fuzzy
 #| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
-msgstr "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -2519,16 +2661,14 @@ msgstr ""
 "Julen Ruiz Aizpuru <julenx@gmail.com>"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Language"
 msgid "Edit Language"
-msgstr "Hizkuntza"
+msgstr "Editatu hizkuntza"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Language name:"
 msgid "Enter a language name."
-msgstr "Hizkuntzaren izena:"
+msgstr "Idatzi hizkuntzaren izena."
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
@@ -2539,15 +2679,14 @@ msgid "Language code must be at least 2 characters long."
 msgstr "Hizkuntza-kodeak gutxienez 2 karaktere luze izan behar du."
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Language code must be an ASCII string."
 msgid "Language code must not contain spaces."
-msgstr "Hizkuntza-kodeak ASCII karaktere-katea izen behar du."
+msgstr "Hizkuntza-kodeak ezin ditu zuriuneak eduki."
 
 #: virtaal/views/widgets/langadddialog.py
 #, python-format
 msgid "Language code %s is already used."
-msgstr ""
+msgstr "%s hizkuntza-kodea badago lehendik ere."
 
 #: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
@@ -2559,200 +2698,186 @@ msgid "Code"
 msgstr "Kodea"
 
 #: virtaal/views/widgets/selectview.py
-#, fuzzy
 #| msgid "Configure..."
 msgid "Configure…"
-msgstr "Konfiguratu..."
+msgstr "Konfiguratu…"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Global"
-msgstr ""
+msgstr "Orokorra"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Open a file"
-msgstr ""
+msgstr "Ireki fitxategia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translated units from the current file"
 msgid "Save the current file"
-msgstr "Uneko fitxategian itzulita dauden unitateak"
+msgstr "Gorde uneko fitxategia"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
-msgstr ""
+msgstr "Gorde uneko fitxategia beste izen batekin"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Close the current file"
-msgstr "Uneko fitxategia"
+msgstr "Itxi uneko fitxategia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Virtaal"
 msgid "Quit Virtaal"
-msgstr "Virtaal"
+msgstr "Irten Virtaal-etik"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
-msgstr ""
+msgstr "Erakutsi hobespenen elkarrizketa-koadroa"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr ""
+msgstr "Erakutsi fitxategiaren propietate eta estatistikak"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Txandakatu pantaila osoko modua"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show this Keyboard Shortcuts window"
-msgstr ""
+msgstr "Erakutsi teklatuaren lasterbideen leiho hau"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Navigation"
 msgid "Navigation"
-msgstr "_Nabigazioa"
+msgstr "Nabigazioa"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Move to next translation"
-msgstr "Itzulpen automatikoa"
+msgstr "Joan hurrengo itzulpenera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
-msgstr ""
+msgstr "Joan aurreko unitatera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next unit"
-msgstr ""
+msgstr "Joan hurrengo unitatera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units up"
-msgstr ""
+msgstr "Joan 10 unitate gora"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
-msgstr ""
+msgstr "Joan 10 unitate behera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to first unit"
-msgstr ""
+msgstr "Joan lehenengo unitatera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to last unit"
-msgstr ""
+msgstr "Joan azken unitatera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next search match"
-msgstr ""
+msgstr "Joan hurrengo bilaketa-emaitzara"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous search match"
-msgstr ""
+msgstr "Joan aurreko bilaketa-emaitzara"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Units"
-msgstr ""
+msgstr "Unitateak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "P_revious placeable"
 msgid "Select previous placeable"
-msgstr "Au_rreko barne-elementua"
+msgstr "Hautatu aurreko elementu berezia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Next placeable"
 msgid "Select next placeable"
-msgstr "_Hurrengo barne-elementua"
+msgstr "Hautatu hurrengo elementu berezia"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
-msgstr ""
+msgstr "Txertatu hautatutako elementu berezia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
-msgstr "Itzulpen automatikoa libtranslate erabilita"
+msgstr "Ordezkatu itzulpena iturburuarekin"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
-msgstr ""
+msgstr "Kopiatu iturburua, ezer ez badago hautatuta"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr ""
+msgstr "Txertatu lerro berria"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr ""
+msgstr "Desegin azken aldaketa"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr ""
+msgstr "Berregin desegindako azken aldaketa"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _suggestions"
 msgid "Use the first translation suggestion"
-msgstr "Itzulpen-g_omendioak"
+msgstr "Erabili lehen itzulpen-gomendioa"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
-msgstr ""
+msgstr "Erakutsi/ezkutatu egiaztapenak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _suggestions"
 msgid "Show translation suggestions for this unit"
-msgstr "Itzulpen-g_omendioak"
+msgstr "Erakutsi unitate honetarako itzulpen-gomendioak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _suggestions"
 msgid "Turn translation suggestions on or off"
-msgstr "Itzulpen-g_omendioak"
+msgstr "Aktibatu/desaktibatu itzulpen-gomendioak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _suggestions"
 msgid "Hide translation suggestions, if shown"
-msgstr "Itzulpen-g_omendioak"
+msgstr "Ezkutatu itzulpen-gomendioak, erakusten ari badira"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
-msgstr "Terminologia-fitxategi lokalak"
+msgstr "Gehitu terminoa terminologia-fitxategi lokalean"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr ""
+msgstr "Fokua aldatzea"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"
-msgstr ""
+msgstr "Aldatu hurrengo helburu-eremura"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the previous target field"
-msgstr ""
+msgstr "Aldatu aurreko helburu-eremura"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the language-pair selector"
-msgstr ""
+msgstr "Saltatu hizkuntza-parearen hautatzailera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the \"Navigation:\" mode selector"
-msgstr ""
+msgstr "Saltatu \"Nabigazioa:\" moduaren hautatzailera"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the search bar and return to normal editing"
-msgstr ""
+msgstr "Itxi bilaketa-barra eta itzuli edizio normalera"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"

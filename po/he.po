@@ -988,7 +988,7 @@ msgid ""
 msgstr ""
 "%(filename)s לקריאה בלבד.\n"
 "\n"
-"מתבצע ניסיון לשמור למקום אחר."
+"נא לנסות לשמור במקום אחר."
 
 #: virtaal/controllers/maincontroller.py
 #, python-format

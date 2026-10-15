@@ -1,20 +1,21 @@
 # Czech (cs) localisation of Virtaal.
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
-# Jindřich Šesták <khagaroth@gmail.com>, 2011, 2012.
+# Jindřich Šesták <khagaroth@gmail.com>, 2011, 2012, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.7.0-beta5\n"
+"Project-Id-Version: Virtaal 1.0.0-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2012-11-29 18:51+0000\n"
-"Last-Translator: Jindřich <khagaroth@gmail.com>\n"
+"PO-Revision-Date: 2026-10-15 22:26+0200\n"
+"Last-Translator: khagaroth <khagaroth@gmail.com>\n"
 "Language-Team: NONE\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
@@ -28,10 +29,6 @@ msgstr "Překladatelský nástroj"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid ""
-#| "A translation tool to help a human translator translate files into other "
-#| "languages"
 msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
@@ -107,14 +104,12 @@ msgid "<b>Translation</b>"
 msgstr "<b>Překlad</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
-msgstr "Přidat chybějící jazyk"
+msgstr "_Přidat chybějící jazyk…"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
-msgstr ""
+msgstr "_Upravit jazyk překladu…"
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -122,11 +117,9 @@ msgstr "_Soubor"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr ""
+msgstr "Obno_vit uložený stav"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "_Update to Template"
 msgid "_Update from Template"
 msgstr "_Aktualizovat ze šablony"
 
@@ -144,19 +137,19 @@ msgstr "Ú_pravy"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr ""
+msgstr "Z_novu"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
-msgstr ""
+msgstr "_Najít…"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "Najít _další"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr ""
+msgstr "Najít _předchozí"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -165,10 +158,8 @@ msgstr "Přenést ze zdroje"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "_Next Placeable"
 msgid "_Insert Placeable"
-msgstr "_Následující aktivní řetězec"
+msgstr "_Vložit aktivní řetězec"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
@@ -205,23 +196,23 @@ msgstr "O stránku _dolů"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr ""
+msgstr "_První položka"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"
-msgstr ""
+msgstr "Pos_lední položka"
 
 #: share/virtaal/virtaal.ui
 msgid "Next Unit"
-msgstr ""
+msgstr "Další položka"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Advance State"
-msgstr ""
+msgstr "Další položka, nastavit další stav"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Reverse State"
-msgstr ""
+msgstr "Další položka, nastavit předchozí stav"
 
 #: share/virtaal/virtaal.ui
 msgid "_Help"
@@ -245,11 +236,11 @@ msgstr "Nahlásit chy_bu"
 
 #: share/virtaal/virtaal.ui
 msgid "Show Lo_gs"
-msgstr ""
+msgstr "Zobrazit _protokoly"
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
-msgstr ""
+msgstr "_Klávesové zkratky"
 
 #: share/virtaal/virtaal.ui
 msgid "Virtaal Preferences"
@@ -277,7 +268,7 @@ msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Informace o týmu vkládaná do hlavičky souboru. Může jít například o e-mail "
+"Informace o týmu vkládaná do hlavičky souboru. Může jít například o e-mail, "
 "nebo adresu domovské stránky."
 
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
@@ -305,16 +296,12 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Písmo</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "Language"
 msgid "Language:"
-msgstr "Jazyk"
+msgstr "Jazyk:"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
-msgstr "<b>Informace o jazyku</b>"
+msgstr "<b>Jazyk</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui
@@ -343,11 +330,11 @@ msgstr "Vlastnosti"
 
 #: share/virtaal/virtaal.ui
 msgid "Saved file"
-msgstr ""
+msgstr "Uložený soubor"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
-msgstr ""
+msgstr "Neuložené změny"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Words</b> (total):"
@@ -380,11 +367,11 @@ msgstr "_Komentáře"
 
 #: share/virtaal/virtaal.ui
 msgid "Terminology _file:"
-msgstr "_Seznam výrazů:"
+msgstr "_Soubor výrazů:"
 
 #: share/virtaal/virtaal.ui
 msgid "Terminology Files"
-msgstr "Seznamy výrazů"
+msgstr "Soubory výrazů"
 
 #: share/virtaal/virtaal.ui
 msgid "Add URL"
@@ -396,7 +383,7 @@ msgstr "Adresa:"
 
 #: share/virtaal/virtaal.ui
 msgid "Put queries in quotes"
-msgstr "Uzavřít dotaz do úvozovek"
+msgstr "Uzavřít dotaz do uvozovek"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Options</b>"
@@ -404,7 +391,7 @@ msgstr "<b>Možnosti</b>"
 
 #: share/virtaal/virtaal.ui
 msgid "Web Look-ups"
-msgstr "Vyhledání na Internetu"
+msgstr "Vyhledávání na Internetu"
 
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages will not need to change this. Translate the word Open normally.
 #: share/virtaal/virtaal.ui
@@ -425,17 +412,14 @@ msgstr "<u>Seznam klávesových zkratek</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
-msgstr "<u>Ostatní...</u>"
+msgstr "<u>Ostatní…</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Features</u>"
@@ -447,11 +431,10 @@ msgstr "<b><big>Začínáme</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Manual</u>"
@@ -460,7 +443,7 @@ msgstr "<u>Návod</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
 msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
-msgstr ""
+msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Localization Guide</u>"
@@ -468,47 +451,38 @@ msgstr "<u>Jak překládat</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Feedback</u>"
 msgstr "<u>Váš názor</u>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
-msgstr "Nahlásit chy_bu"
+msgstr "Nahlásit chybu na GitHub"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
-msgstr "Nahlásit chy_bu"
+msgstr "<u>Nahlásit chybu</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Podpora</big></b>"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "Machine translation"
 msgid "Base translation store"
-msgstr "Strojový překlad"
+msgstr "Základní překladové úložiště"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
-msgstr ""
+msgstr "Hodnoty oddělené čárkou"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "Current File"
 msgid "Fluent file"
-msgstr "Aktuální soubor"
+msgstr "Soubor Fluent"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext MO file"
@@ -520,13 +494,11 @@ msgstr "Soubor gettext PO"
 
 #: devsupport/tmp_strings.py
 msgid "Haiku catkeys file"
-msgstr ""
+msgstr "Soubor Haiku catkeys"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "Mozilla"
 msgid "Mozilla .lang"
-msgstr "Mozilla"
+msgstr "Mozilla .lang"
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
@@ -553,20 +525,16 @@ msgid "TMX Translation Memory"
 msgstr "Překladová paměť TMX"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
-msgstr "Překladová paměť TMX"
+msgstr "Překladová paměť Trados"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX Dictionary"
 msgstr "UTX slovník"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "_Localization Guide"
 msgid "WiX Localization File"
-msgstr "_Jak překládat"
+msgstr "Překladový soubor WiX"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Wordfast Translation Memory"
@@ -577,36 +545,28 @@ msgid "XLIFF Translation File"
 msgstr "Překladový soubor XLIFF"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "XLIFF Translation File"
 msgid "SDL XLIFF Translation File"
-msgstr "Překladový soubor XLIFF"
+msgstr "Překladový soubor XLIFF SDL"
 
 #: devsupport/tmp_strings.py
 msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
-msgstr ""
+msgstr "Asociovat Virtaal s překladovými soubory (.po, .xlf, .tmx, ...)"
 
 #: devsupport/tmp_strings.py
 msgid "Edit with Virtaal"
-msgstr ""
+msgstr "Upravit v aplikaci Virtaal"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "Usage: %s\n"
 msgid "usage: "
-msgstr "Použití: %s\n"
+msgstr "použití: "
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "%s option requires an argument"
 msgid "positional arguments"
-msgstr "volba %s vyžaduje parametr"
+msgstr "poziční argumenty"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
-#| msgid "Options"
 msgid "options"
-msgstr "Parametry"
+msgstr "možnosti"
 
 #: devsupport/tmp_strings.py
 msgid "show this help message and exit"
@@ -614,14 +574,12 @@ msgstr "zobrazí tuto nápovědu a ukončí program"
 
 #: devsupport/tmp_strings.py
 msgid "show program's version number and exit"
-msgstr "zobrazí verzi programu a program ukončí"
+msgstr "zobrazí verzi programu a ukončí program"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
-msgstr "Překladatelský nástroj"
+msgstr "Překladatelský nástroj Vitaal"
 
 #. l10n: Paragraphs should be less than 600 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -631,13 +589,11 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal je program pro překlad. Jeho cílem je kombinace jednoduchosti a "
+"výkonu. Integruje se s vybranými online zdroji, aby učinil překlad "
+"zábavnější a zároveň pomohl zlepšit kvalitu překladu."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid ""
-#| "The initial focus is on software translation (localization or l10n), but "
-#| "we definitely intend it to be useful as a general purpose tool for "
-#| "Computer Aided Translation (CAT)."
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
@@ -649,14 +605,12 @@ msgstr ""
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
-msgstr ""
+msgstr "Některé dostupné funkce:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Existující překlady: %(translations)s"
+msgstr "Znovuvyužití překladů (překladová paměť)"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
@@ -665,33 +619,29 @@ msgstr "Návrhy termínů"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "Automatické dokončování a automatické opravy"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Kontroly kvality s možností přizpůsobení podle jazyka"
 
 #. l10n: Captions should be shorter than 50 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
-msgstr ""
+msgstr "Snadný přístup k nedávným souborům a dokumentaci"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
-msgstr ""
+msgstr "Rozpoznané prvky není nutné zadávat ručně"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
-msgstr "Automatické opravy při psaní"
+msgstr "Automatické kontroly kvality při psaní"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
-#| msgid "Translated"
 msgid "Translate"
-msgstr "Přeloženo"
+msgstr "Translate"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
@@ -723,7 +673,7 @@ msgstr "Universal Terminology eXchange"
 
 #: virtaal/cli.py
 msgid "LOG"
-msgstr "LOG"
+msgstr "PROTOKOL"
 
 #: virtaal/cli.py
 msgid "turn on logging, storing the result to the supplied filename."
@@ -731,11 +681,11 @@ msgstr "zapne záznam událostí, výstup bude uložen do zadaného souboru."
 
 #: virtaal/cli.py
 msgid "CONFIG"
-msgstr "CONFIG"
+msgstr "KONFIGURACE"
 
 #: virtaal/cli.py
 msgid "use the configuration file given by the supplied filename."
-msgstr "použije zadaný soubor nastavení."
+msgstr "použije zadaný konfigurační soubor."
 
 #: virtaal/cli.py
 msgid "enable debugging features"
@@ -743,7 +693,7 @@ msgstr "aktivuje ladicí funkce"
 
 #: virtaal/cli.py
 msgid "LANG"
-msgstr ""
+msgstr "JAZYK"
 
 #: virtaal/cli.py
 msgid ""
@@ -751,11 +701,14 @@ msgid ""
 "untranslated source strings; \"system\" for the OS's own default), without "
 "changing the saved Preferences setting"
 msgstr ""
+"dočasně přenastaví jazyk uživatelského rozhraní beze změny uloženého "
+"nastavení (např. \"fr\"; \"en\" pro pro rozhraní bez překladu; \"system\" "
+"pro výchozí jazyk operačního systému)"
 
 #: virtaal/cli.py
 #, python-format
 msgid "Could not open log file '%(filename)s'"
-msgstr "Soubor záznamu ‚%(filename)s‘ se nepodařilo otevřít"
+msgstr "Soubor protokolu ‚%(filename)s‘ se nepodařilo otevřít"
 
 #: virtaal/cli.py
 #, python-format
@@ -765,7 +718,7 @@ msgstr "Konfigurační soubor ‚%(filename)s‘ se nepodařilo načíst"
 #: virtaal/cli.py
 #, python-format
 msgid "No translation found for language '%(lang)s'"
-msgstr ""
+msgstr "Pro vybraný jazyk ‚%(lang)s‘ nebyl nalezen žádný překlad"
 
 #: virtaal/cli.py
 #, python-format
@@ -774,7 +727,7 @@ msgstr "Profilovací soubor ‚%(filename)s‘ se nepodařilo otevřít"
 
 #: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
 msgid "Fuzzy"
-msgstr "Přibližný"
+msgstr "Přibližné"
 
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
@@ -836,7 +789,7 @@ msgstr "Řídící znaky"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "File paths"
-msgstr "Cesty"
+msgstr "Cesty k souborům"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Functions"
@@ -844,7 +797,7 @@ msgstr "Funkce"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GConf values"
-msgstr "GConf"
+msgstr "Hodnoty GConf"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Old KDE comment"
@@ -958,7 +911,7 @@ msgstr "Výchozí"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "LibreOffice"
-msgstr ""
+msgstr "LibreOffice"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Mozilla"
@@ -970,7 +923,7 @@ msgstr "KDE"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Qt"
-msgstr ""
+msgstr "Qt"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
@@ -990,7 +943,7 @@ msgstr "Pokoušíte se otevřít aktuálně otevřený soubor. Chcete ho znovu n
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Loading '%s'…"
-msgstr ""
+msgstr "Načítá se ‚%s‘…"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1012,21 +965,13 @@ msgid "Save"
 msgstr "Uložit"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy, python-format
-#| msgid ""
-#| "Could not save file.\n"
-#| "\n"
-#| "%(error_message)s\n"
-#| "\n"
-#| "Try saving to a different location."
+#, python-format
 msgid ""
 "%(filename)s is read-only.\n"
 "\n"
 "Try saving to a different location."
 msgstr ""
-"Soubor se nepodařilo uložit.\n"
-"\n"
-"%(error_message)s\n"
+"%(filename)s je pouze pro čtení.\n"
 "\n"
 "Zkuste ho uložit do jiného umístění."
 
@@ -1092,11 +1037,9 @@ msgstr ""
 
 #: virtaal/controllers/maincontroller.py
 msgid "Revert to Saved"
-msgstr ""
+msgstr "Obnovit uložený stav"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy
-#| msgid "Reload file from last saved copy and lose all changes?"
 msgid "Revert to the last saved copy and lose all changes?"
 msgstr "Znovu načíst soubor z disku a zahodit provedené změny?"
 
@@ -1128,7 +1071,7 @@ msgstr "Parametry příkazového řádku"
 #: virtaal/controllers/placeablescontroller.py
 msgid "Application command line options, such as --help, -h and -I"
 msgstr ""
-"Parametry upravující chování aplikace, zadávané při jejím vyvolání do "
+"Parametry upravující chování aplikace, zadávané při jejím vyvolání z "
 "příkazového řádku, například --help, -h nebo -I"
 
 #: virtaal/controllers/placeablescontroller.py
@@ -1263,6 +1206,8 @@ msgid ""
 "The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
 "Open it with File > Open or from your file manager."
 msgstr ""
+"Soubor neexistuje, nebo k němu nemá Virtaal ze sandboxu Flatpaku přístup. "
+"Otevřete ho pomocí Soubor > Otevřít, nebo ze správce souborů."
 
 #: virtaal/models/storemodel.py
 msgid "The file does not exist."
@@ -1343,7 +1288,7 @@ msgstr "Všechny stavy"
 
 #: virtaal/plugins/autocompletor.py
 msgid "Automatically complete long words while you type"
-msgstr "Automatické dokončování slov při psaní"
+msgstr "Automatické dokončování dlouhých slov při psaní"
 
 #: virtaal/plugins/autocompletor.py
 msgid "AutoCompletor"
@@ -1373,7 +1318,7 @@ msgstr "Výběr vyhledávacích služeb"
 
 #: virtaal/plugins/lookup/lookupview.py
 msgid "Select the services that should be used to perform look-ups"
-msgstr "Vyberte služby které chcete použít pro vyhledávání"
+msgstr "Vyberte služby, které chcete použít pro vyhledávání"
 
 #: virtaal/plugins/lookup/lookupview.py
 #, python-format
@@ -1383,39 +1328,37 @@ msgstr "Vyhledat „%(selection)s“"
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Thesaurus"
-msgstr ""
+msgstr "Slovník synonym"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Look up synonyms for the selected word"
-msgstr ""
+msgstr "Vyhledání synonym k vybranému slovu"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Loading thesaurus…"
-msgstr ""
+msgstr "Načítá se slovník…"
 
 #. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Checking for thesaurus…"
-msgstr ""
+msgstr "Kontrola dostupnosti slovníku…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Downloading %(language)s thesaurus…"
-msgstr ""
+msgstr "Stahování slovníku pro jazyk %(language)s…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Download %(language)s thesaurus…"
-msgstr ""
+msgstr "Stáhnout slovník pro jazyk %(language)s…"
 
 #. l10n: The menu entry offering synonyms for the selected word.
 #: virtaal/plugins/lookup/models/thesaurus.py
-#, fuzzy
-#| msgid "Acronyms"
 msgid "Synonyms"
-msgstr "Zkratky"
+msgstr "Synonyma"
 
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1424,7 +1367,7 @@ msgstr "Vyhledávání na Internetu"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Look-up the selected text on a web site"
-msgstr "Vyhledat označený text na internetové stránce"
+msgstr "Vyhledat označený text na webové stránce"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1437,18 +1380,17 @@ msgid "Wikipedia"
 msgstr "Wikipedia"
 
 #: virtaal/plugins/lookup/models/weblookup.py
-#, fuzzy
 #| msgid "UTX Dictionary"
 msgid "Wiktionary"
-msgstr "UTX slovník"
+msgstr "Wiktionary"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Bing"
-msgstr ""
+msgstr "Bing"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Yahoo"
-msgstr ""
+msgstr "Yahoo"
 
 #. l10n: Whether this look-up is offered at all
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1473,11 +1415,11 @@ msgstr "Uzavřít dotaz do uvozovek"
 #. l10n: "virtaal-" is a literal prefix - leave it untranslated
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Names starting with \"virtaal-\" are reserved."
-msgstr ""
+msgstr "Názvy začínající řetězcem \"virtaal-\" jsou vyhrazeny."
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "A web look-up with this name already exists."
-msgstr ""
+msgstr "Hledání na internetu s tímto názvem již existuje."
 
 #: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1489,12 +1431,11 @@ msgstr "Import nastavení"
 
 #: virtaal/plugins/migration.py
 msgid "Should Virtaal try to import settings and data from other applications?"
-msgstr ""
-"Má se Virtaal pokusit naimportovat nastavení a data z ostatních programů?"
+msgstr "Má se Virtaal pokusit naimportovat nastavení a data z jiných programů?"
 
 #: virtaal/plugins/migration.py
 msgid "Import data from other applications?"
-msgstr "Importovat data z ostatních programů?"
+msgstr "Importovat data z jiných programů?"
 
 #: virtaal/plugins/migration.py
 msgid "Migration was successfully completed"
@@ -1559,25 +1500,20 @@ msgstr "Místní soubory"
 
 #: virtaal/plugins/terminology/models/localfile/__init__.py
 msgid "Local terminology files"
-msgstr "Místní seznamy výrazů"
+msgstr "Místní soubory výrazů"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
-#| msgid "Terminology Files"
 msgid "Terminology _Files…"
-msgstr "Seznamy výrazů"
+msgstr "_Soubory výrazů…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
-#| msgid "Add Term"
 msgid "Add _Term…"
-msgstr "Přidat výraz"
+msgstr "Přida_t výraz…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy, python-format
-#| msgid "Look-up \"%(selection)s\""
+#, python-format
 msgid "Add Term \"%(selection)s\"…"
-msgstr "Vyhledat „%(selection)s“"
+msgstr "Přidat výraz „%(selection)s“…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
@@ -1614,7 +1550,7 @@ msgstr ""
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Error opening file"
-msgstr "Při otevírání souboru došlo k chybě"
+msgstr "Soubor se nepodařilo otevřít"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
@@ -1642,14 +1578,13 @@ msgid "Existing translations: %(translations)s"
 msgstr "Existující překlady: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#, fuzzy
 #| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
-msgstr "Mozilla Corporation"
+msgstr "Mozilla Pontoon"
 
 #: virtaal/plugins/terminology/models/pontoon.py
 msgid "Community localization terminology from Mozilla Pontoon"
-msgstr ""
+msgstr "Výrazy komunitní lokalizace z Mozilla Pontoon"
 
 #: virtaal/plugins/terminology/termview.py
 msgid "Select Terminology Sources"
@@ -1740,7 +1675,7 @@ msgstr "Server překladové paměti"
 #. l10n: Try to keep this as short as possible.
 #: virtaal/plugins/tm/models/remotetm.py
 msgid "Remote TM"
-msgstr "Remote TM"
+msgstr "Vzdálená TM"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Translation _Suggestions"
@@ -1748,7 +1683,7 @@ msgstr "Návrhy _překladu"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Suggestions for This _Unit"
-msgstr ""
+msgstr "Návrhy pro t_uto položku"
 
 #: virtaal/plugins/tm/tmview.py
 #, python-format
@@ -1785,33 +1720,36 @@ msgstr "?"
 
 #: virtaal/support/crash_dialog.py
 msgid "Virtaal hit an unexpected error"
-msgstr ""
+msgstr "Virtaal narazil na neočekávanou chybu"
 
 #: virtaal/support/crash_dialog.py
 msgid ""
 "This might not affect your current work, but if it keeps happening, "
 "reporting it helps get it fixed."
 msgstr ""
+"Aktuálně rozdělaná práce tím nemusí být ovlivněna, ale pokud se chyba "
+"opakuje, její nahlášení může umožnit její opravu."
 
 #: virtaal/support/crash_dialog.py
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #: virtaal/support/crash_dialog.py
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: virtaal/support/crash_dialog.py
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report This Bug…"
-msgstr "Nahlásit chy_bu"
+msgstr "Nahlásit chybu…"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Vítejte v průvodci prací s programem Virtaal. První překlad můžete provést "
+"zadáním překladu pro slovo \"Welcome\" a stisknutím klávesy Enter."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1819,6 +1757,9 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Přeložte tuto o něco delší zprávu. Pokud je k dispozici kontrola pravopisu, "
+"pravopisné chyby budou indikovány podobně jako v textových editorech. "
+"Ujistěte se, že je v pravém dolním rohu okna vybrán správný jazyk."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1826,6 +1767,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Tento průvodce vám ukáže některé věci, kterým byste měli při překladu "
+"programů věnovat pozornost. Pomůže vám vyhnout se některých problémů a "
+"vytvořit překlady vyšší kvality."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1834,6 +1778,9 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Některé rady budou relevantní jen pro některé jazyky. Pokud váš jazyk "
+"například nepoužívá latinku, některé rady nemusí být pro překlad do vašeho "
+"jazyka relevantní. Pro mnoho jazyků existují zavedená pravidla pro překlad."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1841,6 +1788,9 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"V mnoha jazycích je důležité správné použití velkých písmen. Pozorně a "
+"pečlivě přeložte tuto zprávu tak, aby byla u slova \"Virtaal\" zachována "
+"správná velikost písmen."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1850,6 +1800,12 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"V této zprávě používá angličtina velká počáteční písmena pro téměř všechna "
+"slova. Téměř žádné další jazyky nepoužívají tento styl psaní. Pokud váš "
+"jazyk nezbytně nevyžaduje tento anglický styl (nazývaný Title Case), "
+"přeložte tuto zprávu podle běžných pravidel psaní velkých písmen ve vašem "
+"jazyce. Pokud váš jazyk nepoužívá velká písmena, jednoduše tuto zprávu "
+"přeložte."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1859,6 +1815,12 @@ msgid ""
 "copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Pokud jste přeložili předchozí zprávu, měli byste vidět okno s tímto "
+"překladem a procenty vyjadřujícími podobnost zdrojových řetězců "
+"(angličtina). Jedná se o překladovou paměť programu Virtaal. Stiskněte "
+"klávesovou zkratku Ctrl+1 pro zkopírování navrhovaného překladu do "
+"aktuálního překladu. Nezapomeňte návrhy před jejich použitím vždy "
+"zkontrolovat."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1866,6 +1828,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Toto je jednoduchá zpráva začínající v angličtině velkým písmenem. Pokud váš "
+"jazyk používá velká písmena, téměř vždy budete chtít aby překlad také "
+"začínal velkým písmenem."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1873,17 +1838,23 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Toto je jednoduchá zpráva začínající v angličtině malým písmenem. Pokud váš "
+"jazyk používá velká písmena, téměř vždy budete chtít aby překlad také "
+"začínal malým písmenem."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Tato zpráva je otázka. Ujistěte se, že váš překlad používá správný znak "
+"otazníku pro váš jazyk."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Tato zpráva je popisek pole formuláře. Všimněte si, že končí dvojtečkou (:)."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1891,9 +1862,11 @@ msgid ""
 "copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
 "translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
+"Pokud zůstane zdrojový text více méně beze změn, je výhodné ho celý "
+"zkopírovat pomocí Ctrl+Shift+V. V této zprávě není téměř nic co by se dalo "
+"přeložit, stiskněte proto Ctrl+Shift+V a proveďte případné potřebné úpravy."
 
 #: virtaal/support/tutorial.py
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1902,8 +1875,10 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"Aktivní řetězce jsou části zdrojového textu, které mohou být automaticky "
-"označeny a jednoduše vloženy do překladu."
+"Aktivní řetězce jsou speciální části zdrojového textu, jako například symbol "
+"©, které mohou být automaticky označeny a jednoduše vloženy do překladu. "
+"Vyberte © pomocí Alt+Doprava a přeneste ho do cílového umístění pomocí "
+"Alt+Dolů."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1911,6 +1886,9 @@ msgid ""
 "placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Rozpoznané aktivní řetězce zahrnují speciální symboly, čísla, zástupné "
+"řetězce, zkratky a mnohé další. Přesuňte se mezi nimi pomocí Alt+Doprava a "
+"přeneste je pomocí Alt+Dolů."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1918,6 +1896,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Tato zpráva končí ..., což značí, že po kliknutí na tento text se jednoduše "
+"neprovede nějaká akce, ale zobrazí se dialogové okno. Zajistěte, aby váš "
+"překlad také končil ...."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1925,6 +1906,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Tato zpráva je ukončena speciálním znakem, který vypadá jako tři tečky. "
+"Vyberte tento speciální znak pomocí Alt+Doprava a zkopírujte ho do překladu "
+"pomocí Alt+Dolů. Nenahrazujte ho napsáním tří teček."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1932,6 +1916,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Tato zpráva obsahuje dvě věty. Přeložte je a zajistěte, aby každá z nich "
+"začínala velkým písmenem, pokud je váš jazyk používá, a každou z vět řádně "
+"ukončete."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1940,6 +1927,11 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Tato zpráva označuje slovo \"now\" jako důležité pomocí tagů pro tučný text. "
+"Tyto tagy mohou být přeneseny ze zdroje pomocí Alt+Doprava a Alt+Dolů. "
+"Umístěte <b> a </b> v překladu kolem části odpovídající slovu \"now\". "
+"Podrobnější informace o XML značkách se dozvíte zde: http://en.wikipedia.org/"
+"wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1947,6 +1939,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Tato zpráva je podobná té předchozí. Použijte návrh předchozího překladu "
+"pomocí Ctrl+1. Všimněte si, že jediný rozdíl je, že aktuální zpráva končí "
+"tečkou za posledním tagem."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1957,6 +1952,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"V této zprávě je zástupný znak (proměnná) „%d“, která reprezentuje číslo. "
+"Zajistěte, aby váš překlad také obsahoval „%d“. V tomto případě odkazuje na "
+"počet souborů. Když bude tato zpráva použita, „%d“ bude nahrazeno číslem, "
+"např. ‚Počet zkopírovaných souborů: 5‘. Všimněte si, že „%d“ nemá nic "
+"společného s procenty."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1969,6 +1969,13 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"V této zprávě „%d“ opět reprezentuje počet souborů, ale všimněte si, jak se "
+"snaží pomocí použití „(s)“ vyjádřit, že nevíme kolik souborů to bude. Taková "
+"zpráva je často obtížně přeložitelná. Pokud se při překladu programů setkáte "
+"s takovou zprávou, možná byste měli kontaktovat vývojáře a zeptat se jich, "
+"zda se tomu lze vyhnout. Více informací o tom, jak na to ve vašem jazyku si "
+"přečtěte na stránce: http://docs.translatehouse.org/projects/localization-"
+"guide/en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1978,6 +1985,11 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"V této zprávě uvidíte, jak správně překládat množná čísla. Pro zajištění "
+"správné gramatiky ve vašem jazyku musíte zadat od 1 do 6 různých variant "
+"překladu. Další podrobnosti si můžete přečíst na stránce: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1987,6 +1999,11 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"V této zprávě je zástupný znak (proměnná) „%s“, která reprezentuje název "
+"souboru. Zajistěte, aby váš překlad také obsahoval „%s“. Když bude tato "
+"zpráva použita, „%s“ bude nahrazeno názvem souboru, např. ‚Soubor bude "
+"uložen jako příklad.odt‘. Všimněte si, že „%s“ nemá nic společného s "
+"procenty."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1997,6 +2014,11 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different quoting characters you can just type them around the variable."
 msgstr ""
+"V této zprávě je proměnná uvnitř dvojitých uvozovek. Zajistěte, aby váš "
+"překlad také obsahoval proměnnou %s a také ji uzavřete do uvozovek podle "
+"zvyklostí vašeho jazyka. Pokud váš jazyk používá stejné uvozovky jako "
+"angličtina, použijte stejný zápis jako v angličtině. Pokud váš jazyk používá "
+"jiné znaky uvozovek, použijte je místo těch anglických."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2005,6 +2027,10 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"V této zprávě je zástupný řetězec (proměnná) „%(name)s“. Všimněte si, že 's' "
+"je součástí proměnné a celý řetězec proměnné od '%' po 's' by měl být "
+"zkopírován do překladu beze změn. Tento typ proměnných vám umožní vědět, co "
+"budou obsahovat. V tomto případě půjde o název."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2012,6 +2038,8 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"V této zprávě je uživatel programu požádán o provedení nějaké akce. Přeložte "
+"ji s takovou úrovní zdvořilosti a respektu jakou vyžaduje vaše kultura."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2019,12 +2047,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"V této zprávě je zmíněn „Linux“ (název produktu). Většina jazyků jej nebude "
+"překládat, ale pokud váš jazyk nepoužívá latinku, budete možná muset použít "
+"transliteraci."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Tato zpráva obsahuje URL (webovou adresu) webové stránky projektu. Ta musí "
+"být do překladu přenesena jako aktivní řetězec, nebo přesně přepsána."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2034,6 +2067,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Tato zpráva odkazuje na webovou stránku s dalšími informacemi. Někdy vám "
+"může být povoleno nebo doporučeno nahradit URL (webovou adresu) adresou webu "
+"ve vašem jazyce. V tomto případě nahraďte „en“ na začátku adresy kódem "
+"vašeho jazyka, tak aby adresa směřovala na odpovídající článek o XML ve "
+"vašem jazyce."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2041,6 +2079,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Tento překlad obsahuje nejednoznačné slovo - má dva možné významy. Ujistěte "
+"se, že vidíte informace o kontextu ukazující, že jde o sloveso (akce např. "
+"„klikni zde pro zobrazení“)."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2050,6 +2091,11 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Tento překlad obsahuje nejednoznačné slovo - má dva možné významy. Ujistěte "
+"se, že vidíte informace o kontextu ukazující, že jde o podstatné jméno (věc "
+"např. „klikni pro změnu zobrazení na celou obrazovku“). Pokud vám Virtaal "
+"nabídne váš předchozí překlad jako návrh, použijte ho jen v případě, že jde "
+"o adekvátní překlad i v tomto případě."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2062,14 +2108,21 @@ msgid ""
 "before this letter and it means that this accelerator could be triggered by "
 "pressing Alt+F."
 msgstr ""
+"Přístupová klávesa je klávesa na vaší klávesnici, jejíž stisknutí vám umožní "
+"rychlý přístup k nabídce nebo funkci. V uživatelském rozhraní programu jsou "
+"zobrazeny jako podtržená písmena v textových popiscích. V překládaném textu "
+"jsou označeny pomocí určitého znaku jako je zde podtržítko, ale používají se "
+"i jiné znaky. V tomto případě je přístupovou klávesou písmeno „f“, protože "
+"je před ním podtržítko a to znamená, že jí lze aktivovat kombinací kláves "
+"Alt+F."
 
 #: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "V této položce můžete prohlédnout další typ přístupové klávesy."
 
 #: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "A další typ přístupové klávesy."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2077,12 +2130,18 @@ msgid ""
 "consistently. To add a term, select a word (or words), press Ctrl+T and fill "
 "in the details for the new term. Select the text below and add a term for it."
 msgstr ""
+"Můžete si udržovat místní soubor terminologie usnadňující konzistentní "
+"překlad. Pro přidání výrazu vyberte slovo (nebo slova), stiskněte Ctrl+T a "
+"vyplňte potřebné podrobnosti. Vyberte níže zobrazený text a přidejte ho jako "
+"nový výraz."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"U předchozí položky jste vytvořili jednu terminologickou položku pro sloveso "
+"„filter“. Nyní udělejte to samé pro podstatné jméno „filter“."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2096,6 +2155,15 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Pokud jste u předchozích položek vytvořili odpovídající terminologické "
+"výrazy, můžete nyní vidět, že některá slova jsou zvýrazněna zeleným pozadím "
+"(nebo jinou barvou v závislosti na vašem motivu vzhledu). To znamená, že "
+"Virtaal má pro dané slovo k dispozici návrhy terminologických výrazů. "
+"Použijte Alt+Doprava pro výběr zvýrazněného slova a poté Alt+Dolů. Pokud je "
+"k dispozici jen jeden návrh, Alt+Dolů návrh rovnou vloží do překladu. Pokud "
+"je ale k dispozici více návrhů, Alt+Dolů zobrazí seznam návrhů ve kterém se "
+"můžete pohybovat pomocí kláves Dolů a Nahoru. Po výběru odpovídajícího "
+"návrhu stiskněte Enter pro jeho vložení do překladu."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2103,12 +2171,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
+"Tato zpráva má dva řádky. Zajistěte, aby váš překlad také obsahoval dva "
+"řádky. Odřádkovat můžete pomocí kombinace kláves Shift+Enter nebo "
+"zkopírováním aktivního řetězce pro nový řádek (zobrazený jako znak ¶)."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Tato zpráva obsahuje znaky tabulátoru použité pro oddělení některých "
+"nadpisů. Zajistěte, aby váš překlad použil stejné oddělení."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2119,6 +2192,11 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: this number is bigger than one thousand."
 msgstr ""
+"Tato zpráva obsahuje velké číslo formátované podle amerických zvyklostí. Při "
+"překladu zajistěte, aby bylo číslo formátováno podle zvyklostí vašeho "
+"jazyka. Možná budete muset nahradit znaky čárka (,) a tečka (.) jinými znaky "
+"a možná budete muset použít i jinou číselnou soustavu. Ujistěte se, že "
+"rozumíte americkému formátování: toto číslo je větší než jeden tisíc."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2128,6 +2206,11 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do so."
 msgstr ""
+"Tato zpráva odkazuje na míle. Pokud to programátoři programu podporují, "
+"můžete to ve vašem překladu změnit na kilometry, pokud jde o běžněji "
+"používanou jednotku ve vašem jazyce. Upozorňujeme, že 1 míle je přibližně "
+"1,6 km. Automatické kontroly pro „čísla“ si budou na změnu stěžovat, ale v "
+"tomto případě je provedení změny bezpečné."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2136,6 +2219,10 @@ msgid ""
 "angle brackets (<...>). The double quotes (\") should never be changed in "
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
+"Tato zpráva obsahuje odkaz na který může uživatel kliknou pro otevření "
+"stránky s nápovědou. Zajistěte zachování informací mezi špičatými závorkami "
+"(<...>). Dvojité uvozovky uvnitř tagů nesmí být měněny ani v případě, že váš "
+"jazyk používá jiné typy uvozovek."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2145,6 +2232,10 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tags of the previous translation."
 msgstr ""
+"Tato zpráva obsahuje podobný odkaz jako ta předchozí, ale programátor se "
+"rozhodl vložit tagy jako proměnné, tak aby je překladatelé nemohli změnit. "
+"Zajistěte, aby byly proměnné (%s) správně umístěny jako počáteční a koncové "
+"tagy v předchozím překladu."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2152,6 +2243,9 @@ msgid ""
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
+"Tato zpráva obsahuje tagy <b> a </b> použité pro zdůraznění slova, zatímco "
+"vše je uvnitř tagů <p> a </p>. Zajistěte, aby i váš překlad byl celý uvnitř "
+"tagů <p> a </p>."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2163,6 +2257,12 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Tato zpráva obsahuje podobný odkaz uvnitř tagů <span> a </span>. Zajistěte, "
+"aby ve vašem překladu buly zachovány všechny tagy (<...>), a odkaz byl celý "
+"uvnitř tagů <span> a </span>. Zajistěte, aby přeložený text uvnitř <a> tagů "
+"odpovídal zdrojovému výrazu „help page“ a překlad odpovídající druhé větě "
+"byl celý uvnitř <span> tagů. Všimněte si, že tečka na konci věty je uvnitř </"
+"span> tagu."
 
 #: virtaal/views/checksprojview.py
 msgid "Project Type"
@@ -2187,23 +2287,21 @@ msgid "Quality checks"
 msgstr "Kontroly kvality"
 
 #: virtaal/views/langview.py
-#, fuzzy
-#| msgid "New Language Pair"
 msgid "_New Language Pair…"
-msgstr "Nová dvojice jazyků"
+msgstr "_Nová dvojice jazyků…"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
-msgstr ""
+msgstr "_Zrušit"
 
 #: virtaal/views/mainview.py
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #. l10n: macOS app menu item that opens the Preferences dialog
 #: virtaal/views/mainview.py
 msgid "Settings…"
-msgstr ""
+msgstr "Nastavení…"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2214,14 +2312,12 @@ msgid "Choose a Translation File"
 msgstr "Zvolte soubor překladu"
 
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "Choose a Translation File"
 msgid "Choose a PO Template File"
-msgstr "Zvolte soubor překladu"
+msgstr "Zvolte soubor PO šablony"
 
 #: virtaal/views/mainview.py
 msgid "PO Template Files"
-msgstr ""
+msgstr "Soubory PO šablon"
 
 #: virtaal/views/mainview.py
 msgid ""
@@ -2232,10 +2328,8 @@ msgstr ""
 "Chcete změny uložit?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#, fuzzy
-#| msgid "Save"
 msgid "_Save"
-msgstr "Uložit"
+msgstr "_Uložit"
 
 #: virtaal/views/mainview.py
 msgid "_Discard"
@@ -2243,7 +2337,7 @@ msgstr "_Zahodit"
 
 #: virtaal/views/mainview.py
 msgid "Could not open the dropped file - its file name could not be decoded."
-msgstr ""
+msgstr "Přetažený soubor nelze otevřít - nepodařilo se dekódovat jeho název."
 
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
@@ -2259,10 +2353,9 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
+#, python-format
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -2279,15 +2372,15 @@ msgstr "Informace pro hlavičku"
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
-msgstr ""
+msgstr "K dispozici je Virtaal %s (aktuálně používáte %s)"
 
 #: virtaal/views/mainview.py
 msgid "Release Notes"
-msgstr ""
+msgstr "Poznámky k vydání"
 
 #: virtaal/views/mainview.py
 msgid "Download"
-msgstr ""
+msgstr "Stáhnout"
 
 #: virtaal/views/mainview.py
 #, python-format
@@ -2295,76 +2388,66 @@ msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
 msgstr ""
+"Nepodařilo se načíst konfigurační soubor, Virtaal byl spuštěn s výchozím "
+"nastavením. Starý soubor byl zazálohován do: %s"
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
-#| msgid "Could not open log file '%(filename)s'"
+#, python-format
 msgid "Couldn't open '%(file)s': %(reason)s"
-msgstr "Soubor záznamu ‚%(filename)s‘ se nepodařilo otevřít"
+msgstr "Nepodařilo se otevřít soubor '%(file)s': %(reason)s"
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
-#| msgid "Could not open log file '%(filename)s'"
+#, python-format
 msgid "Couldn't open '%(file)s'."
-msgstr "Soubor záznamu ‚%(filename)s‘ se nepodařilo otevřít"
+msgstr "Nepodařilo se otevřít soubor '%(file)s'."
 
 #: virtaal/views/mainview.py
 msgid "Restart Virtaal for the new language to take effect."
-msgstr ""
+msgstr "Aby se změny jazyka projevili, restartujte Virtaal."
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "Before:"
 msgid "Before"
-msgstr "Před:"
+msgstr "Před"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "After:"
 msgid "After"
-msgstr "Po:"
+msgstr "Po"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "Unchanged"
 msgid "Change"
-msgstr "Nezměněno"
+msgstr "Změna"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "Total: %d"
 msgid "Total"
-msgstr "Celkem: %d"
+msgstr "Celkem"
 
 #: virtaal/views/mainview.py
 msgid "Source and target language are the same."
-msgstr ""
+msgstr "Zdrojový a cílový jazyk jsou shodné."
 
 #: virtaal/views/mainview.py
-#, fuzzy
-#| msgid "New Language Pair"
 msgid "Change Language Pair"
-msgstr "Nová dvojice jazyků"
+msgstr "Změnit jazykovou dvojici"
 
 #: virtaal/views/mainview.py
 msgid "This file is read-only."
-msgstr ""
+msgstr "Tento soubor je pouze pro čtení."
 
 #: virtaal/views/mainview.py
 msgid "Save As…"
-msgstr ""
+msgstr "Uložit jako…"
 
 #: virtaal/views/mainview.py
 msgid "Logs"
-msgstr ""
+msgstr "Protokoly"
 
 #: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
 msgid "_Close"
-msgstr ""
+msgstr "_Zavřít"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
@@ -2375,30 +2458,28 @@ msgstr "P_rocházení:"
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
 msgid "None"
-msgstr ""
+msgstr "Bez kontextu"
 
 #. l10n: How many units to show around the one being edited, when a
 #. navigation mode only goes to some units
 #: virtaal/views/modeview.py
 msgid "Conte_xt:"
-msgstr ""
+msgstr "Konte_xt:"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
-#| msgid "Poedit settings"
 msgid "Settings"
-msgstr "Nastavení Poeditu"
+msgstr "Nastavení"
 
 #: virtaal/views/prefsview.py
 msgid "System default"
-msgstr ""
+msgstr "Výchozí systémový"
 
 #. l10n: A UI language: its name in your language, then in
 #. itself, e.g. "French - Français"
 #: virtaal/views/prefsview.py
 #, python-format
 msgid "%(language)s - %(endonym)s"
-msgstr ""
+msgstr "%(language)s - %(endonym)s"
 
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
@@ -2428,11 +2509,11 @@ msgstr "Zkontrolováno:"
 #: virtaal/views/propertiesview.py
 #, python-format
 msgid "(%s)"
-msgstr ""
+msgstr "(%s)"
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
+msgstr "Tento soubor obsahuje neuložené změny."
 
 #: virtaal/views/storeview.py
 msgid "Export failed"
@@ -2448,29 +2529,24 @@ msgstr "O jeden krok workflow zpět (Ctrl+Shift+Enter)"
 
 #: virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
-msgstr "Po kliknutí můžete zvolit konkrétní fázi workflow"
+msgstr "Klikněte pro volbu konkrétní fáze workflow"
 
 #: virtaal/views/unitview.py
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "O jeden krok workflow vpřed (Ctrl+Enter)"
 
 #: virtaal/views/unitview.py
-#, fuzzy
-#| msgid "P_revious Placeable"
 msgid "Previous state"
-msgstr "_Předchozí aktivní řetězec"
+msgstr "Předchozí stav"
 
 #: virtaal/views/unitview.py
-#, fuzzy
-#| msgid "Select States"
 msgid "Next state"
-msgstr "Výběr stavů"
+msgstr "Následující stav"
 
 #: virtaal/views/widgets/aboutdialog.py
-#, fuzzy
 #| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
-msgstr "Copyright © 2007-2011 Zuza Software Foundation"
+msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -2510,16 +2586,12 @@ msgid "translator-credits"
 msgstr "Jindřich Šesták <khagaroth@gmail.com>"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
-#| msgid "Language"
 msgid "Edit Language"
-msgstr "Jazyk"
+msgstr "Upravit jazyk"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
-#| msgid "Language name:"
 msgid "Enter a language name."
-msgstr "Název jazyka:"
+msgstr "Zadejte název jazyka."
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
@@ -2530,15 +2602,13 @@ msgid "Language code must be at least 2 characters long."
 msgstr "Kód jazyka musí mít nejméně 2 znaky."
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
-#| msgid "Language code must be an ASCII string."
 msgid "Language code must not contain spaces."
-msgstr "Kód jazyka musí být ASCII řetězec."
+msgstr "Kód jazyka nesmí obsahovat mezery."
 
 #: virtaal/views/widgets/langadddialog.py
 #, python-format
 msgid "Language code %s is already used."
-msgstr ""
+msgstr "Kód jazyka %s je již používán."
 
 #: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
@@ -2550,198 +2620,172 @@ msgid "Code"
 msgstr "Kód"
 
 #: virtaal/views/widgets/selectview.py
-#, fuzzy
-#| msgid "Configure..."
 msgid "Configure…"
-msgstr "Nastavení..."
+msgstr "Nastavení…"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Global"
-msgstr ""
+msgstr "Globální"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Open a file"
-msgstr ""
+msgstr "Otevřít soubor"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Current File"
 msgid "Save the current file"
-msgstr "Aktuální soubor"
+msgstr "Uložit aktuální soubor"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
-msgstr ""
+msgstr "Uložit aktuální soubor pod novým názvem"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Current File"
 msgid "Close the current file"
-msgstr "Aktuální soubor"
+msgstr "Zavřít aktuální soubor"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Virtaal"
 msgid "Quit Virtaal"
-msgstr "Virtaal"
+msgstr "Ukončit Virtaal"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
-msgstr ""
+msgstr "Zobrazit dialog nastavení"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr ""
+msgstr "Zobrazit vlastnosti a statistiku souboru"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Přepnout režim zobrazení na celou obrazovku"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show this Keyboard Shortcuts window"
-msgstr ""
+msgstr "Zobrazit okno klávesových skratek"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "_Navigation"
 msgid "Navigation"
-msgstr "_Procházení"
+msgstr "Procházení"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Machine translation"
 msgid "Move to next translation"
-msgstr "Strojový překlad"
+msgstr "Přejít na další překlad"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
-msgstr ""
+msgstr "Přejít na předchozí položku"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next unit"
-msgstr ""
+msgstr "Přejít na další položku"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units up"
-msgstr ""
+msgstr "Přejít o 10 položek výše"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
-msgstr ""
+msgstr "Přejít o 10 položek níže"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to first unit"
-msgstr ""
+msgstr "Přejít na první položku"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to last unit"
-msgstr ""
+msgstr "Přejít na poslední položku"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next search match"
-msgstr ""
+msgstr "Přejít na další výsledek hledání"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous search match"
-msgstr ""
+msgstr "Přejít na předchozí výsledek hledání"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Units"
-msgstr ""
+msgstr "Položky"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "P_revious Placeable"
 msgid "Select previous placeable"
-msgstr "_Předchozí aktivní řetězec"
+msgstr "Vybrat předchozí aktivní řetězec"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "_Next Placeable"
 msgid "Select next placeable"
-msgstr "_Následující aktivní řetězec"
+msgstr "Vybrat následující aktivní řetězec"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
-msgstr ""
+msgstr "Vložit vybraný aktivní řetězec"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Replace the translation with the source"
-msgstr ""
+msgstr "Nahradit překlad zdrojovým textem"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
-msgstr ""
+msgstr "Pokud není nic vybráno, zkopírovat zdrojový text"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr ""
+msgstr "Vložit odřádkování"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr ""
+msgstr "Vrátit zpět poslední změnu"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr ""
+msgstr "Obnovit vrácenou změnu"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
-msgstr "Návrhy _překladu"
+msgstr "Použít první návrh překladu"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
-msgstr ""
+msgstr "Zobrazit / skrýt kontroly"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
-msgstr "Návrhy _překladu"
+msgstr "Zobrazit návrhy překladu pro tuto položku"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
-msgstr "Návrhy _překladu"
+msgstr "Zapnout nebo vypnout návrhy překladu"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
-msgstr "Návrhy _překladu"
+msgstr "Skrýt zobrazené návrhy překladu"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
-#| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
-msgstr "Místní seznamy výrazů"
+msgstr "Přidat výraz do souboru místní terminologie"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr ""
+msgstr "Přesun aktivního vstupu"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"
-msgstr ""
+msgstr "Přejít na další cílové pole"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the previous target field"
-msgstr ""
+msgstr "Přejít na předchozí cílové pole"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the language-pair selector"
-msgstr ""
+msgstr "Přejít na výběr jazykového páru"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the \"Navigation:\" mode selector"
-msgstr ""
+msgstr "Přejít na výběr možností \"Procházení\""
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the search bar and return to normal editing"
-msgstr ""
+msgstr "Zavřít panel hledání, vrátit se k běžné editaci"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"

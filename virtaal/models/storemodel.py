@@ -124,6 +124,8 @@ class StoreModel(BaseModel):
         """Return totals for word and string counts."""
         if not self.filename:
             return {}
+        if not os.path.isfile(self.filename):
+            return self.get_live_stats_totals()
         from virtaal.support import statsdb, statsworker
         statsworker.wait()
         return statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
@@ -249,12 +251,17 @@ class StoreModel(BaseModel):
         else:
             self._checker = checker
 
-        from virtaal.support import statsdb, statsworker
-        statsworker.wait()
-        errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
-        # The stats cache only knows the file on disk.
-        checks = fix_indexes(errors, self._valid_units)
-        for index in self._edited_units:
+        if not os.path.isfile(filename):
+            checks = {}
+            edited_units = range(len(self))
+        else:
+            from virtaal.support import statsdb, statsworker
+            statsworker.wait()
+            errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
+            # The stats cache only knows the file on disk.
+            checks = fix_indexes(errors, self._valid_units)
+            edited_units = self._edited_units
+        for index in edited_units:
             self._recheck_unit(checks, index)
         self.checks = checks
         return self.checks
@@ -295,9 +302,12 @@ class StoreModel(BaseModel):
         oldfileobj = self._trans_store.fileobj
 
         #get a copy of old stats before we convert
-        from translate.filters import checks
-        statsworker.wait()
-        oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
+        if os.path.isfile(oldfilename):
+            from translate.filters import checks
+            statsworker.wait()
+            oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
+        else:
+            oldstats = statsworker.state_lists(self._trans_store)
 
         from translate.convert import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)

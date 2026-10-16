@@ -28,23 +28,24 @@ Required Packages
   installing separately (``pip install pycairo``), not part of
   ``pip install .``
 - `Translate Toolkit <https://pypi.org/project/translate-toolkit/>`_
+- `fluent.syntax <https://pypi.org/project/fluent.syntax/>`_ - Fluent
+  (``.ftl``) files
 - `lxml <https://pypi.org/project/lxml/>`_
-- `PyCurl <https://pypi.org/project/pycurl/>`_
+- `PycURL <https://pypi.org/project/pycurl/>`_
+- `certifi <https://pypi.org/project/certifi/>`_
 - `diff_match_patch <https://pypi.org/project/diff-match-patch/>`_
 - `python-Levenshtein <https://pypi.org/project/python-Levenshtein/>`_
 - `cheroot <https://pypi.org/project/cheroot/>`_
 - `Bottle <https://pypi.org/project/bottle/>`_
+- `pycountry <https://pypi.org/project/pycountry/>`_
+- `PyYAML <https://pypi.org/project/PyYAML/>`_
+- `Babel <https://pypi.org/project/babel/>`_
 
 The remaining Python packages above are all declared in ``pyproject.toml`` and
 installed automatically by ``pip install .`` - only GTK3/PyGObject/cairo
-and pycairo need installing separately first.
-
-Optionally, GNU gettext's libgettextpo, for the :ref:`msgfmt check
-<checks#msgfmt>` - without it, that check is left out:
-
-- Linux: ``libgettextpo0`` or similar
-- macOS: Homebrew's ``gettext``, already installed with ``gtk+3``
-- Windows: ``gettextpo.dll``, part of gvsbuild's GTK3 build
+and pycairo need installing separately first. ``pyproject.toml`` also
+has extras: ``spellcheck`` (pyenchant), ``test`` (see :doc:`testing`)
+and ``docs`` (Sphinx).
 
 .. _building#optional_packages:
 
@@ -53,19 +54,23 @@ Optional Packages
 
 These are not build dependencies but usually improve the user experience.
 
-- Enchant, pyenchant and GtkSpell3 (might be packaged as
-  gnome-python-extras or something similar) -- provides all :doc:`spell
-  checking <spell_checking>` functionality. The frozen Windows/macOS
-  builds already bundle enchant + one starter dictionary each; only a
-  from-source checkout needs these installed separately.
+- Enchant, pyenchant (``pip install .[spellcheck]``) and GtkSpell3 --
+  provides all :doc:`spell checking <spell_checking>` functionality.
+  The frozen Windows/macOS builds already bundle enchant + one starter
+  dictionary each; only a from-source checkout needs these installed
+  separately.
+- GNU gettext's libgettextpo -- for the :ref:`msgfmt check
+  <checks#msgfmt>`; without it, that check is left out:
+
+  - Linux: ``libgettextpo0`` or similar
+  - macOS: Homebrew's ``gettext``, already installed with ``gtk+3``
+  - Windows: ``gettextpo.dll``, part of gvsbuild's GTK3 build
 - iso-codes -- if you want translated language names
 - glib-networking -- uses the desktop's proxy settings on Linux; usually
   installed with GTK
 - The optional fts3 module for sqlite3 will be used if it is available -
   provides speedups with TM retrieval  (it is safe to just overwrite a better
   sqlite library over the one available in Python for Windows)
-- python-Levenshtein -- speeds up Levenshtein distance measures, if not present
-  we'll use a pure Python version.
 
 .. _building#unix:
 

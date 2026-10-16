@@ -19,9 +19,20 @@ siblings) that are deliberately *not* picked up by pytest - those are
 manual, interactive GTK demo runners predating the automated suite,
 kept for hands-on widget debugging, not real coverage.
 
+Besides the :doc:`building` requirements, the suite uses these system
+tools - see the ``test`` job in ``.github/workflows/ci.yml`` for the
+exact Linux packages:
+
+- ``ps`` (procps or procps-ng)
+- GNU gettext's ``msgfmt`` and ``msgmerge``, and libgettextpo - tests
+  that need them are skipped without them
+- Enchant, GtkSpell3 and an ``en_US`` hunspell dictionary - the spell
+  checking tests are skipped without them
+- Xvfb, on Linux without a real display (see below)
+
 Run it the same way CI does::
 
-  pip install .[test]
+  pip install .[test,spellcheck]
   pytest -rvxs virtaal
 
 On Linux without a real display, wrap it in ``xvfb-run`` (CI does)::

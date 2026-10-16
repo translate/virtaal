@@ -1,16 +1,8 @@
 #!/bin/bash
 
-# Guess the target application if we aren't supplied one
-if [ $# == 1 ]; then
-	targetapp=$1
-else
-	targetapp=$(basename "$(pwd)")
-	echo "Guessing application name is \"${targetapp}\""
-fi
-
-desktop=share/applications/$targetapp.desktop
-metainfo=share/metainfo/$targetapp.metainfo.xml
-mimetype=share/mime/packages/$targetapp-mimetype.xml
+desktop=share/applications/io.github.translate.Virtaal.desktop
+metainfo=share/metainfo/io.github.translate.Virtaal.metainfo.xml
+mimetype=share/mime/packages/virtaal-mimetype.xml
 
 # GETTEXTDATADIRS: po/its/ holds a custom ITS rule for
 # virtaal-mimetype.xml.in - shared-mime-info XML has no rule built

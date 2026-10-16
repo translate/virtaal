@@ -448,3 +448,37 @@ def test_len_is_zero_without_a_store():
     model._trans_store = None
 
     assert len(model) == 0
+
+
+# The tutorial is deleted from disk as soon as it is open (#4312).
+
+def test_update_checks_for_a_file_no_longer_on_disk(tmp_path):
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    (tmp_path / "checks.po").unlink()
+
+    assert model.update_checks(checker=checks.StandardChecker()) == {'check-endpunc': [0]}
+
+
+def test_get_stats_totals_for_a_file_no_longer_on_disk(tmp_path):
+    model = _states_model(tmp_path)
+    (tmp_path / "states.po").unlink()
+
+    assert model.get_stats_totals() == model.get_live_stats_totals()
+
+
+def test_update_file_for_a_file_no_longer_on_disk(tmp_path):
+    old_path = tmp_path / "old.po"
+    new_path = tmp_path / "new.po"
+    old_path.write_bytes(_OLD_PO)
+    new_path.write_bytes(_NEW_PO)
+    compared = []
+    controller = _FakeController()
+    controller.compare_stats = lambda old, new: compared.append(
+        {key: (len(old[key]), len(new[key])) for key in ('total', 'translated', 'untranslated')})
+    model = StoreModel(str(old_path), controller)
+    old_path.unlink()
+
+    model.update_file(str(new_path))
+
+    assert compared == [{'total': (1, 2), 'translated': (1, 1), 'untranslated': (0, 1)}]

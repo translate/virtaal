@@ -5,6 +5,9 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import sys
+import types
+
 from virtaal.common import pan_app
 from virtaal.support import asset_manifest as am
 from virtaal.support.asset_manifest import entry_shas, installed_asset_key
@@ -106,6 +109,14 @@ def _reset_installed_assets():
 def test_does_not_connect_at_all_without_enchant():
     main_controller = _FakeMainController()
     DictionaryDownloadWatcher(main_controller, enchant_module=None)
+    assert main_controller.lang_controller.handlers == {}
+
+
+def test_does_not_connect_with_a_leftover_enchant_directory(monkeypatch):
+    """#4313: a leftover "enchant" directory isn't pyenchant."""
+    monkeypatch.setitem(sys.modules, 'enchant', types.ModuleType('enchant'))
+    main_controller = _FakeMainController(target_lang='af')
+    DictionaryDownloadWatcher(main_controller)
     assert main_controller.lang_controller.handlers == {}
 
 

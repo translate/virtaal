@@ -15,6 +15,7 @@ from gi.repository import GLib
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
+from virtaal.support.enchant_compat import import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
 
@@ -83,10 +84,12 @@ class Plugin(BasePlugin):
         try:
             import gi
             gi.require_version('GtkSpell', '3.0')
-            import enchant
             from gi.repository import GtkSpell as gtkspell
         except (ImportError, ValueError) as e:
             raise PluginUnsupported(str(e))
+        enchant = import_enchant()
+        if enchant is None:
+            raise PluginUnsupported("pyenchant isn't installed")
         self.gtkspell = gtkspell
         self.enchant = enchant
         # languages that we've handled before:

@@ -91,6 +91,7 @@ def _show_dialog(full_text):
     from gi.repository import Gtk
 
     from virtaal.support import openmailto
+    from virtaal.views.direction import fix_expander_direction
 
     dialog = Gtk.MessageDialog(
         None, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.NONE,
@@ -100,6 +101,7 @@ def _show_dialog(full_text):
           "reporting it helps get it fixed."))
 
     expander = Gtk.Expander(label=_("Details"))
+    fix_expander_direction(expander)
     textview = Gtk.TextView(editable=False, monospace=True)
     textview.get_buffer().set_text(full_text)
     scrolled = Gtk.ScrolledWindow()

@@ -8,6 +8,7 @@
 from gi.repository import GLib, GObject, Gtk
 
 from virtaal.views import theme
+from virtaal.views.direction import fix_expander_direction
 from virtaal.views.theme import current_theme, set_widget_bg_color, set_widget_fg_color
 
 
@@ -110,6 +111,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         # collapsed - without this, Down would land on the invisible
         # 'More...' button instead of moving past the expander.
         exp_features = self.widgets['exp_features']
+        fix_expander_direction(exp_features)
         btn_more = self.widgets['buttons']['features_more']
         txt_features = self.widgets['txt_features']
 

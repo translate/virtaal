@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-13T22:48:48Z",
- "commit": "d10c1551caf6e36e89ff82698fe766b3d2fc2756",
+ "generated": "2026-10-16T07:45:37Z",
+ "commit": "a3d6b232f7d06f03a2678893d92679ccaa70e502",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -500,12 +500,12 @@
    "code": "sv",
    "name": "Swedish",
    "endonym": "svenska",
-   "core_missing": 22,
-   "rest_missing": 10,
-   "needed": 29,
-   "level2_missing": 123,
-   "level3_missing": 58,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "sw",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38479910051"
+ "packs": "https://github.com/translate/virtaal/actions/runs/38869010823"
 }

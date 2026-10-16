@@ -10,8 +10,10 @@
 GrepFilter.getmatches() always ORs re.LOCALE into its flags, even
 though it only ever compiles str patterns - Python 3.14+ raises
 "ValueError: cannot use LOCALE flag with a str pattern" instead of
-silently accepting it, crashing every search/replace. Upstream bug;
-drop this shim once translate-toolkit fixes it.
+silently accepting it, crashing every search/replace. It also wraps
+the pattern in a group, which moves a leading inline flag such as
+"(?i)" off the start - an error since Python 3.11. Upstream bugs;
+drop this shim once translate-toolkit fixes them.
 """
 
 import re
@@ -20,7 +22,7 @@ from translate.tools.pogrep import GrepFilter as _UpstreamGrepFilter
 
 
 class GrepFilter(_UpstreamGrepFilter):
-    """GrepFilter with the re.LOCALE/str-pattern crash fixed."""
+    """GrepFilter with the re.LOCALE and inline-flag errors fixed."""
 
     def getmatches(self, units):
         if not self.searchstring:
@@ -35,10 +37,10 @@ class GrepFilter(_UpstreamGrepFilter):
             flags |= re.IGNORECASE
         if not self.useregexp:
             searchstring = re.escape(searchstring)
-        self.re_search = re.compile(f"({searchstring})", flags)
+        self.re_search = re.compile(searchstring, flags)
 
         # Everything below here is unchanged from upstream's
-        # getmatches() - only the flags above differ.
+        # getmatches().
         from translate.tools.pogrep import find_matches
 
         matches = []

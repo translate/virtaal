@@ -1065,13 +1065,16 @@ jobs:
     #
     # Pull requests build arm64 only: the Intel runner is the slowest in
     # CI. The merge queue, main and tags build both.
+    #
+    # Not the newest runners: Homebrew's bottles target the runner's own
+    # macOS, so the runner sets the oldest macOS the app runs on (#4369).
     strategy:
       fail-fast: false
       matrix:
         include: >-
           ${{ fromJSON(github.event_name == 'pull_request'
-          && '[{"runner": "macos-latest", "arch": "arm64"}]'
-          || '[{"runner": "macos-latest", "arch": "arm64"}, {"runner": "macos-26-intel", "arch": "x86_64"}]') }}
+          && '[{"runner": "macos-14", "arch": "arm64"}]'
+          || '[{"runner": "macos-14", "arch": "arm64"}, {"runner": "macos-15-intel", "arch": "x86_64"}]') }}
     runs-on: ${{ matrix.runner }}
     # Notarization alone can take 5-15 minutes per submission.
     timeout-minutes: 45
@@ -1130,6 +1133,9 @@ jobs:
           # is one a human can actually compare against their checkout.
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport/packaging/macos/build_standalone.sh
+
+      - name: Check the declared minimum macOS
+        run: python3 devsupport/packaging/macos/minimum_macos.py --check dist/Virtaal.app
 
       - name: Report lite coverage
         # Library strings each shipped language would still show in

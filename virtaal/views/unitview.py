@@ -12,6 +12,8 @@ from gi.repository import Gdk, GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
 from translate.misc.multistring import multistring
+from translate.misc.xml_helpers import valid_chars_only
+from translate.storage.lisa import LISAunit
 from translate.storage.workflow import StateEnum
 
 from virtaal.common import GObjectWrapper
@@ -747,6 +749,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             nplurals = self.controller.main_controller.lang_controller.get_target_nplurals()
 
         visible_sources = [src for src in self.sources if src.props.visible]
+
+        text_filter = valid_chars_only if isinstance(self.unit, LISAunit) else None
+        for textbox in self.targets:
+            textbox.text_filter = text_filter
 
         rich_target = self.unit.rich_target
         rich_target_len = len(rich_target)

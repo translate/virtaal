@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")"
 
 desktop=share/applications/io.github.translate.Virtaal.desktop
 metainfo=share/metainfo/io.github.translate.Virtaal.metainfo.xml
@@ -10,16 +12,6 @@ mimetype=share/mime/packages/virtaal-mimetype.xml
 gettextdatadirs="$(pwd)/po${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
 export GETTEXTDATADIRS="$gettextdatadirs"
 
-if [ -d po ]; then
-	if [ -f  "${mimetype}".in ]; then
-		msgfmt --xml --template "${mimetype}".in -d po -o "$mimetype"
-	fi
-	if [ -f  "${metainfo}".in ]; then
-		msgfmt --xml --template "${metainfo}".in -d po -o "$metainfo"
-	fi
-	if [ -f  "${desktop}".in ]; then
-		msgfmt --desktop --template "${desktop}".in -d po -o "$desktop"
-	fi
-else
-	echo "$0: No translation directory"
-fi
+msgfmt --xml --template "$mimetype".in -d po -o "$mimetype"
+msgfmt --xml --template "$metainfo".in -d po -o "$metainfo"
+msgfmt --desktop --template "$desktop".in -d po -o "$desktop"

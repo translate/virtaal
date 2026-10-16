@@ -226,7 +226,7 @@ def test_the_rules_name_only_messages_virtaal_pot_has(gen):
 
 def test_the_rules_language_codes_are_known(gen):
     pytest.importorskip("tomllib")
-    assert gen.apply_names({}, gen.load_rules(), gen.read_linguas())["iso639-3"]["English"] == "1"
+    assert gen.apply_names({}, gen.load_rules(), gen.read_linguas())["iso639-3"]["English"] == "1~"
 
 
 def test_written_file_says_its_generated_and_reads_back(gen, tmp_path):

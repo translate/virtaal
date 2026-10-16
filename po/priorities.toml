@@ -195,7 +195,7 @@ msgids = [
 # harvest's own file is no guide. Any other name isn't listed.
 [names]
 # Almost always the source language.
-english = "1"
+english = "1~"
 # The languages in po/LINGUAS, and the countries of their variants
 # (en_GB, pt_BR, ...).
 supported = "2"

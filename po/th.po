@@ -803,9 +803,8 @@ msgstr ""
 # 88%
 #. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
-#, fuzzy
 msgid "Translator credits"
-msgstr "มนัสวิน หาญมงคลชัย"
+msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

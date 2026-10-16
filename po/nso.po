@@ -815,7 +815,7 @@ msgstr "Thulano e kopafaditšwego"
 #. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
-msgstr "Pheledi Mathibela"
+msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

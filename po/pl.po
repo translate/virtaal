@@ -811,7 +811,7 @@ msgstr "Konflikt wpisów w kompendium"
 #. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
-msgstr "Łukasz Jernaś <deejay1@srem.org>, 2010, 2011"
+msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

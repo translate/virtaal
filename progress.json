@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-16T08:05:08Z",
- "commit": "0c1cefe92891e118492600198825c06f0f9d5082",
+ "generated": "2026-10-16T21:33:35Z",
+ "commit": "c3976d6d10f4ea3b9fd9c62a529134a5d324debc",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -555,12 +555,12 @@
    "code": "uk",
    "name": "Ukrainian",
    "endonym": "українська",
-   "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
-   "level2_missing": 123,
-   "level3_missing": 55,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "vi",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38870930348"
+ "packs": "https://github.com/translate/virtaal/actions/runs/38969874219"
 }

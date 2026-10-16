@@ -10,7 +10,7 @@ from types import SimpleNamespace
 
 import pytest
 from gi.repository import Gdk, Gtk
-from translate.storage import xliff
+from translate.storage import pypo, xliff
 
 from virtaal.modes.searchmode import SearchMode
 from virtaal.support.pogrep_compat import GrepFilter
@@ -1332,3 +1332,46 @@ def test_create_widgets_wires_the_case_and_regex_toggles_to_refresh_proxy():
     calls.clear()
     mode.chk_regex.set_active(True)
     assert calls == ['cancel', 'update']
+
+
+# update_search #
+
+def _search_mode_for(text, regex):
+    store = pypo.pofile.parsestring(b'msgid "Open file"\nmsgstr "Maak oop"\n')
+    mode = SearchMode.__new__(SearchMode)
+    mode.MAX_RESULTS = 200
+    mode.ent_search = SimpleNamespace(get_text=lambda: text)
+    mode.chk_casesensitive = SimpleNamespace(get_active=lambda: False)
+    mode.chk_regex = SimpleNamespace(get_active=lambda: regex)
+    mode.storecursor = SimpleNamespace(model=_FakeStoreModel(store.units), index=0, indices=None)
+    mode.default_base = 'base'
+    mode.backgrounds = []
+    mode._set_search_bg = mode.backgrounds.append
+    mode._highlight_matches = lambda: None
+    return mode
+
+
+@pytest.mark.parametrize('pattern', ['(', '[a-', '.*+?', '{0}', r'\p{L}', 'a{99999999999}'])
+def test_update_search_treats_an_invalid_regular_expression_as_no_matches(monkeypatch, pattern):
+    # #4341: search runs while typing, so "(" is seen before ")" is typed.
+    from virtaal.modes import searchmode
+    monkeypatch.setattr(searchmode.GLib, 'idle_add', lambda *a: None)
+    mode = _search_mode_for(pattern, regex=True)
+
+    mode.update_search()
+
+    assert mode.matches == []
+    assert mode.storecursor.indices == []
+    assert mode.filter.re_search is None
+    assert mode.backgrounds == [searchmode.current_theme['warning_bg']]
+
+
+def test_update_search_finds_a_valid_regular_expression(monkeypatch):
+    from virtaal.modes import searchmode
+    monkeypatch.setattr(searchmode.GLib, 'idle_add', lambda *a: None)
+    mode = _search_mode_for('fi(le)', regex=True)
+
+    mode.update_search()
+
+    assert mode.storecursor.indices == [0]
+    assert mode.backgrounds == ['base']

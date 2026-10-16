@@ -804,6 +804,7 @@ msgstr "Parantez"
 msgid "Compendium conflict"
 msgstr "Kısaltma çakışması"
 
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr "Katkıda bulunan çevirmenler"

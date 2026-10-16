@@ -123,7 +123,7 @@ domains:
     - Taiwan
     - United Kingdom
   iso639-3:
-    '1':
+    1~:
     - English
     '2':
     - Afrikaans

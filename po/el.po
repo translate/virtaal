@@ -810,6 +810,7 @@ msgstr "Αγκύλες"
 msgid "Compendium conflict"
 msgstr "Σύγκρουση σύνοψης"
 
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr "Μνείες μεταφραστών"

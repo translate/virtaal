@@ -803,6 +803,7 @@ msgstr "Заграде"
 msgid "Compendium conflict"
 msgstr "Сукоб у збирци превода"
 
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr "Заслуге преводилаца"

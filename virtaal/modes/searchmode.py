@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
+import re
 from difflib import SequenceMatcher
 
 from gi.repository import Gdk, GLib, Gtk
@@ -235,15 +236,20 @@ class SearchMode(BaseMode):
         # See virtaal.support.pogrep_compat for why this isn't imported
         # straight from translate.tools.pogrep.
         from virtaal.support.pogrep_compat import GrepFilter
-        self.filter = GrepFilter(
-            searchstring=self.ent_search.get_text(),
+        store_units = self.storecursor.model.get_units()
+        filter_args = dict(
             searchparts=('source', 'target'),
             ignorecase=not self.chk_casesensitive.get_active(),
             useregexp=self.chk_regex.get_active(),
             max_matches=self.MAX_RESULTS
         )
-        store_units = self.storecursor.model.get_units()
-        self.matches, indexes = self.filter.getmatches(store_units)
+        try:
+            self.filter = GrepFilter(searchstring=self.ent_search.get_text(), **filter_args)
+            self.matches, indexes = self.filter.getmatches(store_units)
+        except (re.error, OverflowError):
+            # An invalid or unfinished regular expression matches nothing.
+            self.filter = GrepFilter(searchstring='', **filter_args)
+            self.matches, indexes = [], []
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
 
         self._match_text_cache = {}

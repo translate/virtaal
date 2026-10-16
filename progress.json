@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-16T07:45:37Z",
- "commit": "a3d6b232f7d06f03a2678893d92679ccaa70e502",
+ "generated": "2026-10-16T08:05:08Z",
+ "commit": "0c1cefe92891e118492600198825c06f0f9d5082",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -61,8 +61,8 @@
    "name": "Asturian",
    "endonym": "asturianu",
    "core_missing": 35,
-   "rest_missing": 10,
-   "needed": 42,
+   "rest_missing": 11,
+   "needed": 43,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -105,8 +105,8 @@
    "name": "Catalan",
    "endonym": "català",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -116,8 +116,8 @@
    "name": "Catalan (Spain, Valencian)",
    "endonym": "català (Espanya, valencià)",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -226,8 +226,8 @@
    "name": "Faroese",
    "endonym": "føroyskt",
    "core_missing": 36,
-   "rest_missing": 8,
-   "needed": 41,
+   "rest_missing": 9,
+   "needed": 42,
    "level2_missing": 123,
    "level3_missing": 56,
    "ships": "50%"
@@ -281,8 +281,8 @@
    "name": "Icelandic",
    "endonym": "íslenska",
    "core_missing": 28,
-   "rest_missing": 6,
-   "needed": 31,
+   "rest_missing": 7,
+   "needed": 32,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -314,8 +314,8 @@
    "name": "Korean",
    "endonym": "한국어",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 87,
    "level3_missing": 55,
    "ships": "50%"
@@ -336,8 +336,8 @@
    "name": "Lithuanian",
    "endonym": "lietuvių",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -369,8 +369,8 @@
    "name": "Northern Sotho",
    "endonym": "Sesotho sa Leboa",
    "core_missing": 32,
-   "rest_missing": 6,
-   "needed": 35,
+   "rest_missing": 7,
+   "needed": 36,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -402,8 +402,8 @@
    "name": "Polish",
    "endonym": "polski",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -435,8 +435,8 @@
    "name": "Russian",
    "endonym": "русский",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -600,12 +600,12 @@
    "name": "Zulu",
    "endonym": "isiZulu",
    "core_missing": 32,
-   "rest_missing": 6,
-   "needed": 35,
+   "rest_missing": 7,
+   "needed": 36,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38869010823"
+ "packs": "https://github.com/translate/virtaal/actions/runs/38870930348"
 }

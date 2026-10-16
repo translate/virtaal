@@ -135,6 +135,8 @@ class TextBox(Gtk.TextView):
         self._render_pending = False
         self.elem_before_edit = None
         self.role = role
+        # Removes characters the unit's file format can't store, or None.
+        self.text_filter = None
         self.selector_textbox = selector_textbox or self
         self.selector_textboxes = [selector_textbox or self]
         self.selected_elem = None
@@ -231,6 +233,10 @@ class TextBox(Gtk.TextView):
             # If text is self.elem, we are busy with a refresh and we should remember the selected element.
             self.selected_elem = None
             self.selected_elem_index = None
+
+            if self.text_filter is not None:
+                text = text.copy()
+                text.apply_to_strings(self.text_filter)
 
             # We have to edit the existing .elem for the sake of the undo controller
             if self.placeables_controller:
@@ -926,6 +932,14 @@ class TextBox(Gtk.TextView):
             return
 
         ins_text = forceunicode(ins_text[:length])
+        if self.text_filter is not None:
+            filtered = self.text_filter(ins_text)
+            if filtered != ins_text:
+                # Insert the filtered text instead; this handler runs again for it.
+                buffer.stop_emission_by_name('insert-text')
+                if filtered:
+                    buffer.insert(iter, filtered)
+                return
         before = self.elem.copy()
         buff_offset = iter.get_offset()
         gui_info = self.elem.gui_info

@@ -163,6 +163,23 @@ def test_show_schedules_the_width_calculation(monkeypatch):
     func(*args)  # must not raise on an unrealized/zero-allocation widget
 
 
+def test_width_calculation_skips_a_welcome_screen_hidden_before_it_runs(monkeypatch):
+    # A file opened at start-up hides the screen before the idle
+    # callback runs, leaving a 1px allocation: 1 - 1 - 50 is -50.
+    view = _make_view()
+    calls = []
+    monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda func, *a, **k: calls.append((func, a)))
+    view.show()
+    view.hide()
+    widths = []
+    view.widget.widgets['txt_features'].set_size_request = lambda w, h: widths.append(w)
+
+    func, args = calls[0]
+    func(*args)
+
+    assert all(w >= -1 for w in widths)
+
+
 def test_show_focuses_open(monkeypatch):
     monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda *a, **k: None)
     view = _make_view()

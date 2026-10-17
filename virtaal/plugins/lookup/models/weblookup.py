@@ -420,7 +420,7 @@ class WebLookupAddDialog:
         self.lbl_url_name_error.set_text(error)
         self.lbl_url_name_error.set_visible(bool(error))
         self.btn_url_ok.set_sensitive(
-            bool(self.ent_url_name.get_text().strip()) and bool(self.ent_url.get_text()) and not error
+            bool(self.ent_url_name.get_text().strip()) and bool(self.ent_url.get_text().strip()) and not error
         )
 
     def _name_error(self, url_id):

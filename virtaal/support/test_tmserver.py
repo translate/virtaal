@@ -163,6 +163,22 @@ def test_decode_path_keeps_path_info_without_a_request_uri(monkeypatch):
     assert _decoded_path(monkeypatch, environ) == '/en/af/unit/Open%2FSave'
 
 
+# One port per case: xdist runs them at the same time.
+@pytest.mark.parametrize('source, port', [
+    ('Press AND hold the power button', 18782),
+    ('Do NOT remove the cover while printing', 18783),
+    ('Place the printer NEAR the wall outlet', 18784),
+])
+def test_translate_unit_matches_a_source_with_a_capitalised_fts_operator(tmp_path, source, port):
+    # #4332: an unquoted AND, NOT or NEAR made the full-text query fail.
+    app = _start_server(tmp_path / 'tm.db', port)
+    app.tmdb.add_dict({'source': source.lower(), 'target': 'x', 'context': ''}, 'en', 'af')
+
+    matches = _translate(port, source, 'en', 'af')
+
+    assert matches[0]['source'] == source.lower()
+
+
 def test_add_unit_then_translate_unit_round_trips_over_http(tmp_path):
     port = 18767
     _start_server(tmp_path / 'tm.db', port)

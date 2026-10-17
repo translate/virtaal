@@ -17,6 +17,7 @@ Installation
 ------------
 Download the latest release (Windows installer, macOS ``.dmg``, Linux
 Flatpak) from the `Releases page <https://github.com/translate/virtaal/releases>`_.
+The macOS builds need macOS 15 (Sequoia) or later.
 To build from source, see
 http://docs.translatehouse.org/projects/virtaal/en/latest/building.html
 

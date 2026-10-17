@@ -42,6 +42,7 @@ Installation
 ============
 Download the latest release (Windows installer, macOS `.dmg`, Linux
 Flatpak) from the `Releases page <https://github.com/translate/virtaal/releases>`_.
+The macOS builds need macOS 15 (Sequoia) or later.
 On Linux, pick the ``.flatpak`` for your machine (``x86_64`` or
 ``aarch64``) and install it with::
 

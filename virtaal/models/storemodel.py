@@ -348,6 +348,10 @@ class StoreModel(BaseModel):
         else:
             from translate.storage import ts2 as ts
             if isinstance(store, ts.tsfile):
+                # The TS language attribute is optional; nplural() needs it
+                # (#4399). Without it the target language's count is used.
+                if not store.gettargetlanguage():
+                    return None
                 return store.nplural()
             # No plural-count declaration to read for this format (e.g.
             # .qm - translate-toolkit's own NumerusRules section reader

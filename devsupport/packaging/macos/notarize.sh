@@ -44,9 +44,9 @@ fi
 # stapler fetches the ticket from Apple, which occasionally drops the
 # connection ("The network connection was lost", error 68).
 retry() {
-  for attempt in 1 2 3; do
+  for wait in 30 60 90 120 0; do
     "$@" && return
-    [ "$attempt" = 3 ] || sleep 15
+    sleep "$wait"
   done
   return 1
 }

@@ -546,7 +546,7 @@ class SearchMode(BaseMode):
         self._highlight_matches()
 
     def _on_replace_clicked(self, btn):
-        if not self.storecursor or not self.ent_search.get_text() or not self.ent_replace.get_text():
+        if not self.storecursor or not self.ent_search.get_text():
             return
         self._cancel_search_timeout()
         self.update_search()

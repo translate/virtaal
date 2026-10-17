@@ -125,6 +125,26 @@ def test_replace_all_on_xliff_units():
     assert units[1].target == 'REPLACED and also REPLACED'
 
 
+def test_replace_all_with_no_replacement_text_deletes_every_match():
+    units = [_xliff_unit("x", "Don't know and also Don't know")]
+    f = GrepFilter(searchstring="Don't know", searchparts=('target',),
+                    ignorecase=True, useregexp=False, max_matches=200000)
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(
+            unit_controller=None,
+            undo_controller=SimpleNamespace(record_start=lambda: None, record_stop=lambda: None),
+        ))
+    mode.matches, _ = f.getmatches(units)
+    mode.ent_replace = SimpleNamespace(get_text=lambda: '')
+    mode._search_timeout = 0
+    mode.update_search = lambda: None
+
+    mode._replace_all()
+
+    assert units[0].target == ' and also '
+
+
 def test_set_search_bg_accepts_a_colour():
     # A malformed generated CSS string raises Gtk.CssProvider's own
     # GLib.GError - this is really a check that the string built here
@@ -459,11 +479,24 @@ def test_on_replace_clicked_ignores_a_call_with_no_search_text():
     mode._on_replace_clicked(None)
 
 
-def test_on_replace_clicked_ignores_a_call_with_no_replacement_text():
-    mode = _replace_clicked_mode(ent_replace=SimpleNamespace(get_text=lambda: ''))
-    mode._replace_all = lambda: pytest.fail('must not act without replacement text')
+def test_on_replace_clicked_with_no_replacement_text_deletes_the_match():
+    # #4344: an empty Replace field used to do nothing.
+    current_unit = object()
+    current_match = SimpleNamespace(unit=current_unit, part='target')
+    mode = _replace_clicked_mode(
+        storecursor=SimpleNamespace(deref=lambda: current_unit),
+        ent_replace=SimpleNamespace(get_text=lambda: ''),
+        matches=[current_match],
+    )
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        undo_controller=SimpleNamespace(record_start=lambda: None, record_stop=lambda: None)
+    ))
+    replaced = []
+    mode.replace_match = lambda match, repl: replaced.append((match, repl))
 
     mode._on_replace_clicked(None)
+
+    assert replaced == [(current_match, '')]
 
 
 def test_on_replace_clicked_delegates_to_replace_all_when_checked():

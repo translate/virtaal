@@ -27,7 +27,10 @@ from urllib.parse import unquote_to_bytes
 from bottle import Bottle, request, response
 from translate.storage import base, factory
 
-from virtaal.support import tmdb
+from virtaal.support import (
+    poparser_compat,  # noqa: F401 - applies its patch on import
+    tmdb,
+)
 
 logger = logging.getLogger(__name__)
 

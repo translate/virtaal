@@ -757,7 +757,7 @@ msgstr "개요 충돌"
 #. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
-msgstr ""
+msgstr "번역자 크레딧"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"
@@ -962,7 +962,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"다른 파일을 열어 보십시오."
+"다른 파일을 열어 보세요."
 
 #: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
 msgid "Save"
@@ -992,7 +992,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"다른 위치에 저장하십시오."
+"다른 위치에 저장하세요."
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1027,7 +1027,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"다른 위치에 저장하십시오."
+"다른 위치에 저장하세요."
 
 # 85%
 #: virtaal/controllers/maincontroller.py
@@ -1770,7 +1770,7 @@ msgid ""
 msgstr ""
 "이 메시지를 조금 더 길게 번역하세요. 맞춤법 검사기를 사용할 수 있는 경우 맞춤"
 "법 오류는 워드 프로세서와 유사하게 표시됩니다. 창의 오른쪽 아래에 올바른 언어"
-"가 선택되어 있는지 확인하십시오."
+"가 선택되어 있는지 확인하세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1800,7 +1800,7 @@ msgid ""
 "capital letter."
 msgstr ""
 "많은 언어에서 대문자의 올바른 사용은 중요합니다. 이 메시지를 주의 깊게 번역하"
-"여 대문자와 함께 \"Virtaal\"을 쓰십시오."
+"여 대문자와 함께 \"Virtaal\"을 쓰세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1813,7 +1813,7 @@ msgstr ""
 "이 메시지에서 영어는 거의 모든 단어에 대문자를 사용합니다. 이 스타일을 사용하"
 "는 언어는 거의 없습니다. 해당 언어가 영어 스타일 (Title Case라고도 함)을 반드"
 "시 따라야 하는 경우가 아니라면 해당 언어의 일반 대문자 표기 규칙을 따라 번역"
-"하십시오. 만약 당신의 언어가 대문자를 사용하지 않는다면, 그냥 정상적으로 번역"
+"하세요. 만약 당신의 언어가 대문자를 사용하지 않는다면, 그냥 정상적으로 번역"
 "하세요."
 
 #: virtaal/support/tutorial.py
@@ -1931,7 +1931,7 @@ msgstr ""
 "이 메시지는 굵은 태그로 \"지금\"이라는 단어를 중요하게 표시합니다. 이러한 태"
 "그는 Alt+Right 및 Alt+Down을 사용하여 원본에서 전송할 수 있습니다. <b>와 </b>"
 "는 \"지금\"에 해당하는 부분을 중심으로 번역에 남겨두세요. XML 마크업에 대한 "
-"자세한 내용은 여기를 참조하십시오.http://en.wikipedia.org/wiki/XML"
+"자세한 내용은 여기를 참조하세요.http://en.wikipedia.org/wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1953,7 +1953,7 @@ msgid ""
 "refer to a percentage."
 msgstr ""
 "이 메시지에서 \"%d\"는 숫자를 나타내는 자리 표시자 (변수)입니다. 번역에 어딘"
-"가에 \"%d\"가 포함되어 있는지 확인하십시오. 이 경우 여러 파일을 나타냅니다. "
+"가에 \"%d\"가 포함되어 있는지 확인하세요. 이 경우 여러 파일을 나타냅니다. "
 "이 메시지가 사용되면 \"%d\"는 숫자로 대체됩니다. '복사된 파일 수 : 5'. "
 "\"%d\"는 백분율을 의미하지 않습니다."
 
@@ -1969,10 +1969,10 @@ msgid ""
 "translation/plurals.html"
 msgstr ""
 "이 메시지에서 %d은(는) 파일 수를 다시 참조하지만 파일 수를 알 수 없음을 나타"
-"내기 위해 (s)가 어떻게 사용되는지 주목하십시오. 이것은 종종 잘 번역하기 어렵"
+"내기 위해 (s)가 어떻게 사용되는지 주목하세요. 이것은 종종 잘 번역하기 어렵"
 "습니다. 소프트웨어 번역에서 이러한 문제가 발생할 경우, 이를 방지할 수 있는지 "
 "개발자에게 물어보고 싶을 수 있습니다. 자세한 내용을 읽고 해당 언어로 작업하"
-"는 방법을 결정하십시오: http://docs.translatehouse.org/projects/localization-"
+"는 방법을 결정하세요: http://docs.translatehouse.org/projects/localization-"
 "guide/en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
@@ -1985,7 +1985,7 @@ msgid ""
 msgstr ""
 "이 메시지에는 복수형을 올바르게 번역하는 방법이 나와 있습니다. 당신은 당신의 "
 "언어로 정확한 문법을 보장하기 위해 1개에서 6개의 다른 버전의 번역문을 입력해"
-"야 합니다. 자세한 내용은 여기를 참조하십시오: http://docs.translatehouse.org/"
+"야 합니다. 자세한 내용은 여기를 참조하세요: http://docs.translatehouse.org/"
 "projects/localization-guide/en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
@@ -1997,7 +1997,7 @@ msgid ""
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
 "이 메시지에서 \"%s\"는 파일 이름을 나타내는 자리 표시자 (변수)입니다. 번역에 "
-"어딘가에 %s가 포함되어 있는지 확인하십시오. 이 메시지가 사용되면 %s는 파일 이"
+"어딘가에 %s가 포함되어 있는지 확인하세요. 이 메시지가 사용되면 %s는 파일 이"
 "름으로 대체됩니다. '파일은 example.odt로 저장됩니다'. \"%s\"는 백분율을 의미"
 "하지 않습니다."
 
@@ -2035,7 +2035,7 @@ msgid ""
 "culture."
 msgstr ""
 "이 메시지에서 소프트웨어 사용자는 무언가를하도록 요청받습니다. 당신의 문화에 "
-"필요한만큼 정중하거나 존중함으로써 그것을 번역하십시오."
+"필요한만큼 정중하거나 존중함으로써 그것을 번역하세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2066,7 +2066,7 @@ msgstr ""
 "이 메시지는 자세한 정보가있는 웹 사이트를 나타냅니다. 때로는 URL (웹 주소)을 "
 "귀하의 언어로 웹 사이트로 변경하도록 허용되거나 장려 될 수 있습니다. 이 경우 "
 "주소가 XML에 관한 언어의 해당 기사를 가리키도록 주소의 시작시 \"en\"을 언어 "
-"코드로 바꾸십시오."
+"코드로 바꾸세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2075,8 +2075,8 @@ msgid ""
 "(an action as in \"click here to view it\")."
 msgstr ""
 "이 번역에는 모호한 단어가 포함되어 있습니다. 두 가지 가능한 의미가 있습니다. "
-"이것이 동사임을 보여주는 컨텍스트 정보를 볼 수 있는지 확인하십시오 ( \"보기"
-"를 보려면 여기를 클릭하십시오\")."
+"이것이 동사임을 보여주는 컨텍스트 정보를 볼 수 있는지 확인하세요 ( \"보기"
+"를 보려면 여기를 클릭하세요\")."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2087,9 +2087,9 @@ msgid ""
 "definitely appropriate in this case as well."
 msgstr ""
 "이 번역에는 모호한 단어가 포함되어 있습니다. 두 가지 가능한 의미가 있습니다. "
-"이것이 명사임을 보여주는 컨텍스트 정보를 볼 수 있는지 확인하십시오 ( \"보기"
-"를 전체 화면으로 변경하려면 클릭하십시오\"). Virtaal이 이전 번역을 제안으로 "
-"제공하는 경우이 경우에도 적절한 경우에만 사용하도록주의하십시오."
+"이것이 명사임을 보여주는 컨텍스트 정보를 볼 수 있는지 확인하세요 ( \"보기"
+"를 전체 화면으로 변경하려면 클릭하세요\"). Virtaal이 이전 번역을 제안으로 "
+"제공하는 경우이 경우에도 적절한 경우에만 사용하도록주의하세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2171,7 +2171,7 @@ msgid ""
 "you separate your translations in the same way."
 msgstr ""
 "이 메시지에는 일부 제목을 분리하기 위한 탭 문자가 포함되어 있습니다. 동일한 "
-"방식으로 번역을 분리하십시오."
+"방식으로 번역을 분리하세요."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2347,11 +2347,11 @@ msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "사용할 명사 형식 (복수)의 수를 입력하십시오"
+msgstr "사용할 명사 형식 (복수)의 수를 입력하세요"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the plural equation to use"
-msgstr "사용할 복수 방정식을 입력하십시오"
+msgstr "사용할 복수 방정식을 입력하세요"
 
 #: virtaal/views/mainview.py
 msgid "Header information"
@@ -2517,7 +2517,7 @@ msgstr "워크플로우에서 한 단계 뒤로 이동 (Ctrl+Shift+Enter)"
 
 #: virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
-msgstr "워크플로우의 특정 상태로 이동하려면 클릭하십시오"
+msgstr "워크플로우의 특정 상태로 이동하려면 클릭하세요"
 
 #: virtaal/views/unitview.py
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
@@ -2539,7 +2539,7 @@ msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal은 번역을 하기 위한 프로그램입니다."
+msgstr "Virtaal은 번역을 위한 프로그램입니다."
 
 #: virtaal/views/widgets/aboutdialog.py
 msgid ""
@@ -2547,8 +2547,8 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"처음에는 소프트웨어 번역 (현지화 또는 l10n)에 중점을 두지만 CAT (Computer "
-"Aided Translation)를 위한 범용 도구로서 유용할 것으로 확신합니다."
+"초기에는 소프트웨어 번역 (현지화 또는 l10n)에 중점을 두고 있지만, 컴퓨터 지원 번역 "
+"번역 (CAT)을 위한 범용 도구로도 충분히 유용하게 활용되기를 분명히 바랍니다"
 
 #: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal website"
@@ -2556,7 +2556,7 @@ msgstr "Virtaal 웹사이트"
 
 #: virtaal/views/widgets/aboutdialog.py
 msgid "We thank our donors:"
-msgstr "기부자들에게 감사드립니다:"
+msgstr "후원자분들께 감사드립니다:"
 
 # 82%
 #: virtaal/views/widgets/aboutdialog.py
@@ -2570,7 +2570,7 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "한국어 번역: VenusGirl (비너스걸)"
+msgstr "한국어: VenusGirl (비너스걸)"
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Edit Language"
@@ -2806,10 +2806,10 @@ msgstr "많은 플러그인과 사용자 지정을 위한 옵션을 제공합니
 #~ msgid ""
 #~ "To copy the original string into the target field, simply press "
 #~ "<Alt+Down>."
-#~ msgstr "원래 문자열을 대상 필드에 복사하려면 <Alt+Down>을 누르십시오."
+#~ msgstr "원래 문자열을 대상 필드에 복사하려면 <Alt+Down>을 누르세요."
 
 #~ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-#~ msgstr "현재 변환을 퍼지 상태로 표시하려면, 간단히 <Alt+U>를 누르십시오."
+#~ msgstr "현재 변환을 퍼지 상태로 표시하려면, 간단히 <Alt+U>를 누르세요."
 
 #~ msgid ""
 #~ "To mark the current translation as incomplete, simply press "
@@ -2821,7 +2821,7 @@ msgstr "많은 플러그인과 사용자 지정을 위한 옵션을 제공합니
 # 75%
 #~ msgid ""
 #~ "To mark the current translation as complete, simply press <Ctrl+Enter>."
-#~ msgstr "현재 번역이 완료된 것으로 표시하려면 <Ctrl+Enter>를 누르십시오."
+#~ msgstr "현재 번역이 완료된 것으로 표시하려면 <Ctrl+Enter>를 누르세요."
 
 #~ msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
 #~ msgstr "변환 사이를 이동하려면 Ctrl+Up 또는 Ctrl+Down을 사용합니다."
@@ -2835,13 +2835,13 @@ msgstr "많은 플러그인과 사용자 지정을 위한 옵션을 제공합니
 #~ msgstr "OpenOffice.org"
 
 #~ msgid "Please enter your name"
-#~ msgstr "이름을 입력하십시오"
+#~ msgstr "이름을 입력하세요"
 
 #~ msgid "Please enter your e-mail address"
-#~ msgstr "이메일 주소를 입력하십시오"
+#~ msgstr "이메일 주소를 입력하세요"
 
 #~ msgid "Please enter your team's information"
-#~ msgstr "팀 정보를 입력하십시오"
+#~ msgstr "팀 정보를 입력하세요"
 
 #~ msgid "Reload File"
 #~ msgstr "파일 다시 불러오기"
@@ -2951,7 +2951,7 @@ msgstr "많은 플러그인과 사용자 지정을 위한 옵션을 제공합니
 #~ "Virtaal은 여러 용어 용어집에서 제안을 제공 할 수 있으며 번역 필드에 붙여 "
 #~ "넣을 수있는 쉬운 단축키를 제공합니다. 지금 Virtaal에는 빈 용어 용어집이 하"
 #~ "나 뿐이지 만 채우기 시작할 수 있습니다. 이렇게하려면 원본 텍스트를 선택하"
-#~ "려면 Ctrl+T를 누르고 언어에 대한 번역을 제공하고 저장하십시오."
+#~ "려면 Ctrl+T를 누르고 언어에 대한 번역을 제공하고 저장하세요."
 
 #~ msgid "No issues"
 #~ msgstr "문제 없음"
@@ -3102,4 +3102,4 @@ msgstr "많은 플러그인과 사용자 지정을 위한 옵션을 제공합니
 #~ msgstr "모호한 본역(_U)"
 
 #~ msgid "International Development and Research Centre"
-#~ msgstr "International Development Research Centre"
+#~ msgstr "국제 개발 연구 센터"

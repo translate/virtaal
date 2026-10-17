@@ -45,12 +45,16 @@ def gtk_container_compute_optimal_height(widget, width):
 
 @compute_optimal_height.register(Gtk.Grid)
 def gtk_table_compute_optimal_height(widget, width):
-    width -= widget.get_margin_start() + widget.get_margin_end()
+    # Each column gets half the width inside the margins. As for
+    # Gtk.Container, an unknown (negative) width stays -1.
+    if width >= 0:
+        width = max(0, width - widget.get_margin_start() - widget.get_margin_end()) / 2
+    else:
+        width = -1
     for child in widget.get_children():
         if child.props.name not in ("vbox_middle", "vbox_below"):
             continue
-        # width / 2 because we use half of the available width
-        compute_optimal_height(child, width / 2)
+        compute_optimal_height(child, width)
 
 
 @compute_optimal_height.register(Gtk.TextView)

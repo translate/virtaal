@@ -1260,3 +1260,24 @@ def test_compute_optimal_height_never_requests_a_width_below_minus_one(width):
     compute_optimal_height(box, width)
 
     assert requested and all(int(w) >= -1 for w in requested)
+
+
+@pytest.mark.parametrize('width', [-1, -0.5, 10])
+def test_compute_optimal_height_keeps_an_unknown_width_inside_the_editor_grid(width):
+    # The unit editor's grid has margins too; its middle column's notes
+    # asked GTK for a width below -1 before the window was allocated.
+    grid = Gtk.Grid()
+    grid.set_margin_start(12)
+    grid.set_margin_end(12)
+    middle = Gtk.Box()
+    middle.set_name('vbox_middle')
+    label = Gtk.Label(label='A note')
+    middle.add(label)
+    grid.attach(middle, 0, 0, 1, 1)
+    grid.show_all()
+    requested = []
+    label.set_size_request = lambda w, h: requested.append(w)
+
+    compute_optimal_height(grid, width)
+
+    assert requested and all(int(w) >= -1 for w in requested)

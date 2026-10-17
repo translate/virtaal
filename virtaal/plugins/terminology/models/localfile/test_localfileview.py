@@ -708,18 +708,34 @@ def test_add_term_unit_skips_the_note_when_the_comment_is_empty():
 
 # TermAddDialog._on_entry_changed() #
 
-def _entry_changed_dialog(duplicates=None, same_src_units=None):
+def _entry_changed_dialog(duplicates=None, same_src_units=None, source='cat', target='kat'):
     dialog = TermAddDialog.__new__(TermAddDialog)
     dialog.btn_add_term = Gtk.Button()
     dialog.eb_add_term_errors = Gtk.EventBox()
     dialog.lbl_add_term_errors = Gtk.Label()
-    dialog.ent_source = SimpleNamespace(get_text=lambda: 'cat')
-    dialog.ent_target = SimpleNamespace(get_text=lambda: 'kat')
+    dialog.ent_source = SimpleNamespace(get_text=lambda: source)
+    dialog.ent_target = SimpleNamespace(get_text=lambda: target)
     dialog.term_model = SimpleNamespace(
         get_duplicates=lambda src, tgt: duplicates or [],
         get_units_with_source=lambda src: same_src_units or [],
     )
     return dialog
+
+
+@pytest.mark.parametrize('source, target', [
+    ('', 'x'), ('x', ''), (' \t', 'x'), ('x', '\xa0'), ('\n', '\n'),
+])
+def test_on_entry_changed_disables_add_for_a_blank_term(source, target):
+    # #4334: an empty source was saved as a second PO header, and a blank
+    # one showed the header as an existing translation.
+    header = SimpleNamespace(target='Project-Id-Version: x')
+    dialog = _entry_changed_dialog(same_src_units=[header], source=source, target=target)
+    dialog.eb_add_term_errors.show_all()
+
+    dialog._on_entry_changed(None)
+
+    assert dialog.btn_add_term.get_sensitive() is False
+    assert dialog.eb_add_term_errors.get_visible() is False
 
 
 def test_on_entry_changed_flags_an_identical_existing_entry():

@@ -246,14 +246,18 @@ class StringElemGUI:
 
         return offset
 
-    def treeindex_to_iter(self, index, start_at=None):
+    def treeindex_to_iter(self, index, start_at=None, elem_len=None):
         """Convert the tree index to a gtk iterator. The optional start_at
         indicates a reference point (index, iter) from where to start looking,
-        for example a previous index that is known to have occurred earlier."""
+        for example a previous index that is known to have occurred earlier.
+        A caller converting many indexes can pass len(self.elem) as
+        elem_len: computing it walks the whole tree (#4343)."""
         buffer = self.textbox.buffer
         if index == 0:
             return buffer.get_start_iter()
-        if index >= len(self.elem) and self.elem is self.textbox.elem:
+        if elem_len is None:
+            elem_len = len(self.elem)
+        if index >= elem_len and self.elem is self.textbox.elem:
             return buffer.get_end_iter()
 
         if self.elem.isleaf() and len(self.widgets) == 0:

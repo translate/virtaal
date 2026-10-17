@@ -58,3 +58,15 @@ def test_getmatches_accepts_a_leading_inline_flag():
 
     assert indexes == [0]
     assert [units[0].source[m.start:m.end] for m in matches] == ["f"]
+
+
+def test_getmatches_stops_at_max_matches_instead_of_raising():
+    # #4395: upstream raised ValueError("Too many matches found").
+    units = [_unit("x", "aa"), _unit("x", "aa"), _unit("x", "aa")]
+    f = GrepFilter(searchstring="a", searchparts=('target',),
+                    ignorecase=False, useregexp=False, max_matches=3)
+
+    matches, indexes = f.getmatches(units)
+
+    assert len(matches) == 3
+    assert indexes == [0, 1]

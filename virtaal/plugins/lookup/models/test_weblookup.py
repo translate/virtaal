@@ -133,6 +133,21 @@ def test_add_dialog_needs_a_url_with_text(monkeypatch, url, ok):
 
     assert seen['ok'] is ok
 
+
+def test_add_dialog_saves_the_name_and_url_trimmed(monkeypatch):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+
+    def _type_and_confirm():
+        dialog.ent_url_name.set_text(' My Site ')
+        dialog.ent_url.set_text(' http://example.com/?q=%(query)s\n')
+        return Gtk.ResponseType.OK
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    url = dialog.run()
+
+    assert (url['display_name'], url['url']) == ('My Site', 'http://example.com/?q=%(query)s')
+
 # Disabling a web look-up
 
 def _model(monkeypatch, tmp_path):

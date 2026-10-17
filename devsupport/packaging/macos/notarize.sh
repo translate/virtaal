@@ -41,5 +41,15 @@ if [ "$status" != Accepted ]; then
   exit 1
 fi
 
-xcrun stapler staple "$target"
-xcrun stapler validate "$target"
+# stapler fetches the ticket from Apple, which occasionally drops the
+# connection ("The network connection was lost", error 68).
+retry() {
+  for attempt in 1 2 3; do
+    "$@" && return
+    [ "$attempt" = 3 ] || sleep 15
+  done
+  return 1
+}
+
+retry xcrun stapler staple "$target"
+retry xcrun stapler validate "$target"

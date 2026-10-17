@@ -61,6 +61,9 @@ class WelcomeScreenView(BaseView):
         self.widget.widgets['buttons']['open'].grab_focus()
 
         def calculate_width():
+            # hide() can run first, when a file opens at start-up.
+            if not self.widget.get_mapped():
+                return
             txt = self.widget.widgets['txt_features']
             expander = txt.get_parent().get_parent()
 

@@ -827,9 +827,6 @@ msgstr "Conflicto de compendio"
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"Alexander Dupuy <alex.dupuy@mac.com>\n"
-"Julen Ruiz Aizpuru <julenx@gmail.com>\n"
-"Omar Campagne <ocampagne@gmail.com>"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

@@ -792,8 +792,6 @@ msgstr ""
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"Veeven\n"
-"Praveen Illa <mail2ipn@gmail.com>, 2011."
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

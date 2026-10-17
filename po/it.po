@@ -814,9 +814,6 @@ msgstr "Compendio di conflitto"
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"Diego Donati, freelance translator, Italy\n"
-"Radina Matic, translator, <radina.matic@gmail.com>\n"
-"Mara Cimasoni, translator, <mara.cimasoni@gmail.com>"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

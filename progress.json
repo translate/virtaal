@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-16T21:41:22Z",
- "commit": "57b0bb870b009e2082ed940ae0b0d32a99d852f5",
+ "generated": "2026-10-17T01:46:01Z",
+ "commit": "4972d3d43b1122b9a7b9206c382db39905b95dd5",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -313,12 +313,12 @@
    "code": "ko",
    "name": "Korean",
    "endonym": "한국어",
-   "core_missing": 22,
-   "rest_missing": 7,
-   "needed": 26,
-   "level2_missing": 87,
-   "level3_missing": 55,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 1,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "lg",
@@ -577,12 +577,12 @@
    "code": "zh_CN",
    "name": "Chinese (Simplified, China)",
    "endonym": "中文 (简体, 中国)",
-   "core_missing": 1,
-   "rest_missing": 1,
-   "needed": 1,
-   "level2_missing": 3,
-   "level3_missing": 10,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "zh_TW",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38970621482"
+ "packs": "https://github.com/translate/virtaal/actions/runs/38992085468"
 }

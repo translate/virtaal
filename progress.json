@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-17T01:46:01Z",
- "commit": "4972d3d43b1122b9a7b9206c382db39905b95dd5",
+ "generated": "2026-10-17T09:01:45Z",
+ "commit": "fe0fa5d44bc17ac93bed6edf0b1a4abfc83fdee7",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -182,8 +182,8 @@
    "name": "Spanish",
    "endonym": "español",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 90,
    "level3_missing": 55,
    "ships": "50%"
@@ -292,8 +292,8 @@
    "name": "Italian",
    "endonym": "italiano",
    "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
+   "rest_missing": 7,
+   "needed": 26,
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
@@ -523,8 +523,8 @@
    "name": "Telugu",
    "endonym": "తెలుగు",
    "core_missing": 35,
-   "rest_missing": 49,
-   "needed": 81,
+   "rest_missing": 50,
+   "needed": 82,
    "level2_missing": 182,
    "level3_missing": 100,
    "ships": null
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/38992085468"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39019038567"
 }

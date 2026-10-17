@@ -1,14 +1,13 @@
 name: UI fuzzing
 
-# Not a pass/fail gate on every push - see
-# FEATURE-CRASH-HARDENING.md's "Where this runs". Runs Virtaal through
-# varied, randomised UI interaction well beyond what the pytest suite
-# covers, on a schedule, to shake out more instances of Release
-# Blocker #8's pattern (a live GTK object graph torn down in a way
-# that isn't safe against Python's own garbage collection) before a
-# release does. A red run here means a real native crash was found -
-# check the uploaded log/backtrace artifact, it's not a flaky test to
-# just re-run.
+# Not a pass/fail gate on every push. Puts a text corpus through every
+# text input (devsupport/testing/fuzz/sweep.py), then drives Virtaal
+# through random UI interaction, after crashes and input bugs the pytest
+# suite doesn't reach. Failures already filed are listed in
+# devsupport/testing/fuzz/known_bugs.py; a red run means a new failure,
+# or a listed one that no longer happens (remove its entry). The job
+# summary lists which, and the uploaded results hold each process's log
+# and any backtrace.
 
 on:
   schedule:
@@ -22,15 +21,15 @@ on:
 
 permissions:
   contents: read
+  # known_bugs.py entries for closed issues fail the run.
+  issues: read
 
 jobs:
   fuzz-linux:
     runs-on: ubuntu-24.04
-    # Backstop only - fuzz_ui.py's own watchdog (2x --duration-seconds)
-    # should always fire first and leave a real stack trace; this just
-    # bounds the worst case if that somehow doesn't fire, rather than
-    # running for hours (GitHub's default job timeout).
-    timeout-minutes: 45
+    # Backstop only: fuzz_ui.py stops each process that hangs. The sweep
+    # takes about 30 minutes, then the random part --duration-seconds.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
         with:
@@ -53,6 +52,7 @@ jobs:
             libgirepository-2.0-dev
             libglib2.0-dev
             libgnutls28-dev
+            librsvg2-common
             pkg-config
             python3-dev
             xvfb
@@ -63,30 +63,34 @@ jobs:
           pip install pygobject
 
       - name: Install virtaal
-        run: pip install .[spellcheck]
+        run: pip install .[spellcheck] pytest
+
+      - name: Test the fuzzer
+        run: python -m pytest -p no:cacheprovider devsupport/testing/fuzz
 
       - name: Fuzz
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             devsupport/testing/fuzz/run_fuzz.sh \
             --duration-seconds "$DURATION_SECONDS" \
-            --log fuzz-linux.log
+            --results fuzz-results
         env:
           PYTHONFAULTHANDLER: "1"
           DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
+          GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Upload fuzz log
+      - name: Upload fuzz results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: fuzz-log-linux
-          path: fuzz-linux.log
+          name: fuzz-results-linux
+          path: fuzz-results/
           if-no-files-found: ignore
 
   fuzz-macos:
     runs-on: macos-latest
     # See fuzz-linux's own comment on this - same backstop reasoning.
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
         with:
@@ -110,16 +114,20 @@ jobs:
 
       - name: Install virtaal
         # --ignore-installed: see ci.yml's test-macos.
-        run: pip install --ignore-installed .[spellcheck]
+        run: pip install --ignore-installed .[spellcheck] pytest
+
+      - name: Test the fuzzer
+        run: python -m pytest -p no:cacheprovider devsupport/testing/fuzz
 
       - name: Fuzz
         run: |
           devsupport/testing/fuzz/run_fuzz.sh \
             --duration-seconds "$DURATION_SECONDS" \
-            --log fuzz-macos.log
+            --results fuzz-results
         env:
           PYTHONFAULTHANDLER: "1"
           DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Collect any system crash reports
         # run_fuzz.sh's lldb backtrace is usually enough on its own,
@@ -131,20 +139,20 @@ jobs:
           mkdir -p crash-reports
           cp ~/Library/Logs/DiagnosticReports/Python-*.ips crash-reports/ 2>/dev/null || true
 
-      - name: Upload fuzz log and any crash reports
+      - name: Upload fuzz results and any crash reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: fuzz-log-macos
+          name: fuzz-results-macos
           path: |
-            fuzz-macos.log
+            fuzz-results/
             crash-reports/
           if-no-files-found: ignore
 
   fuzz-windows:
     runs-on: windows-latest
     # See fuzz-linux's own comment on this - same backstop reasoning.
-    timeout-minutes: 45
+    timeout-minutes: 90
     # See test-windows in ci.yml for why gvsbuild/MSVC, not MSYS2.
     env:
       gvsbuild_version: "2026.8.0"
@@ -213,24 +221,25 @@ jobs:
           pip install cheroot
 
       - name: Install virtaal
-        run: pip install .
+        run: pip install . pytest
+
+      - name: Test the fuzzer
+        run: python -m pytest -p no:cacheprovider devsupport/testing/fuzz
 
       - name: Fuzz
-        # No gdb/lldb equivalent readily available here - relies on
-        # faulthandler for the Python-level trace, same as
-        # test-windows in ci.yml. A crash still fails this step (a
-        # native access violation's exit code is never 0), it just
-        # won't have a native backtrace attached.
+        # No gdb/lldb here: a crash gets faulthandler's Python-level trace
+        # only, as in test-windows in ci.yml.
         run: |
-          python devsupport/testing/fuzz/fuzz_ui.py --duration-seconds $env:DURATION_SECONDS --log fuzz-windows.log
+          python devsupport/testing/fuzz/fuzz_ui.py --duration-seconds $env:DURATION_SECONDS --results fuzz-results
         env:
           PYTHONFAULTHANDLER: "1"
           DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
+          GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Upload fuzz log
+      - name: Upload fuzz results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: fuzz-log-windows
-          path: fuzz-windows.log
+          name: fuzz-results-windows
+          path: fuzz-results/
           if-no-files-found: ignore

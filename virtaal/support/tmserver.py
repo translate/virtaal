@@ -22,6 +22,7 @@ import logging
 import sys
 from argparse import ArgumentParser
 from io import BytesIO
+from urllib.parse import unquote_to_bytes
 
 from bottle import Bottle, request, response
 from translate.storage import base, factory
@@ -29,6 +30,24 @@ from translate.storage import base, factory
 from virtaal.support import tmdb
 
 logger = logging.getLogger(__name__)
+
+
+def _decode_path_from_request_uri() -> None:
+    """Route on the fully decoded request path.
+
+    cheroot decodes every escape in PATH_INFO except %2F, so a source
+    containing "/" reached the TM lookup as "%2F"."""
+    environ = request.environ
+    uri = environ.get("REQUEST_URI")
+    if not uri:
+        return
+    raw = uri.split("?", 1)[0].encode("latin-1")
+    # Decoded the same way Bottle decodes PATH_INFO.
+    path = unquote_to_bytes(raw).decode("utf-8", "ignore")
+    script_name = environ.get("SCRIPT_NAME", "")
+    if script_name and path.startswith(script_name):
+        path = path[len(script_name):]
+    environ["PATH_INFO"] = path
 
 
 class TMServer:
@@ -55,6 +74,7 @@ class TMServer:
 
         # initialize url dispatcher
         self.rest = Bottle()
+        self.rest.add_hook("before_request", _decode_path_from_request_uri)
         # Bottle's path filter is ".+?", which doesn't match a newline.
         unit_path = rf"{prefix}/<slang>/<tlang>/unit/<uid:re:[\s\S]+>"
         store_path = rf"{prefix}/<slang>/<tlang>/store/<sid:re:[\s\S]+>"

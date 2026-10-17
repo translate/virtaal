@@ -15,6 +15,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+from types import SimpleNamespace
 from urllib.parse import quote
 
 import pytest
@@ -114,6 +115,52 @@ def test_translate_unit_matches_a_source_containing_a_newline(tmp_path):
 
     assert matches[0]['source'] == source
     assert matches[0]['quality'] == 100.0
+
+
+def test_translate_unit_matches_a_source_containing_a_slash(tmp_path):
+    # #4373: cheroot leaves %2F encoded in PATH_INFO, so "Open/Save" was
+    # looked up as "Open%2FSave".
+    port = 18778
+    app = _start_server(tmp_path / 'tm.db', port)
+    source = 'Open/Save'
+    app.tmdb.add_dict({'source': source, 'target': 'Maak oop/Stoor', 'context': ''}, 'en', 'af')
+
+    matches = _translate(port, source, 'en', 'af')
+
+    assert matches[0]['source'] == source
+    assert matches[0]['quality'] == 100.0
+
+
+def test_translate_unit_matches_a_source_containing_a_percent_escape(tmp_path):
+    # Decoded once: a literal "%2F" in the source stays "%2F".
+    port = 18780
+    app = _start_server(tmp_path / 'tm.db', port)
+    source = 'Size in KB%2Fs and 50% off'
+    app.tmdb.add_dict({'source': source, 'target': 'x', 'context': ''}, 'en', 'af')
+
+    matches = _translate(port, source, 'en', 'af')
+
+    assert matches[0]['source'] == source
+    assert matches[0]['quality'] == 100.0
+
+
+def _decoded_path(monkeypatch, environ):
+    monkeypatch.setattr(tmserver, 'request', SimpleNamespace(environ=environ))
+    tmserver._decode_path_from_request_uri()
+    return environ['PATH_INFO']
+
+
+def test_decode_path_drops_the_query_string_and_the_script_name(monkeypatch):
+    environ = {'REQUEST_URI': '/tm/en/af/unit/Open%2FSave?callback=x',
+               'SCRIPT_NAME': '/tm', 'PATH_INFO': '/en/af/unit/Open%2FSave'}
+
+    assert _decoded_path(monkeypatch, environ) == '/en/af/unit/Open/Save'
+
+
+def test_decode_path_keeps_path_info_without_a_request_uri(monkeypatch):
+    environ = {'PATH_INFO': '/en/af/unit/Open%2FSave'}
+
+    assert _decoded_path(monkeypatch, environ) == '/en/af/unit/Open%2FSave'
 
 
 def test_add_unit_then_translate_unit_round_trips_over_http(tmp_path):

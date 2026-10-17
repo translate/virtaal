@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-17T10:08:31Z",
- "commit": "82824be94681272a5069c911076b37bb9918c690",
+ "generated": "2026-10-17T11:11:13Z",
+ "commit": "92775757d8c83123cb47fa93ca0d055ed07e0c1b",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -423,12 +423,12 @@
    "code": "pt_BR",
    "name": "Portuguese (Brazil)",
    "endonym": "português (Brasil)",
-   "core_missing": 12,
-   "rest_missing": 2,
-   "needed": 12,
-   "level2_missing": 29,
-   "level3_missing": 25,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "ru",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39023607108"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39027561034"
 }

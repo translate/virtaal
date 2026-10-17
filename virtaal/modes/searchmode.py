@@ -228,6 +228,7 @@ class SearchMode(BaseMode):
                 match.unit.target = rstring
         else:
             main_controller.select_unit(match.unit)
+            main_controller.undo_controller.push_current_text(unit_controller.view.targets[match.part_n])
             rstring = unit_controller.get_unit_target(match.part_n)
             unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 

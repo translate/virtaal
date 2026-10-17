@@ -455,29 +455,41 @@ class SearchMode(BaseMode):
         except ValueError as ve:
             logging.exception("(Re-)adding search highlighting tag exception:")
 
-        select_iters = []
+        # Merge touching or overlapping matches, and drop empty ones that
+        # have nothing to highlight: converting each match to buffer
+        # iterators made dense matches in a long text slow (#4343).
+        ranges = []
+        for match in self._get_matches_for_textbox(textbox):
+            if match.start == match.end:
+                continue
+            if ranges and match.start <= ranges[-1][1]:
+                ranges[-1][1] = max(ranges[-1][1], match.end)
+            else:
+                ranges.append([match.start, match.end])
+
+        gui_info = getattr(textbox.elem, 'gui_info', None)
+        elem_len = len(textbox.elem) if gui_info else None
+
+        def to_iter(index, start_at=None):
+            if gui_info:
+                return gui_info.treeindex_to_iter(index, start_at=start_at, elem_len=elem_len)
+            return buff.get_iter_at_offset(index)
 
         # We keep the iterator and index pointing to the end of the previous
-        # match so that we continue searching from there for the next match.
+        # range so that we continue searching from there for the next one.
         end_iter = None
         old_end = -1
-
-        for match in self._get_matches_for_textbox(textbox):
-            start, end = match.start, match.end
-            if hasattr(textbox.elem, 'gui_info'):
-                if end_iter:
-                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start, start_at=(old_end, end_iter))
-                else:
-                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start)
-                end_iter   = textbox.elem.gui_info.treeindex_to_iter(end, start_at=(start, start_iter))
-                old_end = end
-            else:
-                start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
-                old_end = end
+        for start, end in ranges:
+            start_iter = to_iter(start, (old_end, end_iter) if end_iter else None)
+            end_iter = to_iter(end, (start, start_iter))
+            old_end = end
             buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
-            if select_match and textbox.role == 'target' and not select_iters and self.select_first_match:
-                select_iters = [start_iter, end_iter]
+        select_iters = []
+        if ranges and select_match and textbox.role == 'target' and self.select_first_match:
+            first = next(m for m in self._get_matches_for_textbox(textbox) if m.start != m.end)
+            first_start = to_iter(first.start)
+            select_iters = [first_start, to_iter(first.end, (first.start, first_start))]
 
         if select_iters:
             buff.select_range(select_iters[1], select_iters[0])

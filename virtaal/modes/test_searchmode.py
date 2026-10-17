@@ -962,6 +962,28 @@ def test_highlight_textbox_matches_does_not_select_when_told_not_to():
     assert textbox.buffer.get_selection_bounds() == ()
 
 
+
+def test_highlight_textbox_matches_merges_touching_matches_and_skips_empty_ones():
+    # #4343: dense or empty matches in a long target froze Virtaal.
+    mode = SearchMode.__new__(SearchMode)
+    mode.select_first_match = True
+    unit = object()
+    textbox = _FakeTextbox('target', 'abcdefgh')
+    mode.unitview = SimpleNamespace(unit=unit, sources=[], targets=[textbox])
+    mode.matches = [SimpleNamespace(unit=unit, part='target', part_n=0, start=s, end=e)
+                    for s, e in ((0, 0), (1, 2), (2, 3), (3, 3), (5, 6))]
+    applied = []
+    apply_tag = textbox.buffer.apply_tag_by_name
+    textbox.buffer.apply_tag_by_name = lambda name, a, b: (applied.append((a.get_offset(), b.get_offset())),
+                                                          apply_tag(name, a, b))
+
+    mode._highlight_textbox_matches(textbox)
+
+    assert applied == [(1, 3), (5, 6)]
+    start, end = textbox.buffer.get_selection_bounds()
+    assert (start.get_offset(), end.get_offset()) == (1, 2)
+
+
 # update_search() #
 
 def _update_search_mode(units, search_text, index=0):

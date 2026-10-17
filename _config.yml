@@ -3,6 +3,7 @@ auto: true
 name: Virtaal
 description: Powerful, uncluttered XLIFF and PO editor.
 latest_version: 1.0.0-rc1
+macos_minimum: macOS 26 (Tahoe)
 author: Translate House
 
 about_url: https://translatehouse.org/about.html

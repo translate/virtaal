@@ -110,6 +110,29 @@ def test_add_dialog_derives_an_id_from_the_typed_name(monkeypatch):
     assert url['id'] == 'my_site'
 
 
+
+@pytest.mark.parametrize('url, ok', [
+    (' ', False),
+    ('\t', False),
+    ('\n', False),
+    ('http://example.com/?q=%(query)s', True),
+])
+def test_add_dialog_needs_a_url_with_text(monkeypatch, url, ok):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+    seen = {}
+
+    def _type_and_confirm():
+        dialog.ent_url_name.set_text('My Site')
+        dialog.ent_url.set_text(url)
+        seen['ok'] = dialog.btn_url_ok.get_sensitive()
+        return Gtk.ResponseType.CANCEL
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    dialog.run()
+
+    assert seen['ok'] is ok
+
 # Disabling a web look-up
 
 def _model(monkeypatch, tmp_path):

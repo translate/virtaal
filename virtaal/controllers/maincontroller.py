@@ -19,6 +19,11 @@ from virtaal.views.mainview import MainView
 from .basecontroller import BaseController
 
 
+def _one_line(*values):
+    """C{values} with each run of whitespace, newlines included, as one space."""
+    return tuple(' '.join((value or '').split()) for value in values)
+
+
 class MainController(BaseController):
     """The main controller that initializes the others and contains the main
         program loop."""
@@ -71,12 +76,15 @@ class MainController(BaseController):
 
     def get_translator_details(self):
         """The translator's name, e-mail address and team, asking for all
-            three in one dialog if any is missing."""
+            three in one dialog if any is missing. Each is one line: they
+            go into the PO header, where a newline starts a new header
+            field (#4339)."""
         translator = pan_app.settings.translator
-        details = (translator["name"], translator["email"], translator["team"])
+        details = _one_line(translator["name"], translator["email"], translator["team"])
         if all(details):
             return details
-        return self.view.show_translator_dialog(*details) or details
+        answer = self.view.show_translator_dialog(*details)
+        return _one_line(*answer) if answer else details
 
     def set_saveable(self, value):
         self.view.set_saveable(value)

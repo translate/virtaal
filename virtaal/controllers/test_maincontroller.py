@@ -684,6 +684,29 @@ def test_get_translator_details_keeps_what_is_known_when_cancelled(monkeypatch):
     assert controller.get_translator_details() == ('Dwayne', '', '')
 
 
+
+def test_get_translator_details_keeps_each_detail_on_one_line(monkeypatch):
+    # #4339: a pasted newline added or replaced PO header fields.
+    monkeypatch.setattr(pan_app.settings, 'translator', {
+        'name': 'Me\nPlural-Forms: nplurals=9; plural=0;', 'email': ' d@example.com\t', 'team': 'af\r\n'})
+    controller = MainController.__new__(MainController)
+    controller.view = SimpleNamespace(show_translator_dialog=lambda *args: pytest.fail('must not ask'))
+
+    assert controller.get_translator_details() == (
+        'Me Plural-Forms: nplurals=9; plural=0;', 'd@example.com', 'af')
+
+
+def test_get_translator_details_asks_when_a_detail_is_only_whitespace(monkeypatch):
+    monkeypatch.setattr(pan_app.settings, 'translator', {'name': '\n', 'email': 'd@example.com', 'team': 'af'})
+    controller = MainController.__new__(MainController)
+    asked = []
+    controller.view = SimpleNamespace(
+        show_translator_dialog=lambda *args: asked.append(args) or ('Dwayne\nX', 'd@example.com', 'af'))
+
+    assert controller.get_translator_details() == ('Dwayne X', 'd@example.com', 'af')
+    assert asked == [('', 'd@example.com', 'af')]
+
+
 # trivial delegators #
 
 def test_select_unit_delegates_to_the_store_controller():

@@ -497,6 +497,26 @@ def test_on_cursor_change_skips_an_empty_singular_target(monkeypatch):
     assert plugin.autocomp._word_list == []
 
 
+def test_on_cursor_change_after_a_cursor_with_no_unit(monkeypatch):
+    # #4385: a Replace All that leaves no search matches puts the cursor on
+    # no unit; leaving Search then raised AttributeError.
+    scheduled = []
+    monkeypatch.setattr('virtaal.plugins.autocompletor.GLib.idle_add', scheduled.append)
+    plugin = Plugin.__new__(Plugin)
+    plugin.autocomp = AutoCompletor(main_controller=None, comp_len=1)
+    plugin.lastunit = SimpleNamespace(hasplural=lambda: False, target='helloworld')
+    next_unit = object()
+    units = iter([None, next_unit])
+    cursor = SimpleNamespace(deref=lambda: next(units))
+
+    plugin._on_cursor_change(cursor)
+    scheduled[0]()
+    plugin._on_cursor_change(cursor)
+    scheduled[1]()  # must not raise
+
+    assert plugin.lastunit is next_unit
+
+
 def test_on_cursor_change_adds_every_plural_forms_words_skipping_empty_ones(monkeypatch):
     scheduled = []
     monkeypatch.setattr('virtaal.plugins.autocompletor.GLib.idle_add', scheduled.append)

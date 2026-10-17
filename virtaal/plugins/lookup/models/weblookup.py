@@ -5,8 +5,17 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import re
 from os import path
 from urllib import parse
+
+_PLACEHOLDER_RE = re.compile(r'%%|%\((query|querylang|nonquerylang|srclang|tgtlang)\)s')
+
+
+def _fill_url(url, values):
+    """Replace the C{%(name)s} placeholders (and C{%%}) in a look-up URL,
+        leaving any other C{%}, such as C{%20}, as it is (#4350)."""
+    return _PLACEHOLDER_RE.sub(lambda m: values[m.group(1)] if m.group(1) else '%', url)
 
 
 def _slugify(display_name):
@@ -174,13 +183,13 @@ class LookupModel(BaseLookupModel):
                 uquery = '"' + uquery + '"'
 
             i = Gtk.MenuItem(label=urlinfo['display_name'])
-            lookup_str = urlinfo['url'] % {
+            lookup_str = _fill_url(urlinfo['url'], {
                 'query':        uquery,
                 'querylang':    querylang,
                 'nonquerylang': nonquerylang,
                 'srclang':      srclang,
                 'tgtlang':      tgtlang
-            }
+            })
             i.connect('activate', self._on_lookup, lookup_str)
             items.append(i)
         return items

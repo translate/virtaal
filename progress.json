@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-17T09:01:45Z",
- "commit": "fe0fa5d44bc17ac93bed6edf0b1a4abfc83fdee7",
+ "generated": "2026-10-17T10:08:31Z",
+ "commit": "82824be94681272a5069c911076b37bb9918c690",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -137,12 +137,12 @@
    "code": "cs",
    "name": "Czech",
    "endonym": "čeština",
-   "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
-   "level2_missing": 123,
-   "level3_missing": 55,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "da",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39019038567"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39023607108"
 }

@@ -2436,7 +2436,9 @@ msgstr "మొజిల్లా కార్పొరేషన్"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Veeven"
+msgstr ""
+"Veeven\n"
+"Praveen Illa <mail2ipn@gmail.com>"
 
 #: virtaal/views/widgets/langadddialog.py
 #, fuzzy

@@ -103,6 +103,19 @@ def test_translate_unit_still_matches_an_ascii_source(tmp_path):
     assert matches[0]['quality'] == 100.0
 
 
+def test_translate_unit_matches_a_source_containing_a_newline(tmp_path):
+    # #4333: a multi-line source used to get HTTP 404 and no suggestions.
+    port = 18777
+    app = _start_server(tmp_path / 'tm.db', port)
+    source = 'Open the file\nnow please'
+    app.tmdb.add_dict({'source': source, 'target': 'Maak die lêer\nnou oop', 'context': ''}, 'en', 'af')
+
+    matches = _translate(port, source, 'en', 'af')
+
+    assert matches[0]['source'] == source
+    assert matches[0]['quality'] == 100.0
+
+
 def test_add_unit_then_translate_unit_round_trips_over_http(tmp_path):
     port = 18767
     _start_server(tmp_path / 'tm.db', port)
@@ -182,6 +195,16 @@ def test_get_store_stats_returns_the_not_implemented_stub(tmp_path):
     _start_server(tmp_path / 'tm.db', port)
 
     status, body = _request(port, 'GET', '/en/fr/store/myimport')
+
+    assert status == 200
+    assert body == 'FIXME'
+
+
+def test_store_routes_accept_a_name_containing_a_newline(tmp_path):
+    port = 18779
+    _start_server(tmp_path / 'tm.db', port)
+
+    status, body = _request(port, 'GET', '/en/fr/store/' + quote('my\nimport', safe=''))
 
     assert status == 200
     assert body == 'FIXME'

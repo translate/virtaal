@@ -55,8 +55,9 @@ class TMServer:
 
         # initialize url dispatcher
         self.rest = Bottle()
-        unit_path = f"{prefix}/<slang>/<tlang>/unit/<uid:path>"
-        store_path = f"{prefix}/<slang>/<tlang>/store/<sid:path>"
+        # Bottle's path filter is ".+?", which doesn't match a newline.
+        unit_path = rf"{prefix}/<slang>/<tlang>/unit/<uid:re:[\s\S]+>"
+        store_path = rf"{prefix}/<slang>/<tlang>/store/<sid:re:[\s\S]+>"
         self.rest.route(unit_path, "GET", self.translate_unit)
         self.rest.route(unit_path, "POST", self.update_unit)
         self.rest.route(unit_path, "PUT", self.add_unit)

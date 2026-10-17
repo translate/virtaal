@@ -601,20 +601,24 @@ def test_replace_match_uses_the_unit_controller_when_one_is_wired_in():
     and test_replace_all_on_xliff_units - this is the normal,
     interactive "Replace" click path."""
     mode = SearchMode.__new__(SearchMode)
-    selected = []
-    set_calls = []
+    calls = []
+    target = object()
     unit_controller = SimpleNamespace(
+        view=SimpleNamespace(targets=[target]),
         get_unit_target=lambda part_n: 'a cat sat',
-        set_unit_target=lambda part_n, text: set_calls.append((part_n, text)),
+        set_unit_target=lambda part_n, text: calls.append(('set', part_n, text)),
     )
     mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        select_unit=selected.append, unit_controller=unit_controller))
+        select_unit=lambda unit: calls.append(('select', unit)),
+        unit_controller=unit_controller,
+        undo_controller=SimpleNamespace(push_current_text=lambda tb: calls.append(('undo', tb))),
+    ))
     match = SimpleNamespace(unit=object(), part='target', part_n=0, start=2, end=5)
 
     mode.replace_match(match, 'dog')
 
-    assert selected == [match.unit]
-    assert set_calls == [(0, 'a dog sat')]
+    # #4384: the target is saved for undo before it changes.
+    assert calls == [('select', match.unit), ('undo', target), ('set', 0, 'a dog sat')]
 
 
 def test_sync_matches_for_key_updates_matchcursor_indices_when_a_match_is_dropped():

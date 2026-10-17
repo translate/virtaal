@@ -204,7 +204,7 @@ msgstr "Página _abaixo"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr "Próxima _unidade"
+msgstr "Primeira _unidade"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"

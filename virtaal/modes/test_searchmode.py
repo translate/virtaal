@@ -14,7 +14,7 @@ from translate.storage import pypo, xliff
 
 from virtaal.modes.searchmode import SearchMode
 from virtaal.support.pogrep_compat import GrepFilter
-from virtaal.views.theme import rgba_to_str
+from virtaal.views.theme import current_theme, rgba_to_str
 
 
 class _Fake:
@@ -1412,3 +1412,94 @@ def test_update_search_finds_a_valid_regular_expression(monkeypatch):
 
     assert mode.storecursor.indices == [0]
     assert mode.backgrounds == ['base']
+
+
+# refresh after undo/redo (#4384) #
+
+class _StoreUnits(list):
+    def get_units(self):
+        return self
+
+
+def _refresh_mode(units, current):
+    from virtaal.controllers.cursor import Cursor
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        unit_controller=SimpleNamespace(current_unit=current)))
+    mode.storecursor = Cursor(_StoreUnits(units), [])
+    mode.filter = GrepFilter(searchstring=' asseblief', searchparts=('source', 'target'),
+                             ignorecase=True, useregexp=False, max_matches=200)
+    mode._match_text_cache = {}
+    mode.default_base = 'base'
+    mode.backgrounds = []
+    mode._set_search_bg = mode.backgrounds.append
+    mode._highlight_matches = lambda: None
+    return mode
+
+
+def test_refresh_results_finds_text_an_undo_brought_back_without_moving():
+    units = [_xliff_unit('Open please', 'Maak oopX'),
+             _xliff_unit('Save please', 'Stoor asseblief')]
+    mode = _refresh_mode(units, current=units[0])
+
+    mode._refresh_results()
+
+    assert mode.storecursor.indices == [1]
+    assert mode.storecursor.index == 0  # still on the unit undo loaded
+    assert [m.unit for m in mode.matches] == [units[1]]
+    assert mode.backgrounds == ['base']
+
+
+def test_on_undo_redo_schedules_a_refresh_only_with_search_text(monkeypatch):
+    scheduled = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)
+    mode = SearchMode.__new__(SearchMode)
+    mode._search_timeout = 0
+    mode.ent_search = SimpleNamespace(get_text=lambda: '')
+
+    mode._on_undo_redo(None)
+    assert scheduled == []
+
+    mode.ent_search = SimpleNamespace(get_text=lambda: 'asseblief')
+    mode._on_undo_redo(None)
+    assert scheduled == [mode._refresh_results]
+
+
+def test_refresh_results_with_no_matches_shows_the_warning_and_stays_put():
+    units = [_xliff_unit('Open please', 'Maak oopX')]
+    mode = _refresh_mode(units, current=units[0])
+
+    def invalid(units):
+        raise re.error('missing )')
+    mode.filter = SimpleNamespace(getmatches=invalid, re_search=re.compile('x'))
+
+    mode._refresh_results()
+
+    assert mode.matches == []
+    assert mode.storecursor.indices == []
+    assert mode.storecursor.index == 0
+    assert mode.filter.re_search is None
+    assert mode.backgrounds == [current_theme['warning_bg']]
+
+
+def test_undo_and_redo_hooks_are_connected_once_and_disconnected():
+    class _Item:
+        def __init__(self):
+            self.handlers = {}
+        def connect_after(self, signal, handler):
+            self.handlers[len(self.handlers) + 1] = (signal, handler)
+            return len(self.handlers)
+        def disconnect(self, handler_id):
+            del self.handlers[handler_id]
+    items = {'mnu_undo': _Item(), 'mnu_redo': _Item()}
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        view=SimpleNamespace(gui=SimpleNamespace(get_object=items.get))))
+
+    mode._connect_undo_redo()
+    mode._connect_undo_redo()  # selecting Search again doesn't stack handlers
+
+    assert [list(item.handlers.values()) for item in items.values()] == [
+        [('activate', mode._on_undo_redo)], [('activate', mode._on_undo_redo)]]
+    mode._disconnect_undo_redo()
+    assert all(not item.handlers for item in items.values())

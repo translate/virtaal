@@ -400,11 +400,11 @@ class WebLookupAddDialog:
         if response != Gtk.ResponseType.OK:
             return None
 
-        name = self.ent_url_name.get_text()
+        name = self.ent_url_name.get_text().strip()
         self.url = {
             'id':             _slugify(name),
             'display_name':   name,
-            'url':            self.ent_url.get_text(),
+            'url':            self.ent_url.get_text().strip(),
             'quoted':         self.cbtn_url_quote.get_active(),
             'enabled':        True,
         }

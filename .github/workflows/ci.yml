@@ -1635,13 +1635,28 @@ jobs:
 
       - name: Smoke test - bare distributions
         # Only what every desktop has installed: no GTK, no Python.
+        # In parallel: each runs in its own container.
         run: |
-          for image in ubuntu:22.04 ubuntu:24.04 debian:13 fedora:44; do
-            echo "::group::$image"
+          images=(ubuntu:22.04 ubuntu:24.04 debian:13 fedora:44)
+          pids=()
+          for image in "${images[@]}"; do
             devsupport/packaging/linux/smoke_test_distro.sh "$image" \
-              build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage
-            echo "::endgroup::"
+              build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage > "smoke-${image/:/-}.log" 2>&1 &
+            pids+=($!)
           done
+          failed=()
+          for i in "${!images[@]}"; do
+            status=0
+            wait "${pids[$i]}" || status=$?
+            echo "::group::${images[$i]} (exit $status)"
+            cat "smoke-${images[$i]/:/-}.log"
+            echo "::endgroup::"
+            [ "$status" = 0 ] || failed+=("${images[$i]}")
+          done
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "::error::AppImage smoke test failed on: ${failed[*]}"
+            exit 1
+          fi
 
       - uses: actions/upload-artifact@v7
         with:

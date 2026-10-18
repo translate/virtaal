@@ -76,8 +76,8 @@ def _unknown_glyphs(text, font_name):
 @pytest.mark.skipif(not platform.is_mac, reason="macOS system UI font")
 @pytest.mark.parametrize('text', ['सबै', 'ਸਾਰੇ', 'అన్నీ', 'ગુજરાતી', 'தமிழ்', 'മലയാളം', 'ଓଡ଼ିଆ'])
 def test_macos_ui_font_renders_indic_scripts(text):
-    # #4107: Pango finds no font for these from .AppleSystemUIFont alone.
-    assert _unknown_glyphs(text, '.AppleSystemUIFont 13') > 0
+    # #4107: on macOS 26 Pango finds no font for these from
+    # .AppleSystemUIFont alone; macOS 15 finds one by itself.
     assert _unknown_glyphs(text, rendering.with_font_fallbacks('.AppleSystemUIFont 13')) == 0
 
 

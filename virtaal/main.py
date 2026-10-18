@@ -77,6 +77,11 @@ class Virtaal:
         import gc
         gc.disable()
 
+        # Before the window exists, so the desktop matches it to the entry.
+        if platform.is_appimage:
+            from virtaal.support import appimage
+            appimage.integrate()
+
         # We try to get the welcomescreen loaded as early as possible
         from virtaal.controllers.maincontroller import MainController
         from virtaal.controllers.storecontroller import StoreController

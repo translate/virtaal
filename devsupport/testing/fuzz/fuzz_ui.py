@@ -513,8 +513,10 @@ def main():
                         help='Run the random part for this long instead of a number of actions.')
     parser.add_argument('--seed', type=int, default=None,
                         help='Seed for the random part, printed so a run can be replayed.')
-    parser.add_argument('--sections', default=','.join(SECTIONS),
-                        help='Sweep sections to run (default: all): %s' % ', '.join(SECTIONS))
+    nightly = [s for s in SECTIONS if not s.startswith('service-')]
+    parser.add_argument('--sections', default=','.join(nightly),
+                        help='Sweep sections to run, or "services" for all service-* ones (default: all '
+                             'but those, which run weekly): %s' % ', '.join(SECTIONS))
     parser.add_argument('--no-sweep', action='store_true', help='Skip the corpus sweep.')
     parser.add_argument('--no-random', action='store_true', help='Skip the random part.')
     parser.add_argument('--results', default=None,
@@ -544,7 +546,11 @@ def main():
         # A fresh config per section, so one section's leftovers can't
         # change what the next one sees.
         if not args.no_sweep:
-            for section in [s for s in args.sections.split(',') if s]:
+            sections = []
+            for name in filter(None, args.sections.split(',')):
+                # 'services': every service-* section.
+                sections += [s for s in SECTIONS if s.startswith('service-')] if name == 'services' else [name]
+            for section in sections:
                 start = time.monotonic()
                 env = child_env(prepare_home(os.path.join(root, section)))
                 cases = run_section(section, env, outdir, args.debugger, platform)

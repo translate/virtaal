@@ -70,3 +70,11 @@ modules:
     sources:
       - type: dir
         path: ../../..
+        # Earlier builds' output, which setup.py would otherwise scan.
+        skip:
+          - devsupport/packaging/flatpak/.flatpak-builder
+          - devsupport/packaging/flatpak/build-dir
+          - devsupport/packaging/flatpak/build-dir-flathub
+          - devsupport/packaging/flatpak/repo
+          - devsupport/packaging/flatpak/repo-flathub
+          - devsupport/packaging/flatpak/flathub

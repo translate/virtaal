@@ -28,6 +28,7 @@ from bottle import Bottle, request, response
 from translate.storage import base, factory
 
 from virtaal.support import (
+    fluent_compat,  # noqa: F401 - applies its patch on import
     poparser_compat,  # noqa: F401 - applies its patch on import
     tmdb,
 )

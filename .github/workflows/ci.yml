@@ -1558,8 +1558,10 @@ jobs:
         working-directory: devsupport/packaging/flatpak
         # Uninstalled afterwards so the runtime cache doesn't keep it.
         run: |
+          set -o pipefail
           flatpak install --user -y --noninteractive --reinstall \
-            Virtaal-linux-${{ matrix.arch }}.flatpak
+            Virtaal-linux-${{ matrix.arch }}.flatpak 2>&1 | tee install.log
+          ! grep -i 'magic mime rule' install.log
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak run io.github.translate.Virtaal --version
           xvfb-run -a --server-args="-screen 0 1024x768x24" \

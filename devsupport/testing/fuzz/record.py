@@ -34,6 +34,8 @@ GLIB_IGNORE = (
     # GDK on Windows can't update a layered (tooltip) window without a
     # desktop session, as on CI runners.
     'UpdateLayeredWindow failed',
+    # The runner has no font for some corpus characters.
+    'All font fallbacks failed',
 )
 # Not Virtaal problems: translate-toolkit's spelling check logs this once
 # per language that has no installed dictionary.
@@ -45,11 +47,21 @@ def _own_frame(path):
     return '/devsupport/testing/fuzz/' in os.path.normpath(path).replace('\\', '/')
 
 
+def is_virtaal_path(path):
+    """Whether a source file is Virtaal's own, installed or in a checkout -
+    not another package in a virtualenv inside a checkout named virtaal."""
+    path = os.path.normpath(path).replace('\\', '/')
+    if '/virtaal/' not in path or _own_frame(path):
+        return False
+    rest = path.rsplit('/virtaal/', 1)[1]
+    return not any(part in rest for part in ('site-packages/', 'dist-packages/', '.venv/'))
+
+
 def exception_signature(exc_type, tb):
     """Exception type and the innermost Virtaal function it passed through."""
     frames = [f for f in traceback.extract_tb(tb) if not _own_frame(f.filename)]
     for frame in reversed(frames):
-        if '/virtaal/' in frame.filename.replace('\\', '/'):
+        if is_virtaal_path(frame.filename):
             return '%s %s' % (exc_type.__name__, frame.name)
     return '%s %s' % (exc_type.__name__, frames[-1].name if frames else '')
 
@@ -62,6 +74,7 @@ class Recorder:
         self.sweep = None
         self.case = None
         self._start = None
+        self._held = None
 
     def _write(self, **event):
         self._file.write(json.dumps(event, ensure_ascii=True) + '\n')
@@ -90,7 +103,21 @@ class Recorder:
         self._write(event='end', elapsed=round(elapsed, 3))
         self.case = None
 
+    def hold(self):
+        """Keep problems back until release(), to decide whether they count."""
+        self._held = []
+
+    def release(self, keep=True):
+        held, self._held = self._held, None
+        if keep:
+            for problem in held:
+                self.problem(*problem)
+        return held
+
     def problem(self, kind, signature, detail=''):
+        if self._held is not None:
+            self._held.append((kind, signature, detail))
+            return
         if self.case is None:
             self.begin(self.sweep or 'setup', OUTSIDE_CASE)
         self._write(event='problem', kind=kind, signature=signature, detail=detail[-4000:])
@@ -151,6 +178,7 @@ class Recorder:
         view.show_save_confirm_dialog = lambda: 'discard'
         view.show_input_dialog = lambda *a, **k: None
         view.show_translator_dialog = lambda *a, **k: None
+        view.show_save_dialog = lambda *a, **k: None
         Gtk.Dialog.run = unexpected_dialog
         Gtk.NativeDialog.run = unexpected_dialog
 

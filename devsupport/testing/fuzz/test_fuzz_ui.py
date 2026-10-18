@@ -106,3 +106,13 @@ def test_prepared_config_turns_off_network_plugins(tmp_path, monkeypatch):
     home = fuzz_ui.prepare_home(str(tmp_path))
     plugins = open(fuzz_ui.config_dir(home) + '/plugins.ini', encoding='utf-8').read()
     assert 'amagama' in plugins and 'thesaurus' in plugins and 'pontoon' in plugins
+
+
+def test_virtaal_paths_exclude_other_packages_in_a_checkout_virtualenv():
+    assert record.is_virtaal_path('/home/runner/work/virtaal/virtaal/virtaal/views/unitview.py')
+    assert record.is_virtaal_path('/opt/py/lib/python3.14/site-packages/virtaal/views/unitview.py')
+    assert record.is_virtaal_path('D:\\a\\virtaal\\virtaal\\virtaal\\modes\\searchmode.py')
+    assert not record.is_virtaal_path(
+        '/Users/runner/work/virtaal/virtaal/.venv/lib/python3.14/site-packages/translate/storage/lisa.py')
+    assert not record.is_virtaal_path('/src/devsupport/testing/fuzz/sweep.py')
+    assert not record.is_virtaal_path('/usr/lib/python3/dist-packages/translate/storage/lisa.py')

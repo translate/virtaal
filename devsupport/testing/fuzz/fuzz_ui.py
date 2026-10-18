@@ -8,7 +8,8 @@
 """UI fuzzer: a corpus sweep of every text input, then random interaction.
 
 The sweep (sweep.py) puts every corpus value through every text input in
-a fixed order. The random part then drives the real controllers
+a fixed order, and opens and saves malformed files and awkward paths. The
+random part then drives the real controllers
 (navigate, switch mode, edit with corpus text, search, undo, save,
 close/reopen, resize) for --duration-seconds, after native crashes and
 timing problems, such as a live GTK object graph torn down in a way that
@@ -48,13 +49,21 @@ sys.path.insert(0, HERE)
 
 import results  # noqa: E402
 from known_bugs import KNOWN_BUGS  # noqa: E402
-from record import GLIB_IGNORE, OUTSIDE_CASE, STDERR_MARKER, TIMEOUT_MARKER  # noqa: E402
+from record import (  # noqa: E402
+    GLIB_IGNORE,
+    OUTSIDE_CASE,
+    STDERR_MARKER,
+    TIMEOUT_MARKER,
+    is_virtaal_path,
+)
 from sweep import SECTIONS  # noqa: E402
 
 TESTFILES_DIR = os.path.join(REPO_ROOT, 'devsupport', 'testfiles')
 DEFAULT_TESTFILES = ['workflow.po', 'workflow.xliff', 'workflow.ts', 'checks.po']
 CASE_TIMEOUT = 60
-FREEZE_LIMIT = 20
+# A known freeze takes 11 s to minutes depending on the runner; a fix makes
+# it take well under a second.
+FREEZE_LIMIT = 8
 MAX_RESTARTS = 20
 DEBUGGERS = {
     'gdb': ['gdb', '-q', '--batch', '-ex', 'run', '-ex', 'thread apply all bt full', '--args'],
@@ -199,8 +208,7 @@ def died_in(cases, stderr):
     # A debugger's own output can follow the dump; keep the dump.
     dump = after[after.index(TIMEOUT_MARKER):][:3000]
     frames = re.findall(r'File "([^"]+)", line \d+ in (\w+)', dump)
-    own = [name for path, name in frames
-           if '/virtaal/' in path.replace('\\', '/') and '/devsupport/' not in path.replace('\\', '/')]
+    own = [name for path, name in frames if is_virtaal_path(path)]
     return {'kind': 'timeout', 'signature': own[0] if own else '', 'detail': dump}
 
 
@@ -441,8 +449,10 @@ class Fuzzer:
         except Exception:
             self.rec.exception(*sys.exc_info())
         # Run what the action deferred (idle/timeout callbacks, signals)
-        # before the next one, as in a real session.
-        while self.Gtk.events_pending():
+        # before the next one, as in a real session. A repeating idle
+        # callback keeps events pending for ever, so stop after a while.
+        deadline = time.monotonic() + 2
+        while self.Gtk.events_pending() and time.monotonic() < deadline:
             self.Gtk.main_iteration()
         self.rec.end()
 
@@ -510,17 +520,19 @@ def main():
     faulthandler.enable()
 
     root = tempfile.mkdtemp(prefix='virtaal-fuzz-home-')
-    env = child_env(prepare_home(root))
     found = []
     try:
+        # A fresh config per section, so one section's leftovers can't
+        # change what the next one sees.
         if not args.no_sweep:
             for section in [s for s in args.sections.split(',') if s]:
                 start = time.monotonic()
+                env = child_env(prepare_home(os.path.join(root, section)))
                 cases = run_section(section, env, outdir, args.debugger, platform)
                 print('sweep %s: %d cases in %.0f s' % (section, len(cases), time.monotonic() - start))
                 found += cases
         if not args.no_random:
-            found += run_random(args, env, outdir, args.debugger)
+            found += run_random(args, child_env(prepare_home(os.path.join(root, 'random'))), outdir, args.debugger)
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
@@ -529,7 +541,7 @@ def main():
     outcome = results.classify(found, KNOWN_BUGS, platform)
     issue_check = True
     if os.environ.get('GITHUB_ACTIONS'):
-        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS], token=os.environ.get('GITHUB_TOKEN'))
+        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS if e.get('issue')], token=os.environ.get('GITHUB_TOKEN'))
         issue_check = bool(states)
         results.check_closed(outcome, KNOWN_BUGS, states)
     text = results.summary(outcome, platform, issue_check)

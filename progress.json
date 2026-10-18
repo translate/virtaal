@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-17T11:11:13Z",
- "commit": "92775757d8c83123cb47fa93ca0d055ed07e0c1b",
+ "generated": "2026-10-18T07:36:37Z",
+ "commit": "d9e9c3e6a3a5955fc67fececdec8d4f1f282c25f",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -302,12 +302,12 @@
    "code": "ja",
    "name": "Japanese",
    "endonym": "日本語",
-   "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
-   "level2_missing": 123,
-   "level3_missing": 55,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "ko",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39027561034"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39108164547"
 }

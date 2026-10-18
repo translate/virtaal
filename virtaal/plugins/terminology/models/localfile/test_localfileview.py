@@ -722,20 +722,28 @@ def _entry_changed_dialog(duplicates=None, same_src_units=None, source='cat', ta
     return dialog
 
 
-@pytest.mark.parametrize('source, target', [
-    ('', 'x'), ('x', ''), (' \t', 'x'), ('x', '\xa0'), ('\n', '\n'),
-])
-def test_on_entry_changed_disables_add_for_a_blank_term(source, target):
+@pytest.mark.parametrize('source', ['', ' \t', '\n'])
+def test_on_entry_changed_disables_add_for_a_blank_source(source):
     # #4334: an empty source was saved as a second PO header, and a blank
     # one showed the header as an existing translation.
     header = SimpleNamespace(target='Project-Id-Version: x')
-    dialog = _entry_changed_dialog(same_src_units=[header], source=source, target=target)
+    dialog = _entry_changed_dialog(same_src_units=[header], source=source, target='x')
     dialog.eb_add_term_errors.show_all()
 
     dialog._on_entry_changed(None)
 
     assert dialog.btn_add_term.get_sensitive() is False
     assert dialog.eb_add_term_errors.get_visible() is False
+
+
+@pytest.mark.parametrize('target', ['', '\xa0'])
+def test_on_entry_changed_disables_add_but_shows_existing_translations_for_a_blank_target(target):
+    dialog = _entry_changed_dialog(same_src_units=[SimpleNamespace(target='kat')], target=target)
+
+    dialog._on_entry_changed(None)
+
+    assert dialog.btn_add_term.get_sensitive() is False
+    assert 'kat' in dialog.lbl_add_term_errors.get_text()
 
 
 def test_on_entry_changed_flags_an_identical_existing_entry():

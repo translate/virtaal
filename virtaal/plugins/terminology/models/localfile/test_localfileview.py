@@ -758,6 +758,18 @@ def test_on_entry_changed_warns_about_an_existing_translation_for_the_same_sourc
     assert 'kitty' in dialog.lbl_add_term_errors.get_text()
 
 
+@pytest.mark.parametrize('target', ['stoor & bewaar', 'a <br> b', '<span foreground="red">x</span>'])
+def test_on_entry_changed_shows_an_existing_translation_as_text_not_markup(target):
+    # #4342: an unescaped "&" was rejected as markup, leaving the label's
+    # previous text; a tag was rendered.
+    dialog = _entry_changed_dialog(same_src_units=[SimpleNamespace(target=target)])
+    dialog.lbl_add_term_errors.set_text('the previous term')
+
+    dialog._on_entry_changed(None)
+
+    assert target in dialog.lbl_add_term_errors.get_text()
+
+
 def test_on_entry_changed_clears_errors_and_enables_add_when_clean():
     dialog = _entry_changed_dialog()
     dialog.btn_add_term.set_sensitive(False)

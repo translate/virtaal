@@ -523,7 +523,8 @@ class TermAddDialog:
             separator = lang_factory.getlanguage(ui_language).listseperator
 
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-            translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])
+            translations = separator.join([_('<b>%s</b>') % GLib.markup_escape_text(str(u.target), -1)
+                                           for u in same_src_units])
             errormsg = _('Existing translations: %(translations)s') % {
                 'translations': translations
             }

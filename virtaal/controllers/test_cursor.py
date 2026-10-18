@@ -87,6 +87,20 @@ def test_changing_indices_keeps_the_current_unit_when_it_is_still_included():
     assert cursor.index == 3
 
 
+
+def test_set_indices_keep_current_stays_on_a_unit_no_longer_included():
+    cursor, signals = _cursor([1, 3, 5])
+    cursor.index = 3
+    signals.clear()
+
+    cursor.set_indices([1, 5], keep_current=True)
+
+    assert cursor.index == 3
+    assert signals == []
+    cursor.move(1)
+    assert cursor.index == 5
+
+
 # visit() #
 
 def test_visit_moves_to_a_unit_outside_indices_without_adding_it():

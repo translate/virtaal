@@ -823,12 +823,10 @@ msgstr "Corchetes"
 msgid "Compendium conflict"
 msgstr "Conflicto de compendio"
 
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"Alexander Dupuy <alex.dupuy@mac.com>\n"
-"Julen Ruiz Aizpuru <julenx@gmail.com>\n"
-"Omar Campagne <ocampagne@gmail.com>"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

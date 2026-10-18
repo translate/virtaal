@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
 import os
 
 from gi.repository import GObject
@@ -61,13 +62,13 @@ class LanguageController(BaseController):
         # Load previously-saved (new) languages
         filename = os.path.join(pan_app.get_config_dir(), 'langs.ini')
         if os.path.isfile(filename):
-            languages = pan_app.load_config(filename)
-            for code in languages:
-                languages[code] = (
-                    languages[code]['name'],
-                    int(languages[code]['nplurals']),
-                    languages[code]['plural']
-                )
+            languages = {}
+            for code, info in pan_app.load_config(filename).items():
+                try:
+                    languages[code] = (info['name'], int(info['nplurals']), info['plural'])
+                except (KeyError, ValueError):
+                    # Skipped, not fatal: this runs at start-up (#4331).
+                    logging.warning('Ignoring unreadable language %r in %s', code, filename)
             LanguageModel.languages.update(languages)
 
 
@@ -146,21 +147,18 @@ class LanguageController(BaseController):
         return srclang, tgtlang
 
     def _load_recent(self):
-        code_pairs = pan_app.settings.language['recentlangs'].split('|')
-        codes = [pair.split(',') for pair in code_pairs]
-        if codes == [['']]:
-            return []
-
         recent_pairs = []
-        for srccode, tgtcode in codes:
-            srclang = LanguageModel(srccode)
-            tgtlang = LanguageModel(tgtcode)
-            recent_pairs.append((srclang, tgtlang))
-
+        for pair in pan_app.settings.language['recentlangs'].split('|'):
+            codes = pair.split(',')
+            # A malformed pair is skipped: this runs at every start-up (#4331).
+            if len(codes) == 2 and all(codes):
+                recent_pairs.append((LanguageModel(codes[0]), LanguageModel(codes[1])))
         return recent_pairs
 
     def save_recent(self):
-        pairs = [','.join([src.code, tgt.code]) for (src, tgt) in self.recent_pairs]
+        # A code containing a separator can't be read back.
+        pairs = [','.join([src.code, tgt.code]) for (src, tgt) in self.recent_pairs
+                 if not any(sep in src.code + tgt.code for sep in ',|')]
         recent = '|'.join(pairs)
         pan_app.settings.language['recentlangs'] = recent
 

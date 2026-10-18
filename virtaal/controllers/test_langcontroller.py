@@ -7,6 +7,8 @@
 
 from types import SimpleNamespace
 
+import pytest
+
 from virtaal.controllers import langcontroller
 from virtaal.controllers.langcontroller import LanguageController
 from virtaal.models.langmodel import LanguageModel
@@ -283,6 +285,42 @@ def test_get_detected_langs_returns_none_for_unidentified_codes(monkeypatch, tmp
 
     assert srclang is None
     assert tgtlang is None
+
+
+@pytest.mark.parametrize('recentlangs', ['x,y,en|en,af', 'x|en,af', 'en,|en,af', ',|en,af', 'en,af|'])
+def test_load_recent_skips_a_malformed_pair(monkeypatch, tmp_path, recentlangs):
+    # #4331: a language code containing "," or "|" stopped every later launch.
+    controller, _ = _make_controller(monkeypatch, tmp_path, _FakeSettings(recentlangs=recentlangs))
+
+    assert [(s.code, t.code) for s, t in controller.recent_pairs] == [('en', 'af')]
+
+
+def test_save_recent_leaves_out_a_pair_whose_code_has_a_separator(monkeypatch, tmp_path):
+    controller, _ = _make_controller(monkeypatch, tmp_path)
+    bad = LanguageModel('en')
+    bad.code = 'x,y'
+    controller.recent_pairs = [(LanguageModel('en'), bad), (LanguageModel('en'), LanguageModel('af'))]
+
+    controller.save_recent()
+
+    assert langcontroller.pan_app.settings.language['recentlangs'] == 'en,af'
+
+
+def test_init_skips_a_saved_language_it_cannot_read(monkeypatch, tmp_path):
+    (tmp_path / 'langs.ini').write_text(
+        '[xx-bad]\nname = Bad\nnplurals = two\nplural = n>1\n'
+        '[xx-missing]\nname = Missing\n'
+        '[xx-good]\nname = Good\nnplurals = 2\nplural = n>1\n'
+    )
+    try:
+        controller, _ = _make_controller(monkeypatch, tmp_path)
+
+        assert 'xx-bad' not in LanguageModel.languages
+        assert 'xx-missing' not in LanguageModel.languages
+        assert LanguageModel.languages['xx-good'] == ('Good', 2, 'n>1')
+    finally:
+        for code in ('xx-bad', 'xx-missing', 'xx-good'):
+            LanguageModel.languages.pop(code, None)
 
 
 def test_save_recent_serializes_pairs_to_settings(monkeypatch, tmp_path):

@@ -236,7 +236,9 @@ class Plugin(BasePlugin):
     # EVENT HANDLERS #
     def _on_cursor_change(self, cursor):
         def add_widgets():
-            if hasattr(self, 'lastunit'):
+            # deref() is None while the cursor has no unit (a search with
+            # no matches).
+            if getattr(self, 'lastunit', None) is not None:
                 if self.lastunit.hasplural():
                     # target is a multistring (subclasses str) - iterate
                     # target.strings, not target itself, or this yields

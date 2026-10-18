@@ -805,6 +805,7 @@ msgid "Compendium conflict"
 msgstr "Адрозненне ад кампендыюма"
 
 # 88%
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr "Пералік перакладчыкаў"

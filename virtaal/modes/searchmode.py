@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
+import re
 from difflib import SequenceMatcher
 
 from gi.repository import Gdk, GLib, Gtk
@@ -48,6 +49,7 @@ class SearchMode(BaseMode):
         self.select_first_match = True
         self._search_timeout = 0
         self._unit_modified_id = 0
+        self._undo_redo_ids = []
         # (unit id, part, part_n) -> the text self.matches' offsets into
         # it were last computed against; see _sync_matches_for_key().
         self._match_text_cache = {}
@@ -156,6 +158,7 @@ class SearchMode(BaseMode):
         if self._unit_modified_id:
             unitcont.disconnect(self._unit_modified_id)
         self._unit_modified_id = unitcont.connect('unit-modified', self._on_unit_modified)
+        self._connect_undo_redo()
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
@@ -227,6 +230,7 @@ class SearchMode(BaseMode):
                 match.unit.target = rstring
         else:
             main_controller.select_unit(match.unit)
+            main_controller.undo_controller.push_current_text(unit_controller.view.targets[match.part_n])
             rstring = unit_controller.get_unit_target(match.part_n)
             unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 
@@ -235,15 +239,20 @@ class SearchMode(BaseMode):
         # See virtaal.support.pogrep_compat for why this isn't imported
         # straight from translate.tools.pogrep.
         from virtaal.support.pogrep_compat import GrepFilter
-        self.filter = GrepFilter(
-            searchstring=self.ent_search.get_text(),
+        store_units = self.storecursor.model.get_units()
+        filter_args = dict(
             searchparts=('source', 'target'),
             ignorecase=not self.chk_casesensitive.get_active(),
             useregexp=self.chk_regex.get_active(),
             max_matches=self.MAX_RESULTS
         )
-        store_units = self.storecursor.model.get_units()
-        self.matches, indexes = self.filter.getmatches(store_units)
+        try:
+            self.filter = GrepFilter(searchstring=self.ent_search.get_text(), **filter_args)
+            self.matches, indexes = self.filter.getmatches(store_units)
+        except (re.error, OverflowError):
+            # An invalid or unfinished regular expression matches nothing.
+            self.filter = GrepFilter(searchstring='', **filter_args)
+            self.matches, indexes = [], []
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
 
         self._match_text_cache = {}
@@ -299,6 +308,7 @@ class SearchMode(BaseMode):
         if self._unit_modified_id:
             self.controller.main_controller.unit_controller.disconnect(self._unit_modified_id)
             self._unit_modified_id = 0
+        self._disconnect_undo_redo()
 
         self.matches = []
         self._match_text_cache = {}
@@ -445,29 +455,41 @@ class SearchMode(BaseMode):
         except ValueError as ve:
             logging.exception("(Re-)adding search highlighting tag exception:")
 
-        select_iters = []
+        # Merge touching or overlapping matches, and drop empty ones that
+        # have nothing to highlight: converting each match to buffer
+        # iterators made dense matches in a long text slow (#4343).
+        ranges = []
+        for match in self._get_matches_for_textbox(textbox):
+            if match.start == match.end:
+                continue
+            if ranges and match.start <= ranges[-1][1]:
+                ranges[-1][1] = max(ranges[-1][1], match.end)
+            else:
+                ranges.append([match.start, match.end])
+
+        gui_info = getattr(textbox.elem, 'gui_info', None)
+        elem_len = len(textbox.elem) if gui_info else None
+
+        def to_iter(index, start_at=None):
+            if gui_info:
+                return gui_info.treeindex_to_iter(index, start_at=start_at, elem_len=elem_len)
+            return buff.get_iter_at_offset(index)
 
         # We keep the iterator and index pointing to the end of the previous
-        # match so that we continue searching from there for the next match.
+        # range so that we continue searching from there for the next one.
         end_iter = None
         old_end = -1
-
-        for match in self._get_matches_for_textbox(textbox):
-            start, end = match.start, match.end
-            if hasattr(textbox.elem, 'gui_info'):
-                if end_iter:
-                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start, start_at=(old_end, end_iter))
-                else:
-                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start)
-                end_iter   = textbox.elem.gui_info.treeindex_to_iter(end, start_at=(start, start_iter))
-                old_end = end
-            else:
-                start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
-                old_end = end
+        for start, end in ranges:
+            start_iter = to_iter(start, (old_end, end_iter) if end_iter else None)
+            end_iter = to_iter(end, (start, start_iter))
+            old_end = end
             buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
-            if select_match and textbox.role == 'target' and not select_iters and self.select_first_match:
-                select_iters = [start_iter, end_iter]
+        select_iters = []
+        if ranges and select_match and textbox.role == 'target' and self.select_first_match:
+            first = next(m for m in self._get_matches_for_textbox(textbox) if m.start != m.end)
+            first_start = to_iter(first.start)
+            select_iters = [first_start, to_iter(first.end, (first.start, first_start))]
 
         if select_iters:
             buff.select_range(select_iters[1], select_iters[0])
@@ -540,7 +562,7 @@ class SearchMode(BaseMode):
         self._highlight_matches()
 
     def _on_replace_clicked(self, btn):
-        if not self.storecursor or not self.ent_search.get_text() or not self.ent_replace.get_text():
+        if not self.storecursor or not self.ent_search.get_text():
             return
         self._cancel_search_timeout()
         self.update_search()
@@ -656,6 +678,55 @@ class SearchMode(BaseMode):
         part_ns = {m.part_n for m in self._get_matches_for_unit(current_unit) if m.part == 'target'}
         for part_n in part_ns:
             self._sync_matches_for_key((id(current_unit), 'target', part_n))
+
+    def _connect_undo_redo(self):
+        self._disconnect_undo_redo()
+        gui = getattr(getattr(self.controller.main_controller, 'view', None), 'gui', None)
+        if gui is None:
+            return
+        for name in ('mnu_undo', 'mnu_redo'):
+            item = gui.get_object(name)
+            self._undo_redo_ids.append((item, item.connect_after('activate', self._on_undo_redo)))
+
+    def _disconnect_undo_redo(self):
+        for item, handler_id in getattr(self, '_undo_redo_ids', []):
+            item.disconnect(handler_id)
+        self._undo_redo_ids = []
+
+    def _on_undo_redo(self, _item):
+        # Undo and redo can bring back text the search matches (#4384).
+        # Wait for the undo's own deferred refresh to write the text back.
+        if self.ent_search.get_text():
+            self._cancel_search_timeout()
+            self._search_timeout = GLib.timeout_add(self.SEARCH_DELAY, self._refresh_results)
+
+    def _refresh_results(self):
+        """Re-run the search over the file without moving the cursor."""
+        self._search_timeout = 0
+        try:
+            self.matches, indexes = self.filter.getmatches(self.storecursor.model.get_units())
+        except (re.error, OverflowError):
+            self.matches, indexes = [], []
+        self.matchcursor = Cursor(self.matches, range(len(self.matches)))
+        self._match_text_cache = {}
+        for match in self.matches:
+            self._match_text_cache.setdefault(self._match_key(match), match.get_getter()())
+
+        # Stay on the unit undo loaded, even if it no longer matches: pin
+        # the cursor to it before the results change.
+        current = self.controller.main_controller.unit_controller.current_unit
+        units = self.storecursor.model.get_units()
+        index = next((i for i, unit in enumerate(units) if unit is current), -1)
+        if index >= 0:
+            self.storecursor.force_index(index)
+        self.storecursor.set_indices(indexes, keep_current=True)
+        if indexes:
+            self._set_search_bg(self.default_base)
+        else:
+            self._set_search_bg(current_theme['warning_bg'])
+            self.filter.re_search = None
+        self._highlight_matches()
+        return False
 
     def _refresh_proxy(self, *args):
         self._cancel_search_timeout()

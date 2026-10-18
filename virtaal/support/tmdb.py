@@ -326,7 +326,9 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
             query = """SELECT s.text, t.text, s.context, s.lang, t.lang FROM sources s JOIN targets t ON s.sid = t.sid JOIN fulltext f ON s.sid = f.docid
                        WHERE s.lang IN (?) AND t.lang IN (?) AND s.length BETWEEN ? AND ?
                        AND fulltext MATCH ?"""
-            search_str = " OR ".join(unit_words)
+            # Quoted, so a word such as AND, NOT or NEAR isn't read as an
+            # FTS operator (#4332). STRIP_REGEXP has removed any quote.
+            search_str = " OR ".join('"%s"' % word for word in unit_words)
             self.cursor.execute(
                 query, (source_langs, target_langs, minlen, maxlen, search_str)
             )

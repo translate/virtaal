@@ -810,9 +810,10 @@ msgid "Compendium conflict"
 msgstr "Ingxabano ye-compendium"
 
 # 88%
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
-msgstr "Friedel Wolff, Sedric Motha"
+msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

@@ -45,3 +45,28 @@ def test_getmatches_maps_offsets_through_nfd_decomposed_accents():
 
     raw = units[0].target
     assert [raw[m.start:m.end] for m in matches] == ["Don't know", "Don't know"]
+
+
+def test_getmatches_accepts_a_leading_inline_flag():
+    # Upstream wraps the pattern in a group: "((?i)f)" is an error since
+    # Python 3.11.
+    units = [_unit("Open the file", "Maak oop")]
+    f = GrepFilter(searchstring="(?i)F", searchparts=('source', 'target'),
+                    ignorecase=False, useregexp=True, max_matches=200000)
+
+    matches, indexes = f.getmatches(units)
+
+    assert indexes == [0]
+    assert [units[0].source[m.start:m.end] for m in matches] == ["f"]
+
+
+def test_getmatches_stops_at_max_matches_instead_of_raising():
+    # #4395: upstream raised ValueError("Too many matches found").
+    units = [_unit("x", "aa"), _unit("x", "aa"), _unit("x", "aa")]
+    f = GrepFilter(searchstring="a", searchparts=('target',),
+                    ignorecase=False, useregexp=False, max_matches=3)
+
+    matches, indexes = f.getmatches(units)
+
+    assert len(matches) == 3
+    assert indexes == [0, 1]

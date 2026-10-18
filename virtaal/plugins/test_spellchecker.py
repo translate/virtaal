@@ -30,6 +30,7 @@ from gi.repository import GLib, Gtk
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import PluginUnsupported
+from virtaal.plugins import spellchecker
 from virtaal.plugins.spellchecker import Plugin
 
 
@@ -515,6 +516,22 @@ def test_unsupported_on_windows_with_a_non_ascii_username(monkeypatch):
     monkeypatch.setenv('APPDATA', 'C:\\Users\\\u00e9lise\\AppData\\Roaming')
 
     with pytest.raises(PluginUnsupported):
+        Plugin('spellchecker', None)
+
+
+def test_unsupported_without_a_usable_enchant(monkeypatch):
+    """#4313: a leftover "enchant" directory isn't pyenchant."""
+    try:
+        import gi
+        gi.require_version('GtkSpell', '3.0')
+        from gi.repository import GtkSpell  # noqa: F401
+    except (ImportError, ValueError):
+        pytest.skip("GtkSpell 3.0 typelib not installed - optional")
+    monkeypatch.setattr(platform, 'is_frozen', False)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(spellchecker, 'import_enchant', lambda: None)
+
+    with pytest.raises(PluginUnsupported, match='pyenchant'):
         Plugin('spellchecker', None)
 
 

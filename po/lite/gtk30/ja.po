@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-14 07:25+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-10-17 19:50+0900\n"
+"Last-Translator: Yuki Shira <shirayuking@gmail.com>\n"
+"Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -242,7 +242,7 @@ msgstr "クレジット(_R)"
 
 #. Seen in: font chooser
 msgid "Character Variants"
-msgstr ""
+msgstr "異体字"
 
 #. Seen in: About dialog
 msgid "Created by"
@@ -329,11 +329,11 @@ msgstr "Left"
 
 #. Seen in: font chooser
 msgid "Letter Case"
-msgstr ""
+msgstr "大文字/小文字"
 
 #. Seen in: font chooser
 msgid "Ligatures"
-msgstr ""
+msgstr "合字"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
@@ -355,15 +355,15 @@ msgstr "見つかりませんでした"
 
 #. Seen in: font chooser
 msgid "Number Case"
-msgstr ""
+msgstr "数字表記"
 
 #. Seen in: font chooser
 msgid "Number Formatting"
-msgstr ""
+msgstr "数字の書式"
 
 #. Seen in: font chooser
 msgid "Number Spacing"
-msgstr ""
+msgstr "数字間隔"
 
 #. File->Recent Files->tooltip
 #. Seen in: menus

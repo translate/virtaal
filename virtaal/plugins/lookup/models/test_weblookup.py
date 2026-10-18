@@ -110,6 +110,44 @@ def test_add_dialog_derives_an_id_from_the_typed_name(monkeypatch):
     assert url['id'] == 'my_site'
 
 
+
+@pytest.mark.parametrize('url, ok', [
+    (' ', False),
+    ('\t', False),
+    ('\n', False),
+    ('http://example.com/?q=%(query)s', True),
+])
+def test_add_dialog_needs_a_url_with_text(monkeypatch, url, ok):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+    seen = {}
+
+    def _type_and_confirm():
+        dialog.ent_url_name.set_text('My Site')
+        dialog.ent_url.set_text(url)
+        seen['ok'] = dialog.btn_url_ok.get_sensitive()
+        return Gtk.ResponseType.CANCEL
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    dialog.run()
+
+    assert seen['ok'] is ok
+
+
+def test_add_dialog_saves_the_name_and_url_trimmed(monkeypatch):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+
+    def _type_and_confirm():
+        dialog.ent_url_name.set_text(' My Site ')
+        dialog.ent_url.set_text(' http://example.com/?q=%(query)s\n')
+        return Gtk.ResponseType.OK
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    url = dialog.run()
+
+    assert (url['display_name'], url['url']) == ('My Site', 'http://example.com/?q=%(query)s')
+
 # Disabling a web look-up
 
 def _model(monkeypatch, tmp_path):
@@ -148,6 +186,43 @@ def test_create_menu_items_treats_a_missing_enabled_key_as_enabled(monkeypatch, 
     items = model.create_menu_items('word', 'source', 'en', 'en', None)
 
     assert [i.get_label() for i in items] == ['Custom']
+
+
+def _lookup_urls(monkeypatch, tmp_path, urls, query='word', role='source'):
+    model = _model(monkeypatch, tmp_path)
+    model.URLDATA = [{'display_name': str(n), 'url': url, 'quoted': False} for n, url in enumerate(urls)]
+    opened = []
+    monkeypatch.setattr(model, '_on_lookup', lambda item, url: opened.append(url))
+    for item in model.create_menu_items(query, role, 'en', 'af', None):
+        item.activate()
+    return opened
+
+
+def test_create_menu_items_keeps_a_literal_percent_in_a_url(monkeypatch, tmp_path):
+    # #4350: one of these used to raise, which dropped every look-up.
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://example.org/search?q=%(query)s&in=my%20bookmarks',
+        'https://example.org/100%/?q=%(query)s',
+        'https://example.org/my%20site?q=%(query)s',
+        'https://example.org/?q=%(query)s&name=%(name)s&n=%s',
+        'https://example.org/?q=%(query)s',
+    ])
+
+    assert opened == [
+        'https://example.org/search?q=word&in=my%20bookmarks',
+        'https://example.org/100%/?q=word',
+        'https://example.org/my%20site?q=word',
+        'https://example.org/?q=word&name=%(name)s&n=%s',
+        'https://example.org/?q=word',
+    ]
+
+
+def test_create_menu_items_fills_every_placeholder_and_a_doubled_percent(monkeypatch, tmp_path):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(querylang)s.example.org/%(nonquerylang)s/%(srclang)s-%(tgtlang)s/%(query)s?off=50%%',
+    ], query='a b', role='target')
+
+    assert opened == ['https://af.example.org/en/en-af/a%20b?off=50%']
 
 
 def test_load_urldata_defaults_a_saved_entry_without_enabled_to_enabled(monkeypatch, tmp_path):

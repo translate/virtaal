@@ -9,16 +9,12 @@
 # Regenerates po/virtaal.pot from po/POTFILES.in. Replaces intltool-
 # update --pot.
 #
-# xgettext's own by-extension language auto-detection can't tell a
-# .desktop.in or a GtkBuilder .ui file apart from plain text/XML -
-# intltool's per-line [type: ...] POTFILES.in annotations covered
-# exactly this gap. Runs xgettext once per group of files needing a
-# non-default language, --join-existing accumulating into one pot,
-# then one final pass for everything else (plain .py files,
-# virtaal.metainfo.xml.in, and virtaal-mimetype.xml.in - all three
-# correctly auto-detected by extension on their own: the first two via
-# gettext's own bundled metainfo.its, the last via po/its/'s own
-# shared-mime-info.its/.loc pair, found via GETTEXTDATADIRS below).
+# xgettext can't tell a .desktop.in or a GtkBuilder .ui file from
+# plain text/XML by extension, so those get their own -L pass;
+# --join-existing accumulates every pass into one pot. The final pass
+# auto-detects the rest: .py files, the metainfo template via
+# gettext's bundled metainfo.its, and virtaal-mimetype.xml.in via
+# po/its/ (found through GETTEXTDATADIRS below).
 set -euo pipefail
 cd "$(dirname "$0")"
 

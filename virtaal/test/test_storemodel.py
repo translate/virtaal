@@ -55,6 +55,36 @@ def test_compute_nplurals_none_without_any_plural_data():
     assert StoreModel._compute_nplurals(None, store) is None
 
 
+_TS = (
+    '<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE TS>\n<TS version="2.1"%s>\n'
+    '<context>\n<name>MainWindow</name>\n<message>\n<source>Open the file</source>\n'
+    '<translation type="unfinished"></translation>\n</message>\n</context>\n</TS>\n'
+)
+
+
+def test_compute_nplurals_none_for_a_ts_file_without_a_language():
+    # #4399: translate-toolkit's tsfile.nplural() raised on the optional
+    # language attribute being absent; the target language's count is used.
+    from translate.storage import ts2
+    store = ts2.tsfile.parsestring((_TS % '').encode('utf-8'))
+    assert StoreModel._compute_nplurals(None, store) is None
+
+
+def test_compute_nplurals_reads_a_ts_files_language():
+    from translate.storage import ts2
+    store = ts2.tsfile.parsestring((_TS % ' language="af"').encode('utf-8'))
+    assert StoreModel._compute_nplurals(None, store) == 2
+
+
+def test_load_file_opens_a_ts_file_without_a_language(tmp_path):
+    path = tmp_path / 'no-language.ts'
+    path.write_text(_TS % '', encoding='utf-8')
+
+    model = StoreModel(str(path), controller=None)
+
+    assert [u.source for u in model.get_units()] == ['Open the file']
+
+
 def _model_with_translator_info(tmp_path, name, email):
     path = tmp_path / "test.po"
     path.write_text('msgid ""\nmsgstr ""\n\nmsgid "Hello"\nmsgstr "Bonjour"\n')

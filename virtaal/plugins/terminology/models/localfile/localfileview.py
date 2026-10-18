@@ -499,6 +499,12 @@ class TermAddDialog:
         src_text = self.ent_source.get_text()
         tgt_text = self.ent_target.get_text()
 
+        if not src_text.strip() or not tgt_text.strip():
+            # An empty source would be saved as a second header in a PO
+            # glossary, and a blank one matches the header (#4334).
+            self.btn_add_term.props.sensitive = False
+            return
+
         dup = self.term_model.get_duplicates(src_text, tgt_text)
         if dup:
             self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))

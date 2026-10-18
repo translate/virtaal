@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 from gi.repository import Gdk, Gtk
 from test_scaffolding import TestScaffolding
-from translate.storage import factory
+from translate.storage import factory, xliff
 from translate.storage.placeables import general, parse
 from translate.storage.placeables.strelem import StringElem
 
@@ -23,6 +23,13 @@ from virtaal.views.widgets.textbox import (
 )
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
+XLIFF_ONE_UNIT = b"""<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+<file original="test" source-language="en" target-language="af" datatype="plaintext">
+<body><trans-unit id="1"><source>Open</source></trans-unit></body>
+</file>
+</xliff>
+"""
 
 
 def test_colors_equal_for_matching_strings():
@@ -819,6 +826,65 @@ class TestTextBox(TestScaffolding):
         textbox._on_event_remove_suggestion(textbox)
 
         assert not popup.is_showing()
+
+
+    def _xliff_target(self):
+        """The target text box for a fresh, untranslated XLIFF unit."""
+        self.xliff_store = xliff.xlifffile.parsestring(XLIFF_ONE_UNIT)
+        unit = self.xliff_store.units[0]
+        for textbox in self.unit_controller.view.targets:
+            textbox._suggestion = None
+        return unit, self.unit_controller.load_unit(unit).targets[0]
+
+    def test_control_characters_typed_into_an_xliff_target_are_dropped(self):
+        # #4330: XML can't hold control characters such as U+000B; the
+        # error on every change used to lose the target.
+        unit, textbox = self._xliff_target()
+
+        textbox.buffer.insert_interactive_at_cursor('a\x0bb\x0c', -1, True)
+
+        assert textbox.get_text() == 'ab'
+        assert unit.target == 'ab'
+        assert textbox.buffer.props.cursor_position == 2
+
+    def test_a_lone_control_character_leaves_an_xliff_target_unchanged(self):
+        unit, textbox = self._xliff_target()
+        textbox.buffer.insert_interactive_at_cursor('a', -1, True)
+
+        textbox.buffer.insert_interactive_at_cursor('\x0b', -1, True)
+
+        assert textbox.get_text() == 'a'
+        assert unit.target == 'a'
+
+    def test_undo_removes_a_paste_whose_control_characters_were_dropped(self):
+        unit, textbox = self._xliff_target()
+        textbox.buffer.insert_interactive_at_cursor('x', -1, True)
+        self.undo_controller.model.clear()
+
+        textbox.buffer.insert_interactive_at_cursor('a\x0bb', -1, True)
+        undo_info = self.undo_controller.model.pop()
+        for entry in reversed(undo_info if isinstance(undo_info, list) else [undo_info]):
+            entry['action'](entry['unit'])
+        textbox.refresh(update=True)
+
+        assert textbox.get_text() == 'x'
+        assert unit.target == 'x'
+
+    def test_set_text_drops_control_characters_from_an_xliff_target(self):
+        unit, textbox = self._xliff_target()
+
+        textbox.set_text('a\x0bb')
+
+        assert textbox.get_text() == 'ab'
+        assert unit.target == 'ab'
+
+    def test_po_targets_keep_control_characters(self):
+        textbox = self._target_for('%s files copied')
+        textbox.place_cursor(len(textbox.get_text()))
+
+        textbox.buffer.insert_interactive_at_cursor('\x0b', -1, True)
+
+        assert textbox.get_text().endswith('\x0b')
 
 
 class _FakeKeyEvent:

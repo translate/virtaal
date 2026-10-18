@@ -37,6 +37,7 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
 
 sys.path.insert(0, str(PACKAGING))
 from generate_info_plist import bundle_localizations, document_types  # noqa: E402
+from minimum_macos import minimum_macos  # noqa: E402
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
 import babel_data  # noqa: E402
@@ -286,9 +287,8 @@ app = BUNDLE(  # noqa: F821
         "CFBundleShortVersionString": virtaal_version,
         "CFBundleVersion": virtaal_version,
         "NSHumanReadableCopyright": COPYRIGHT,
-        # Same guess as generate_info_plist.py's dev-convenience bundle -
-        # not rigorously tested against a matrix of older macOS versions.
-        "LSMinimumSystemVersion": "10.15",
+        # Homebrew's bottles target the build machine's macOS (#4369).
+        "LSMinimumSystemVersion": minimum_macos(src for _dest, src, _kind in a.binaries),
         "LSApplicationCategoryType": "public.app-category.productivity",
         "NSHighResolutionCapable": True,
         "NSPrincipalClass": "NSApplication",

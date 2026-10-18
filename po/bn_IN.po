@@ -805,12 +805,10 @@ msgid "Compendium conflict"
 msgstr ""
 
 # 88%
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
-#, fuzzy
 msgid "Translator credits"
 msgstr ""
-"রুণা ভট্টাচার্য্য (runab@fedoraproject.org)\n"
-"সঙ্কর্ষণ মুখোপাধ্যায় (sankarshan@fedoraproject.org)"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

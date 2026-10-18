@@ -1065,13 +1065,16 @@ jobs:
     #
     # Pull requests build arm64 only: the Intel runner is the slowest in
     # CI. The merge queue, main and tags build both.
+    #
+    # Not the newest runners: Homebrew's bottles target the runner's own
+    # macOS, so the runner sets the oldest macOS the app runs on (#4369).
     strategy:
       fail-fast: false
       matrix:
         include: >-
           ${{ fromJSON(github.event_name == 'pull_request'
-          && '[{"runner": "macos-latest", "arch": "arm64"}]'
-          || '[{"runner": "macos-latest", "arch": "arm64"}, {"runner": "macos-26-intel", "arch": "x86_64"}]') }}
+          && '[{"runner": "macos-15", "arch": "arm64"}]'
+          || '[{"runner": "macos-15", "arch": "arm64"}, {"runner": "macos-15-intel", "arch": "x86_64"}]') }}
     runs-on: ${{ matrix.runner }}
     # Notarization alone can take 5-15 minutes per submission.
     timeout-minutes: 45
@@ -1130,6 +1133,9 @@ jobs:
           # is one a human can actually compare against their checkout.
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport/packaging/macos/build_standalone.sh
+
+      - name: Check the declared minimum macOS
+        run: python3 devsupport/packaging/macos/minimum_macos.py --check dist/Virtaal.app
 
       - name: Report lite coverage
         # Library strings each shipped language would still show in
@@ -1489,6 +1495,29 @@ jobs:
         run: |
           metainfo=$(find build-dir/files/share/metainfo -name '*.metainfo.xml')
           appstreamcli validate --no-net --pedantic --explain "$metainfo"
+
+      - name: Lint for Flathub
+        working-directory: devsupport/packaging/flatpak
+        # The manifest as it would be submitted (building this commit from
+        # git), and a repo built the way Flathub builds it: screenshots
+        # mirrored into it. The bundle keeps its own build's screenshot URLs.
+        env:
+          COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          flatpak install --user -y --noninteractive flathub org.flatpak.Builder
+          # The runner's flatpak-builder is too old for --compose-url-policy;
+          # Flathub's, set up as its flathub-build does, also commits the
+          # screenshots ref.
+          dbus-run-session -- flatpak run --command=bash org.flatpak.Builder -c '
+            export FLATPAK_BINARY=$(flatpak-spawn --host which flatpak)
+            export FLATPAK_USER_DIR=$HOME/.local/share/flatpak
+            flatpak-builder --user --install-deps-from=flathub --force-clean \
+              --mirror-screenshots-url=https://dl.flathub.org/media --compose-url-policy=full \
+              --repo=repo-flathub build-dir-flathub io.github.translate.Virtaal.yml'
+          python3 make_flathub_manifest.py --commit "$COMMIT" flathub
+          lint() { flatpak run --command=flatpak-builder-lint org.flatpak.Builder "$@"; }
+          lint manifest flathub/io.github.translate.Virtaal.yml
+          lint repo repo-flathub
 
       - name: Smoke test - the built app actually runs
         working-directory: devsupport/packaging/flatpak

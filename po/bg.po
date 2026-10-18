@@ -806,16 +806,10 @@ msgid "Compendium conflict"
 msgstr ""
 
 # 88%
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
-#, fuzzy
 msgid "Translator credits"
 msgstr ""
-"Христо Петков <vaeood@yahoo.com>\n"
-"Александър Шопов <ash@kambanaria.org>\n"
-"\n"
-"Проектът за превод на GNOME има нужда от подкрепа.\n"
-"Научете повече за нас на http://gnome.cult.bg\n"
-"Докладвайте за грешки на http://gnome.cult.bg/bugs"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

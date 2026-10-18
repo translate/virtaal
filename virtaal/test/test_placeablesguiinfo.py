@@ -211,6 +211,17 @@ class TestRealPlaceableRendering(TestScaffolding):
 
             assert textbox.elem.gui_info.treeindex_to_iter(len(textbox.elem)).is_end()
 
+    def test_treeindex_to_iter_gives_the_same_iter_with_a_precomputed_length(self):
+        # #4343: search highlighting passes the length once instead of
+        # walking the whole tree for every match.
+        for text in ('%s files copied', 'First line.\nSecond line.'):
+            textbox = self._target_for(self.po_store, text)
+            gui_info, elem_len = textbox.elem.gui_info, len(textbox.elem)
+
+            for index in range(elem_len + 1):
+                assert (gui_info.treeindex_to_iter(index, elem_len=elem_len).get_offset()
+                        == gui_info.treeindex_to_iter(index).get_offset())
+
     def test_iter_sub_with_index_yields_each_child_with_its_offset(self):
         textbox = self._target_for(self.po_store, '%s files copied')
 

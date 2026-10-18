@@ -810,12 +810,10 @@ msgid "Compendium conflict"
 msgstr "Compendio di conflitto"
 
 # 88%
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"Diego Donati, freelance translator, Italy\n"
-"Radina Matic, translator, <radina.matic@gmail.com>\n"
-"Mara Cimasoni, translator, <mara.cimasoni@gmail.com>"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"
@@ -2529,7 +2527,10 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Diego Donati, freelance translator, Italy"
+msgstr ""
+"Diego Donati, freelance translator, Italy\n"
+"Radina Matic, translator, <radina.matic@gmail.com>\n"
+"Mara Cimasoni, translator, <mara.cimasoni@gmail.com>"
 
 #: virtaal/views/widgets/langadddialog.py
 #, fuzzy

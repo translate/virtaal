@@ -92,6 +92,15 @@ class Cursor(GObjectWrapper):
         self.emit('indices-changed')
     indices = property(_get_indices, _set_indices)
 
+    def set_indices(self, value, keep_current=False):
+        """Set C{indices}. With C{keep_current}, a current index that isn't
+            in C{value} stays as a visited one instead of moving."""
+        if keep_current and self._visiting is None and self._indices:
+            current = self.index
+            if current not in value:
+                self._visiting = current
+        self.indices = value
+
     def _replace_indices(self, value):
         visiting = self._visiting
         oldindex = self.index if self._indices else self._last_index

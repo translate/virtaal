@@ -1,16 +1,10 @@
 #!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")"
 
-# Guess the target application if we aren't supplied one
-if [ $# == 1 ]; then
-	targetapp=$1
-else
-	targetapp=$(basename "$(pwd)")
-	echo "Guessing application name is \"${targetapp}\""
-fi
-
-desktop=share/applications/$targetapp.desktop
-metainfo=share/metainfo/$targetapp.metainfo.xml
-mimetype=share/mime/packages/$targetapp-mimetype.xml
+desktop=share/applications/io.github.translate.Virtaal.desktop
+metainfo=share/metainfo/io.github.translate.Virtaal.metainfo.xml
+mimetype=share/mime/packages/virtaal-mimetype.xml
 
 # GETTEXTDATADIRS: po/its/ holds a custom ITS rule for
 # virtaal-mimetype.xml.in - shared-mime-info XML has no rule built
@@ -18,16 +12,6 @@ mimetype=share/mime/packages/$targetapp-mimetype.xml
 gettextdatadirs="$(pwd)/po${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
 export GETTEXTDATADIRS="$gettextdatadirs"
 
-if [ -d po ]; then
-	if [ -f  "${mimetype}".in ]; then
-		msgfmt --xml --template "${mimetype}".in -d po -o "$mimetype"
-	fi
-	if [ -f  "${metainfo}".in ]; then
-		msgfmt --xml --template "${metainfo}".in -d po -o "$metainfo"
-	fi
-	if [ -f  "${desktop}".in ]; then
-		msgfmt --desktop --template "${desktop}".in -d po -o "$desktop"
-	fi
-else
-	echo "$0: No translation directory"
-fi
+msgfmt --xml --template "$mimetype".in -d po -o "$mimetype"
+msgfmt --xml --template "$metainfo".in -d po -o "$metainfo"
+msgfmt --desktop --template "$desktop".in -d po -o "$desktop"

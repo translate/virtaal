@@ -10,8 +10,13 @@
 GrepFilter.getmatches() always ORs re.LOCALE into its flags, even
 though it only ever compiles str patterns - Python 3.14+ raises
 "ValueError: cannot use LOCALE flag with a str pattern" instead of
-silently accepting it, crashing every search/replace. Upstream bug;
-drop this shim once translate-toolkit fixes it.
+silently accepting it, crashing every search/replace. It also wraps
+the pattern in a group, which moves a leading inline flag such as
+"(?i)" off the start - an error since Python 3.11. Upstream bugs;
+drop this shim once translate-toolkit fixes them.
+
+The shim also stops at max_matches instead of raising ValueError, which
+the search never caught (#4395); keep that when the rest goes.
 """
 
 import re
@@ -20,7 +25,7 @@ from translate.tools.pogrep import GrepFilter as _UpstreamGrepFilter
 
 
 class GrepFilter(_UpstreamGrepFilter):
-    """GrepFilter with the re.LOCALE/str-pattern crash fixed."""
+    """GrepFilter with the re.LOCALE and inline-flag errors fixed."""
 
     def getmatches(self, units):
         if not self.searchstring:
@@ -35,10 +40,10 @@ class GrepFilter(_UpstreamGrepFilter):
             flags |= re.IGNORECASE
         if not self.useregexp:
             searchstring = re.escape(searchstring)
-        self.re_search = re.compile(f"({searchstring})", flags)
+        self.re_search = re.compile(searchstring, flags)
 
-        # Everything below here is unchanged from upstream's
-        # getmatches() - only the flags above differ.
+        # Everything below here is upstream's getmatches(), except that
+        # it stops at max_matches instead of raising.
         from translate.tools.pogrep import find_matches
 
         matches = []
@@ -63,14 +68,14 @@ class GrepFilter(_UpstreamGrepFilter):
                     find_matches(unit, "locations", unit.getlocations(), self.re_search)
                 )
 
-            # A search for a single letter or an all-inclusive regular
-            # expression could give enough results to cause performance
-            # problems. The answer is probably not very useful at this scale.
-            if self.max_matches and len(matches) > self.max_matches:
-                raise ValueError("Too many matches found")
-
             if len(matches) > old_length:
                 old_length = len(matches)
                 indexes.append(index)
+
+            # Upstream raises ValueError here; stop at the limit instead,
+            # keeping the matches found so far (#4395).
+            if self.max_matches and len(matches) >= self.max_matches:
+                del matches[self.max_matches:]
+                break
 
         return matches, indexes

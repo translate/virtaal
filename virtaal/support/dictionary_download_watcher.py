@@ -32,6 +32,7 @@ from virtaal.support.asset_manifest import (
     installed_asset_key,
 )
 from virtaal.support.dictionary_downloader import DictionaryDownloader
+from virtaal.support.enchant_compat import import_enchant
 
 _UNSET = object()
 
@@ -43,10 +44,7 @@ class DictionaryDownloadWatcher:
     def __init__(self, main_controller, enchant_module=_UNSET, downloader_factory=None, asset_manifest=None,
                  schedule_after_idle_lull=None):
         if enchant_module is _UNSET:
-            try:
-                import enchant as enchant_module
-            except ImportError:
-                enchant_module = None
+            enchant_module = import_enchant()
         self._enchant = enchant_module
         self._downloader_factory = downloader_factory or DictionaryDownloader
         self._asset_manifest = asset_manifest

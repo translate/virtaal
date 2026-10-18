@@ -1496,6 +1496,29 @@ jobs:
           metainfo=$(find build-dir/files/share/metainfo -name '*.metainfo.xml')
           appstreamcli validate --no-net --pedantic --explain "$metainfo"
 
+      - name: Lint for Flathub
+        working-directory: devsupport/packaging/flatpak
+        # The manifest as it would be submitted (building this commit from
+        # git), and a repo built the way Flathub builds it: screenshots
+        # mirrored into it. The bundle keeps its own build's screenshot URLs.
+        env:
+          COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          flatpak install --user -y --noninteractive flathub org.flatpak.Builder
+          # The runner's flatpak-builder is too old for --compose-url-policy;
+          # Flathub's, set up as its flathub-build does, also commits the
+          # screenshots ref.
+          dbus-run-session -- flatpak run --command=bash org.flatpak.Builder -c '
+            export FLATPAK_BINARY=$(flatpak-spawn --host which flatpak)
+            export FLATPAK_USER_DIR=$HOME/.local/share/flatpak
+            flatpak-builder --user --install-deps-from=flathub --force-clean \
+              --mirror-screenshots-url=https://dl.flathub.org/media --compose-url-policy=full \
+              --repo=repo-flathub build-dir-flathub io.github.translate.Virtaal.yml'
+          python3 make_flathub_manifest.py --commit "$COMMIT" flathub
+          lint() { flatpak run --command=flatpak-builder-lint org.flatpak.Builder "$@"; }
+          lint manifest flathub/io.github.translate.Virtaal.yml
+          lint repo repo-flathub
+
       - name: Smoke test - the built app actually runs
         working-directory: devsupport/packaging/flatpak
         # No display server on this runner - same headless gap the

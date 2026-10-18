@@ -944,7 +944,12 @@ jobs:
       - run: echo "test-windows and build-windows-installer both passed"
 
   test-macos:
-    runs-on: macos-latest
+    # The oldest macOS the app is built for, and the newest.
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-latest]
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     # Single Python version (whatever Homebrew currently ships), not the
     # 3.10-3.14 matrix the Linux job runs: unlike apt, Homebrew doesn't
@@ -993,7 +998,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/Library/Caches/pip
-          key: pip-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pyproject.toml') }}
+          key: pip-${{ matrix.runner }}-${{ runner.arch }}-${{ hashFiles('pyproject.toml') }}
 
       - name: Install Python dependencies
         run: |
@@ -1031,7 +1036,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: test-macos-crash-reports
+          name: test-macos-crash-reports-${{ matrix.runner }}
           path: ${{ runner.temp }}/stacks
           if-no-files-found: ignore
 

@@ -259,6 +259,38 @@ def test_get_matches_bare_language_and_misses_unknown_locale(tmp_path):
     assert manifest.get('thesaurus', 'de_DE') is None
 
 
+_AF = {'folder': 'af_ZA', 'files': [{'name': 'af_ZA.dic', 'sha': 'a1'}, {'name': 'af_ZA.aff', 'sha': 'a2'}]}
+
+
+def _manifest_with(tmp_path, dictionary):
+    manifest = _make_manifest(tmp_path)
+    manifest._data = {'dictionary': dictionary}
+    return manifest
+
+
+def test_get_gives_a_bare_language_the_entry_all_its_regions_share(tmp_path):
+    manifest = _manifest_with(tmp_path, {'af_NA': dict(_AF), 'af_ZA': dict(_AF)})
+
+    assert manifest.get('dictionary', 'af') == _AF
+
+
+def test_get_leaves_a_bare_language_alone_when_its_regions_differ(tmp_path):
+    manifest = _manifest_with(tmp_path, {
+        'pt_BR': {'folder': 'pt_BR', 'files': [{'name': 'pt_BR.dic', 'sha': 'b'}]},
+        'pt_PT': {'folder': 'pt_PT', 'files': [{'name': 'pt_PT.dic', 'sha': 'p'}]},
+    })
+
+    assert manifest.get('dictionary', 'pt') is None
+    assert manifest.get('dictionary', 'pt_PT')['folder'] == 'pt_PT'
+
+
+def test_get_doesnt_share_a_region_entry_with_another_region(tmp_path):
+    manifest = _manifest_with(tmp_path, {'af_NA': dict(_AF), 'af_ZA': dict(_AF)})
+
+    assert manifest.get('dictionary', 'af_BW') is None
+    assert manifest.get('dictionary', 'afr') is None
+
+
 def test_entry_shas_and_installed_asset_key():
     entry = {'folder': 'de', 'files': [{'name': 'a', 'sha': 'a1'}, {'name': 'b', 'sha': 'a2'}]}
     assert am.entry_shas(entry) == 'a1,a2'

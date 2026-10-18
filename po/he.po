@@ -1206,7 +1206,7 @@ msgstr "נדחתה"
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Needs review"
-msgstr "טעונת שיפור"
+msgstr "טעונת בדיקה"
 
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
@@ -2334,7 +2334,7 @@ msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "נא להזין את מספר צורות הגופים (רבים) לשימוש"
+msgstr "נא להזין את מספר צורות הרבים לשימוש"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the plural equation to use"
@@ -2473,7 +2473,7 @@ msgstr "נדחו:"
 
 #: virtaal/views/propertiesview.py
 msgid "Needs review:"
-msgstr "טעונות שיפור:"
+msgstr "טעונות בדיקה:"
 
 # 78%
 #: virtaal/views/propertiesview.py
@@ -2710,11 +2710,11 @@ msgstr "הוספת שורה חדשה"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr "הסגת השינויים האחרון"
+msgstr "הסגת השינוי האחרון"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr "הסגת השינוי האחרון שהושב"
+msgstr "ביצוע מחדש של השינוי האחרון שהוסג"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Use the first translation suggestion"

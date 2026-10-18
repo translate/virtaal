@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-18T07:36:37Z",
- "commit": "d9e9c3e6a3a5955fc67fececdec8d4f1f282c25f",
+ "generated": "2026-10-18T15:39:45Z",
+ "commit": "c9ab043ba8a17aeceac1340479920963e2423302",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -258,11 +258,11 @@
    "code": "he",
    "name": "Hebrew",
    "endonym": "עברית",
-   "core_missing": 23,
-   "rest_missing": 6,
-   "needed": 26,
-   "level2_missing": 123,
-   "level3_missing": 55,
+   "core_missing": 1,
+   "rest_missing": 0,
+   "needed": 1,
+   "level2_missing": 0,
+   "level3_missing": 0,
    "ships": "50%"
   },
   {
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39108164547"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39140786486"
 }

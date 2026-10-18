@@ -136,6 +136,35 @@ real aarch64 CI runner and an aarch64 ``org.gnome.Platform`` runtime
 both already exist, so CI builds, smoke-tests and bundles both x86_64
 and aarch64 as a matrix, rather than shipping only one.
 
+.. _building#appimage:
+
+Linux (AppImage)
+================
+
+The AppImage is a beta. It's a PyInstaller bundle of Virtaal, Python,
+GTK and the spell checker, packed with `appimagetool
+<https://github.com/AppImage/appimagetool>`_. Build it on Ubuntu 22.04:
+the AppImage runs on distributions with the same or a newer glibc.
+Install the packages listed at the top of
+``devsupport/packaging/linux/build_appimage.sh``, then::
+
+  xvfb-run -a devsupport/packaging/linux/build_appimage.sh
+
+(``xvfb-run`` only without a display: PyInstaller imports Virtaal's
+modules, which start GTK.) This produces
+``build/appimage/Virtaal-linux-<arch>.AppImage`` for the machine's
+architecture.
+
+The AppImage uses the host's spelling dictionaries (``/usr/share/hunspell``)
+and the ones Virtaal downloads. It leaves out the libraries every desktop
+already has: libxcb, the Wayland client libraries, fontconfig and
+freetype.
+
+To check it in bare distribution images (needs Docker)::
+
+  devsupport/packaging/linux/smoke_test_distro.sh fedora:44 \
+    build/appimage/Virtaal-linux-x86_64.AppImage
+
 .. _building#windows:
 
 Windows

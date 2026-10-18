@@ -513,10 +513,11 @@ def main():
                         help='Run the random part for this long instead of a number of actions.')
     parser.add_argument('--seed', type=int, default=None,
                         help='Seed for the random part, printed so a run can be replayed.')
-    nightly = [s for s in SECTIONS if not s.startswith('service-')]
+    weekly = ('service-', 'ui-')
+    nightly = [s for s in SECTIONS if not s.startswith(weekly)]
     parser.add_argument('--sections', default=','.join(nightly),
-                        help='Sweep sections to run, or "services" for all service-* ones (default: all '
-                             'but those, which run weekly): %s' % ', '.join(SECTIONS))
+                        help='Sweep sections to run; "services" and "ui" stand for all service-* and ui-* '
+                             'ones (default: all but those, which run weekly): %s' % ', '.join(SECTIONS))
     parser.add_argument('--no-sweep', action='store_true', help='Skip the corpus sweep.')
     parser.add_argument('--no-random', action='store_true', help='Skip the random part.')
     parser.add_argument('--results', default=None,
@@ -548,11 +549,13 @@ def main():
         if not args.no_sweep:
             sections = []
             for name in filter(None, args.sections.split(',')):
-                # 'services': every service-* section.
-                sections += [s for s in SECTIONS if s.startswith('service-')] if name == 'services' else [name]
+                prefix = {'services': 'service-', 'ui': 'ui-'}.get(name)
+                sections += [s for s in SECTIONS if s.startswith(prefix)] if prefix else [name]
             for section in sections:
                 start = time.monotonic()
                 env = child_env(prepare_home(os.path.join(root, section)))
+                if section.startswith('ui-'):
+                    env['LANGUAGE'] = section[len('ui-'):]
                 cases = run_section(section, env, outdir, args.debugger, platform)
                 print('sweep %s: %d cases in %.0f s' % (section, len(cases), time.monotonic() - start))
                 found += cases

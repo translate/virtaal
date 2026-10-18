@@ -41,7 +41,8 @@ KNOWN_BUGS = [
     dict(issue=4346, sweep=['addlang-plural', 'translator-name', 'translator-email', 'translator-team'],
          kind='config-roundtrip', match='', cases=STRIPPED + BLANK[1:]),
     # 5-15 s depending on the runner, so not required.
-    dict(issue=4347, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all'] + SOURCES,
+    dict(issue=4347, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
+                            'glossary'] + SOURCES,
          kind='slow', match='', cases=['2000 lines'], strict=False),
     dict(issue=4348, sweep=SOURCES, kind='critical',
          match='pango_layout_get_cursor_pos', cases=['CRLF']),
@@ -200,6 +201,25 @@ KNOWN_BUGS = [
     dict(issue=4438, sweep='service-apertium', kind='exception', match='TypeError got_translation',
          cases=['reply: null']),
     # A whole-file case resets virtaal.ini, which turns spell checking on; needs GtkSpell installed.
-    dict(issue=4439, sweep='config-virtaal.ini', kind='critical', match='speller != NULL', cases=ALL,
+    dict(issue=4439, sweep=['config-virtaal.ini', 'spelling'], kind='critical', match='speller != NULL', cases=ALL,
          platforms=['linux'], strict=False),
+    # Editing paths and interface languages (editing.py, #4411).
+    # Windows' GtkSpell finishes in time.
+    dict(issue=4443, sweep='spelling', kind='timeout', match='', cases=['100k chars'], platforms=['linux', 'macos']),
+    dict(issue=4448, sweep='spelling', kind='glib-warning', match='iso-codes', cases=ALL, platforms=['macos']),
+    # Windows' runner is slower still; the stall also outlasts the case into the next few.
+    dict(issue=4347, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
+         strict=False),
+    dict(issue=4347, sweep='autocorrect', kind='slow', match='',
+         cases=['2000 lines', 'printf', 'python named', 'percent alone', 'url-escape'], strict=False),
+    dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=['printf'], strict=False),
+    dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
+    dict(issue=4443, sweep='spelling', kind='slow', match='', cases=['10k chars words', '2000 lines'], strict=False),
+    dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
+    dict(issue=4335, sweep='glossary', kind='slow', match='', cases=['4096 chars one word'], strict=False),
+    # Preferences loads every plug-in's class to list it.
+    dict(issue=4433, sweep=[s for s in EVERY_SWEEP if s.startswith('ui-')], kind='log-error', match='IPython',
+         cases=['preferences'], platforms=['linux']),
+    dict(issue=4433, sweep=[s for s in EVERY_SWEEP if s.startswith('ui-')], kind='log-error',
+         match='_get_plugin_class', cases=['preferences'], platforms=['linux']),
 ]

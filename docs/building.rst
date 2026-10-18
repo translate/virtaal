@@ -106,11 +106,11 @@ Linux (Flatpak)
 
 Requires `flatpak and flatpak-builder
 <https://docs.flatpak.org/en/latest/first-build.html>`_, plus the
-``org.gnome.Platform``/``org.gnome.Sdk`` runtime at version 50::
+``org.gnome.Platform``/``org.gnome.Sdk`` runtime at version 51::
 
   flatpak remote-add --if-not-exists --user flathub \
     https://dl.flathub.org/repo/flathub.flatpakrepo
-  flatpak install --user flathub org.gnome.Platform//50 org.gnome.Sdk//50
+  flatpak install --user flathub org.gnome.Platform//51 org.gnome.Sdk//51
 
   cd devsupport/packaging/flatpak
   flatpak-builder --user --install-deps-from=flathub --force-clean \

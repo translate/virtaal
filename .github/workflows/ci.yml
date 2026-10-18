@@ -1460,7 +1460,7 @@ jobs:
 
       - name: Install the GNOME runtime/SDK
         run: |
-          flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50
+          flatpak install --user -y flathub org.gnome.Platform//51 org.gnome.Sdk//51
 
       - name: Cache flatpak-builder's module state
         # Downloaded sources plus built output for each Python deps

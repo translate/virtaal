@@ -497,6 +497,47 @@ jobs:
       - name: Smoke test the CLI
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 
+  test-distro:
+    # The oldest supported distro, installed the way a distro user would:
+    # its own python3 and python3-gi, not a pip-built PyGObject.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Install system dependencies
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            at-spi2-core
+            gettext
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            hunspell-en-us
+            libenchant-2-2
+            libgettextpo0
+            python3-gi
+            python3-gi-cairo
+            python3-venv
+            xvfb
+
+      - name: Create venv with system site-packages
+        # --system-site-packages so the venv sees the distro's gi.
+        run: |
+          /usr/bin/python3 -m venv --system-site-packages .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install virtaal
+        run: |
+          pip install --upgrade pip
+          # shellcheck disable=SC2102  # .[test] is pip extras syntax, not a glob range
+          pip install .[test,spellcheck]
+
+      - name: Run tests
+        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
+
   test-windows:
     runs-on: windows-latest
     timeout-minutes: 15
@@ -1670,15 +1711,15 @@ jobs:
           if-no-files-found: error
 
   linux:
-    # Endpoint standing in for `test`, `build-flatpak` and
-    # `build-appimage`, which run in parallel rather than one gating
+    # Endpoint standing in for `test`, `test-distro`, `build-flatpak`
+    # and `build-appimage`, which run in parallel rather than one gating
     # another (see build-flatpak's own comment). See the `windows`
     # endpoint's own comment for why no `if: always()` is needed here.
-    needs: [test, build-flatpak, build-appimage]
+    needs: [test, test-distro, build-flatpak, build-appimage]
     runs-on: ubuntu-24.04
     timeout-minutes: 1
     steps:
-      - run: echo "test, build-flatpak and build-appimage all passed"
+      - run: echo "test, test-distro, build-flatpak and build-appimage all passed"
 
   core-checks:
     name: core checks

@@ -9,10 +9,12 @@
 set -eu -o pipefail
 
 APPIMAGE="$(realpath "$1")"
-# Containers have no FUSE.
-export APPIMAGE_EXTRACT_AND_RUN=1
 LOGS="$(mktemp -d)"
 trap 'rm -rf "$LOGS"' EXIT
+# Containers have no FUSE. Each run reuses the first run's extraction,
+# which goes in $LOGS so it's removed at the end.
+export APPIMAGE_EXTRACT_AND_RUN=1 NO_CLEANUP=1 TMPDIR="$LOGS/tmp"
+mkdir "$TMPDIR"
 
 LAUNCH=("$APPIMAGE")
 if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then

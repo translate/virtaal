@@ -197,7 +197,7 @@ class Virtaal:
         defer(main_controller.load_plugins)
         defer(self._check_for_config_recovery)
 
-        # Only bundled builds (macOS .app, Windows installer) can't
+        # Only bundled builds (macOS .app, Windows installer, AppImage) can't
         # already control their own updates the way a checkout/pip
         # install can.
         if platform.is_frozen:

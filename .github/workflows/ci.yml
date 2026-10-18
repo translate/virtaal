@@ -1617,6 +1617,16 @@ jobs:
             file
             xvfb
 
+      - name: Cache the AppImage tools and enchant build
+        # Pinned in build_appimage.sh, which skips rebuilding enchant when
+        # the cached build matches.
+        uses: actions/cache@v6
+        with:
+          path: |
+            build/appimage/tools
+            build/appimage/enchant
+          key: appimage-enchant-${{ matrix.runner }}-${{ hashFiles('devsupport/packaging/linux/build_appimage.sh') }}
+
       - name: Build the AppImage
         # PyInstaller imports virtaal's modules, which start GTK.
         env:

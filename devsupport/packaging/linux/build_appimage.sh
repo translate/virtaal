@@ -57,16 +57,22 @@ fetch "https://github.com/AbiWord/enchant/releases/download/v$ENCHANT_VERSION/en
 # enchant, built relocatable: Ubuntu's always looks for its providers in
 # /usr/lib, so it would never find the bundled ones. Only the hunspell
 # provider. gtkspell3 links this one, as PyInstaller resolves it first.
-rm -rf "$OUT/enchant-src" "$OUT/enchant"
-mkdir -p "$OUT/enchant-src"
-tar xzf "$OUT/tools/enchant-$ENCHANT_VERSION.tar.gz" -C "$OUT/enchant-src" --strip-components=1
-(
-    cd "$OUT/enchant-src"
-    CFLAGS="-O2 -w" CXXFLAGS="-O2 -w" ./configure -q --prefix=/opt/virtaal-enchant --enable-relocatable --disable-static \
-        --with-hunspell --without-nuspell --without-aspell --without-hspell --without-voikko
-    make -s -j"$(nproc)"
-    make -s install DESTDIR="$OUT/enchant"
-)
+# An earlier build of the same version is reused (CI caches it).
+ENCHANT_STAMP="$OUT/enchant/built-from"
+if [ "$(cat "$ENCHANT_STAMP" 2>/dev/null)" != "$ENCHANT_SHA256" ]; then
+    rm -rf "$OUT/enchant-src" "$OUT/enchant"
+    mkdir -p "$OUT/enchant-src"
+    tar xzf "$OUT/tools/enchant-$ENCHANT_VERSION.tar.gz" -C "$OUT/enchant-src" --strip-components=1
+    (
+        cd "$OUT/enchant-src"
+        CFLAGS="-O2 -w" CXXFLAGS="-O2 -w" ./configure -q --prefix=/opt/virtaal-enchant --enable-relocatable --disable-static \
+            --with-hunspell --without-nuspell --without-aspell --without-hspell --without-voikko
+        make -s -j"$(nproc)"
+        make -s install DESTDIR="$OUT/enchant"
+    )
+    rm -rf "$OUT/enchant-src"
+    echo "$ENCHANT_SHA256" > "$ENCHANT_STAMP"
+fi
 export VIRTAAL_ENCHANT_PREFIX="$OUT/enchant/opt/virtaal-enchant"
 
 # A fresh venv with only Ubuntu's PyGObject and pycairo linked in, as

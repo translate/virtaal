@@ -99,6 +99,13 @@ def test_summary_escapes_table_cells_and_lists_each_section():
     assert '### New failures' in text
 
 
+def test_entry_with_several_kinds_matches_either():
+    entry = dict(issue=7, sweep='config-tm.ini', kind=['exception', 'log-error'], match='ValueError f', cases=['a', 'b'])
+    out = results.classify([_result('config-tm.ini', 'a', ('exception', 'ValueError f', '')),
+                            _result('config-tm.ini', 'b', ('log-error', 'ValueError f', ''))], [entry], 'linux')
+    assert len(out.known) == 2 and not out.failed
+
+
 def test_upstream_entry_matches_and_is_never_closed():
     entry = dict(upstream='translate-toolkit', sweep='file-xlf', kind='exception', match='TypeError', cases=['a'])
     out = results.classify([_result('file-xlf', 'a', ('exception', 'TypeError f', ''))], [entry], 'linux')
@@ -121,5 +128,6 @@ def test_known_bug_list_is_well_formed():
             continue
         if all(sweep.startswith('file-') for sweep in entry['sweeps']):
             assert set(entry['cases']) <= file_names, entry
-        elif not set(entry['sweeps']) & {'paths', 'saving', 'random'}:
+        elif not any(sweep in ('paths', 'saving', 'random', 'data') or sweep.startswith('config-')
+                     for sweep in entry['sweeps']):
             assert set(entry['cases']) <= corpus_names, entry

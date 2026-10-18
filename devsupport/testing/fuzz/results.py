@@ -38,7 +38,10 @@ def normalize(entry):
         'upstream': entry.get('upstream'),
         'sweeps': [sweeps] if isinstance(sweeps, str) else list(sweeps),
         'cases': entry['cases'],
-        'kind': entry['kind'],
+        # One kind, or several when the same failure shows as either
+        # (an exception or a logged error, depending on timing).
+        'kinds': [entry['kind']] if isinstance(entry['kind'], str) else list(entry['kind']),
+        'kind': entry['kind'] if isinstance(entry['kind'], str) else ' or '.join(entry['kind']),
         'match': entry.get('match', ''),
         'platforms': entry.get('platforms', PLATFORMS),
         'strict': entry.get('strict', True),
@@ -53,7 +56,7 @@ def label(entry):
 def _matches(entry, sweep, case, problem):
     return (sweep in entry['sweeps']
             and (entry['cases'] == ALL or case in entry['cases'])
-            and problem['kind'] == entry['kind']
+            and problem['kind'] in entry['kinds']
             and entry['match'] in problem['signature'] + '\n' + problem['detail'])
 
 

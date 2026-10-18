@@ -29,11 +29,15 @@ class Platform:
         self.is_linux = not self.is_windows and not self.is_mac
         self.is_frozen = bool(frozen if frozen is not None else getattr(sys, 'frozen', False))
         machine = machine if machine is not None else platform_module.machine()
+        self.machine = machine
         self.is_intel = machine == 'x86_64'
         self.is_arm = machine == 'arm64'
         environ = environ if environ is not None else os.environ
         self._environ = environ
         self.is_flatpak = 'FLATPAK_ID' in environ
+        # The AppImage runtime sets APPIMAGE to the file's path. Child
+        # processes inherit it, so only a frozen build is one.
+        self.is_appimage = self.is_frozen and self.is_linux and 'APPIMAGE' in environ
         # A frozen build's sys.prefix is the build machine's own Python
         # install prefix, not the bundle - callers that need the real
         # bundle directory (e.g. to find data files packaged alongside
@@ -77,6 +81,8 @@ class Platform:
                 return 'Windows installer'
             if self.is_mac:
                 return 'macOS .dmg'
+            if self.is_appimage:
+                return 'AppImage'
         return None
 
     def build_type(self, checkout_dir=None):

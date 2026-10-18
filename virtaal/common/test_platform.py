@@ -109,6 +109,19 @@ def test_not_flatpak():
     assert not p.is_flatpak
 
 
+def test_appimage():
+    p = Platform(os_name='posix', sys_platform='linux', frozen=True,
+                 environ={'APPIMAGE': '/home/u/Virtaal-linux-x86_64.AppImage'})
+    assert p.is_appimage
+
+
+def test_not_appimage_when_not_frozen():
+    # Inherited by anything the AppImage starts.
+    p = Platform(os_name='posix', sys_platform='linux', frozen=False,
+                 environ={'APPIMAGE': '/home/u/Virtaal-linux-x86_64.AppImage'})
+    assert not p.is_appimage
+
+
 def test_install_method_windows_installer():
     p = Platform(os_name='nt', sys_platform='win32', frozen=True, environ={})
     assert p.install_method() == 'Windows installer'
@@ -123,6 +136,12 @@ def test_install_method_flatpak_takes_priority_over_frozen():
     p = Platform(os_name='posix', sys_platform='linux', frozen=True,
                  environ={'FLATPAK_ID': 'org.translate.Virtaal'})
     assert p.install_method() == 'Flatpak'
+
+
+def test_install_method_appimage():
+    p = Platform(os_name='posix', sys_platform='linux', frozen=True,
+                 environ={'APPIMAGE': '/home/u/Virtaal-linux-x86_64.AppImage'})
+    assert p.install_method() == 'AppImage'
 
 
 def test_install_method_unknown_for_a_plain_source_checkout():

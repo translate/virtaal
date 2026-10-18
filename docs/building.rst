@@ -156,7 +156,9 @@ modules, which start GTK.) This produces
 architecture.
 
 The AppImage uses the host's spelling dictionaries (``/usr/share/hunspell``)
-and the ones Virtaal downloads. It leaves out the libraries every desktop
+and the ones Virtaal downloads. When it starts, it adds its own menu entry
+and icon (``virtaal-appimage`` in ``~/.local/share``), pointing at the
+AppImage file and without file associations. It leaves out the libraries every desktop
 already has: libxcb, the Wayland client libraries, fontconfig and
 freetype.
 

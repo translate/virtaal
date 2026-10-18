@@ -95,6 +95,11 @@ if [ "$status" != 124 ]; then
     echo "The app exited (status $status) instead of still running after 20 seconds" >&2
     exit 1
 fi
+entry="$LOGS/home/.local/share/applications/virtaal-appimage.desktop"
+if ! grep -qx "TryExec=$APPIMAGE" "$entry"; then
+    echo "No menu entry for the AppImage" >&2
+    exit 1
+fi
 echo "Input method modules loaded: $modules"
 if [ "$modules" != "immodules/im-xim.so" ]; then
     echo "The bundled XIM input method module wasn't loaded" >&2

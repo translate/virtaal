@@ -199,4 +199,7 @@ KNOWN_BUGS = [
          cases=['reply: wrong shape']),
     dict(issue=4438, sweep='service-apertium', kind='exception', match='TypeError got_translation',
          cases=['reply: null']),
+    # A whole-file case resets virtaal.ini, which turns spell checking on; needs GtkSpell installed.
+    dict(issue=4439, sweep='config-virtaal.ini', kind='critical', match='speller != NULL', cases=ALL,
+         platforms=['linux'], strict=False),
 ]

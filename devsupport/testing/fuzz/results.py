@@ -34,7 +34,8 @@ def current_platform():
 def normalize(entry):
     sweeps = entry['sweep']
     return {
-        'issue': entry['issue'],
+        'issue': entry.get('issue'),
+        'upstream': entry.get('upstream'),
         'sweeps': [sweeps] if isinstance(sweeps, str) else list(sweeps),
         'cases': entry['cases'],
         'kind': entry['kind'],
@@ -42,6 +43,11 @@ def normalize(entry):
         'platforms': entry.get('platforms', PLATFORMS),
         'strict': entry.get('strict', True),
     }
+
+
+def label(entry):
+    """'#N', or the upstream project for a bug only reported there."""
+    return '#%d' % entry['issue'] if entry['issue'] else 'upstream (%s)' % entry['upstream']
 
 
 def _matches(entry, sweep, case, problem):
@@ -166,23 +172,23 @@ def summary(outcome, platform, issue_check=True):
         lines += ['', '### Stale known-bug entries', '',
                   "The listed failure didn't happen. If the issue is fixed, remove the entry so a regression is caught.", '']
         for entry, sweep, case in outcome.stale:
-            lines.append('- #%d: %s, %s, %s' % (entry['issue'], sweep, _cases(entry, sweep, case), entry['kind']))
+            lines.append('- %s: %s, %s, %s' % (label(entry), sweep, _cases(entry, sweep, case), entry['kind']))
     if outcome.unknown:
         lines += ['', '### Entries naming a case the sweep doesn\'t have', '']
         for entry, sweep, case in outcome.unknown:
-            lines.append('- #%d: %s, "%s"' % (entry['issue'], sweep, _cell(case)))
+            lines.append('- %s: %s, "%s"' % (label(entry), sweep, _cell(case)))
     if outcome.closed:
         lines += ['', '### Entries for closed issues', '', 'Remove the entry, or reopen the issue.', '']
         for entry in outcome.closed:
-            lines.append('- #%d' % entry['issue'])
+            lines.append('- %s' % label(entry))
     if outcome.known:
         counts = {}
         for entry, result, problem in outcome.known:
-            key = (entry['issue'], result['sweep'], problem['kind'])
+            key = (label(entry), result['sweep'], problem['kind'])
             counts[key] = counts.get(key, 0) + 1
         lines += ['', '<details><summary>Known failures</summary>', '',
                   '| Issue | Sweep | Kind | Failures |', '|---|---|---|---|']
         for (issue, sweep, kind), n in sorted(counts.items()):
-            lines.append('| #%d | %s | %s | %d |' % (issue, _cell(sweep), _cell(kind), n))
+            lines.append('| %s | %s | %s | %d |' % (_cell(issue), _cell(sweep), _cell(kind), n))
         lines += ['', '</details>']
     return '\n'.join(lines) + '\n'

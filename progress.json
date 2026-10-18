@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-18T15:39:45Z",
- "commit": "c9ab043ba8a17aeceac1340479920963e2423302",
+ "generated": "2026-10-18T16:00:30Z",
+ "commit": "3e270746af2b7933f93db1c48cd483b2d2fb955d",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -314,7 +314,7 @@
    "name": "Korean",
    "endonym": "한국어",
    "core_missing": 0,
-   "rest_missing": 1,
+   "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
    "level3_missing": 0,
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39140786486"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39141772260"
 }

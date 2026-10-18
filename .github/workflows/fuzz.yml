@@ -47,6 +47,8 @@ jobs:
             gir1.2-gtk-3.0
             gir1.2-gtkspell3-3.0
             gobject-introspection
+            hunspell-en-us
+            iso-codes
             libcairo2-dev
             libenchant-2-dev
             libgirepository-2.0-dev

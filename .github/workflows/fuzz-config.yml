@@ -5,7 +5,8 @@ name: Config and service fuzzing
 # keeps (tm.db, stats.db, the glossary, downloads) replaced by something
 # broken (devsupport/testing/fuzz/fuzz_config.py), then answers every
 # translation service from a local stand-in server with corpus text and
-# bad replies (devsupport/testing/fuzz/services.py). Failures already filed
+# bad replies (devsupport/testing/fuzz/services.py), and opens the main
+# windows in every shipped interface language (editing.py). Failures already filed
 # are listed in devsupport/testing/fuzz/known_bugs.py; a red run means a
 # new failure, or a listed one that no longer happens (remove its entry).
 
@@ -70,11 +71,11 @@ jobs:
           PYTHONFAULTHANDLER: "1"
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Fuzz the translation services
+      - name: Fuzz the translation services and interface languages
         if: always()
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
-            python devsupport/testing/fuzz/fuzz_ui.py --no-random --sections services --results fuzz-service-results
+            python devsupport/testing/fuzz/fuzz_ui.py --no-random --sections services,ui --results fuzz-service-results
         env:
           PYTHONFAULTHANDLER: "1"
           GITHUB_TOKEN: ${{ github.token }}

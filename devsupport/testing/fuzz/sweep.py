@@ -26,6 +26,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(1, os.path.abspath(os.path.join(HERE, '..', '..', '..')))
 
 from corpus import API_ONLY, CORPUS, short  # noqa: E402
+from editing import EDIT_SECTIONS, ui_languages  # noqa: E402
 from malformed import FILE_SWEEPS  # noqa: E402
 from services import SERVICES  # noqa: E402
 
@@ -56,6 +57,9 @@ SECTIONS = {
 }
 # One section per service, each with its own config (services.py).
 SECTIONS.update({'service-' + name: ('service-' + name,) for name in SERVICES})
+# Editing paths and interface languages (editing.py), each with its own config.
+SECTIONS.update({name: (name,) for name in EDIT_SECTIONS})
+SECTIONS.update({'ui-' + code: ('ui-' + code,) for code in ui_languages()})
 
 GLib = Gtk = None
 
@@ -776,6 +780,12 @@ def main():
         import services
         url = services.start_server()
         services.configure(service, url, pan_app.get_config_dir())
+    editing_section = args.section in EDIT_SECTIONS or args.section.startswith('ui-')
+    if editing_section:
+        import editing
+        editing.configure(args.section, pan_app.get_config_dir())
+        # virtaal.ini was read on import; take the section's changes.
+        pan_app.settings.read()
     pan_app.settings.translator['name'] = 'Fuzz Tester'
     pan_app.settings.translator['email'] = 'fuzz@example.org'
     from virtaal.main import Virtaal
@@ -793,6 +803,8 @@ def main():
         yield from sweep.settle(20)
         if service:
             yield from services.run(sweep, service)
+        elif editing_section:
+            yield from editing.run(sweep, args.section)
         else:
             yield from getattr(sweep, args.section)()
         recorder.done()

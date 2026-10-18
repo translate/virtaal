@@ -128,6 +128,6 @@ def test_known_bug_list_is_well_formed():
             continue
         if all(sweep.startswith('file-') for sweep in entry['sweeps']):
             assert set(entry['cases']) <= file_names, entry
-        elif not any(sweep in ('paths', 'saving', 'random', 'data') or sweep.startswith(('config-', 'service-'))
+        elif not any(sweep in ('paths', 'saving', 'random', 'data') or sweep.startswith(('config-', 'service-', 'ui-'))
                      for sweep in entry['sweeps']):
             assert set(entry['cases']) <= corpus_names, entry

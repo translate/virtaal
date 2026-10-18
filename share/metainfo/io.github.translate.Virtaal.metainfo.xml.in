@@ -50,6 +50,10 @@
   <!-- l10n: The developer/organisation name "Translate", not the verb "to translate" -->
   <name>Translate</name>
  </developer>
+ <branding>
+  <color type="primary" scheme_preference="light">#2f4fb8</color>
+  <color type="primary" scheme_preference="dark">#18265c</color>
+ </branding>
  <releases>
   <release version="1.0.0~rc1" date="2026-10-14" type="development">
    <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-rc1</url>

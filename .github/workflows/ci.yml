@@ -1556,7 +1556,6 @@ jobs:
 
       - name: Smoke test - the bundle installs and runs
         working-directory: devsupport/packaging/flatpak
-        # Uninstalled afterwards so the runtime cache doesn't keep it.
         run: |
           set -o pipefail
           flatpak install --user -y --noninteractive --reinstall \
@@ -1567,6 +1566,21 @@ jobs:
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak run --command=python3 io.github.translate.Virtaal -c \
             "from virtaal.common import pan_app; n = len(pan_app.get_available_ui_languages()); print(n, 'UI languages'); assert n > 20"
+
+      - name: Run the tests inside the installed Flatpak
+        # The GNOME runtime's own Python and GTK, which the Flatpak ships;
+        # pytest-cov is left out (coverage comes from the test job). The
+        # installed app, not flatpak-builder --run: the runtime decodes
+        # images with flatpak-spawn, which starts the installed app and
+        # needs a session bus. --devel for the SDK's pip. FLATPAK_ID unset:
+        # the tests expect a checkout; Flatpak-only code has its own tests.
+        # Uninstalled afterwards so the runtime cache doesn't keep it.
+        run: |
+          read -ra deps <<< "$(python3 -c 'import tomllib; print(" ".join(d for d in tomllib.load(open("pyproject.toml", "rb"))["project"]["optional-dependencies"]["test"] if not d.startswith("pytest-cov")))')"
+          xvfb-run -a --server-args="-screen 0 1024x768x24" dbus-run-session -- \
+            flatpak run --devel --filesystem="$GITHUB_WORKSPACE" --command=sh io.github.translate.Virtaal \
+            -euxc 'cd "$1"; shift; python3 -m pip install --target /tmp/testdeps "$@"; PYTHONPATH=/tmp/testdeps env -u FLATPAK_ID python3 -m pytest -rvxs -n auto virtaal' \
+            sh "$GITHUB_WORKSPACE" "${deps[@]}"
           flatpak uninstall --user -y --noninteractive io.github.translate.Virtaal
 
       - uses: actions/upload-artifact@v7
@@ -1588,7 +1602,7 @@ jobs:
           - runner: ubuntu-22.04-arm
             arch: aarch64
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
 

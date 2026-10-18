@@ -99,6 +99,20 @@ def schedule_after_idle_lull(callback, quiet_seconds=3, max_wait_seconds=30):
     GLib.timeout_add_seconds(1, _poll)
 
 
+
+def _shared_region_entry(locale_code, entries):
+    """The entry every region of a bare language code shares - af_NA and
+    af_ZA both listing folder af_ZA with the same files - or None if the
+    code has a region or its regions differ (pt_BR, pt_PT)."""
+    lang = locale_code.replace('-', '_')
+    if '_' in lang:
+        return None
+    regions = [entry for code, entry in entries.items() if code.replace('-', '_').startswith(lang + '_')]
+    if regions and all(entry == regions[0] for entry in regions):
+        return regions[0]
+    return None
+
+
 class AssetManifest:
     def __init__(self, client=None, config_dir=None, schedule_after_idle_lull=schedule_after_idle_lull):
         self._client = client
@@ -206,6 +220,6 @@ class AssetManifest:
             return None
         entries = self._data.get(resource_type) or {}
         candidates = candidate_folders(locale_code, entries)
-        if not candidates:
-            return None
-        return entries[candidates[0]]
+        if candidates:
+            return entries[candidates[0]]
+        return _shared_region_entry(locale_code, entries)

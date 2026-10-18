@@ -27,6 +27,7 @@ sys.path.insert(1, os.path.abspath(os.path.join(HERE, '..', '..', '..')))
 
 from corpus import API_ONLY, CORPUS, short  # noqa: E402
 from malformed import FILE_SWEEPS  # noqa: E402
+from services import SERVICES  # noqa: E402
 
 # Files with a corpus value in one field of each unit: sweep, extension, field.
 SOURCE_FILES = (
@@ -53,6 +54,8 @@ SECTIONS = {
     'files': FILE_SWEEPS,
     'paths': ('paths', 'saving'),
 }
+# One section per service, each with its own config (services.py).
+SECTIONS.update({'service-' + name: ('service-' + name,) for name in SERVICES})
 
 GLib = Gtk = None
 
@@ -750,7 +753,7 @@ def main():
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import GLib, Gtk
-    from record import Recorder
+    from record import SLOW_SECONDS, Recorder
 
     parser = argparse.ArgumentParser()
     parser.add_argument('section', choices=SECTIONS)
@@ -761,14 +764,23 @@ def main():
     parser.add_argument('--skip-file')
     args = parser.parse_args()
 
-    recorder = Recorder(args.results, args.case_timeout)
+    # Service sweeps wait for slow replies on purpose.
+    recorder = Recorder(args.results, args.case_timeout,
+                        slow_seconds=None if args.section.startswith('service-') else SLOW_SECONDS)
     recorder.sweep = args.section
     recorder.install()
 
     from virtaal.common import pan_app
+    service = args.section[len('service-'):] if args.section.startswith('service-') else None
+    if service:
+        import services
+        url = services.start_server()
+        services.configure(service, url, pan_app.get_config_dir())
     pan_app.settings.translator['name'] = 'Fuzz Tester'
     pan_app.settings.translator['email'] = 'fuzz@example.org'
     from virtaal.main import Virtaal
+    if service:
+        services.patch_fixed_urls(service, url)
 
     app = Virtaal('')
     # Virtaal installs its crash dialog as the excepthook.
@@ -779,7 +791,10 @@ def main():
 
     def driver():
         yield from sweep.settle(20)
-        yield from getattr(sweep, args.section)()
+        if service:
+            yield from services.run(sweep, service)
+        else:
+            yield from getattr(sweep, args.section)()
         recorder.done()
         if app.main_controller.plugin_controller:
             app.main_controller.plugin_controller.shutdown()

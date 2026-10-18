@@ -188,4 +188,15 @@ KNOWN_BUGS = [
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='Exception _get_plugin_class',
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
+    # Translation services (services.py, #4389).
+    dict(issue=4437, sweep=['service-amagama', 'service-remotetm'], kind='exception', match='JSONDecodeError',
+         cases=['reply: not JSON', 'reply: truncated', 'reply: empty body', 'reply: invalid UTF-8']),
+    dict(issue=4437, sweep=['service-amagama', 'service-remotetm'], kind='exception', match='TypeError _handle_matches',
+         cases=['reply: wrong shape']),
+    dict(issue=4438, sweep='service-apertium', kind='exception', match='JSONDecodeError got_translation',
+         cases=['reply: not JSON', 'reply: truncated', 'reply: empty body', 'reply: invalid UTF-8']),
+    dict(issue=4438, sweep='service-apertium', kind='exception', match='KeyError got_translation',
+         cases=['reply: wrong shape']),
+    dict(issue=4438, sweep='service-apertium', kind='exception', match='TypeError got_translation',
+         cases=['reply: null']),
 ]

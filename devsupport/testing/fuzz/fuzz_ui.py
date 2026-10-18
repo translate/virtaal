@@ -484,6 +484,25 @@ def random_child(args):
     recorder.done()
 
 
+def report(found, outdir, platform):
+    """Write results.json and the summary; the exit status for the run."""
+    with open(os.path.join(outdir, 'results.json'), 'w', encoding='utf-8') as f:
+        json.dump(found, f, indent=1)
+    outcome = results.classify(found, KNOWN_BUGS, platform)
+    issue_check = True
+    if os.environ.get('GITHUB_ACTIONS'):
+        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS if e.get('issue')],
+                                            token=os.environ.get('GITHUB_TOKEN'))
+        issue_check = bool(states)
+        results.check_closed(outcome, KNOWN_BUGS, states)
+    text = results.summary(outcome, platform, issue_check)
+    print(text)
+    if os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+            f.write(text)
+    return 1 if outcome.failed else 0
+
+
 # MAIN #
 
 def main():
@@ -536,21 +555,7 @@ def main():
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
-    with open(os.path.join(outdir, 'results.json'), 'w', encoding='utf-8') as f:
-        json.dump(found, f, indent=1)
-    outcome = results.classify(found, KNOWN_BUGS, platform)
-    issue_check = True
-    if os.environ.get('GITHUB_ACTIONS'):
-        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS if e.get('issue')], token=os.environ.get('GITHUB_TOKEN'))
-        issue_check = bool(states)
-        results.check_closed(outcome, KNOWN_BUGS, states)
-    text = results.summary(outcome, platform, issue_check)
-    print(text)
-    if os.environ.get('GITHUB_STEP_SUMMARY'):
-        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
-            f.write(text)
-    return 1 if outcome.failed else 0
-
+    return report(found, outdir, platform)
 
 if __name__ == '__main__':
     sys.exit(main())

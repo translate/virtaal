@@ -48,3 +48,26 @@ def test_the_patch_is_installed_where_translate_toolkit_needs_it():
     if state_class is None:
         pytest.skip('translate-toolkit before 3.19 has no PoParseState')
     assert state_class.set_encoding.__qualname__.startswith(poparser_compat._patch.__qualname__)
+
+
+@pytest.mark.parametrize('charset', ['UTF-16', 'UTF-32', 'utf-16le'])
+def test_a_utf8_file_whose_header_names_a_non_ascii_charset_opens_and_saves_as_utf8(charset):
+    # #4409: the header is wrong - a PO file is read as ASCII-compatible
+    # lines - so the file is read and written back as UTF-8.
+    data = _po(charset, 'Stoor die lêer')
+    data = BytesIO(data.getvalue().decode(charset).encode('utf-8'))
+    data.name = 'wrong-header.po'
+
+    store = factory.getobject(data)
+
+    assert store.units[1].target == 'Stoor die lêer'
+    saved = bytes(store).decode('utf-8')
+    assert 'charset=UTF-8' in saved
+
+
+def test_rescue_charset_leaves_real_utf16_and_unknown_charsets_alone():
+    real_utf16 = 'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-16\\n"\n'.encode('utf-16')
+    unknown = b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=NO-SUCH\\n"\n'
+
+    assert poparser_compat._rescue_charset(real_utf16) == real_utf16
+    assert poparser_compat._rescue_charset(unknown) == unknown

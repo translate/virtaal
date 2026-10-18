@@ -16,8 +16,8 @@ actively-developed translation tool.
 
 Getting it
 ==========
-Windows installer and macOS ``.dmg`` (Intel and Apple Silicon, macOS 15
-Sequoia or later). On Linux, build the Flatpak or run from source - see
+Windows installer, macOS ``.dmg`` (Intel and Apple Silicon, macOS 15
+Sequoia or later), and a Linux Flatpak (x86_64 and aarch64) - see
 :ref:`Installation <index#installation>`.
 
 .. note::
@@ -66,10 +66,9 @@ First-class on every platform
 -------------------------------
 All three platforms now get a real, proper build: a Windows installer
 with correct file associations and icons, native macOS ``.app``/``.dmg``
-builds for both Apple Silicon and Intel, and a Flatpak for Linux, which
-for now you build yourself - all built and tested in the same CI pipeline
-rather than one platform being the "real" build and the others
-best-effort ports.
+builds for both Apple Silicon and Intel, and a Flatpak for Linux - all
+built, tested and shipped from the same CI pipeline rather than one
+platform being the "real" build and the others best-effort ports.
 
 Resources arrive when you need them
 --------------------------------------

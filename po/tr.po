@@ -130,7 +130,7 @@ msgstr "_Dışa Aktar"
 
 #: share/virtaal/virtaal.ui
 msgid "_Recent Files"
-msgstr "So_n Dosyalar"
+msgstr "_Son Dosyalar"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit"
@@ -138,7 +138,7 @@ msgstr "Düz_en"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr "_Yinele"
+msgstr "Yi_nele"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
@@ -160,12 +160,12 @@ msgstr "Kaynaktan Aktar"
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
 msgid "_Insert Placeable"
-msgstr "_Yerleştirilebilir Ekle"
+msgstr "Ye_rleştirilebilir Ekle"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
 msgid "P_revious Placeable"
-msgstr "Önceki Ye_rleştirilebilir"
+msgstr "_Önceki Yerleştirilebilir"
 
 #: share/virtaal/virtaal.ui
 msgid "_Next Placeable"

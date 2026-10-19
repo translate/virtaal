@@ -118,7 +118,7 @@ msgstr "Ontbrekende taal toevoegen"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
-msgstr ""
+msgstr "_Taal vertaling bewerken…"
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -126,7 +126,7 @@ msgstr "_Bestand"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr ""
+msgstr "Her_stellen naar opgeslagen"
 
 #: share/virtaal/virtaal.ui
 #, fuzzy
@@ -148,19 +148,19 @@ msgstr "B_ewerken"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr ""
+msgstr "Op_nieuw uitvoeren"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
-msgstr ""
+msgstr "_Zoeken…"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "Volgende zoeken"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr ""
+msgstr "Vorige zoeken"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -209,23 +209,23 @@ msgstr "Pagina om_laag"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr ""
+msgstr "_Eerste eenheid"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"
-msgstr ""
+msgstr "_Laatste eenheid"
 
 #: share/virtaal/virtaal.ui
 msgid "Next Unit"
-msgstr ""
+msgstr "Volgende eenheid"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Advance State"
-msgstr ""
+msgstr "Volgende eenheid en status voorwaarts"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Reverse State"
-msgstr ""
+msgstr "Volgende eenheid en status herstellen"
 
 #: share/virtaal/virtaal.ui
 msgid "_Help"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
-msgstr ""
+msgstr "_Sneltoetsen"
 
 #: share/virtaal/virtaal.ui
 msgid "Virtaal Preferences"
@@ -354,7 +354,7 @@ msgstr "Lokaal bestand"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
-msgstr ""
+msgstr "Met niet-opgeslagen wijzigingen"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Words</b> (total):"
@@ -509,7 +509,7 @@ msgstr "Computervertaling"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
-msgstr ""
+msgstr "Kommagescheiden waarde (.csv)"
 
 #: devsupport/tmp_strings.py
 #, fuzzy
@@ -527,7 +527,7 @@ msgstr "Gettext PO-bestand"
 
 #: devsupport/tmp_strings.py
 msgid "Haiku catkeys file"
-msgstr ""
+msgstr "Haiku catkeys-bestand"
 
 #: devsupport/tmp_strings.py
 #, fuzzy
@@ -638,6 +638,10 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal is een programma om mee te vertalen. Het richt zich op een heerlijke "
+"combinatie van eenvoud en kracht. Het integreert met geselecteerde "
+"onlinebronnen om vertalen leuk te maken, wat helpt om de kwaliteit van "
+"vertalingen te verbeteren."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
@@ -656,7 +660,7 @@ msgstr ""
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
-msgstr ""
+msgstr "Enkele mogelijkheden:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -672,20 +676,20 @@ msgstr "Terminologiehulp"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "Automatisch aanvullen en automatisch corrigeren"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Kwaliteitscontroles met aanpassingen voor vele talen"
 
 #. l10n: Captions should be shorter than 50 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
-msgstr ""
+msgstr "Gemakkelijke toegang tot recente bestanden en documentatie"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
-msgstr ""
+msgstr "Herkende elementen hoeven niet te worden getypt"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #, fuzzy
@@ -982,7 +986,7 @@ msgstr "KDE"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Qt"
-msgstr ""
+msgstr "Qt"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
@@ -1762,7 +1766,7 @@ msgstr "Vertaal_suggesties"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Suggestions for This _Unit"
-msgstr ""
+msgstr "Suggesties voor deze _eenheid"
 
 #: virtaal/plugins/tm/tmview.py
 #, python-format
@@ -1826,6 +1830,8 @@ msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Welkome bij de handleiding voor Virtaal. U kunt uw eerste vertaling maken "
+"door gewoon de vertaling voor \"Welcome\" te typen. Druk dan op Enter."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1833,6 +1839,10 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Vertaal dit enigszins langer bericht. Als spellingscontrole beschikbaar is, "
+"worden spelfouten op dezelfde wijze aangeduid als in tekstbewerkers. Zorg "
+"ervoor dat de juiste taal is geselecteerd in de linkerbenedenhoek van het "
+"venster."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1840,6 +1850,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Deze handleiding zal u enkele dingen laten zien waar u rekening mee kunt "
+"houden bij het vertalen van softwareprogramma's. Het zal u helpen enkele "
+"problemen te vermijden en vertalingen van een hogere kwaliteit te produceren."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1848,6 +1861,10 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Advies zal gedeeltelijk alleen relevant zijn voor sommige talen. Als uw taal "
+"bijvoorbeeld niet het Latijnse alfabet, zou bepaald advies niet relevant "
+"zijn voor de vertaling naar uw taal. Voor veel talen zijn er vastgestelde "
+"vertaalregels."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1855,6 +1872,9 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"Het juist gebruiken van hoofdletters is belangrijk in veel talen. Vertaal "
+"dit bericht met zorgvuldige aandacht om \"Virtaal\" met een hoofdletter te "
+"schrijven."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1864,6 +1884,11 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"In dit bericht gebruikt het Engels een hoofdletter voor bijna elk woord. "
+"Bijna geen enkele andere taal gebruikt deze stijl. Tenzij uw taal echt de "
+"Engelse stijl moet volgen (ook wel Title Case genoemd), vertaal dit dan door "
+"de normale regels voor hoofdletters voor uw taal te volgen. Als uw taal geen "
+"hoofdletters gebruikt, vertaal het dan gewoon."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1873,6 +1898,11 @@ msgid ""
 "copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Als u het vorige bericht hebt vertaald, zou u een venster zien met die "
+"vertaling en een percentage dat aangeeft hoe soortgelijk de brontekenreeksen "
+"(Engels) zijn. Dat is het vertaalgeheugen van Virtaal aan het werk. Druk op "
+"Ctrl+1 om de voorgestelde vertaling naar de huidige vertaling te kopiëren. "
+"Vergeet niet om suggesties eerst altijd te beoordelen voordat u ze gebruikt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1880,6 +1910,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Dit is een eenvoudig bericht dat begint met een hoofdletter in het Engels. "
+"Als uw taal hoofdletters gebruikt, zult u bijna zeker willen dat uw "
+"vertaling ook met een hoofdletter begint."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1887,17 +1920,24 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Dit is een eenvoudig bericht dat begint met een kleine letter in het Engels. "
+"Als uw taal hoofdletters gebruikt, zult u bijna zeker willen dat uw "
+"vertaling ook met een kleine letter begint."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Dit bericht is een vraag. Zorg ervoor dat u ook in uw vertaling het juiste "
+"vraagteken gebruikt."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Dit bericht is een label als deel van een formulier. Merk op dat het eindigt "
+"met een dubbele punt (:)."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1905,6 +1945,10 @@ msgid ""
 "copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
 "translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
+"Omdat de bron nagenoeg geheel of volledig ongewijzigd blijft, is het handig "
+"om de gehele brontekenreeks te kopiëren met Ctrl+Shift+V. Hier is bijna "
+"niets te vertalen, druk dus op Ctrl+Shift+V en maak correcties als dat nodig "
+"is."
 
 #: virtaal/support/tutorial.py
 #, fuzzy
@@ -1926,6 +1970,9 @@ msgid ""
 "placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Herkende plaatsvervangers omvatten speciale symbolen, cijfers, variabele "
+"plaatsvervangers, acroniemen en nog veel meer. Verplaats elk ervan met "
+"Alt+Rechts en naar beneden met Alt+Omlaag."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1933,6 +1980,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Dit bericht eindigt op ... om aan te geven dat klikken op deze tekst ervoor "
+"zal zorgen dat een dialoogvenster verschijnt, in plaats van slechts een "
+"actie uit te voeren. Zorg ervoor dat uw bericht ook met ... eindigt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1940,6 +1990,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Dit bericht eindigt met een speciaal teken dat eruitziet als drie punten. "
+"Selecteer het speciale teken met Alt+Rechts en kopieer het naar uw vertaling "
+"met Alt+Omlaag. Typ niet gewoon de drie tekens punt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1947,6 +2000,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Dit bericht heeft twee zinnen. Vertaal ze en zorg ervoor dat elk ervan "
+"begint met een hoofdletter als uw taal die gebruikt, en eindig elke zin op "
+"de juiste wijze."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1955,6 +2011,11 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Dit bericht markeert het woord \"now\" als belangrijk met tags voor vet. "
+"Deze tags kunnen worden overgebracht vanuit de bron met Alt+Rechts en "
+"Alt+Omlaag. Laat de <b> en de </b> in de vertaling rondom het deel staan dat "
+"correspondeert met \"now\". Lees meer over opmaak voor XML hier: http://"
+"en.wikipedia.org/wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1962,6 +2023,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Dit bericht lijkt heel veel op het vorige bericht. Gebruik de suggestie van "
+"de vorige vertaling met Ctrl+1. Merk op dat het enige verschil is dat deze "
+"eindigt met een punt na de laatste tag."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1972,6 +2036,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"In dit bericht is \"%d\" een plaatsvervanger (variabele) die een cijfer "
+"weergeeft. Zorg ervoor dat uw vertaling ergens \"%d\" bevat. In dit geval "
+"verwijst het naar het aantal bestanden. Als dit bericht wordt gebruikt, zal "
+"de \"%d\" worden vervangen door een cijfer, bijvoorbeeld 'Aantal gekopieerde "
+"bestanden: 5'.  Merk op dat \"%d\" niet verwijst naar een percentage."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1984,6 +2053,13 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"In dit bericht verwijst \"%d\" opnieuw naar het aantal bestanden, maar merk "
+"op hoe de \"(s)\" wordt gebruikt om aan te geven dat we niet weten hoeveel "
+"het zal zijn. Dat is ook vaak moeilijk goed te vertalen. Wanneer u dit "
+"tegenkomt in een softwarevertaling, zou u misschien van ontwikkelaars willen "
+"weten of dit kan worden vermeden. Lees hier meer over en besluit hoe het in "
+"uw taal te doen: http://docs.translatehouse.org/projects/localization-guide/"
+"en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1993,6 +2069,11 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"In dit bericht is de juiste manier voor het vertalen van meervoudsvormen te "
+"zien. U moet tussen 1 en 6 verschillende versies van de vertaling invoeren "
+"om voor de juiste grammatica in uw taal te kunnen zorgen. Lees er hier meer "
+"over: http://docs.translatehouse.org/projects/localization-guide/en/latest/"
+"guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2002,6 +2083,11 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"In dit bericht is \"%s\" een plaatsvervanger (variabele) die een "
+"bestandsnaam weergeeft. Zorg ervoor dat uw vertaling ergens \"%s\" bevat. "
+"Als dit bericht wordt gebruikt, zal de \"%s\" worden vervangen door een "
+"bestandsnaam, bijvoorbeeld 'Het bestand zal worden opgeslagen als "
+"voorbeeld.odt'.  Merk op dat \"%s\" niet verwijst naar een percentage."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2012,6 +2098,12 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different quoting characters you can just type them around the variable."
 msgstr ""
+"In dit bericht is de variabele omsloten door dubbele aanhalingstekens. Zorg "
+"ervoor dat uw vertaling de variabele %s bevat en omsluit die op dezelfde "
+"wijze als die welke wordt vereist voor uw taal. Als uw taal dezelfde "
+"aanhalingstekens gebruikt als het Engels, typ het dan exact zoals het is "
+"weergegeven voor het Engels. Als uw taal een ander aanhalingsteken gebruikt, "
+"kunt u ze gewoon rondom de variabele typen."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2020,6 +2112,11 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"In dit bericht is \"%(name)s\" een plaatsvervanger (variabele). Merk op dat "
+"de 's' deel uitmaakt van de variabele, en dat de gehele variabele vanaf '%' "
+"tot en met 's' ergens ongewijzigd in uw vertaling zou moeten voorkomen. Deze "
+"typen variabelen geven u een idee of wat ze zullen bevatten. In dit geval "
+"zal dat een naam zijn."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2027,6 +2124,9 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"In dit bericht wordt de gebruiker van de software gevraagd iets te "
+"bevestigen. Zorg ervoor dat u het zo beleefd of respectvol vertaalt als "
+"nodig is voor uw cultuur."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2034,12 +2134,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"In dit bericht staat een verwijzing naar \"Linux\" (een productnaam). Veel "
+"talen zullen die niet vertalen, maar uw taal zou een transliteratie kunnen "
+"gebruiken als u niet het Latijnse schrift voor uw taal gebruikt."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Dit bericht bevat de URL (webadres) van de projectwebsite. Het moet worden "
+"overgedragen als een plaatsvervanger of exact worden overgetypt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2049,6 +2154,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Dit bericht verwijst naar een website met meer informatie. Soms zou zijn "
+"toegesdtaan of zelfs worden aangemoedigd om de URL (webadres) te wijzigen "
+"naar een website in uw taal. In dat geval, vervang de \"en\" aan het begin "
+"van het adres naar uw taalcode, zodat het adres verwijst naar het "
+"corresponderende artikel in uw taal over XML."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2056,6 +2166,10 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Deze vertaling bevat een onduidelijk woord - het heeft twee mogelijke "
+"betekenissen. Zorg ervoor dat u de contextinformatie kunt bekijken die dit "
+"als een werkwoord weergeeft (een actie zoals in \"klik hier om te bekijken\")"
+"."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2065,6 +2179,12 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Deze vertaling bevat een onduidelijk woord - het heeft twee mogelijke "
+"betekenissen. Zorg ervoor dat u de contextinformatie kunt bekijken die dit "
+"als een zelfstandig naamwoord weergeeft (een actie zoals in \"klik om de "
+"weergave naar volledig scherm te wijzigen\"). Als Virtaal uw vorige "
+"vertaling als een suggestie geeft, wees dan voorzichtig genoeg om het alleen "
+"te gebruiken als het ook voor dit geval echt toepasselijk is."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2077,14 +2197,23 @@ msgid ""
 "before this letter and it means that this accelerator could be triggered by "
 "pressing Alt+F."
 msgstr ""
+"Een acceleratortoets is een toets op uw toetsenbord die u kunt indrukken om "
+"snel naar een menu of functie te gaan. Het wordt ook wel een hot key, "
+"toegangstoets of mnemonic genoemd. In programma-interfaces worden ze "
+"weergegeven als een onderstreepte letter in het tekstlabel. In de te "
+"vertalen tekst worden ze gemarkeerd met een teken, zoals hier de underscore, "
+"maar ook andere tekens worden hier wel voor gebruikt. In dit geval is de "
+"acceleratortoets \"f\" omdat de underscore voor deze letter staat en dat "
+"betekent dat deze accelerator kan worden geactiveerd door te drukken op "
+"Alt+F."
 
 #: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "In dit item ziet u een ander soort accelerator."
 
 #: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "Een nog een ander soort accelerator."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2092,12 +2221,18 @@ msgid ""
 "consistently. To add a term, select a word (or words), press Ctrl+T and fill "
 "in the details for the new term. Select the text below and add a term for it."
 msgstr ""
+"U kunt een lokaal terminologiebestand onderhouden om u te helpen om "
+"consistent te vertalen. Toevoegen van een term: selecteer een woord (of "
+"woorden), druk op Ctrl+T en vul de details in voor de nieuwe term. Selecteer "
+"de tekst hieronder en voeg er een term voor in."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"In het vorige item hebt u een terminologie-item ingevoerd voor het werkwoord "
+"\"filter\". Doe nu hetzelfde voor het zelfstandig naamwoord \"filter\"."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2111,6 +2246,16 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Wanneer u enige terminologie in de vorige items hebt gemaakt, zou u nu "
+"enkele van de woorden kunnen zien met een groene achtergrond (of ander "
+"kleur, afhankelijk van uw thema). Dat betekent dat Virtaal "
+"terminologiesuggesties voor dat woord heeft. Gebruik Alt+Rechts om het "
+"gemarkeerde woord te selecteren, en druk dan op Alt+Omlaag. Als slechts een "
+"suggestie wordt gegeven kopieert Alt+Omlaag gewoon de suggestie naar het "
+"vertaalveld. Maar als verscheidene suggesties beschikbaar zijn geeft "
+"Alt+Omlaag een lijst met suggesties weer, waarin u kunt navigeren met de "
+"toetsen Omhoog en Omlaag. Als u eenmaal de gewenste suggestie hebt "
+"geselecteerd, druk op Enter om die te kopiëren naar het vertaalveld."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2118,12 +2263,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
+"Dit bericht heeft twee regels. Zorg ervoor dat uw vertaling ook bestaat uit "
+"twee regels. U kunt regels scheiden met Shift+Enter of plaatsvervangende "
+"tekens newline kopiëren (weergegeven als ¶)."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Dit bericht bevat tekens tab om enkele kopteksten te scheiden. Zorg ervoor "
+"dat u uw vertalingen op dezelfde manier scheidt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2134,6 +2284,12 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: this number is bigger than one thousand."
 msgstr ""
+"Dit bericht bevat een lang nummer dat is opgemaakt overeenkomstig de "
+"Amerikaanse conventie. Vertaal dat maar zorg ervoor dat de opmaak "
+"overeenkomt met die van de conventie van uw taal. U zou misschien de komma "
+"(,) en punt (.) moeten wijzigen naar andere tekens, en u zou misschien ook "
+"een andere systeem voor de nummering moeten gebruiken. Zorg ervoor dat u de "
+"Amerikaanse opmaak begrijpt: dit nummer is groter dan duizend."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2143,6 +2299,12 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do so."
 msgstr ""
+"Dit bericht verwijst naar mijlen. Als de programmeurs dat aanmoedigen, zou u "
+"dat misschien in uw vertaling willen wijzigen naar kilometers, als "
+"kilometers gewoonlijk meer in uw taal worden gebruikt. Vergeet niet dat 1 "
+"mijl ongeveer 1,6 kilometer is. Merk op dat geautomatiseerde testen voor "
+"\"getallen\" zullen klagen als het nummer is gewijzigd, maar in dit geval is "
+"het veilig om het te doen."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2151,6 +2313,11 @@ msgid ""
 "angle brackets (<...>). The double quotes (\") should never be changed in "
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
+"Dit bericht bevat een link waarop de gebruiker kan klikken om de pagina voor "
+"de Help te bezoeken. Zorg ervoor dat u de informatie op de juiste wijze "
+"behoudt tussen de haakjes (<...>). De dubbele aanhalingstekens (\") zouden "
+"in tags nooit moeten worden gewijzigd, zelfs niet als uw taal een ander type "
+"aanhalingstekens gebruikt."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2160,6 +2327,11 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tags of the previous translation."
 msgstr ""
+"Dit bericht bevat een soortgelijke link, maar de programmeurs besloten om in "
+"plaats daarvan de tags in te voegen met variabelen, zodat vertalers ze niet "
+"kunnen wijzigen. Zorg ervoor dat u de twee variabelen (%s) dusdanig plaatst "
+"dat ze corresponderen met de openings- en sluitingstags van de vorige "
+"vertaling."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2167,6 +2339,9 @@ msgid ""
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
+"Dit bericht bevat de tags <b> en </b> om een woord te benadrukken, terwijl "
+"alles binnen de tags <p> en </p> ligt. Zorg ervoor dat de gehele vertaling "
+"binnen de tags <p> en </p> ligt."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2178,6 +2353,13 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Dit bericht bevat een soortgelijke link die is opgenomen binnen <span> en </"
+"span>. Zorg ervoor dat u correct alle tags behoudt (<...>), en dat de link "
+"volledig is opgenomen binnen de tags <span> en </span> in uw vertaling. Zorg "
+"ervoor dat de tekst binnen de tags \"a\" corresponderen met \"pagina voor "
+"help\" en dat uw vertaling correspondeert met de tweede zin die is opgenomen "
+"tussen de tags <span>. Merk op hoe de punt nog steeds binnen de tag </span> "
+"ligt."
 
 #: virtaal/views/checksprojview.py
 msgid "Project Type"
@@ -2209,16 +2391,16 @@ msgstr "Nieuw talenpaar"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annuleren"
 
 #: virtaal/views/mainview.py
 msgid "_OK"
-msgstr ""
+msgstr "_Oké"
 
 #. l10n: macOS app menu item that opens the Preferences dialog
 #: virtaal/views/mainview.py
 msgid "Settings…"
-msgstr ""
+msgstr "Instellingen…"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2371,7 +2553,7 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 msgid "Save As…"
-msgstr ""
+msgstr "Opslaan als…"
 
 #: virtaal/views/mainview.py
 msgid "Logs"
@@ -2391,13 +2573,13 @@ msgstr "Navi_gatie:"
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #. l10n: How many units to show around the one being edited, when a
 #. navigation mode only goes to some units
 #: virtaal/views/modeview.py
 msgid "Conte_xt:"
-msgstr ""
+msgstr "Conte_xt:"
 
 #: virtaal/views/prefsview.py
 #, fuzzy
@@ -2407,14 +2589,14 @@ msgstr "Poedit-instellingen"
 
 #: virtaal/views/prefsview.py
 msgid "System default"
-msgstr ""
+msgstr "Systeemstandaard"
 
 #. l10n: A UI language: its name in your language, then in
 #. itself, e.g. "French - Français"
 #: virtaal/views/prefsview.py
 #, python-format
 msgid "%(language)s - %(endonym)s"
-msgstr ""
+msgstr "%(language)s - %(endonym)s"
 
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
@@ -2444,11 +2626,11 @@ msgstr "Herzien:"
 #: virtaal/views/propertiesview.py
 #, python-format
 msgid "(%s)"
-msgstr ""
+msgstr "(%s)"
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
+msgstr "Bestand heeft niet-opgeslagen wijzigingen"
 
 #: virtaal/views/storeview.py
 msgid "Export failed"
@@ -2573,11 +2755,11 @@ msgstr "Configureren…"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Global"
-msgstr ""
+msgstr "Globaal"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Open a file"
-msgstr ""
+msgstr "Een bestand openen"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2587,7 +2769,7 @@ msgstr "Vertaalde eenheden uit het bestand dat momenteel geladen is"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
-msgstr ""
+msgstr "Sla het huidige bestand op onder een nieuwe naam"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2603,19 +2785,19 @@ msgstr "Virtaal"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
-msgstr ""
+msgstr "Dialoogvenster Voorkeuren weergeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr ""
+msgstr "Bestandseigenschappen en statistieken weergeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Modus Volledig scherm schakelen"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show this Keyboard Shortcuts window"
-msgstr ""
+msgstr "Dit venster Toetsenbordsneltoetsen weergeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2631,39 +2813,39 @@ msgstr "Computervertaling"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
-msgstr ""
+msgstr "Gan naar vorige eenheid"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next unit"
-msgstr ""
+msgstr "Gan naar volgende eenheid"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units up"
-msgstr ""
+msgstr "Ga 10 eenheden omhoog"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
-msgstr ""
+msgstr "Ga 10 eenheden omlaag"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to first unit"
-msgstr ""
+msgstr "Ga naar eerste eenheid"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to last unit"
-msgstr ""
+msgstr "Ga naar laatste eenheid"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next search match"
-msgstr ""
+msgstr "Ga naar volgende zoekovereenkomst"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous search match"
-msgstr ""
+msgstr "Ga naar vorige zoekovereenkomst"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Units"
-msgstr ""
+msgstr "Eenheden"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2679,7 +2861,7 @@ msgstr "Vo_lgende placeable"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
-msgstr ""
+msgstr "De geselecteerde plaatsvervanger invoegen"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2689,19 +2871,19 @@ msgstr "Computervertaling met libtranslate"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
-msgstr ""
+msgstr "Kopieer de bron, als niets is geselecteerd"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr ""
+msgstr "Voer een nieuwe regel in"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr ""
+msgstr "Maak de laatste wijziging ongedaan"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr ""
+msgstr "Voer de laatste ongedaan gemaakte wijziging opnieuw uit"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2711,7 +2893,7 @@ msgstr "Vertaal_suggesties"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
-msgstr ""
+msgstr "Controles weergeven/verbergen"
 
 #: virtaal/views/widgets/shortcutswindow.py
 #, fuzzy
@@ -2739,27 +2921,27 @@ msgstr "Lokale terminologiebestanden"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr ""
+msgstr "Focus verplaatsen"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"
-msgstr ""
+msgstr "Ga naar volgende doelveld"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the previous target field"
-msgstr ""
+msgstr "Ga naar vorige doelveld"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the language-pair selector"
-msgstr ""
+msgstr "Spring naar selectie voor taalpaar"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the \"Navigation:\" mode selector"
-msgstr ""
+msgstr "Spring naar selectie voor modus van \"Navigatie:\""
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the search bar and return to normal editing"
-msgstr ""
+msgstr "Sluit de zoekbalk en ga terug naar normaal bewerken"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"

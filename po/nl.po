@@ -2,6 +2,7 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Tom Verlinden <verlinden [DOT] tom [AT] gmail [DOT] com>, 2008, 2009, 2010, 2011.
+# Dikgro <5002095+DiGro@users.noreply.github.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4\n"
@@ -2675,7 +2676,9 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Tom Verlinden"
+msgstr ""
+"Tom Verlinden\n"
+"Dikgro"
 
 #: virtaal/views/widgets/langadddialog.py
 #, fuzzy

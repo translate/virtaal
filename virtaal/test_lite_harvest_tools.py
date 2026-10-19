@@ -266,3 +266,22 @@ def test_linguas_lists_only_lite_catalogs_that_translate_something(lite_catalogs
     module.write_linguas({"mac": ["af"]})
 
     assert linguas.read_text(encoding="utf-8") == "gtk30/zu\nmac/af\n"
+
+
+def test_gap_fills_counts_lite_translations_upstream_lacks_without_writing(lite_catalogs):
+    module, domain_dir = lite_catalogs
+    (domain_dir / "ar.po").write_text(
+        'msgid "Quit %s"\nmsgstr "Quit-ar %s"\n\nmsgid "Show All"\nmsgstr "Show-ar"\n', encoding="utf-8")
+    before = (domain_dir / "ar.po").read_text(encoding="utf-8")
+
+    count = module.gap_fills("mac", "ar", {("", "Show All"): "Upstream"})
+
+    assert count == 1
+    assert (domain_dir / "ar.po").read_text(encoding="utf-8") == before
+
+
+def test_unlisted_names_gap_fillers_missing_from_linguas_lite(lite_catalogs):
+    module, domain_dir = lite_catalogs
+    (domain_dir.parent / "LINGUAS-lite").write_text("mac/af\n", encoding="utf-8")
+
+    assert module.unlisted(["mac/af", "mac/ar"]) == ["mac/ar"]

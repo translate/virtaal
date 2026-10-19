@@ -294,6 +294,8 @@ class StatsCache:
 
     _caches = {}
     defaultfile = None
+    unusable_files = set()
+    """Stats files kept in memory instead, as they can't be opened (#4430)"""
     con = None
     """This cache's connection"""
     cur = None
@@ -304,9 +306,9 @@ class StatsCache:
 
         def make_database(statsfile):
 
-            def connect(cache):
+            def connect(cache, name=statsfile):
                 # sqlite needs to get the name in utf-8 on all platforms
-                cache.con = dbapi2.connect(statsfile)
+                cache.con = dbapi2.connect(name)
                 cache.cur = cache.con.cursor()
 
             def clear_old_data(cache):
@@ -324,11 +326,43 @@ class StatsCache:
                 except dbapi2.OperationalError:
                     return False
 
-            cache = cls._caches.setdefault(current_thread, {})[statsfile] = object.__new__(cls)
-            connect(cache)
-            if clear_old_data(cache):
-                connect(cache)
-            cache.create()
+            def open_database(name=statsfile):
+                cache = object.__new__(cls)
+                connect(cache, name)
+                try:
+                    if clear_old_data(cache):
+                        connect(cache)
+                    cache.create()
+                except Exception:
+                    cache.con.close()
+                    raise
+                return cache
+
+            def in_memory(error):
+                # Once per process: every thread and later open use memory.
+                logging.warning("Keeping statistics in memory, %s can't be used: %s", statsfile, error)
+                cls.unusable_files.add(statsfile)
+                return open_database(':memory:')
+
+            if statsfile in cls.unusable_files:
+                cache = open_database(':memory:')
+            else:
+                try:
+                    cache = open_database()
+                except dbapi2.DatabaseError as e:
+                    # It only holds statistics, so a corrupt one is replaced
+                    # rather than stopping every file from opening (#4430).
+                    if os.path.exists(statsfile) and not os.path.isfile(statsfile):
+                        cache = in_memory(e)
+                    else:
+                        logging.warning("The statistics cache %s can't be read, starting a new one: %s", statsfile, e)
+                        try:
+                            if os.path.isfile(statsfile):
+                                os.unlink(statsfile)
+                            cache = open_database()
+                        except (OSError, dbapi2.DatabaseError) as e:
+                            cache = in_memory(e)
+            cls._caches.setdefault(current_thread, {})[statsfile] = cache
             return cache
 
         if not statsfile:

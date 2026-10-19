@@ -223,6 +223,7 @@ def fresh_caches(monkeypatch):
         registries.append({})
         monkeypatch.setattr(statsdb.StatsCache, '_caches', registries[-1])
 
+    monkeypatch.setattr(statsdb.StatsCache, 'unusable_files', set())
     fresh()
     yield fresh
     for caches in registries:
@@ -261,6 +262,78 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, fresh_caches):
     cache.cur.execute("SELECT count(*) FROM files")
     assert cache.cur.fetchone()[0] == 0
 
+
+def _write_truncated_database(path):
+    statsdb.StatsCache(str(path)).close()
+    data = path.read_bytes()
+    path.write_bytes(data[:len(data) // 3])
+
+
+@pytest.mark.parametrize('corrupt', [
+    lambda path: path.write_text('not a database\n'),
+    _write_truncated_database,
+], ids=['not SQLite', 'truncated'])
+def test_a_corrupt_database_is_replaced(tmp_path, fresh_caches, corrupt, caplog):
+    # #4430: it's only a cache, so a corrupt one mustn't stop files opening.
+    path = tmp_path / "stats.db"
+    corrupt(path)
+    fresh_caches()
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert path.read_bytes().startswith(b'SQLite format 3')
+    assert "can't be read" in caplog.text
+
+
+def test_a_database_path_that_cant_be_opened_falls_back_to_memory(tmp_path, fresh_caches, caplog):
+    path = tmp_path / "stats.db"
+    path.mkdir()
+    (path / "keep").write_text('mine')
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert (path / "keep").read_text() == 'mine'
+    assert [r.getMessage().split(',')[0] for r in caplog.records] == ['Keeping statistics in memory']
+
+
+def test_an_unusable_database_path_is_only_reported_once(tmp_path, fresh_caches, caplog):
+    # As another thread opens it after the first.
+    path = tmp_path / "stats.db"
+    path.mkdir()
+    statsdb.StatsCache(str(path))
+    caplog.clear()
+    fresh_caches()
+
+    cache = statsdb.StatsCache(str(path))
+
+    cache.cur.execute("SELECT count(*) FROM files")
+    assert caplog.records == []
+
+
+def test_a_failed_open_is_not_kept_for_the_next_call(tmp_path, fresh_caches, monkeypatch):
+    path = tmp_path / "stats.db"
+    path.write_text('not a database\n')
+    real_connect = statsdb.dbapi2.connect
+    calls = []
+
+    def connect(name):
+        calls.append(name)
+        if len(calls) == 1:
+            raise statsdb.dbapi2.OperationalError('locked')
+        return real_connect(name)
+
+    monkeypatch.setattr(statsdb.dbapi2, 'connect', connect)
+
+    first = statsdb.StatsCache(str(path))
+
+    assert first.con is not None
+    assert statsdb.StatsCache(str(path)) is first
 
 def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch, fresh_caches):
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)

@@ -122,6 +122,18 @@ def test_a_failed_fill_is_logged_and_the_next_one_still_runs(tmp_path, caplog):
     assert _is_cached(path)
 
 
+def test_no_fill_starts_while_the_stats_are_kept_in_memory(tmp_path, monkeypatch):
+    # #4430: a child couldn't use the file either, and would warn again.
+    monkeypatch.setattr(statsdb.StatsCache, 'unusable_files', {statsdb.StatsCache().defaultfile})
+    started = []
+    monkeypatch.setattr(statsworker.subprocess, 'Popen', lambda *args, **kwargs: started.append(args))
+
+    fill_in_background(_po(tmp_path))
+
+    assert started == []
+    assert statsworker._running is None
+    assert statsworker._queued == []
+
 def test_wait_returns_at_once_with_nothing_queued():
     statsworker.wait()
 

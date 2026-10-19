@@ -11,9 +11,25 @@ try:
 except ImportError:
     import json  #available since Python 2.6
 
+import logging
+
 import pycurl
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
+
+
+def _json_callback(callback):
+    """An http-success handler passing the decoded reply to C{callback}.
+        A reply that isn't JSON (an error page, an empty or truncated
+        body) is logged and dropped instead of raising (#4437)."""
+    def handler(widget, response):
+        try:
+            decoded = json.loads(response)
+        except ValueError as exc:
+            logging.warning('Ignoring a reply from %s that is not JSON: %s', getattr(widget, 'url', '?'), exc)
+            return
+        callback(widget, widget.id, decoded)
+    return handler
 
 
 class TMClient(HTTPClient):
@@ -38,7 +54,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def add_unit(self, unit, source_lang, target_lang, callback=None):
@@ -50,7 +66,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def update_unit(self, unit, source_lang, target_lang, callback=None):
@@ -62,7 +78,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def forget_unit(self, unit_source, source_lang, target_lang, callback=None):
@@ -74,7 +90,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def get_store_stats(self, store, callback=None):
@@ -86,7 +102,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def upload_store(self, store, source_lang, target_lang, callback=None):
@@ -99,7 +115,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def add_store(self, filename, store, source_lang, target_lang, callback=None):
@@ -111,7 +127,7 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )
 
     def forget_store(self, store, callback=None):
@@ -123,5 +139,5 @@ class TMClient(HTTPClient):
         if callback:
             request.connect(
                 "http-success",
-                lambda widget, response: callback(widget, widget.id, json.loads(response))
+                _json_callback(callback)
             )

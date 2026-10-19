@@ -418,6 +418,8 @@ jobs:
 
   test:
     runs-on: ubuntu-24.04
+    env:
+      PYTHONTRACEMALLOC: "25"
     timeout-minutes: 10
     strategy:
       fail-fast: false

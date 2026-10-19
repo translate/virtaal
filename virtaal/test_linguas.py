@@ -7,6 +7,9 @@
 
 import glob
 import os
+import re
+
+from translate.storage import pypo
 
 PO_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "po")
 
@@ -36,3 +39,22 @@ def test_every_exclusion_has_a_catalog_and_a_reason():
     for lang, reason in _excluded().items():
         assert os.path.isfile(os.path.join(PO_DIR, lang + ".po")), lang
         assert reason, lang
+
+
+# glibc's I flag ("locale digits", as in %Id) crashes printf on macOS and
+# Windows, where a lite catalog fills in what GTK doesn't translate.
+GLIBC_I_FLAG = re.compile(r"%(?:\d+\$)?[-+ #0']*I")
+
+
+def test_no_catalog_uses_glibcs_printf_i_flag():
+    found = []
+    for path in glob.glob(os.path.join(PO_DIR, "*.po")) + glob.glob(os.path.join(PO_DIR, "lite", "*", "*.po")):
+        with open(path, "rb") as f:
+            store = pypo.pofile(f.read())
+        for unit in store.units:
+            if unit.isheader() or unit.isobsolete() or not unit.target:
+                continue
+            targets = unit.target.strings if unit.hasplural() else [unit.target]
+            if any(GLIBC_I_FLAG.search(str(t).replace("%%", "")) for t in targets):
+                found.append("%s: %s" % (os.path.relpath(path, PO_DIR), unit.source))
+    assert found == []

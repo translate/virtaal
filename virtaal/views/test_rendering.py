@@ -87,3 +87,11 @@ def test_windows_fonts_render_ethiopic(font):
     # #4208: Pango only falls back to a fixed list of Windows families.
     assert _unknown_glyphs('ሰላም', font) > 0
     assert _unknown_glyphs('ሰላም', rendering.with_font_fallbacks(font)) == 0
+
+
+@pytest.mark.skipif(not platform.is_windows, reason="Windows fonts")
+@pytest.mark.parametrize('font', ['Segoe UI 10', 'Consolas 10'])
+@pytest.mark.parametrize('text', ['सबै', 'বাংলা', 'ਸਾਰੇ', 'සිංහල', 'అన్నీ', 'ไทย'])
+def test_windows_fonts_render_indic_scripts_and_thai(font, text):
+    # #4464: Pango's list names Indic fonts Windows no longer installs.
+    assert _unknown_glyphs(text, rendering.with_font_fallbacks(font)) == 0

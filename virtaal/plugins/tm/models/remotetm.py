@@ -55,6 +55,10 @@ class TMModel(BaseTMModel):
 
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""
+        # A reply of another shape than a list of matches is no matches (#4437).
+        if not isinstance(matches, list):
+            matches = []
+        matches = [m for m in matches if isinstance(m, dict) and 'source' in m and 'target' in m]
         self.cache[query_str] = matches or None # None instead of empty list
         if matches:
             for match in matches:

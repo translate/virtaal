@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import GObject
 
 from virtaal.plugins.tm.models.remotetm import TMModel, unit2dict
@@ -158,3 +159,16 @@ def test_unit2dict_extracts_the_relevant_fields():
     unit = SimpleNamespace(source='hello', target='Hallo', getcontext=lambda: 'greeting')
 
     assert unit2dict(unit) == {'source': 'hello', 'target': 'Hallo', 'context': 'greeting'}
+
+
+@pytest.mark.parametrize('reply', [{'source': 'x'}, 'text', 42, None, [1, 'x'], [{'target': 'only'}]])
+def test_handle_matches_treats_a_reply_of_another_shape_as_no_matches(reply):
+    # #4437: JSON that isn't a list of matches raised TypeError.
+    model = _model()
+    emitted = []
+    model.connect('match-found', lambda m, q, r: emitted.append((q, r)))
+
+    model._handle_matches(None, 'hello', reply)
+
+    assert model.cache['hello'] is None
+    assert emitted == []

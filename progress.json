@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-19T17:23:03Z",
- "commit": "d7c6c7b33106d440716141686b9ff82aa87abcb3",
+ "generated": "2026-10-19T17:21:11Z",
+ "commit": "7e6937cde8cc75d16f6c84b3c6249cdbbf81e0c2",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -357,12 +357,12 @@
    "code": "nl",
    "name": "Dutch",
    "endonym": "Nederlands",
-   "core_missing": 22,
-   "rest_missing": 6,
-   "needed": 25,
-   "level2_missing": 123,
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
    "level3_missing": 55,
-   "ships": "50%"
+   "ships": "level 1"
   },
   {
    "code": "nso",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39291825835"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39292463757"
 }

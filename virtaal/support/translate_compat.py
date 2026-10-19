@@ -132,6 +132,23 @@ def _fix_language_name(name):
     return name
 
 
+def _first_alternative(english, name):
+    """name without the other names a catalog lists after it ("中文; 汉语;
+    华语" for "Chinese"), unless the semicolon stands for a comma in the
+    English name ("Gaelic, Scottish") or is inside a qualifier."""
+    if ',' in english or ';' in english:
+        return name
+    depth = 0
+    for i, char in enumerate(name):
+        if char == '(':
+            depth += 1
+        elif char == ')':
+            depth -= 1
+        elif char == ';' and depth == 0:
+            return name[:i].rstrip()
+    return name
+
+
 def _translation(langcode, domain, localedir=None):
     """The gettext translation for given iso domain, falling back to
     Virtaal's own catalog (lite or pseudo translations) for what the one in
@@ -184,6 +201,8 @@ def _name_by_code(code, langcode):
     translated = _translated(_translation(langcode, domain, pycountry.LOCALES_DIR), language.name)
     if translated and language.name.endswith(')') and translated.endswith(')') and ' (' in translated:
         translated = translated[:translated.rindex(' (')]
+    if translated:
+        translated = _first_alternative(language.name, translated)
     return translated
 
 

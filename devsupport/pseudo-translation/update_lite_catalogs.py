@@ -147,6 +147,25 @@ def update(domain, lang, upstream):
     return fills
 
 
+def gap_fills(domain, lang, upstream):
+    """How many messages po/lite/<domain>/<lang>.po translates that the
+        library's own catalog doesn't, without changing anything."""
+    path = os.path.join(LITE_DIR, domain, lang + ".po")
+    if not os.path.exists(path):
+        return 0
+    template = factory.getobject(os.path.join(LITE_DIR, domain, domain + ".pot"))
+    lite = _translations(factory.getobject(path))
+    return sum(1 for unit in template.units
+               if not unit.isheader() and lite.get(_key(unit)) and not upstream.get(_key(unit)))
+
+
+def unlisted(found):
+    """The "<domain>/<lang>" entries in found that po/LINGUAS-lite lacks."""
+    with open(LINGUAS, encoding="utf-8") as f:
+        listed = {line.strip() for line in f if line.strip()}
+    return sorted(entry for entry in found if entry not in listed)
+
+
 def write_linguas(shipped):
     """po/LINGUAS-lite: other domains' lines as they are, these domains'
         from shipped ({domain: [lang, ...]})."""
@@ -163,9 +182,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("domains", nargs="+",
                         choices=[d for d in generator.LIBRARY_SOURCES if os.path.isdir(os.path.join(LITE_DIR, d))])
+    parser.add_argument("--check", action="store_true",
+                        help="change nothing; fail if a lite catalog that fills a gap for a shipped "
+                             "language is missing from po/LINGUAS-lite, so it wouldn't ship")
     args = parser.parse_args()
 
     shipped, languages = {}, shipped_languages()
+    if args.check:
+        found = []
+        for domain in args.domains:
+            upstream_dir = generator.library_locale_dir(generator.LIBRARY_SOURCES[domain][1])
+            if upstream_dir is None:
+                sys.exit("%s isn't installed - can't read its own translations" % domain)
+            found += ["%s/%s" % (domain, lang) for lang in languages
+                      if gap_fills(domain, lang, upstream_translations(domain, lang, upstream_dir))]
+        missing = unlisted(found)
+        for entry in missing:
+            print("::error::po/lite/%s.po fills a gap but po/LINGUAS-lite doesn't list %s, so it won't ship"
+                  % (entry, entry))
+        sys.exit(1 if missing else 0)
     for domain in args.domains:
         upstream_dir = generator.library_locale_dir(generator.LIBRARY_SOURCES[domain][1])
         if upstream_dir is None:

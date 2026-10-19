@@ -171,6 +171,9 @@ a message the library doesn't - for the languages in `LINGUAS`):
 python devsupport/pseudo-translation/update_lite_catalogs.py gtk30 glib20 gtkspell3 gtk-mac-integration
 ```
 
+The macOS build runs it with `--check`, which changes nothing and fails
+if a lite catalog that fills a gap is missing from `LINGUAS-lite`.
+
 To see which library messages each shipped language would still show
 in English (neither the library nor a shipped lite catalog translates
 them), against this machine's installed catalogs:

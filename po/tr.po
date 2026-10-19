@@ -2434,7 +2434,10 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Hüseyin Talaka, Rail Aliev, Burak Yavuz (BouRock)"
+msgstr ""
+"Hüseyin Talaka\n"
+"Rail Aliev\n"
+"Burak Yavuz (BouRock)"
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Edit Language"

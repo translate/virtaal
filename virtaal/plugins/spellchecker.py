@@ -141,6 +141,8 @@ class Plugin(BasePlugin):
 
     def _disable_checking(self, text_view):
         """Disable checking on the given text_view."""
+        # Drop any activation still waiting to run (#4441).
+        text_view.spell_pending = None
         if getattr(text_view, 'spell_lang', 'xxxx') is None:
             # No change necessary - already disabled
             return
@@ -198,6 +200,8 @@ class Plugin(BasePlugin):
             self._disable_checking(text_view)
             return
 
+        # Activation runs on idle; only the latest language may run (#4441).
+        text_view.spell_pending = language
         if getattr(text_view, 'spell_lang', None) == language:
             # No change necessary - already enabled
             return
@@ -205,6 +209,9 @@ class Plugin(BasePlugin):
 
     def _activate_checker(self, text_view, language):
         # All the expensive stuff in here called on idle.
+        if getattr(text_view, 'spell_pending', None) != language:
+            # The language changed again before this ran.
+            return
         try:
             spell = None
             try:

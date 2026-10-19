@@ -1,6 +1,8 @@
 # Turkish (tr) localisation of Virtaal.
 # Copyright (C) 2026 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
+# Hüseyin Talaka <talakah@gmail.com>, 2009.
+# Rail Aliev <rail@openoffice.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
@@ -2433,7 +2435,7 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Burak Yavuz (BouRock)"
+msgstr "Hüseyin Talaka, Rail Aliev, Burak Yavuz (BouRock)"
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Edit Language"

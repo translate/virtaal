@@ -9,6 +9,7 @@ import json
 import logging
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import GObject
 
 from virtaal.plugins.tm.models import apertium
@@ -190,3 +191,30 @@ def test_got_translation_ignores_a_non_200_response(caplog):
 
     assert model.cache == {}
     assert "Failed to translate 'hello':\nboom" in caplog.text
+
+
+_BAD_REPLIES = ['<html>502</html>', '', '{"responseStatus": 200, "responseData": {"transl', 'null', '[]',
+                '{"responseData": {}}', '{"responseStatus": 200, "responseData": {"translatedText": null}}']
+
+
+@pytest.mark.parametrize('reply', _BAD_REPLIES)
+def test_got_translation_ignores_a_reply_it_cannot_read(reply):
+    # #4438: these showed the crash dialog.
+    model = _model()
+    emitted = []
+    model.connect('match-found', lambda m, q, r: emitted.append((q, r)))
+
+    model.got_translation(reply, 'hello')
+
+    assert emitted == []
+    assert 'hello' not in model.cache
+
+
+@pytest.mark.parametrize('reply', _BAD_REPLIES + ['{"responseStatus": 200, "responseData": [{"x": 1}]}'])
+def test_got_language_pairs_ignores_a_reply_it_cannot_read(reply):
+    model = _model()
+    model.language_pairs = []
+
+    model.got_language_pairs(reply)
+
+    assert model.language_pairs == []

@@ -29,7 +29,6 @@ msgstr "Vertaalprogramma"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "A translation tool to help a human translator translate files into other "
 #| "languages"
@@ -37,8 +36,8 @@ msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
-"Een vertaalprogramma dat vertalers helpt bestanden naar andere talen te "
-"vertalen"
+"Vertaalprogramma om een menselijke vertaler te helpen om bestanden naar "
+"andere talen te vertalen"
 
 #: share/virtaal/virtaal.ui
 msgid "Add Missing Language"
@@ -111,10 +110,9 @@ msgid "<b>Translation</b>"
 msgstr "<b>Vertaling</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
-msgstr "Ontbrekende taal toevoegen"
+msgstr "_Ontbrekende taal toevoegen…"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
@@ -129,10 +127,9 @@ msgid "Re_vert to Saved"
 msgstr "Her_stellen naar opgeslagen"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Update to Template"
 msgid "_Update from Template"
-msgstr "_Bijwerken m.b.v. sjabloon"
+msgstr "_Bijwerken uit sjabloon"
 
 #: share/virtaal/virtaal.ui
 msgid "_Export"
@@ -169,10 +166,9 @@ msgstr "Overzetten uit de brontekst"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "_Insert Placeable"
-msgstr "Vo_lgende placeable"
+msgstr "_Plaatsvervanger invoegen"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
@@ -309,16 +305,14 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Lettertypen</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Language"
 msgid "Language:"
-msgstr "Taal"
+msgstr "Taal:"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<b>Source language</b>"
 msgid "<b>Language</b>"
-msgstr "<b>Brontaal</b>"
+msgstr "<b>Taal</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui
@@ -347,10 +341,9 @@ msgid "Properties"
 msgstr "Eigenschappen"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Local file"
 msgid "Saved file"
-msgstr "Lokaal bestand"
+msgstr "Opgeslagen bestand"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
@@ -439,7 +432,6 @@ msgid ""
 msgstr "http://translate.sourceforge.net/wiki/nl/virtaal/features"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
 msgstr "<u>Meer…</u>"
@@ -486,36 +478,32 @@ msgid "<u>Feedback</u>"
 msgstr "<u>Feedback</u>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
-msgstr "_Programmafout melden"
+msgstr "Een fout melden op GitHub"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
-msgstr "_Programmafout melden"
+msgstr "<u>Een fout melden</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Ondersteuning</big></b>"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Base translation store"
-msgstr "Computervertaling"
+msgstr "Basis vertaalopslag"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
 msgstr "Kommagescheiden waarde (.csv)"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Fluent file"
-msgstr "Huidige bestand"
+msgstr "Bestand van Fluent"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext MO file"
@@ -530,10 +518,9 @@ msgid "Haiku catkeys file"
 msgstr "Haiku catkeys-bestand"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Mozilla"
 msgid "Mozilla .lang"
-msgstr "Mozilla"
+msgstr "Mozilla .lang"
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
@@ -560,20 +547,18 @@ msgid "TMX Translation Memory"
 msgstr "TMX-vertaalgeheugen"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
-msgstr "TMX-vertaalgeheugen"
+msgstr "Trados vertaalgeheugen"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX Dictionary"
 msgstr "UTX-woordenlijst"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "_Localization Guide"
 msgid "WiX Localization File"
-msgstr "_Lokalisatiegids"
+msgstr "WiX vertaalbestand"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Wordfast Translation Memory"
@@ -625,10 +610,9 @@ msgstr "versienummer van het programma tonen en stoppen"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
-msgstr "Vertaalprogramma"
+msgstr "Virtaal vertaalprogramma"
 
 #. l10n: Paragraphs should be less than 600 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -644,7 +628,6 @@ msgstr ""
 "vertalingen te verbeteren."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
 #| "we definitely intend it to be useful as a general purpose tool for "
@@ -654,9 +637,9 @@ msgid ""
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
-"Voorlopig ligt de klemtoon op software-vertaling (lokalisatie of l10n), maar "
-"het is zeker de bedoeling dat het bruikbaar wordt als universeel instrument "
-"voor computerondersteund vertalen (CAT, Computer Aided Translation)."
+"De initiële focus ligt op softwarevertalingen (localization of l10n), maar "
+"is absoluut bedoeld als een programma voor algemeen gebruik voor Computer "
+"Aided Translation (CAT)."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
@@ -664,10 +647,9 @@ msgstr "Enkele mogelijkheden:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Bestaande vertalingen: %(translations)s"
+msgstr "Hergebruiken van vertalingen (vertaalgeheugen)"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
@@ -692,17 +674,15 @@ msgid "Recognized elements don't need to be typed"
 msgstr "Herkende elementen hoeven niet te worden getypt"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
-msgstr "Automatisch tekst corrigeren terwijl u typt"
+msgstr "Kwaliteitscontroles terwijl u typt"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translated"
 msgid "Translate"
-msgstr "Vertaald"
+msgstr "Vertalen"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
@@ -1580,22 +1560,20 @@ msgid "Local terminology files"
 msgstr "Lokale terminologiebestanden"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Terminology Files"
 msgid "Terminology _Files…"
-msgstr "Terminologiebestanden"
+msgstr "Terminologie _bestanden…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Add Term"
 msgid "Add _Term…"
-msgstr "Term toevoegen"
+msgstr "_Term toevoegen…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
-msgstr "Opzoeken: “%(selection)s”"
+msgstr "Term \"%(selection)s\" toevoegen…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
@@ -1951,7 +1929,6 @@ msgstr ""
 "is."
 
 #: virtaal/support/tutorial.py
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1960,9 +1937,10 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"‘Placeables’ of plaatsbare elementen zijn speciale stukken tekst die "
-"automatisch geaccentueerd en makkelijk in de vertaling opgenomen kunnen "
-"worden."
+"Plaatsvervangers zijn speciale delen van de tekst, zoals het symbool ©, dat "
+"automatisch kan worden gemarkeerd en gemakkelijk kan worden ingevoegd in de "
+"vertaling. Selecteer de © met Alt+Rechts en verplaats het naar het doel met "
+"Alt+Omlaag."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2384,10 +2362,9 @@ msgid "Quality checks"
 msgstr "Kwaliteitscontroles"
 
 #: virtaal/views/langview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "_New Language Pair…"
-msgstr "Nieuw talenpaar"
+msgstr "_Nieuw taalpaar…"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
@@ -2429,10 +2406,9 @@ msgstr ""
 "Wilt u uw wijzigingen opslaan?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#, fuzzy
 #| msgid "Save"
 msgid "_Save"
-msgstr "Opslaan"
+msgstr "Op_slaan"
 
 #: virtaal/views/mainview.py
 msgid "_Discard"
@@ -2456,10 +2432,10 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -2511,31 +2487,27 @@ msgstr ""
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Before:"
 msgid "Before"
-msgstr "Ervoor:"
+msgstr "Voor"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "After:"
 msgid "After"
-msgstr "Erna:"
+msgstr "Na"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Unchanged"
 msgid "Change"
-msgstr "Ongewijzigd"
+msgstr "Wijzigen"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Total: %d"
 msgid "Total"
-msgstr "Totaal: %d"
+msgstr "Totaal"
 
 #: virtaal/views/mainview.py
 msgid "Source and target language are the same."
@@ -2582,10 +2554,9 @@ msgid "Conte_xt:"
 msgstr "Conte_xt:"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
 #| msgid "Poedit settings"
 msgid "Settings"
-msgstr "Poedit-instellingen"
+msgstr "Instellingen"
 
 #: virtaal/views/prefsview.py
 msgid "System default"
@@ -2665,10 +2636,9 @@ msgid "Next state"
 msgstr "Statussen selecteren"
 
 #: virtaal/views/widgets/aboutdialog.py
-#, fuzzy
 #| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
-msgstr "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -2762,26 +2732,23 @@ msgid "Open a file"
 msgstr "Een bestand openen"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translated units from the current file"
 msgid "Save the current file"
-msgstr "Vertaalde eenheden uit het bestand dat momenteel geladen is"
+msgstr "Het huidige bestand opslaan"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
 msgstr "Sla het huidige bestand op onder een nieuwe naam"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Close the current file"
-msgstr "Huidige bestand"
+msgstr "Het huidige bestand sluiten"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Virtaal"
 msgid "Quit Virtaal"
-msgstr "Virtaal"
+msgstr "Virtaal afsluiten"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
@@ -2800,16 +2767,14 @@ msgid "Show this Keyboard Shortcuts window"
 msgstr "Dit venster Toetsenbordsneltoetsen weergeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Navigation"
 msgid "Navigation"
-msgstr "_Navigatie"
+msgstr "Navigatie"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Move to next translation"
-msgstr "Computervertaling"
+msgstr "Ga naar volgende vertaling"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
@@ -2848,26 +2813,23 @@ msgid "Units"
 msgstr "Eenheden"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "P_revious Placeable"
 msgid "Select previous placeable"
-msgstr "Vo_rige placeable"
+msgstr "Vorige plaatsvervanger selecteren"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "Select next placeable"
-msgstr "Vo_lgende placeable"
+msgstr "Volgende plaatsvervanger selecteren"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
 msgstr "De geselecteerde plaatsvervanger invoegen"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
-msgstr "Computervertaling met libtranslate"
+msgstr "Vervang de vertaling door de bron"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
@@ -2886,38 +2848,33 @@ msgid "Redo the last undone change"
 msgstr "Voer de laatste ongedaan gemaakte wijziging opnieuw uit"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
-msgstr "Vertaal_suggesties"
+msgstr "Gebruik de eerste vertaalsuggestie"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
 msgstr "Controles weergeven/verbergen"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
-msgstr "Vertaal_suggesties"
+msgstr "Vertaalsuggesties voor deze eenheid weergeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
-msgstr "Vertaal_suggesties"
+msgstr "Vertaalsuggesties in- of uitschakelen"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
-msgstr "Vertaal_suggesties"
+msgstr "Vertaalsuggesties verbergen, indien weergegeven"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
-msgstr "Lokale terminologiebestanden"
+msgstr "Voeg een term toe aan het lokale terminologiebestand"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"

@@ -25,7 +25,10 @@ gettext-tools/uk
 gettext-tools/vi
 gettext-tools/zh_CN
 gettext-tools/zh_TW
+glib20/ar
+gtk-mac-integration/ar
 gtk30/ak
+gtk30/ar
 gtk30/cgg
 gtk30/ff
 gtk30/fo

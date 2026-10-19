@@ -28,6 +28,8 @@ MACOS_FONT_FALLBACKS = (
 )
 WINDOWS_FONT_FALLBACKS = (
     'Ebrima',  # Ethiopic
+    'Nirmala UI',  # Indic scripts
+    'Leelawadee UI',  # Thai
 )
 
 

@@ -37,12 +37,9 @@ def span(first, last):
 # A new gap fails the check; one that no longer happens is only reported,
 # since the platform's fonts can change under us.
 ALL = None
-INDIC = span('ऀ', '෿')
 KNOWN_GAPS = [
     (4465, 'macos', 'ui', '华汉语', ['ja']),
     (4465, 'macos', 'ui', '∶', ALL),  # RATIO, on macOS 15
-    (4464, 'windows', 'ui', INDIC, ALL),
-    (4464, 'windows', 'editor', INDIC + span('฀', '๿'), ALL),  # and Thai
 ]
 
 

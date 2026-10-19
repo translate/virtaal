@@ -259,7 +259,7 @@ def test_activate_checker_reuses_an_existing_checker():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=existing)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -274,7 +274,7 @@ def test_activate_checker_creates_and_attaches_a_new_checker_when_none_exists():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=None)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -295,7 +295,7 @@ def test_activate_checker_rebinds_gtkspells_domain_after_creating_a_checker(monk
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell, _created = _fake_gtkspell(existing=None)
 
-    plugin._activate_checker(SimpleNamespace(), 'en_US')
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
 
     assert rebound == [b'gtkspell3']
 
@@ -304,7 +304,7 @@ def test_activate_checker_ignores_a_systemerror_from_get_from_text_view(caplog):
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(get_from_text_view_raises=SystemError('mandriva'))
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     with caplog.at_level('DEBUG'):
         plugin._activate_checker(text_view, 'en_US')  # must not raise
@@ -323,12 +323,51 @@ def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
 
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_BrokenChecker)
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')  # must not raise
 
     assert plugin.gtkspell is None
 
+
+
+def _lang_plugin(monkeypatch, known_dicts):
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell, created = _fake_gtkspell(existing=None)
+    plugin.enchant = _FakeEnchant(known_dicts=known_dicts)
+    plugin._seen_languages = {}
+    plugin._enchant_languages = sorted(known_dicts)
+    scheduled = []
+    monkeypatch.setattr(spellchecker.GLib, 'idle_add', lambda func, *args, **kw: scheduled.append((func, args)))
+    return plugin, created, scheduled
+
+
+def test_a_pending_activation_is_dropped_when_the_language_loses_its_dictionary(monkeypatch):
+    # #4441: English was scheduled first; switching to a language with no
+    # dictionary yet must not let that pending activation attach English.
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = SimpleNamespace()
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    plugin._on_unit_lang_changed(None, text_view, 'af')
+    for func, args in scheduled:
+        func(*args)
+
+    assert created == []
+    assert text_view.spell_lang is None
+
+
+def test_only_the_latest_pending_language_is_activated(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US', 'af_ZA'})
+    text_view = SimpleNamespace()
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    plugin._on_unit_lang_changed(None, text_view, 'af')
+    for func, args in scheduled:
+        func(*args)
+
+    assert [c.language for c in created] == ['af_ZA']
+    assert text_view.spell_lang == 'af_ZA'
 
 
 def test_activate_checker_sets_the_language_before_attaching():
@@ -350,7 +389,7 @@ def test_activate_checker_sets_the_language_before_attaching():
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_Checker)
 
-    plugin._activate_checker(SimpleNamespace(), 'en_US')
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
 
     assert order == ['set_language', 'attach']
 
@@ -368,7 +407,7 @@ def test_activate_checker_leaves_nothing_attached_when_set_language_fails():
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_Checker)
 
-    plugin._activate_checker(SimpleNamespace(), 'en_US')
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
 
     assert attached == []
 

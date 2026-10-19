@@ -38,7 +38,6 @@ def span(first, last):
 # since the platform's fonts can change under us.
 ALL = None
 KNOWN_GAPS = [
-    (4465, 'macos', 'ui', '∶', ALL),  # RATIO, on macOS 15
 ]
 
 

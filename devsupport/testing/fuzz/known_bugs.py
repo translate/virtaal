@@ -178,9 +178,6 @@ KNOWN_BUGS = [
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='Exception _get_plugin_class',
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
     # Translation services (services.py, #4389).
-    # A whole-file case resets virtaal.ini, which turns spell checking on; needs GtkSpell installed.
-    dict(issue=4439, sweep=['config-virtaal.ini', 'spelling'], kind='critical', match='speller != NULL', cases=ALL,
-         platforms=['linux'], strict=False),
     # Editing paths and interface languages (editing.py, #4411).
     # Windows' GtkSpell finishes in time.
     dict(issue=4443, sweep='spelling', kind='timeout', match='', cases=['100k chars'], platforms=['linux', 'macos']),

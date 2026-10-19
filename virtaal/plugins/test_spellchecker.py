@@ -100,7 +100,7 @@ def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
     plugin._seen_languages = {}
     plugin._enchant_languages = []
 
-    Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=None, language=language)
+    Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=SimpleNamespace(), language=language)
 
     assert plugin.enchant.checked == [expected]
 
@@ -328,6 +328,49 @@ def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
     plugin._activate_checker(text_view, 'en_US')  # must not raise
 
     assert plugin.gtkspell is None
+
+
+
+def test_activate_checker_sets_the_language_before_attaching():
+    # #4439: attaching a checker with no language yet rechecked the text
+    # without a speller ('speller != NULL' criticals).
+    order = []
+
+    class _Checker(_FakeChecker):
+        get_from_text_view = staticmethod(lambda tv: None)
+
+        def set_language(self, language):
+            order.append('set_language')
+            super().set_language(language)
+
+        def attach(self, text_view):
+            order.append('attach')
+            super().attach(text_view)
+
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = SimpleNamespace(Checker=_Checker)
+
+    plugin._activate_checker(SimpleNamespace(), 'en_US')
+
+    assert order == ['set_language', 'attach']
+
+
+
+def test_activate_checker_leaves_nothing_attached_when_set_language_fails():
+    class _Checker(_FakeChecker):
+        get_from_text_view = staticmethod(lambda tv: None)
+
+        def set_language(self, language):
+            raise RuntimeError('no dictionary')
+
+    attached = []
+    _Checker.attach = lambda self, text_view: attached.append(text_view)
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = SimpleNamespace(Checker=_Checker)
+
+    plugin._activate_checker(SimpleNamespace(), 'en_US')
+
+    assert attached == []
 
 
 # _on_populate_popup() #

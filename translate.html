@@ -42,8 +42,11 @@ title: Translate
 
   <p>Comfortable with git? Skip the pack and send a
     <a href="{{ site.gh_url }}/pulls">pull request</a> that updates
-    <code>po/LANG.po</code>, and <code>po/lite/&lt;library&gt;/LANG.po</code>
-    for GTK and other libraries' messages.</p>
+    <code>po/LANG.po</code>. If your language has files in
+    <code>po/lite/&lt;library&gt;/LANG.po</code> (GTK and other libraries'
+    messages), update those too. Only languages whose library translations
+    are incomplete have them, so don't create new ones: elsewhere Virtaal
+    uses the library's own translations.</p>
 
   <p>
     <a class="btn btn-success" id="release-packs" href="{{ site.gh_url }}/releases">Translation packs

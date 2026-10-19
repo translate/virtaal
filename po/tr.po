@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
 "PO-Revision-Date: 2026-10-18 21:12+0300\n"
-"Last-Translator: BouRock <hitowerdigit@hotmail.com>\n"
+"Last-Translator: Burak Yavuz (BouRock)\n"
 "Language-Team: \n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"<b>Çeviri</b>, çevirisini yaptığınız dildir, aynı zamanda kaynak dil de "
+"<b>Orijinal</b>, çevirisini yaptığınız dildir, aynı zamanda kaynak dil de "
 "denir.\n"
 "\n"
 "Eğer İngilizceden Türkçeye çeviriyorsanız, orijinal veya kaynak diliniz "
@@ -95,8 +95,7 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"<b>Çeviri</b>, çevirisini yaptığınız dildir, aynı zamanda hedef dil de "
-"denir.\n"
+"<b>Çeviri</b>, çeviri yaptığınız dildir, aynı zamanda hedef dil de denir.\n"
 "\n"
 "Eğer İngilizceden Türkçeye çeviriyorsanız, çeviriniz veya hedef diliniz "
 "Türkçe olacaktır."
@@ -186,15 +185,15 @@ msgstr "_Kalite Denetimleri"
 
 #: share/virtaal/virtaal.ui
 msgid "_Navigation"
-msgstr "G_ezinme"
+msgstr "Gezi_nme"
 
 #: share/virtaal/virtaal.ui
 msgid "P_age Up"
-msgstr "Sayfa _Yukarı"
+msgstr "Sayfa Y_ukarı"
 
 #: share/virtaal/virtaal.ui
 msgid "_Page Down"
-msgstr "Sayfa _Aşağı"
+msgstr "Sayfa Aşa_ğı"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
@@ -442,7 +441,7 @@ msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Manual</u>"
-msgstr "<u>Elle</u>"
+msgstr "<u>Kılavuz</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
@@ -2584,7 +2583,7 @@ msgstr "Hiçbir şey seçilmediyse kaynağı kopyala"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr "Yeni bir satır girin"
+msgstr "Yeni bir satır gir"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
@@ -2623,7 +2622,7 @@ msgstr "Yerel terminoloji dosyasına bir terim ekle"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr "Odaklama değişiyor"
+msgstr "Odak değiştirme"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"

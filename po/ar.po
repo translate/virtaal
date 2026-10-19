@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Alaa Abd El Fattah <alaa@translate.org.za>, 2009
-# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010, 2011.
+# Khaled Hosny <khaled@aliftype.com>, 2009, 2010, 2011, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2009-12-03 17:08+0000\n"
-"Last-Translator: bassem <jarkas@gmail.com>\n"
+"PO-Revision-Date: 2026-10-19 18:03+0300\n"
+"Last-Translator: Khaled Hosny <khaled@aliftype.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && "
 "n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
@@ -31,7 +32,6 @@ msgstr "أداة ترجمة"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "A translation tool to help a human translator translate files into other "
 #| "languages"
@@ -106,14 +106,13 @@ msgid "<b>Translation</b>"
 msgstr "<b>الترجمة</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
-msgstr "أضف لغة ناقصة"
+msgstr "أ_ضف لغة ناقصة…"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
-msgstr ""
+msgstr "_حرر لغة الترجمة…"
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -121,10 +120,9 @@ msgstr "_ملف"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr ""
+msgstr "ا_ستعد النسخة المحفوظة"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Update to Template"
 msgid "_Update from Template"
 msgstr "_حدث من القالب"
@@ -143,19 +141,19 @@ msgstr "_تحرير"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr ""
+msgstr "_آعد"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
-msgstr ""
+msgstr "_ابحث…"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "ابحث عم ال_تالي"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr ""
+msgstr "ابحث عن ال_سابق"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -164,10 +162,9 @@ msgstr "انقل من الأصل"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "_Insert Placeable"
-msgstr "المُدْرج ال_تالي"
+msgstr "أ_درج المُدْرج"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
@@ -204,23 +201,23 @@ msgstr "ص_فحة للأسفل"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr ""
+msgstr "الوحدة _الأولى"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"
-msgstr ""
+msgstr "الوحدة الأ_خيرة"
 
 #: share/virtaal/virtaal.ui
 msgid "Next Unit"
-msgstr ""
+msgstr "الوحدة التالية"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Advance State"
-msgstr ""
+msgstr "الوحدة التالية مع تغيير الحالة"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Reverse State"
-msgstr ""
+msgstr "الوحدة التالية مع عكس الحالة"
 
 #: share/virtaal/virtaal.ui
 msgid "_Help"
@@ -244,11 +241,11 @@ msgstr "بلغ عن _علّة"
 
 #: share/virtaal/virtaal.ui
 msgid "Show Lo_gs"
-msgstr ""
+msgstr "اعرض ال_سجلات"
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
-msgstr ""
+msgstr "ا_ختصارات لوحة المفاتيح"
 
 #: share/virtaal/virtaal.ui
 msgid "Virtaal Preferences"
@@ -304,16 +301,14 @@ msgid "<b>Fonts</b>"
 msgstr "<b>الخطوط</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Language"
 msgid "Language:"
 msgstr "اللّغة"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<b>Source language</b>"
 msgid "<b>Language</b>"
-msgstr "<b>لغة النص الأصلي</b>"
+msgstr "<b>اللغة </b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui
@@ -341,19 +336,19 @@ msgstr "الخصائص"
 
 #: share/virtaal/virtaal.ui
 msgid "Saved file"
-msgstr ""
+msgstr "ملف محفوظ"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
-msgstr ""
+msgstr "مع تغييرات غير محفوظة"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Words</b> (total):"
-msgstr "<b>مجموع الكلمات</b>:"
+msgstr "<b>الكلمات</b> (المجموع):"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Strings</b> (total):"
-msgstr "<b>مجموع المقاطع</b>:"
+msgstr "<b>المقاطع</b> (المجموع):"
 
 #: share/virtaal/virtaal.ui
 msgid "File type:"
@@ -423,17 +418,16 @@ msgstr "<u>ملخص</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
-msgstr "<u>المزيد...</u>"
+msgstr "<u>المزيد…</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Features</u>"
@@ -445,11 +439,11 @@ msgstr "<b><big>تعرّف على فِرتال</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Manual</u>"
@@ -458,7 +452,7 @@ msgstr "<u>الكتيّب</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
 msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
-msgstr ""
+msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Localization Guide</u>"
@@ -466,65 +460,60 @@ msgstr "<u>دليل الترجمة</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#, fuzzy
 #| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Feedback</u>"
 msgstr "<u>الانطباعات</u>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
-msgstr "بلغ عن _علّة"
+msgstr "بلغ عن علّة على جتهب"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
-msgstr "بلغ عن _علّة"
+msgstr "<u>بلغ عن علّة</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>الدعم</big></b>"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Base translation store"
-msgstr "الترجمة الآلية"
+msgstr "مخزن الترجمة"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
-msgstr ""
+msgstr "قيم مفصولة بعلامة الفاصلة"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Fluent file"
-msgstr "الملف الحالي"
+msgstr "ملف Fluent"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext MO file"
-msgstr "ملفا جتكست MO"
+msgstr "ملف جتكست MO"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext PO file"
-msgstr "ملفا جتكست PO"
+msgstr "ملف جتكست PO"
 
 #: devsupport/tmp_strings.py
 msgid "Haiku catkeys file"
-msgstr ""
+msgstr "ملف Haiku catkeys"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Mozilla"
 msgid "Mozilla .lang"
-msgstr "موزيلا"
+msgstr "موزيلا .lang"
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
@@ -551,20 +540,18 @@ msgid "TMX Translation Memory"
 msgstr "ذاكرة ترجمة TMX"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
-msgstr "ذاكرة ترجمة TMX"
+msgstr "ذاكرة ترجمة Trados"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX Dictionary"
 msgstr "قاموس UTX"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "_Localization Guide"
 msgid "WiX Localization File"
-msgstr "_دليل الترجمة"
+msgstr "ملف ترجمة WiX"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Wordfast Translation Memory"
@@ -575,40 +562,36 @@ msgid "XLIFF Translation File"
 msgstr "ملف ترجمة XLIFF"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "XLIFF Translation File"
 msgid "SDL XLIFF Translation File"
-msgstr "ملف ترجمة XLIFF"
+msgstr "ملف ترجمة SDL XLIFF"
 
 #: devsupport/tmp_strings.py
 msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
-msgstr ""
+msgstr "اربط ملفا الترجمة بفرتال (.po،‏ .xlf،‏ .tmx،‏ ...)"
 
 #: devsupport/tmp_strings.py
 msgid "Edit with Virtaal"
-msgstr ""
+msgstr "حرر في فرتال"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Usage: %s\n"
 msgid "usage: "
-msgstr "الاستخدام: %s\n"
+msgstr "الاستخدام:"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "%s option requires an argument"
 msgid "positional arguments"
-msgstr "يتطلب الخيار %s معاملا"
+msgstr "معاملات موضعية"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Options"
 msgid "options"
 msgstr "الخيارات"
 
 #: devsupport/tmp_strings.py
 msgid "show this help message and exit"
-msgstr "اعرض رسالة المساعدة هذه ثم اخرض"
+msgstr "اعرض رسالة المساعدة هذه ثم اخرج"
 
 #: devsupport/tmp_strings.py
 msgid "show program's version number and exit"
@@ -616,10 +599,9 @@ msgstr "اعرض رقم إصدارة البرنامج ثم اخرج"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
-msgstr "أداة ترجمة"
+msgstr "أداة الترجمة فرتال"
 
 #. l10n: Paragraphs should be less than 600 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -629,9 +611,11 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"فِرتال هو برنامج للترجمة. يهدف لأن يكون مزيجا مريحا من البساطة والقوة. يتكامل "
+"مع مجموعة مختارة من مصادر الإنترنت لتكون الترجمة ممتعة، وفي نفس الوقت تساعد "
+"على رفع جودة الترجمة."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
 #| "we definitely intend it to be useful as a general purpose tool for "
@@ -646,14 +630,13 @@ msgstr ""
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
-msgstr ""
+msgstr "بعض الخصائص:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "الترجمات الموجودة: %(translations)s"
+msgstr "إعادة استخدام الترجمة (ذاكرة الترجمة)"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
@@ -662,33 +645,31 @@ msgstr "مساعدة المصطلحات"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "الاكمال والتصحيح التلقائيين"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "فحوص الجودة مع تخصيصات للعديد من اللغات"
 
 #. l10n: Captions should be shorter than 50 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
-msgstr ""
+msgstr "الوصول السهل لآخر الملفات، ولتوثيق البرنامج"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
-msgstr ""
+msgstr "لا حاجة لكتابة العناصر التي يتعرف عليها البرنامج"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
-msgstr "صحح النص تلقائيا بينما أكتب"
+msgstr "مراجعة الجودة أثناء الكتابة"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translated"
 msgid "Translate"
-msgstr "مترجمة"
+msgstr "ترانسليت"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
@@ -740,7 +721,7 @@ msgstr "فعّل خصائص التنقيح"
 
 #: virtaal/cli.py
 msgid "LANG"
-msgstr ""
+msgstr "LANG"
 
 #: virtaal/cli.py
 msgid ""
@@ -748,6 +729,8 @@ msgid ""
 "untranslated source strings; \"system\" for the OS's own default), without "
 "changing the saved Preferences setting"
 msgstr ""
+"غير لغة الواجهة لهذه المرة (مثلا \"fr\"; \"en\" لمقاطع المصدر غير المستخدمة؛ "
+"\"system\" للغة النظام)، بدون تغيير التفضيلات المحفوظة"
 
 #: virtaal/cli.py
 #, python-format
@@ -762,7 +745,7 @@ msgstr "تعذّر قراءة ملف الإعدادات '%(filename)s'"
 #: virtaal/cli.py
 #, python-format
 msgid "No translation found for language '%(lang)s'"
-msgstr ""
+msgstr "لم يعثر على ترجمات للغة '%(lang)s'"
 
 #: virtaal/cli.py
 #, python-format
@@ -956,7 +939,7 @@ msgstr "المبدئي"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "LibreOffice"
-msgstr ""
+msgstr "ليبرأوفيس"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Mozilla"
@@ -968,7 +951,7 @@ msgstr "كدي"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Qt"
-msgstr ""
+msgstr "كيوت"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
@@ -988,7 +971,7 @@ msgstr "لقد اخترت الملف المفتوح حاليا لفتحه. أت�
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Loading '%s'…"
-msgstr ""
+msgstr "يحمل '%s'…"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1010,7 +993,7 @@ msgid "Save"
 msgstr "احفظ"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "Could not save file.\n"
 #| "\n"
@@ -1022,11 +1005,9 @@ msgid ""
 "\n"
 "Try saving to a different location."
 msgstr ""
-"تعذر حفظ الملف.\n"
+"%(filename)s للقراءة فقط.\n"
 "\n"
-"%(error_message)s\n"
-"\n"
-"اختر موضعا مختلفا."
+"جزب الحفظ في مكان آخر."
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
@@ -1090,13 +1071,12 @@ msgstr ""
 
 #: virtaal/controllers/maincontroller.py
 msgid "Revert to Saved"
-msgstr ""
+msgstr "استعد النسخة المحفوظة"
 
 #: virtaal/controllers/maincontroller.py
-#, fuzzy
 #| msgid "Reload file from last saved copy and lose all changes?"
 msgid "Revert to the last saved copy and lose all changes?"
-msgstr "أأعيد تحميل الملف من آخر نسخة محفوظة فاقدا لكل التغييرات؟"
+msgstr "أأعيد الملف لآخر نسخة محفوظة فاقدا لكل التغييرات؟"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: virtaal/controllers/placeablescontroller.py
@@ -1258,6 +1238,8 @@ msgid ""
 "The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
 "Open it with File > Open or from your file manager."
 msgstr ""
+"الملف غير موجود، أو لا يستطيع فرتا الوصول إليه من داخل بيئة فلاتباك المعزولة. "
+"افتحه باستخدام ملف > افتح، أو من مدير الملفات الذي تستخدمه."
 
 #: virtaal/models/storemodel.py
 msgid "The file does not exist."
@@ -1378,39 +1360,38 @@ msgstr "ابحث عن \"%(selection)s\""
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Thesaurus"
-msgstr ""
+msgstr "قاموس المترادفات"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Look up synonyms for the selected word"
-msgstr ""
+msgstr "ابحث عن مترادفات الكلمة المحددة"
 
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Loading thesaurus…"
-msgstr ""
+msgstr "يحمل قاموس المترادفات…"
 
 #. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
 #: virtaal/plugins/lookup/models/thesaurus.py
 msgid "Checking for thesaurus…"
-msgstr ""
+msgstr "يبحث عن قاموس المترادفات…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Downloading %(language)s thesaurus…"
-msgstr ""
+msgstr "ينزل قاموس مترادفات %(language)s…"
 
 #. l10n: %(language)s is a language name, e.g. "Afrikaans"
 #: virtaal/plugins/lookup/models/thesaurus.py
 #, python-format
 msgid "Download %(language)s thesaurus…"
-msgstr ""
+msgstr "نزل قاموس مترادفات %(language)s…"
 
 #. l10n: The menu entry offering synonyms for the selected word.
 #: virtaal/plugins/lookup/models/thesaurus.py
-#, fuzzy
 #| msgid "Acronyms"
 msgid "Synonyms"
-msgstr "الاختصارات"
+msgstr "المترادفات"
 
 #. l10n: plugin name
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1432,18 +1413,17 @@ msgid "Wikipedia"
 msgstr "ويكيبيديا"
 
 #: virtaal/plugins/lookup/models/weblookup.py
-#, fuzzy
 #| msgid "UTX Dictionary"
 msgid "Wiktionary"
-msgstr "قاموس UTX"
+msgstr "ويكاموس"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Bing"
-msgstr ""
+msgstr "بينج"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Yahoo"
-msgstr ""
+msgstr "ياهو"
 
 #. l10n: Whether this look-up is offered at all
 #: virtaal/plugins/lookup/models/weblookup.py
@@ -1468,11 +1448,11 @@ msgstr "ضع علامات اقتباس حول الاستعلام"
 #. l10n: "virtaal-" is a literal prefix - leave it untranslated
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Names starting with \"virtaal-\" are reserved."
-msgstr ""
+msgstr "الأسماء التي أولها \"virtaal-\" محجوزة"
 
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "A web look-up with this name already exists."
-msgstr ""
+msgstr "يوجد بحث مسبق على الوب بهذا الاسم."
 
 #: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1556,22 +1536,20 @@ msgid "Local terminology files"
 msgstr "ملفات المصطلحات المحلية"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Terminology Files"
 msgid "Terminology _Files…"
-msgstr "ملفات المصطلحات"
+msgstr "_ملفات المصطلحات…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Add Term"
 msgid "Add _Term…"
-msgstr "أضف مصطلحا"
+msgstr "أضف م_صطلحا…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
-msgstr "ابحث عن \"%(selection)s\""
+msgstr "أضف مصطلح \"%(selection)s\"…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
@@ -1636,14 +1614,13 @@ msgid "Existing translations: %(translations)s"
 msgstr "الترجمات الموجودة: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#, fuzzy
 #| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
-msgstr "شركة موزيلا"
+msgstr "بونتون موزيلا"
 
 #: virtaal/plugins/terminology/models/pontoon.py
 msgid "Community localization terminology from Mozilla Pontoon"
-msgstr ""
+msgstr "مصطلحات ترجة المجتمع من بونتون موزيلا"
 
 #: virtaal/plugins/terminology/termview.py
 msgid "Select Terminology Sources"
@@ -1742,7 +1719,7 @@ msgstr "اقترا_حات الترجمة"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Suggestions for This _Unit"
-msgstr ""
+msgstr "الاقتراحات لهذه الو_حدة"
 
 #: virtaal/plugins/tm/tmview.py
 #, python-format
@@ -1779,27 +1756,28 @@ msgstr "؟"
 
 #: virtaal/support/crash_dialog.py
 msgid "Virtaal hit an unexpected error"
-msgstr ""
+msgstr "حدث خطأ غير متوقع لفرتال"
 
 #: virtaal/support/crash_dialog.py
 msgid ""
 "This might not affect your current work, but if it keeps happening, "
 "reporting it helps get it fixed."
 msgstr ""
+"قد لا يؤثر هذا على عملك الحالي، لكن إذا تكرر الأمر فالإبلاغ عنه يساعد في حل "
+"المشكلة."
 
 #: virtaal/support/crash_dialog.py
 msgid "Details"
-msgstr ""
+msgstr "التفاصيل"
 
 #: virtaal/support/crash_dialog.py
 msgid "Close"
-msgstr ""
+msgstr "أغلق"
 
 #: virtaal/support/crash_dialog.py
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report This Bug…"
-msgstr "بلغ عن _علّة"
+msgstr "أبلغ عن هذه العلّة…"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1887,7 +1865,6 @@ msgid ""
 msgstr ""
 
 #: virtaal/support/tutorial.py
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1896,7 +1873,6 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"المُدْرجات هي أجزاء خاصة من النص يمكن إبرازها آليا وإدراجها بسهوله في الترجمة."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2180,23 +2156,22 @@ msgid "Quality checks"
 msgstr "مراجعة الجودة"
 
 #: virtaal/views/langview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "_New Language Pair…"
-msgstr "زوج لغات جديد"
+msgstr "_زوج لغات جديد…"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
-msgstr ""
+msgstr "أ_لغِ"
 
 #: virtaal/views/mainview.py
 msgid "_OK"
-msgstr ""
+msgstr "_حسنا"
 
 #. l10n: macOS app menu item that opens the Preferences dialog
 #: virtaal/views/mainview.py
 msgid "Settings…"
-msgstr ""
+msgstr "الإعدادات…"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2207,14 +2182,13 @@ msgid "Choose a Translation File"
 msgstr "اختر ملف ترجمة"
 
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Choose a Translation File"
 msgid "Choose a PO Template File"
-msgstr "اختر ملف ترجمة"
+msgstr "اختر ملف قالب ترجمة"
 
 #: virtaal/views/mainview.py
 msgid "PO Template Files"
-msgstr ""
+msgstr "قوالب ترجمة"
 
 #: virtaal/views/mainview.py
 msgid ""
@@ -2225,10 +2199,9 @@ msgstr ""
 "أتريد حفظه؟"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#, fuzzy
 #| msgid "Save"
 msgid "_Save"
-msgstr "احفظ"
+msgstr "ا_حفظ"
 
 #: virtaal/views/mainview.py
 msgid "_Discard"
@@ -2236,7 +2209,7 @@ msgstr "ت_جاهل"
 
 #: virtaal/views/mainview.py
 msgid "Could not open the dropped file - its file name could not be decoded."
-msgstr ""
+msgstr "تعذر فتح الملف، إذ لا يمكن فت ترميز اسمه"
 
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
@@ -2252,10 +2225,10 @@ msgstr "‏%(modified_marker)s%(current_file)s - فرتال"
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "‏%(modified_marker)s%(current_file)s - فرتال"
+msgstr "‏%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -2272,15 +2245,15 @@ msgstr "بيانات الترويسة"
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
-msgstr ""
+msgstr "فرتال %s متاح (لديك %s)"
 
 #: virtaal/views/mainview.py
 msgid "Release Notes"
-msgstr ""
+msgstr "ملاحظات الإصدار"
 
 #: virtaal/views/mainview.py
 msgid "Download"
-msgstr ""
+msgstr "نزّل"
 
 #: virtaal/views/mainview.py
 #, python-format
@@ -2288,76 +2261,73 @@ msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
 msgstr ""
+"تعذر قراءة إعداداتك، لذا استخدم فرتال اعدادته المبدئية. حفظ الملف القديم في: "
+"%s"
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s': %(reason)s"
-msgstr "تعذّر فتح ملف السجل '%(filename)s'"
+msgstr "تعذّر فتح ملف السجل '%(file)s':‏ %(reason)s "
 
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s'."
-msgstr "تعذّر فتح ملف السجل '%(filename)s'"
+msgstr "تعذّر فتح الملف '%(file)s'."
 
 #: virtaal/views/mainview.py
 msgid "Restart Virtaal for the new language to take effect."
-msgstr ""
+msgstr "أعد تشغيل فرتال لتستخدم اللغة الجديدة."
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Before:"
 msgid "Before"
-msgstr "قبل:"
+msgstr "قبل"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "After:"
 msgid "After"
-msgstr "بعد:"
+msgstr "بعد"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Unchanged"
 msgid "Change"
-msgstr "لم تتغيير"
+msgstr "التغيير"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Total: %d"
 msgid "Total"
-msgstr "المجموع: %d"
+msgstr "المجموع"
 
 #: virtaal/views/mainview.py
 msgid "Source and target language are the same."
-msgstr ""
+msgstr "اللغة المترجم منها هي نفس اللغة المترجة إليها."
 
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "Change Language Pair"
-msgstr "زوج لغات جديد"
+msgstr "غير زوج اللغات"
 
 #: virtaal/views/mainview.py
 msgid "This file is read-only."
-msgstr ""
+msgstr "هذا الملف للقراءة فقط"
 
 #: virtaal/views/mainview.py
 msgid "Save As…"
-msgstr ""
+msgstr "احفظ باسم…"
 
 #: virtaal/views/mainview.py
 msgid "Logs"
-msgstr ""
+msgstr "السجلات"
 
 #: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
 msgid "_Close"
-msgstr ""
+msgstr "أ_غلق"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
@@ -2368,30 +2338,29 @@ msgstr "ال_تنقل:"
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
 msgid "None"
-msgstr ""
+msgstr "لا شيء"
 
 #. l10n: How many units to show around the one being edited, when a
 #. navigation mode only goes to some units
 #: virtaal/views/modeview.py
 msgid "Conte_xt:"
-msgstr ""
+msgstr "ال_سياق:"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
 #| msgid "Poedit settings"
 msgid "Settings"
-msgstr "إعدادات Poedit"
+msgstr "الإعدادات"
 
 #: virtaal/views/prefsview.py
 msgid "System default"
-msgstr ""
+msgstr "مبدئية النظام"
 
 #. l10n: A UI language: its name in your language, then in
 #. itself, e.g. "French - Français"
 #: virtaal/views/prefsview.py
 #, python-format
 msgid "%(language)s - %(endonym)s"
-msgstr ""
+msgstr "‏%(language)s ‏- %(endonym)s"
 
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
@@ -2421,11 +2390,11 @@ msgstr "مُراجعة:"
 #: virtaal/views/propertiesview.py
 #, python-format
 msgid "(%s)"
-msgstr ""
+msgstr "(%s)"
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
+msgstr "يحتوي هذا الملف على تغييرات غير محفوظة."
 
 #: virtaal/views/storeview.py
 msgid "Export failed"
@@ -2448,22 +2417,19 @@ msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "تحرك خطوة للأمام في سير العمل (Ctrl+Enter)"
 
 #: virtaal/views/unitview.py
-#, fuzzy
 #| msgid "P_revious Placeable"
 msgid "Previous state"
-msgstr "المُدْرج ال_سابق"
+msgstr "الحالة السابقة"
 
 #: virtaal/views/unitview.py
-#, fuzzy
 #| msgid "No States"
 msgid "Next state"
-msgstr "لا حالة"
+msgstr "الحالة التالية"
 
 #: virtaal/views/widgets/aboutdialog.py
-#, fuzzy
 #| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
-msgstr "حقوق النشر © 2007-2010 مؤسسة زوزا للبرمجيات"
+msgstr "حقوق النشر © 2007-2026 مؤسسة زوزا للبرمجيات"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -2501,38 +2467,35 @@ msgstr "شركة موزيلا"
 msgid "translator-credits"
 msgstr ""
 "علاء عبد الفتاح\t<alaa@translate.org.za>\n"
-"خالد حسني\t<Khaledhosny@eglug.org>"
+"خالد حسني\t<khaled@aliftype.com>"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Add Language"
 msgid "Edit Language"
-msgstr "أضِف لغة"
+msgstr "حرر اللغة"
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Language name:"
 msgid "Enter a language name."
-msgstr "اسم اللغة:"
+msgstr "أدخل اسم اللغة."
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be an ASCII string."
-msgstr "رمز اللغة يجب أن يكون في نطاق أسكي."
+msgstr "يجب أن يكون رمز اللغة في نطاق أسكي."
 
 #: virtaal/views/widgets/langadddialog.py
 msgid "Language code must be at least 2 characters long."
 msgstr "يجب أن يكون رمز اللغة من حرفين على الأقل."
 
 #: virtaal/views/widgets/langadddialog.py
-#, fuzzy
 #| msgid "Language code must be an ASCII string."
 msgid "Language code must not contain spaces."
-msgstr "رمز اللغة يجب أن يكون في نطاق أسكي."
+msgstr "يحب ألا يحتوي رمز اللغة على مسافات."
 
 #: virtaal/views/widgets/langadddialog.py
 #, python-format
 msgid "Language code %s is already used."
-msgstr ""
+msgstr "رمز اللغة %s مستخدم من قبل."
 
 #: virtaal/views/widgets/langselectdialog.py
 msgid "Language"
@@ -2544,200 +2507,186 @@ msgid "Code"
 msgstr "الرمز"
 
 #: virtaal/views/widgets/selectview.py
-#, fuzzy
 #| msgid "Configure..."
 msgid "Configure…"
-msgstr "اضبط..."
+msgstr "اضبط…"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Global"
-msgstr ""
+msgstr "عام"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Open a file"
-msgstr ""
+msgstr "افتح ملفا"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Save the current file"
-msgstr "الملف الحالي"
+msgstr "احفظ الملف الحالي"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
-msgstr ""
+msgstr "احفظ الملف الحالي باسم جديد"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Close the current file"
-msgstr "الملف الحالي"
+msgstr "أغلق الملف الحالي"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Virtaal"
 msgid "Quit Virtaal"
-msgstr "فِرتال"
+msgstr "أغلق فِرتال"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
-msgstr ""
+msgstr "اعرض الإعدادات"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr ""
+msgstr "اعرض خصائص الملف وإحصائياته"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "بدّل وضع ملء الشاشة"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show this Keyboard Shortcuts window"
-msgstr ""
+msgstr "اعرض نافذة اختصارات لوحة المفاتيح هذه"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Navigation"
 msgid "Navigation"
-msgstr "_تنقّل"
+msgstr "التنقّل"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Move to next translation"
-msgstr "الترجمة الآلية"
+msgstr "انتقل للترجمة التالية"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
-msgstr ""
+msgstr "انتقل للترجمة السابقة"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next unit"
-msgstr ""
+msgstr "انتقل للوحدة التالية"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units up"
-msgstr ""
+msgstr "انتقل ١٠ وحدات للأعلى"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
-msgstr ""
+msgstr "انتقل ١٠ وحدات للأسفل"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to first unit"
-msgstr ""
+msgstr "انتقل للوحدة الأولى"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to last unit"
-msgstr ""
+msgstr "انتقل للوحدة الأخيرة"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next search match"
-msgstr ""
+msgstr "انتقل لتطابق البحث التالي"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous search match"
-msgstr ""
+msgstr "انتقل لتطابق البحث السابق"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Units"
-msgstr ""
+msgstr "الوحدات"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "P_revious Placeable"
 msgid "Select previous placeable"
-msgstr "المُدْرج ال_سابق"
+msgstr "حدد المُدْرج السابق"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "Select next placeable"
-msgstr "المُدْرج ال_تالي"
+msgstr "حدد المُدْرج التالي"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
-msgstr ""
+msgstr "أدرة المُدْرج المحدد"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
-msgstr "ترجمة آلية باستخدام libtranslate"
+msgstr "استبدل الترجمة بالمصدر"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
-msgstr ""
+msgstr "انسخ المصدر، إذا لم يحدد أي شيء"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr ""
+msgstr "أدرج سطرا جديدا"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr ""
+msgstr "تراجع عن آخر تغيير"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr ""
+msgstr "أعد آخر تغيير"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
-msgstr "اقترا_حات الترجمة"
+msgstr "استخدم أول اقتراح ترجمة"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
-msgstr ""
+msgstr "اعرض أو أخف الفحوصات"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
-msgstr "اقترا_حات الترجمة"
+msgstr "اعرض اقتراحات الترجمة لهذه الوحدة"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
-msgstr "اقترا_حات الترجمة"
+msgstr "أوقف اقتراحات الترجمة"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
-msgstr "اقترا_حات الترجمة"
+msgstr "أخف اقتراحات الترجمة، إن كانت معروضة"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
-msgstr "ملفات المصطلحات المحلية"
+msgstr "أضف مصطلحا لملفات المصطلحات المحلية"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr ""
+msgstr "البؤرة المتحركة"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"
-msgstr ""
+msgstr "انتقل إلى حقل الهدف التالي"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the previous target field"
-msgstr ""
+msgstr "انتقل إلى حقل الهدف السابق"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the language-pair selector"
-msgstr ""
+msgstr "اقفز إلى محدد أزواج اللغات"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the \"Navigation:\" mode selector"
-msgstr ""
+msgstr "اقفز إلى محدد وضع التنقل"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the search bar and return to normal editing"
-msgstr ""
+msgstr "أغلق شريط البحث وعد لوضع التحرير العادي"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"

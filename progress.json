@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-19T17:47:23Z",
- "commit": "f25843f9a1ac269dc776d2f314bdb47648365468",
+ "generated": "2026-10-19T23:47:47Z",
+ "commit": "dcb25d24c0328c29cd1208cb629d0fc2863a0d3a",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -49,12 +49,12 @@
    "code": "ar",
    "name": "Arabic",
    "endonym": "العربية",
-   "core_missing": 7,
+   "core_missing": 0,
    "rest_missing": 0,
-   "needed": 7,
-   "level2_missing": 45,
+   "needed": 0,
+   "level2_missing": 42,
    "level3_missing": 0,
-   "ships": "50%"
+   "ships": "level 1"
   },
   {
    "code": "ast",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39296710310"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39342887629"
 }

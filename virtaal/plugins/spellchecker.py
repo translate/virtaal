@@ -218,8 +218,12 @@ class Plugin(BasePlugin):
                 spell = self.gtkspell.Checker()
                 # Creating a checker binds gtkspell3 to its own catalogs.
                 rebind_library_domain(b"gtkspell3")
+                # Attaching checks the text, so it needs a language
+                # first (#4439).
+                spell.set_language(language)
                 spell.attach(text_view)
-            spell.set_language(language)
+            else:
+                spell.set_language(language)
             spell.recheck_all()
             text_view.spell_lang = language
         except Exception as e:

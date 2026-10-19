@@ -213,11 +213,29 @@ def test_close_closes_every_cached_connection_and_clears_the_registry(tmp_path):
         statsdb.StatsCache._caches = original_caches
 
 
-def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, monkeypatch):
+@pytest.fixture
+def fresh_caches(monkeypatch):
+    # An empty connection registry (call it again for another), with every
+    # connection it holds closed afterwards: dropping one leaks it.
+    registries = []
+
+    def fresh():
+        registries.append({})
+        monkeypatch.setattr(statsdb.StatsCache, '_caches', registries[-1])
+
+    fresh()
+    yield fresh
+    for caches in registries:
+        for threads in caches.values():
+            for cache in threads.values():
+                cache.con.close()
+
+
+def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, fresh_caches):
     # As another process sees a database no file has been cached in yet.
     path = tmp_path / "stats.db"
     statsdb.StatsCache(str(path))
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    fresh_caches()
     po_file = tmp_path / "af.po"
     po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
 
@@ -227,7 +245,7 @@ def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, monkeypatch
     assert path.exists()
 
 
-def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
+def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, fresh_caches):
     path = tmp_path / "stats.db"
     po_file = tmp_path / "af.po"
     po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
@@ -236,7 +254,7 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
     cache.cur.execute("UPDATE files SET toolkitbuild=0")
     cache.con.commit()
     cache.con.close()
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    fresh_caches()
 
     cache = statsdb.StatsCache(str(path))
 
@@ -244,8 +262,7 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
     assert cache.cur.fetchone()[0] == 0
 
 
-def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch, fresh_caches):
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
     monkeypatch.setenv('HOME', str(tmp_path))
     monkeypatch.setenv('USERPROFILE', str(tmp_path))
@@ -256,9 +273,8 @@ def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
     assert os.path.exists(statsdb.StatsCache.defaultfile)
 
 
-def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch):
+def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch, fresh_caches):
     from virtaal.common.platform import platform
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
     monkeypatch.setattr(platform, 'is_windows', False)
     monkeypatch.setattr(platform, 'is_flatpak', True)

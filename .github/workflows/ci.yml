@@ -807,6 +807,13 @@ jobs:
           if (-not ($result -match '^library: .*\\dist\\virtaal\\')) { throw "Not the bundled libgettextpo" }
           if (-not ($result -match '^message: die Anzahl der Formatspezifikationen')) { throw "msgfmt's message isn't translated" }
 
+      - name: Check the interface languages display in the bundle's fonts
+        # Every shipped language's messages and its own name, in the UI
+        # and editor fonts (#4421). A known gap that displays now is only
+        # a warning here; the weekly font-coverage.yml fails on it.
+        shell: pwsh
+        run: devsupport\packaging\windows\check_font_coverage.ps1 dist\virtaal
+
       - name: Report lite coverage
         # Same report as build-macos-app's, against the gvsbuild GTK
         # catalogs this bundle ships.
@@ -1293,6 +1300,12 @@ jobs:
           cat /tmp/gettextpo.txt
           grep -q "^library: .*/Virtaal.app/" /tmp/gettextpo.txt
           grep -q "^message: die Anzahl der Formatspezifikationen" /tmp/gettextpo.txt
+
+      - name: Check the interface languages display in the bundle's fonts
+        # Every shipped language's messages and its own name, in the UI
+        # and editor fonts (#4421). A known gap that displays now is only
+        # a warning here; the weekly font-coverage.yml fails on it.
+        run: devsupport/packaging/macos/check_font_coverage.sh dist/Virtaal.app
 
       - name: Notarize the bundle
         if: env.MACOS_NOTARIZING == 'true'

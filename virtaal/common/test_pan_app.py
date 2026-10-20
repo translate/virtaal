@@ -130,6 +130,18 @@ def test_read_ini_recovering_leaves_a_valid_file_alone(tmp_path):
     assert path.exists()
 
 
+def test_read_ini_recovering_reads_a_file_with_a_byte_order_mark(tmp_path):
+    # #4340: some Windows editors add one; it was taken for corruption
+    # and every setting in the file was replaced.
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\xef\xbb\xbf[general]\nlastdir = /tmp\n")
+
+    parser = pan_app.ConfigParser.RawConfigParser()
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path is None
+    assert parser.get("general", "lastdir") == "/tmp"
+
 def test_read_ini_recovering_backs_up_a_corrupt_file(tmp_path):
     # Real Windows crash (#3327): a user's virtaal.ini got zero-filled,
     # raising configparser.MissingSectionHeaderError unhandled at
@@ -667,6 +679,31 @@ def test_settings_instances_do_not_share_values(tmp_path):
     assert settings.language['uilang'] == ''
     assert settings.installed_assets == {}
 
+
+def test_settings_write_skips_a_config_file_that_is_a_directory(tmp_path, caplog):
+    # #4340: quitting raised IsADirectoryError.
+    seed = tmp_path / 'seed.ini'
+    seed.write_text('')
+    settings = pan_app.Settings(str(seed))
+    path = tmp_path / 'virtaal.ini'
+    path.mkdir()
+    settings.filename = str(path)
+
+    settings.write()  # must not raise
+
+    assert path.is_dir()
+    assert settings.language['sourcefont'] == pan_app.defaultfont
+    assert "can't be saved" in caplog.text
+
+
+def test_save_config_skips_a_config_file_that_is_a_directory(tmp_path, caplog):
+    path = tmp_path / 'tm.ini'
+    path.mkdir()
+
+    pan_app.save_config(str(path), {'url': 'x'}, section='remotetm')  # must not raise
+
+    assert path.is_dir()
+    assert "can't be saved" in caplog.text
 
 def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
     seed = tmp_path / 'seed.ini'

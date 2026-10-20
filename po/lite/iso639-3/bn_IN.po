@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: bn_IN\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "আফ্রিকান্স"
+
+#: aka
+msgid "Akan"
+msgstr "আকান"
+
+#: amh
+msgid "Amharic"
+msgstr "আমহারিক"
+
+#: ara
+msgid "Arabic"
+msgstr "আরবি"
+
+#: ast
+msgid "Asturian"
+msgstr "অ্যাস্টুরিয়ান"
+
+#: eus
+msgid "Basque"
+msgstr "বাস্ক"
+
+#: bel
+msgid "Belarusian"
+msgstr "বেলারুশিয়ান"
+
+#: ben
+msgid "Bengali"
+msgstr "বাংলা"
+
+#: bul
+msgid "Bulgarian"
+msgstr "বুলগেরিয়ান"
+
+#: cat
+msgid "Catalan"
+msgstr "কাটালান"
+
+#: cgg
+msgid "Chiga"
+msgstr "চিগা"
+
+#: zho
+msgid "Chinese"
+msgstr "চিনা"
+
+#: ces
+msgid "Czech"
+msgstr "চেক"
+
+#: dan
+msgid "Danish"
+msgstr "ডেনিশ"
+
+#: nld
+msgid "Dutch"
+msgstr ""
+
+#: eng
+msgid "English"
+msgstr "ইংরেজি"
+
+#: fao
+msgid "Faroese"
+msgstr "ফেরোইজ"
+
+#: fin
+msgid "Finnish"
+msgstr "ফিনিশ"
+
+#: fra
+msgid "French"
+msgstr "ফ্রেঞ্চ"
+
+#: ful
+msgid "Fulah"
+msgstr "ফুলা"
+
+#: glg
+msgid "Galician"
+msgstr "গ্যালিশিয়ান"
+
+#: lug
+msgid "Ganda"
+msgstr "গান্ডা"
+
+#: deu
+msgid "German"
+msgstr "জার্মান"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "গ্রিক, নবীন (১৪৫৩ থেকে আরম্ভ)"
+
+#: heb
+msgid "Hebrew"
+msgstr "হিব্রু"
+
+#: hin
+msgid "Hindi"
+msgstr "হিন্দি"
+
+#: hun
+msgid "Hungarian"
+msgstr "হাঙ্গেরিয়ান"
+
+#: isl
+msgid "Icelandic"
+msgstr "আইসল্যান্ডিক"
+
+#: ita
+msgid "Italian"
+msgstr "ইটালিয়ান"
+
+#: jpn
+msgid "Japanese"
+msgstr "জাপানি"
+
+#: kor
+msgid "Korean"
+msgstr "কোরিয়ান"
+
+#: lit
+msgid "Lithuanian"
+msgstr "লিথুয়েনিয়ান"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr "অকসিটান (১৫০০ উত্তোর)"
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "পোলিশ"
+
+#: por
+msgid "Portuguese"
+msgstr "পোর্তুগিস"
+
+#: rus
+msgid "Russian"
+msgstr "রুশি"
+
+#: srp
+msgid "Serbian"
+msgstr "সার্বিয়ান"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "স্লোভাক"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "সোথো, দক্ষিণ"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr ""
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "সুইডিশ"
+
+#: tel
+msgid "Telugu"
+msgstr "তেলুগু"
+
+#: tha
+msgid "Thai"
+msgstr "থাই"
+
+#: tur
+msgid "Turkish"
+msgstr "তুর্কি"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "ইউক্রেনিয়ান"
+
+#: vie
+msgid "Vietnamese"
+msgstr "ভিয়েতনামিস"
+
+#: zul
+msgid "Zulu"
+msgstr "জুলু"

@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "아프리칸스어"
+
+#: aka
+msgid "Akan"
+msgstr "아칸어"
+
+#: amh
+msgid "Amharic"
+msgstr "암하라어"
+
+#: ara
+msgid "Arabic"
+msgstr "아랍어"
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr "바스크어"
+
+#: bel
+msgid "Belarusian"
+msgstr "벨로루시어"
+
+#: ben
+msgid "Bengali"
+msgstr "벵골어"
+
+#: bul
+msgid "Bulgarian"
+msgstr "불가리아어"
+
+#: cat
+msgid "Catalan"
+msgstr "카탈로니아어"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "중국어"
+
+#: ces
+msgid "Czech"
+msgstr "체코어"
+
+#: dan
+msgid "Danish"
+msgstr "덴마크어"
+
+#: nld
+msgid "Dutch"
+msgstr ""
+
+#: eng
+msgid "English"
+msgstr "영어"
+
+#: fao
+msgid "Faroese"
+msgstr "페로스어"
+
+#: fin
+msgid "Finnish"
+msgstr "핀란드어"
+
+#: fra
+msgid "French"
+msgstr "프랑스어"
+
+#: ful
+msgid "Fulah"
+msgstr "풀라어"
+
+#: glg
+msgid "Galician"
+msgstr "갈리시아어"
+
+#: lug
+msgid "Ganda"
+msgstr "간다어"
+
+#: deu
+msgid "German"
+msgstr "독일어"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "그리스어 (현대) (1453년 이후)"
+
+#: heb
+msgid "Hebrew"
+msgstr "히브리어"
+
+#: hin
+msgid "Hindi"
+msgstr "힌두어"
+
+#: hun
+msgid "Hungarian"
+msgstr "헝가리어"
+
+#: isl
+msgid "Icelandic"
+msgstr "아이슬란드어"
+
+#: ita
+msgid "Italian"
+msgstr "이탈리아어"
+
+#: jpn
+msgid "Japanese"
+msgstr "일본어"
+
+#: kor
+msgid "Korean"
+msgstr "한국어"
+
+#: lit
+msgid "Lithuanian"
+msgstr "리투아니아어"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "폴란드어"
+
+#: por
+msgid "Portuguese"
+msgstr "포르투갈어"
+
+#: rus
+msgid "Russian"
+msgstr "러시아어"
+
+#: srp
+msgid "Serbian"
+msgstr "세르비아어"
+
+#: sin
+msgid "Sinhala"
+msgstr "신할라어"
+
+#: slk
+msgid "Slovak"
+msgstr "슬로바키아어"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "소토어 (남)"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "스페인어"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "스웨덴어"
+
+#: tel
+msgid "Telugu"
+msgstr "텔루구어"
+
+#: tha
+msgid "Thai"
+msgstr "태국어"
+
+#: tur
+msgid "Turkish"
+msgstr "터키어"
+
+#: ukr
+msgid "Ukrainian"
+msgstr ""
+
+#: vie
+msgid "Vietnamese"
+msgstr "베트남어"
+
+#: zul
+msgid "Zulu"
+msgstr "줄루어"

@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "แอฟริคานส์"
+
+#: aka
+msgid "Akan"
+msgstr "อะคาน"
+
+#: amh
+msgid "Amharic"
+msgstr "อัมฮาริก"
+
+#: ara
+msgid "Arabic"
+msgstr "อาหรับ"
+
+#: ast
+msgid "Asturian"
+msgstr "อัสตูเรียส"
+
+#: eus
+msgid "Basque"
+msgstr "แบ็ซค์"
+
+#: bel
+msgid "Belarusian"
+msgstr "เบลารุส"
+
+#: ben
+msgid "Bengali"
+msgstr "เบ็งกาลี"
+
+#: bul
+msgid "Bulgarian"
+msgstr "บัลแกเรีย"
+
+#: cat
+msgid "Catalan"
+msgstr "คาตะลาน"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "จีน"
+
+#: ces
+msgid "Czech"
+msgstr "เช็ก"
+
+#: dan
+msgid "Danish"
+msgstr "เดนมาร์ก"
+
+#: nld
+msgid "Dutch"
+msgstr "ดัชต์"
+
+#: eng
+msgid "English"
+msgstr "อังกฤษ"
+
+#: fao
+msgid "Faroese"
+msgstr "แฟโร"
+
+#: fin
+msgid "Finnish"
+msgstr "ฟินแลนด์"
+
+#: fra
+msgid "French"
+msgstr "ฝรั่งเศส"
+
+#: ful
+msgid "Fulah"
+msgstr ""
+
+#: glg
+msgid "Galician"
+msgstr "กาลิเซีย"
+
+#: lug
+msgid "Ganda"
+msgstr "แกนดา"
+
+#: deu
+msgid "German"
+msgstr "เยอรมัน"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "กรีกสมัยใหม่ (1453-)"
+
+#: heb
+msgid "Hebrew"
+msgstr "ฮีบรู"
+
+#: hin
+msgid "Hindi"
+msgstr "ฮินดี"
+
+#: hun
+msgid "Hungarian"
+msgstr "ฮังการี"
+
+#: isl
+msgid "Icelandic"
+msgstr "ไอซ์แลนด์"
+
+#: ita
+msgid "Italian"
+msgstr "อิตาลี"
+
+#: jpn
+msgid "Japanese"
+msgstr "ญี่ปุ่น"
+
+#: kor
+msgid "Korean"
+msgstr "เกาหลี"
+
+#: lit
+msgid "Lithuanian"
+msgstr "ลิทัวเนีย"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr "กรีกสมัยใหม่ (1453-)"
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr "เนปาล (มหภาษา)"
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr "ออกซิตัน (หลัง 1500)"
+
+#: pan
+msgid "Panjabi"
+msgstr "ปัญจาบี"
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "โปแลนด์"
+
+#: por
+msgid "Portuguese"
+msgstr "โปรตุเกส"
+
+#: rus
+msgid "Russian"
+msgstr "รัสเซีย"
+
+#: srp
+msgid "Serbian"
+msgstr "เซอร์เบีย"
+
+#: sin
+msgid "Sinhala"
+msgstr "สิงหล"
+
+#: slk
+msgid "Slovak"
+msgstr "สโลวัก"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "ซูทูใต้"
+
+#: sot
+msgid "Southern Sotho"
+msgstr "ซูทูใต้"
+
+#: spa
+msgid "Spanish"
+msgstr "สเปน"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr "สวาฮีลี (มหภาษา)"
+
+#: swe
+msgid "Swedish"
+msgstr "สวีเดน"
+
+#: tel
+msgid "Telugu"
+msgstr "เตลุคู"
+
+#: tha
+msgid "Thai"
+msgstr "ไทย"
+
+#: tur
+msgid "Turkish"
+msgstr "ตุรกี"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "ยูเครน"
+
+#: vie
+msgid "Vietnamese"
+msgstr "เวียดนาม"
+
+#: zul
+msgid "Zulu"
+msgstr "ซูลู"

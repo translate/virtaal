@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: pa\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "ਅਫਰੀਕੀ"
+
+#: aka
+msgid "Akan"
+msgstr "ਅਕਾਨ"
+
+#: amh
+msgid "Amharic"
+msgstr "ਅਮਹਾਰਿਕ"
+
+#: ara
+msgid "Arabic"
+msgstr "ਅਰਬੀ"
+
+#: ast
+msgid "Asturian"
+msgstr "ਆਸਟਰੀਅਨ"
+
+#: eus
+msgid "Basque"
+msgstr "ਬਾਸਕਿਊ"
+
+#: bel
+msgid "Belarusian"
+msgstr "ਬੇਲਾਰੂਸੀ"
+
+#: ben
+msgid "Bengali"
+msgstr "ਬੰਗਾਲੀ"
+
+#: bul
+msgid "Bulgarian"
+msgstr "ਬੁਲਗਾਰੀਅਨ"
+
+#: cat
+msgid "Catalan"
+msgstr "ਕੈਟਾਲਨ"
+
+#: cgg
+msgid "Chiga"
+msgstr "ਚਿਗਾ"
+
+#: zho
+msgid "Chinese"
+msgstr "ਚੀਨੀ"
+
+#: ces
+msgid "Czech"
+msgstr "ਸੀਜ਼ੈੱਕ"
+
+#: dan
+msgid "Danish"
+msgstr "ਡੈਨਿਸ਼"
+
+#: nld
+msgid "Dutch"
+msgstr "ਡੱਚ"
+
+#: eng
+msgid "English"
+msgstr "ਅੰਗਰੇਜ਼ੀ"
+
+#: fao
+msgid "Faroese"
+msgstr "ਫਾਰੋਸੀ"
+
+#: fin
+msgid "Finnish"
+msgstr "ਫਿਨਿਸ਼"
+
+#: fra
+msgid "French"
+msgstr "ਫਰੈਂਚ"
+
+#: ful
+msgid "Fulah"
+msgstr "ਫੂਲਾਹ"
+
+#: glg
+msgid "Galician"
+msgstr "ਗੈਲੀਸ਼ੀਅਨ"
+
+#: lug
+msgid "Ganda"
+msgstr "ਗਾਂਡਾ"
+
+#: deu
+msgid "German"
+msgstr "ਜਰਮਨ"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "ਗਰੀਕ, ਮਾਡਰਨ (1453-)"
+
+#: heb
+msgid "Hebrew"
+msgstr "ਹੈਬਰਿਊ"
+
+#: hin
+msgid "Hindi"
+msgstr "ਹਿੰਦੀ"
+
+#: hun
+msgid "Hungarian"
+msgstr "ਹੁੰਗਾਰੀਅਨ"
+
+#: isl
+msgid "Icelandic"
+msgstr "ਆਈਸਲੈਂਡਿਕ"
+
+#: ita
+msgid "Italian"
+msgstr "ਇਟਾਲੀਅਨ"
+
+#: jpn
+msgid "Japanese"
+msgstr "ਜਪਾਨੀ"
+
+#: kor
+msgid "Korean"
+msgstr "ਕੋਰੀਅਨ"
+
+#: lit
+msgid "Lithuanian"
+msgstr "ਲਿਥੂਆਨੀਅਨ"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr "ਓਸੀਟਨ (1500 ਤੋਂ ਬਾਅਦ)"
+
+#: pan
+msgid "Panjabi"
+msgstr "ਪੰਜਾਬੀ"
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "ਪੌਲਿਸ਼"
+
+#: por
+msgid "Portuguese"
+msgstr "ਪੋਰਤੂਗੂਈਸ"
+
+#: rus
+msgid "Russian"
+msgstr "ਰੂਸੀ"
+
+#: srp
+msgid "Serbian"
+msgstr "ਸਰਬੀਅਨ"
+
+#: sin
+msgid "Sinhala"
+msgstr "ਸਿੰਨਹਾਲਾ"
+
+#: slk
+msgid "Slovak"
+msgstr "ਸਲੋਵਾਕ"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "ਸੋਥੋ, ਦੱਖਣੀ"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "ਸਪੈਨਿਸ਼"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr "ਸਵਾਹਿਲੀ (ਮੈਕਰੋਲੈਂਗੂਏਜ)"
+
+#: swe
+msgid "Swedish"
+msgstr "ਸਵੈਡਿਸ਼"
+
+#: tel
+msgid "Telugu"
+msgstr "ਤੇਲਗੂ"
+
+#: tha
+msgid "Thai"
+msgstr "ਥਾਈ"
+
+#: tur
+msgid "Turkish"
+msgstr "ਤੁਰਕਿਸ਼"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "ਯੁਕਰੇਨੀਅਨ"
+
+#: vie
+msgid "Vietnamese"
+msgstr "ਵੀਅਤਨਾਮੀ"
+
+#: zul
+msgid "Zulu"
+msgstr "ਜ਼ੂਲੂ"

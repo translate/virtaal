@@ -1,15 +1,16 @@
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-20 12:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-10-20 19:56+0200\n"
+"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
+"Language-Team: librezale@librezale.eus\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -39,7 +40,7 @@ msgstr "Euskara"
 
 #: bel
 msgid "Belarusian"
-msgstr ""
+msgstr "Bielorrusiera"
 
 #: ben
 msgid "Bengali"
@@ -75,7 +76,7 @@ msgstr "Nederlandera"
 
 #: eng
 msgid "English"
-msgstr ""
+msgstr "Ingelesa"
 
 #: fao
 msgid "Faroese"
@@ -95,11 +96,11 @@ msgstr "Fula"
 
 #: glg
 msgid "Galician"
-msgstr ""
+msgstr "Galiziera"
 
 #: lug
 msgid "Ganda"
-msgstr ""
+msgstr "Gandera"
 
 #: deu
 msgid "German"
@@ -143,19 +144,19 @@ msgstr "Lituaniera"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "Greziera modernoa (1453-)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "Nepalera (makrohizkuntza)"
 
 #: oci
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Okzitaniera (1500 ondorengokoa)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "Punjabera"
 
 #: nso
 msgid "Pedi"
@@ -191,7 +192,7 @@ msgstr "Hegoaldeko sothoera"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "Hego-sothoera"
 
 #: spa
 msgid "Spanish"
@@ -199,7 +200,7 @@ msgstr "Espainiera"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "Swahili (makrohizkuntza)"
 
 #: swe
 msgid "Swedish"
@@ -219,7 +220,7 @@ msgstr "Turkiera"
 
 #: ukr
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainera"
 
 #: vie
 msgid "Vietnamese"

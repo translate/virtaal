@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import sys
+
 import pytest
 from gi.repository import Gio, GLib
 
@@ -44,6 +46,12 @@ def test_desktop_proxy_leaves_a_failed_lookup_to_the_environment(linux, monkeypa
     _resolve_to(monkeypatch, error=GLib.Error('no portal'))
     assert proxy.desktop_proxy(URL) is None
 
+
+def test_desktop_proxy_leaves_it_to_the_environment_without_pygobject(linux, monkeypatch):
+    # #4486: the asset manifest job runs the download helpers without it.
+    monkeypatch.setitem(sys.modules, 'gi.repository', None)
+
+    assert proxy.desktop_proxy(URL) is None
 
 def test_desktop_proxy_leaves_proxy_environment_variables_in_charge(linux, monkeypatch):
     monkeypatch.setenv('http_proxy', 'http://env.example:8080')

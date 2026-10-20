@@ -30,7 +30,11 @@ def desktop_proxy(url):
     # The local TM server, even when the desktop lists no exceptions.
     if _is_loopback(parse.urlsplit(url).hostname):
         return ''
-    from gi.repository import Gio, GLib
+    try:
+        from gi.repository import Gio, GLib
+    except ImportError:
+        # Without PyGObject: the asset manifest job (#4486).
+        return None
     try:
         proxies = Gio.ProxyResolver.get_default().lookup(url, None)
     except GLib.Error as error:

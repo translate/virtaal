@@ -7,6 +7,7 @@
 
 from translate.search import match
 
+from virtaal.common import pan_app
 from virtaal.support.match_compat import matcher as _matcher
 
 from .basetmmodel import BaseTMModel
@@ -41,7 +42,8 @@ class TMModel(BaseTMModel):
         store = storecontroller.get_store()._trans_store
         if self.matcher is None:
             options = {
-                'max_length': int(self.config['max_length']),
+                'max_length': pan_app.config_int(
+                    self.config['max_length'], self.default_config['max_length'], 1, 1000000, 'max_length'),
                 'max_candidates': self.controller.max_matches,
                 'min_similarity': self.controller.min_quality
             }

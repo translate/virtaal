@@ -298,14 +298,19 @@ class MainView(BaseView):
 
     def _restore_window_geometry(self):
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.png"]))
+        general, defaults = pan_app.settings.general, pan_app.Settings.general
+        # GDK's limit for a window's size and position.
         self.main_window.resize(
-            int(pan_app.settings.general['windowwidth']),
-            int(pan_app.settings.general['windowheight'])
+            pan_app.config_int(general['windowwidth'], defaults['windowwidth'], 1, 32767, 'windowwidth'),
+            pan_app.config_int(general['windowheight'], defaults['windowheight'], 1, 32767, 'windowheight')
         )
-        windowx = pan_app.settings.general['windowx']
-        windowy = pan_app.settings.general['windowy']
+        windowx = general['windowx']
+        windowy = general['windowy']
         if windowx != '' and windowy != '':
-            self.main_window.move(int(windowx), int(windowy))
+            windowx = pan_app.config_int(windowx, None, -32768, 32767, 'windowx')
+            windowy = pan_app.config_int(windowy, None, -32768, 32767, 'windowy')
+            if windowx is not None and windowy is not None:
+                self.main_window.move(windowx, windowy)
 
     def _detect_macos_is_dark(self):
         try:

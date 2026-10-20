@@ -1064,3 +1064,21 @@ def test_save_config_keeps_a_percent_sign(tmp_path):
     pan_app.save_config(path, {'uk': {'plural': 'n%10==1 ? 0 : 1'}})
 
     assert pan_app.load_config(path, 'uk') == {'plural': 'n%10==1 ? 0 : 1'}
+
+
+# config_int() #
+
+@pytest.mark.parametrize('value, expected', [
+    ('400', 400), ('1', 1), ('32767', 32767),
+    ('', 450), ('1.5', 450), ('abc', 450), ('True', 450), (None, 450),
+    ('0', 450), ('-3', 450), ('99999999999999999999', 450),
+])
+def test_config_int_falls_back_to_the_default_outside_its_range(value, expected):
+    # #4340: a bad value stopped Virtaal starting or turned a plugin off.
+    assert pan_app.config_int(value, 450, 1, 32767, 'width') == expected
+
+
+def test_config_int_logs_the_value_it_replaced(caplog):
+    pan_app.config_int('abc', 5, 0, 1000, 'max_matches')
+
+    assert "Using 5 for max_matches: 'abc'" in caplog.text

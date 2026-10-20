@@ -50,6 +50,21 @@ def _read_ini_recovering(parser, filename):
         return backup_path
 
 
+def config_int(value, default, minimum, maximum, name):
+    """value as a whole number from minimum to maximum, or default: a
+    hand edit or another tool can leave anything in a config file, and
+    a bad value used to stop Virtaal starting or turn a feature off
+    (#4340)."""
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        number = None
+    if number is None or not minimum <= number <= maximum:
+        import logging
+        logging.warning("Using %s for %s: %r isn't a whole number from %d to %d", default, name, value, minimum, maximum)
+        return default
+    return number
+
 def _write_ini(parser, filename):
     """Write parser to filename, or log why it can't be (a directory in
     its place, a read-only file, #4340) rather than fail to quit."""

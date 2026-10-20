@@ -30,7 +30,8 @@ def _read_ini_recovering(parser, filename):
 
     Returns the backup path, or None if the file was fine (or absent)."""
     try:
-        parser.read(filename, encoding='utf-8')
+        # utf-8-sig: some Windows editors add a byte order mark (#4340).
+        parser.read(filename, encoding='utf-8-sig')
         return None
     except (ConfigParser.Error, UnicodeDecodeError) as e:
         for section in parser.sections():
@@ -48,6 +49,16 @@ def _read_ini_recovering(parser, filename):
         logging.warning("%r is corrupt (%s) - backed up to %r and starting fresh", filename, e, backup_path)
         return backup_path
 
+
+def _write_ini(parser, filename):
+    """Write parser to filename, or log why it can't be (a directory in
+    its place, a read-only file, #4340) rather than fail to quit."""
+    try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            parser.write(f)
+    except OSError as e:
+        import logging
+        logging.warning("%r can't be saved: %s", filename, e)
 
 def get_config_dir():
     if platform.is_windows:
@@ -419,9 +430,7 @@ class Settings:
         project_dir = os.path.split(self.filename)[0]
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
-        file = open(self.filename, 'w', encoding='utf-8')
-        self.config.write(file)
-        file.close()
+        _write_ini(self.config, self.filename)
 
         self.language['sourcefont'] = fonts[0]
         self.language['targetfont'] = fonts[1]
@@ -732,6 +741,4 @@ def save_config(filename, config, section=None):
                 value = ','.join(value)
             parser.set(section, key, str(value))
 
-    conffile = open(filename, 'w', encoding='utf-8')
-    parser.write(conffile)
-    conffile.close()
+    _write_ini(parser, filename)

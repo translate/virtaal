@@ -25,9 +25,14 @@ MACOS_FONT_FALLBACKS = (
     'Malayalam Sangam MN',
     'Oriya Sangam MN',
     'Tamil Sangam MN',
+    # Last: symbols such as U+2236 RATIO in GTK's times, missing from
+    # macOS 15's UI font (#4465). Its only letters are historic scripts.
+    'Apple Symbols',
 )
 WINDOWS_FONT_FALLBACKS = (
     'Ebrima',  # Ethiopic
+    'Nirmala UI',  # Indic scripts
+    'Leelawadee UI',  # Thai
 )
 
 

@@ -99,12 +99,35 @@ def test_summary_escapes_table_cells_and_lists_each_section():
     assert '### New failures' in text
 
 
+def test_entry_with_several_kinds_matches_either():
+    entry = dict(issue=7, sweep='config-tm.ini', kind=['exception', 'log-error'], match='ValueError f', cases=['a', 'b'])
+    out = results.classify([_result('config-tm.ini', 'a', ('exception', 'ValueError f', '')),
+                            _result('config-tm.ini', 'b', ('log-error', 'ValueError f', ''))], [entry], 'linux')
+    assert len(out.known) == 2 and not out.failed
+
+
+def test_upstream_entry_matches_and_is_never_closed():
+    entry = dict(upstream='translate-toolkit', sweep='file-xlf', kind='exception', match='TypeError', cases=['a'])
+    out = results.classify([_result('file-xlf', 'a', ('exception', 'TypeError f', ''))], [entry], 'linux')
+    results.check_closed(out, [entry], {})
+    assert len(out.known) == 1 and not out.failed
+    assert 'upstream (translate-toolkit)' in results.summary(out, 'linux')
+
+
 def test_known_bug_list_is_well_formed():
     import corpus
     import known_bugs
-    names = {name for _, name, _ in corpus.CORPUS + corpus.API_ONLY}
+    import malformed
+    corpus_names = {name for _, name, _ in corpus.CORPUS + corpus.API_ONLY}
+    file_names = {name for _, name, *_ in malformed.file_cases()}
     for entry in map(results.normalize, known_bugs.KNOWN_BUGS):
+        assert entry['issue'] or entry['upstream'], entry
         assert set(entry['platforms']) <= set(results.PLATFORMS)
         assert entry['kind']
-        if entry['cases'] != results.ALL:
-            assert set(entry['cases']) <= names, entry
+        if entry['cases'] == results.ALL:
+            continue
+        if all(sweep.startswith('file-') for sweep in entry['sweeps']):
+            assert set(entry['cases']) <= file_names, entry
+        elif not any(sweep in ('paths', 'saving', 'random', 'data') or sweep.startswith(('config-', 'service-', 'ui-'))
+                     for sweep in entry['sweeps']):
+            assert set(entry['cases']) <= corpus_names, entry

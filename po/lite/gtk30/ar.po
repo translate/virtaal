@@ -1,15 +1,16 @@
+# Khaled Hosny <khaled@aliftype.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-14 07:25+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2026-10-20 01:20+0300\n"
+"Last-Translator: Khaled Hosny <khaled@aliftype.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
@@ -19,7 +20,7 @@ msgstr ""
 #. GTK HEAD (allows future proofing)
 msgctxt "recent menu label"
 msgid "%d. %s"
-msgstr ""
+msgstr "‏%d. ‏%s"
 
 #. This is the label format that is used for the first 10 items
 #. * in a recent files menu. The %d is the number of the item,
@@ -30,7 +31,7 @@ msgstr ""
 #. Seen in: menus
 msgctxt "recent menu label"
 msgid "_%d. %s"
-msgstr ""
+msgstr "‏_%d. ‏%s"
 
 #. Help->About
 #. Seen in: menus
@@ -243,7 +244,7 @@ msgstr "إ_شادات"
 
 #. Seen in: font chooser
 msgid "Character Variants"
-msgstr ""
+msgstr "تنويعات الحروف"
 
 #. Seen in: About dialog
 msgid "Created by"
@@ -273,7 +274,7 @@ msgstr "_قصّ"
 
 #. Seen in: font chooser
 msgid "Default"
-msgstr ""
+msgstr "المبدئي"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -330,11 +331,11 @@ msgstr "Left"
 
 #. Seen in: font chooser
 msgid "Letter Case"
-msgstr ""
+msgstr "حالة الحرف"
 
 #. Seen in: font chooser
 msgid "Ligatures"
-msgstr ""
+msgstr "اقترانات"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
@@ -356,15 +357,15 @@ msgstr "لا نتائج"
 
 #. Seen in: font chooser
 msgid "Number Case"
-msgstr ""
+msgstr "حالة الأرقام"
 
 #. Seen in: font chooser
 msgid "Number Formatting"
-msgstr ""
+msgstr "تنسيق الأرقام"
 
 #. Seen in: font chooser
 msgid "Number Spacing"
-msgstr ""
+msgstr "تباعد الأرقام"
 
 #. File->Recent Files->tooltip
 #. Seen in: menus

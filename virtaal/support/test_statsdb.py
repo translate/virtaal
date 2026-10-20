@@ -213,11 +213,30 @@ def test_close_closes_every_cached_connection_and_clears_the_registry(tmp_path):
         statsdb.StatsCache._caches = original_caches
 
 
-def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, monkeypatch):
+@pytest.fixture
+def fresh_caches(monkeypatch):
+    # An empty connection registry (call it again for another), with every
+    # connection it holds closed afterwards: dropping one leaks it.
+    registries = []
+
+    def fresh():
+        registries.append({})
+        monkeypatch.setattr(statsdb.StatsCache, '_caches', registries[-1])
+
+    monkeypatch.setattr(statsdb.StatsCache, 'unusable_files', set())
+    fresh()
+    yield fresh
+    for caches in registries:
+        for threads in caches.values():
+            for cache in threads.values():
+                cache.con.close()
+
+
+def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, fresh_caches):
     # As another process sees a database no file has been cached in yet.
     path = tmp_path / "stats.db"
     statsdb.StatsCache(str(path))
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    fresh_caches()
     po_file = tmp_path / "af.po"
     po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
 
@@ -227,7 +246,7 @@ def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, monkeypatch
     assert path.exists()
 
 
-def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
+def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, fresh_caches):
     path = tmp_path / "stats.db"
     po_file = tmp_path / "af.po"
     po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
@@ -236,7 +255,7 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
     cache.cur.execute("UPDATE files SET toolkitbuild=0")
     cache.con.commit()
     cache.con.close()
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    fresh_caches()
 
     cache = statsdb.StatsCache(str(path))
 
@@ -244,8 +263,79 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
     assert cache.cur.fetchone()[0] == 0
 
 
-def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+def _write_truncated_database(path):
+    statsdb.StatsCache(str(path)).close()
+    data = path.read_bytes()
+    path.write_bytes(data[:len(data) // 3])
+
+
+@pytest.mark.parametrize('corrupt', [
+    lambda path: path.write_text('not a database\n'),
+    _write_truncated_database,
+], ids=['not SQLite', 'truncated'])
+def test_a_corrupt_database_is_replaced(tmp_path, fresh_caches, corrupt, caplog):
+    # #4430: it's only a cache, so a corrupt one mustn't stop files opening.
+    path = tmp_path / "stats.db"
+    corrupt(path)
+    fresh_caches()
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert path.read_bytes().startswith(b'SQLite format 3')
+    assert "can't be read" in caplog.text
+
+
+def test_a_database_path_that_cant_be_opened_falls_back_to_memory(tmp_path, fresh_caches, caplog):
+    path = tmp_path / "stats.db"
+    path.mkdir()
+    (path / "keep").write_text('mine')
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert (path / "keep").read_text() == 'mine'
+    assert [r.getMessage().split(',')[0] for r in caplog.records] == ['Keeping statistics in memory']
+
+
+def test_an_unusable_database_path_is_only_reported_once(tmp_path, fresh_caches, caplog):
+    # As another thread opens it after the first.
+    path = tmp_path / "stats.db"
+    path.mkdir()
+    statsdb.StatsCache(str(path))
+    caplog.clear()
+    fresh_caches()
+
+    cache = statsdb.StatsCache(str(path))
+
+    cache.cur.execute("SELECT count(*) FROM files")
+    assert caplog.records == []
+
+
+def test_a_failed_open_is_not_kept_for_the_next_call(tmp_path, fresh_caches, monkeypatch):
+    path = tmp_path / "stats.db"
+    path.write_text('not a database\n')
+    real_connect = statsdb.dbapi2.connect
+    calls = []
+
+    def connect(name):
+        calls.append(name)
+        if len(calls) == 1:
+            raise statsdb.dbapi2.OperationalError('locked')
+        return real_connect(name)
+
+    monkeypatch.setattr(statsdb.dbapi2, 'connect', connect)
+
+    first = statsdb.StatsCache(str(path))
+
+    assert first.con is not None
+    assert statsdb.StatsCache(str(path)) is first
+
+def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch, fresh_caches):
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
     monkeypatch.setenv('HOME', str(tmp_path))
     monkeypatch.setenv('USERPROFILE', str(tmp_path))
@@ -256,9 +346,8 @@ def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch):
     assert os.path.exists(statsdb.StatsCache.defaultfile)
 
 
-def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch):
+def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch, fresh_caches):
     from virtaal.common.platform import platform
-    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
     monkeypatch.setattr(platform, 'is_windows', False)
     monkeypatch.setattr(platform, 'is_flatpak', True)

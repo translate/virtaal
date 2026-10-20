@@ -87,9 +87,11 @@ class Controller(BaseController):
         if not setsid:
             setsid = getattr(os, 'setpgrp', None)
 
+        from virtaal.support import helperprocess
         pipe = subprocess.Popen(cmdline, stdin=inout, stdout=inout,
                                 stderr=inout, close_fds=closefds,
-                                preexec_fn=setsid, startupinfo=startupinfo)
+                                preexec_fn=setsid, startupinfo=startupinfo,
+                                env=helperprocess.host_env())
 
         # It is assumed that this kind of tools (gnome-open, kfmclient,
         # exo-open, xdg-open and open for OSX) immediately exit after launching
@@ -164,7 +166,9 @@ else:
             desktop_environment = 'gnome'
         else:
             try:
-                info = subprocess.check_output(['xprop','-root', '_DT_SAVE_MODE'], encoding="utf-8")
+                from virtaal.support import helperprocess
+                info = subprocess.check_output(['xprop','-root', '_DT_SAVE_MODE'], encoding="utf-8",
+                                               env=helperprocess.host_env())
                 if ' = "xfce4"' in info:
                     desktop_environment = 'xfce'
             except (OSError, RuntimeError):

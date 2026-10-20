@@ -50,7 +50,8 @@ def test_is_newer_unparseable_fails_closed():
 
 
 # find_asset_url() - matches ci.yml's real release job asset names
-# (confirmed live against the actual v1.0.0-beta3 release).
+# (the Windows and macOS ones confirmed live against the actual
+# v1.0.0-beta3 release).
 
 _REAL_ASSETS = [
     {'name': 'virtaal-1.0.0-beta3-setup.exe',
@@ -59,6 +60,12 @@ _REAL_ASSETS = [
      'browser_download_url': 'https://github.com/translate/virtaal/releases/download/v1.0.0-beta3/Virtaal-macos-arm64.dmg'},
     {'name': 'Virtaal-macos-x86_64.dmg',
      'browser_download_url': 'https://github.com/translate/virtaal/releases/download/v1.0.0-beta3/Virtaal-macos-x86_64.dmg'},
+    {'name': 'Virtaal-linux-x86_64.flatpak',
+     'browser_download_url': 'https://github.com/translate/virtaal/releases/download/v1.0.0-rc2/Virtaal-linux-x86_64.flatpak'},
+    {'name': 'Virtaal-linux-x86_64.AppImage',
+     'browser_download_url': 'https://github.com/translate/virtaal/releases/download/v1.0.0-rc2/Virtaal-linux-x86_64.AppImage'},
+    {'name': 'Virtaal-linux-aarch64.AppImage',
+     'browser_download_url': 'https://github.com/translate/virtaal/releases/download/v1.0.0-rc2/Virtaal-linux-aarch64.AppImage'},
 ]
 
 
@@ -81,8 +88,22 @@ def test_find_asset_url_mac_x86_64():
 
 
 def test_find_asset_url_linux_has_no_asset_to_pick():
-    plat = Platform(os_name='posix', sys_platform='linux', machine='x86_64')
+    plat = Platform(os_name='posix', sys_platform='linux', machine='x86_64', frozen=False, environ={})
     assert find_asset_url(_REAL_ASSETS, plat) is None
+
+
+def test_find_asset_url_appimage_x86_64():
+    plat = Platform(os_name='posix', sys_platform='linux', machine='x86_64', frozen=True,
+                    environ={'APPIMAGE': '/home/u/Virtaal-linux-x86_64.AppImage'})
+    assert find_asset_url(_REAL_ASSETS, plat) == \
+        'https://github.com/translate/virtaal/releases/download/v1.0.0-rc2/Virtaal-linux-x86_64.AppImage'
+
+
+def test_find_asset_url_appimage_aarch64():
+    plat = Platform(os_name='posix', sys_platform='linux', machine='aarch64', frozen=True,
+                    environ={'APPIMAGE': '/home/u/Virtaal-linux-aarch64.AppImage'})
+    assert find_asset_url(_REAL_ASSETS, plat) == \
+        'https://github.com/translate/virtaal/releases/download/v1.0.0-rc2/Virtaal-linux-aarch64.AppImage'
 
 
 def test_find_asset_url_mac_unrecognised_arch_has_no_match():

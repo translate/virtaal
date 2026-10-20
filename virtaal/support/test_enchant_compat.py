@@ -9,7 +9,7 @@ import importlib
 import sys
 import types
 
-from virtaal.support.enchant_compat import import_enchant
+from virtaal.support.enchant_compat import import_enchant, self_check
 
 
 def test_leftover_enchant_directory_is_not_enchant(monkeypatch, tmp_path):
@@ -33,3 +33,8 @@ def test_usable_enchant(monkeypatch):
     enchant.dict_exists = enchant.list_languages = enchant.get_user_config_dir = lambda *a: None
     monkeypatch.setitem(sys.modules, 'enchant', enchant)
     assert import_enchant() is enchant
+
+
+def test_self_check_without_enchant(monkeypatch):
+    monkeypatch.setitem(sys.modules, 'enchant', None)
+    assert self_check('en_US') == 'enchant: none\n'

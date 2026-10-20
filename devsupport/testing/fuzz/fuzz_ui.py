@@ -8,7 +8,8 @@
 """UI fuzzer: a corpus sweep of every text input, then random interaction.
 
 The sweep (sweep.py) puts every corpus value through every text input in
-a fixed order. The random part then drives the real controllers
+a fixed order, and opens and saves malformed files and awkward paths. The
+random part then drives the real controllers
 (navigate, switch mode, edit with corpus text, search, undo, save,
 close/reopen, resize) for --duration-seconds, after native crashes and
 timing problems, such as a live GTK object graph torn down in a way that
@@ -48,13 +49,21 @@ sys.path.insert(0, HERE)
 
 import results  # noqa: E402
 from known_bugs import KNOWN_BUGS  # noqa: E402
-from record import GLIB_IGNORE, OUTSIDE_CASE, STDERR_MARKER, TIMEOUT_MARKER  # noqa: E402
+from record import (  # noqa: E402
+    GLIB_IGNORE,
+    OUTSIDE_CASE,
+    STDERR_MARKER,
+    TIMEOUT_MARKER,
+    is_virtaal_path,
+)
 from sweep import SECTIONS  # noqa: E402
 
 TESTFILES_DIR = os.path.join(REPO_ROOT, 'devsupport', 'testfiles')
 DEFAULT_TESTFILES = ['workflow.po', 'workflow.xliff', 'workflow.ts', 'checks.po']
 CASE_TIMEOUT = 60
-FREEZE_LIMIT = 20
+# A known freeze takes 11 s to minutes depending on the runner; a fix makes
+# it take well under a second.
+FREEZE_LIMIT = 8
 MAX_RESTARTS = 20
 DEBUGGERS = {
     'gdb': ['gdb', '-q', '--batch', '-ex', 'run', '-ex', 'thread apply all bt full', '--args'],
@@ -199,8 +208,7 @@ def died_in(cases, stderr):
     # A debugger's own output can follow the dump; keep the dump.
     dump = after[after.index(TIMEOUT_MARKER):][:3000]
     frames = re.findall(r'File "([^"]+)", line \d+ in (\w+)', dump)
-    own = [name for path, name in frames
-           if '/virtaal/' in path.replace('\\', '/') and '/devsupport/' not in path.replace('\\', '/')]
+    own = [name for path, name in frames if is_virtaal_path(path)]
     return {'kind': 'timeout', 'signature': own[0] if own else '', 'detail': dump}
 
 
@@ -441,8 +449,10 @@ class Fuzzer:
         except Exception:
             self.rec.exception(*sys.exc_info())
         # Run what the action deferred (idle/timeout callbacks, signals)
-        # before the next one, as in a real session.
-        while self.Gtk.events_pending():
+        # before the next one, as in a real session. A repeating idle
+        # callback keeps events pending for ever, so stop after a while.
+        deadline = time.monotonic() + 2
+        while self.Gtk.events_pending() and time.monotonic() < deadline:
             self.Gtk.main_iteration()
         self.rec.end()
 
@@ -474,6 +484,25 @@ def random_child(args):
     recorder.done()
 
 
+def report(found, outdir, platform):
+    """Write results.json and the summary; the exit status for the run."""
+    with open(os.path.join(outdir, 'results.json'), 'w', encoding='utf-8') as f:
+        json.dump(found, f, indent=1)
+    outcome = results.classify(found, KNOWN_BUGS, platform)
+    issue_check = True
+    if os.environ.get('GITHUB_ACTIONS'):
+        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS if e.get('issue')],
+                                            token=os.environ.get('GITHUB_TOKEN'))
+        issue_check = bool(states)
+        results.check_closed(outcome, KNOWN_BUGS, states)
+    text = results.summary(outcome, platform, issue_check)
+    print(text)
+    if os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+            f.write(text)
+    return 1 if outcome.failed else 0
+
+
 # MAIN #
 
 def main():
@@ -484,8 +513,11 @@ def main():
                         help='Run the random part for this long instead of a number of actions.')
     parser.add_argument('--seed', type=int, default=None,
                         help='Seed for the random part, printed so a run can be replayed.')
-    parser.add_argument('--sections', default=','.join(SECTIONS),
-                        help='Sweep sections to run (default: all): %s' % ', '.join(SECTIONS))
+    weekly = ('service-', 'ui-')
+    nightly = [s for s in SECTIONS if not s.startswith(weekly)]
+    parser.add_argument('--sections', default=','.join(nightly),
+                        help='Sweep sections to run; "services" and "ui" stand for all service-* and ui-* '
+                             'ones (default: all but those, which run weekly): %s' % ', '.join(SECTIONS))
     parser.add_argument('--no-sweep', action='store_true', help='Skip the corpus sweep.')
     parser.add_argument('--no-random', action='store_true', help='Skip the random part.')
     parser.add_argument('--results', default=None,
@@ -510,35 +542,29 @@ def main():
     faulthandler.enable()
 
     root = tempfile.mkdtemp(prefix='virtaal-fuzz-home-')
-    env = child_env(prepare_home(root))
     found = []
     try:
+        # A fresh config per section, so one section's leftovers can't
+        # change what the next one sees.
         if not args.no_sweep:
-            for section in [s for s in args.sections.split(',') if s]:
+            sections = []
+            for name in filter(None, args.sections.split(',')):
+                prefix = {'services': 'service-', 'ui': 'ui-'}.get(name)
+                sections += [s for s in SECTIONS if s.startswith(prefix)] if prefix else [name]
+            for section in sections:
                 start = time.monotonic()
+                env = child_env(prepare_home(os.path.join(root, section)))
+                if section.startswith('ui-'):
+                    env['LANGUAGE'] = section[len('ui-'):]
                 cases = run_section(section, env, outdir, args.debugger, platform)
                 print('sweep %s: %d cases in %.0f s' % (section, len(cases), time.monotonic() - start))
                 found += cases
         if not args.no_random:
-            found += run_random(args, env, outdir, args.debugger)
+            found += run_random(args, child_env(prepare_home(os.path.join(root, 'random'))), outdir, args.debugger)
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
-    with open(os.path.join(outdir, 'results.json'), 'w', encoding='utf-8') as f:
-        json.dump(found, f, indent=1)
-    outcome = results.classify(found, KNOWN_BUGS, platform)
-    issue_check = True
-    if os.environ.get('GITHUB_ACTIONS'):
-        states = results.fetch_issue_states([e['issue'] for e in KNOWN_BUGS], token=os.environ.get('GITHUB_TOKEN'))
-        issue_check = bool(states)
-        results.check_closed(outcome, KNOWN_BUGS, states)
-    text = results.summary(outcome, platform, issue_check)
-    print(text)
-    if os.environ.get('GITHUB_STEP_SUMMARY'):
-        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
-            f.write(text)
-    return 1 if outcome.failed else 0
-
+    return report(found, outdir, platform)
 
 if __name__ == '__main__':
     sys.exit(main())

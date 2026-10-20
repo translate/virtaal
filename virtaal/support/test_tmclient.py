@@ -8,6 +8,7 @@
 import json
 
 import pycurl
+import pytest
 
 from virtaal.support import tmclient
 from virtaal.support.tmclient import TMClient
@@ -263,3 +264,16 @@ def test_add_store_wires_the_callback_with_decoded_json(monkeypatch):
 
     _fire_callback(requests[0], {'status': 'ok'})
     assert calls == [('test.po', {'status': 'ok'})]
+
+
+@pytest.mark.parametrize('reply', [b'<html>502 Bad Gateway</html>', b'', b'[{"source": "x"', b'\xff\xfe'])
+def test_a_reply_that_is_not_json_is_dropped_without_raising(monkeypatch, reply):
+    # #4437: an error page or a cut-off reply showed the crash dialog.
+    client, requests = _make_client(monkeypatch)
+    calls = []
+    client.translate_unit('hello', 'en', 'af', lambda *args: calls.append(args))
+    signal, handler = requests[0].connected[0]
+
+    handler(requests[0], reply)  # must not raise
+
+    assert calls == []

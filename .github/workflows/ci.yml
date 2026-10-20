@@ -497,6 +497,47 @@ jobs:
       - name: Smoke test the CLI
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 
+  test-distro:
+    # The oldest supported distro, installed the way a distro user would:
+    # its own python3 and python3-gi, not a pip-built PyGObject.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Install system dependencies
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            at-spi2-core
+            gettext
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            hunspell-en-us
+            libenchant-2-2
+            libgettextpo0
+            python3-gi
+            python3-gi-cairo
+            python3-venv
+            xvfb
+
+      - name: Create venv with system site-packages
+        # --system-site-packages so the venv sees the distro's gi.
+        run: |
+          /usr/bin/python3 -m venv --system-site-packages .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install virtaal
+        run: |
+          pip install --upgrade pip
+          # shellcheck disable=SC2102  # .[test] is pip extras syntax, not a glob range
+          pip install .[test,spellcheck]
+
+      - name: Run tests
+        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
+
   test-windows:
     runs-on: windows-latest
     timeout-minutes: 15
@@ -766,6 +807,13 @@ jobs:
           if (-not ($result -match '^library: .*\\dist\\virtaal\\')) { throw "Not the bundled libgettextpo" }
           if (-not ($result -match '^message: die Anzahl der Formatspezifikationen')) { throw "msgfmt's message isn't translated" }
 
+      - name: Check the interface languages display in the bundle's fonts
+        # Every shipped language's messages and its own name, in the UI
+        # and editor fonts (#4421). A known gap that displays now is only
+        # a warning here; the weekly font-coverage.yml fails on it.
+        shell: pwsh
+        run: devsupport\packaging\windows\check_font_coverage.ps1 dist\virtaal
+
       - name: Report lite coverage
         # Same report as build-macos-app's, against the gvsbuild GTK
         # catalogs this bundle ships.
@@ -944,7 +992,12 @@ jobs:
       - run: echo "test-windows and build-windows-installer both passed"
 
   test-macos:
-    runs-on: macos-latest
+    # The oldest macOS the app is built for, and the newest.
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-latest]
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     # Single Python version (whatever Homebrew currently ships), not the
     # 3.10-3.14 matrix the Linux job runs: unlike apt, Homebrew doesn't
@@ -993,7 +1046,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/Library/Caches/pip
-          key: pip-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pyproject.toml') }}
+          key: pip-${{ matrix.runner }}-${{ runner.arch }}-${{ hashFiles('pyproject.toml') }}
 
       - name: Install Python dependencies
         run: |
@@ -1031,7 +1084,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: test-macos-crash-reports
+          name: test-macos-crash-reports-${{ matrix.runner }}
           path: ${{ runner.temp }}/stacks
           if-no-files-found: ignore
 
@@ -1146,6 +1199,11 @@ jobs:
         if: matrix.arch == 'arm64'
         run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/report_lite_coverage.py --host "macOS (Homebrew)"
 
+      - name: Check every gap-filling lite catalog ships
+        # A lite catalog only ships when po/LINGUAS-lite lists it.
+        if: matrix.arch == 'arm64'
+        run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/update_lite_catalogs.py --check gtk30 glib20 gtkspell3 gtk-mac-integration
+
       - name: Build translation packs
         # Each language's level 1, and levels 1 and 2, to translate first
         # (see po/README.md), with the GTK and other library messages
@@ -1247,6 +1305,12 @@ jobs:
           cat /tmp/gettextpo.txt
           grep -q "^library: .*/Virtaal.app/" /tmp/gettextpo.txt
           grep -q "^message: die Anzahl der Formatspezifikationen" /tmp/gettextpo.txt
+
+      - name: Check the interface languages display in the bundle's fonts
+        # Every shipped language's messages and its own name, in the UI
+        # and editor fonts (#4421). A known gap that displays now is only
+        # a warning here; the weekly font-coverage.yml fails on it.
+        run: devsupport/packaging/macos/check_font_coverage.sh dist/Virtaal.app
 
       - name: Notarize the bundle
         if: env.MACOS_NOTARIZING == 'true'
@@ -1460,7 +1524,7 @@ jobs:
 
       - name: Install the GNOME runtime/SDK
         run: |
-          flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50
+          flatpak install --user -y flathub org.gnome.Platform//51 org.gnome.Sdk//51
 
       - name: Cache flatpak-builder's module state
         # Downloaded sources plus built output for each Python deps
@@ -1556,15 +1620,31 @@ jobs:
 
       - name: Smoke test - the bundle installs and runs
         working-directory: devsupport/packaging/flatpak
-        # Uninstalled afterwards so the runtime cache doesn't keep it.
         run: |
+          set -o pipefail
           flatpak install --user -y --noninteractive --reinstall \
-            Virtaal-linux-${{ matrix.arch }}.flatpak
+            Virtaal-linux-${{ matrix.arch }}.flatpak 2>&1 | tee install.log
+          ! grep -i 'magic mime rule' install.log
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak run io.github.translate.Virtaal --version
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak run --command=python3 io.github.translate.Virtaal -c \
             "from virtaal.common import pan_app; n = len(pan_app.get_available_ui_languages()); print(n, 'UI languages'); assert n > 20"
+
+      - name: Run the tests inside the installed Flatpak
+        # The GNOME runtime's own Python and GTK, which the Flatpak ships;
+        # pytest-cov is left out (coverage comes from the test job). The
+        # installed app, not flatpak-builder --run: the runtime decodes
+        # images with flatpak-spawn, which starts the installed app and
+        # needs a session bus. --devel for the SDK's pip. FLATPAK_ID unset:
+        # the tests expect a checkout; Flatpak-only code has its own tests.
+        # Uninstalled afterwards so the runtime cache doesn't keep it.
+        run: |
+          read -ra deps <<< "$(python3 -c 'import tomllib; print(" ".join(d for d in tomllib.load(open("pyproject.toml", "rb"))["project"]["optional-dependencies"]["test"] if not d.startswith("pytest-cov")))')"
+          xvfb-run -a --server-args="-screen 0 1024x768x24" dbus-run-session -- \
+            flatpak run --devel --filesystem="$GITHUB_WORKSPACE" --command=sh io.github.translate.Virtaal \
+            -euxc 'cd "$1"; shift; python3 -m pip install --target /tmp/testdeps "$@"; PYTHONPATH=/tmp/testdeps env -u FLATPAK_ID python3 -m pytest -rvxs -n auto virtaal' \
+            sh "$GITHUB_WORKSPACE" "${deps[@]}"
           flatpak uninstall --user -y --noninteractive io.github.translate.Virtaal
 
       - uses: actions/upload-artifact@v7
@@ -1573,16 +1653,105 @@ jobs:
           path: devsupport/packaging/flatpak/Virtaal-linux-${{ matrix.arch }}.flatpak
           if-no-files-found: error
 
+  build-appimage:
+    # The AppImage (a beta, #4315): a PyInstaller bundle packed with
+    # appimagetool. Ubuntu 22.04 runners: its glibc is the oldest the
+    # AppImage runs on.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: x86_64
+          - runner: ubuntu-22.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install the build packages
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            python3-venv
+            python3-gi
+            python3-gi-cairo
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            libgettextpo0
+            gettext
+            gcc
+            g++
+            make
+            pkg-config
+            libglib2.0-dev
+            libhunspell-dev
+            librsvg2-common
+            adwaita-icon-theme
+            ibus-gtk3
+            fcitx5-frontend-gtk3
+            desktop-file-utils
+            file
+            xvfb
+
+      - name: Cache the AppImage tools and enchant build
+        # Pinned in build_appimage.sh, which skips rebuilding enchant when
+        # the cached build matches.
+        uses: actions/cache@v6
+        with:
+          path: |
+            build/appimage/tools
+            build/appimage/enchant
+          key: appimage-enchant-${{ matrix.runner }}-${{ hashFiles('devsupport/packaging/linux/build_appimage.sh') }}
+
+      - name: Build the AppImage
+        # PyInstaller imports virtaal's modules, which start GTK.
+        env:
+          VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: xvfb-run -a devsupport/packaging/linux/build_appimage.sh
+
+      - name: Smoke test - bare distributions
+        # Only what every desktop has installed: no GTK, no Python.
+        # In parallel: each runs in its own container.
+        run: |
+          images=(ubuntu:22.04 ubuntu:24.04 debian:13 fedora:44)
+          pids=()
+          for image in "${images[@]}"; do
+            devsupport/packaging/linux/smoke_test_distro.sh "$image" \
+              build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage > "smoke-${image/:/-}.log" 2>&1 &
+            pids+=($!)
+          done
+          failed=()
+          for i in "${!images[@]}"; do
+            status=0
+            wait "${pids[$i]}" || status=$?
+            echo "::group::${images[$i]} (exit $status)"
+            cat "smoke-${images[$i]/:/-}.log"
+            echo "::endgroup::"
+            [ "$status" = 0 ] || failed+=("${images[$i]}")
+          done
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "::error::AppImage smoke test failed on: ${failed[*]}"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Virtaal-appimage-${{ matrix.arch }}
+          path: build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage
+          if-no-files-found: error
+
   linux:
-    # Endpoint standing in for `test` + `build-flatpak`, which now run
-    # in parallel rather than one gating the other (see build-flatpak's
-    # own comment). See the `windows` endpoint's own comment for why no
-    # `if: always()` is needed here.
-    needs: [test, build-flatpak]
+    # Endpoint standing in for `test`, `test-distro`, `build-flatpak`
+    # and `build-appimage`, which run in parallel rather than one gating
+    # another (see build-flatpak's own comment). See the `windows`
+    # endpoint's own comment for why no `if: always()` is needed here.
+    needs: [test, test-distro, build-flatpak, build-appimage]
     runs-on: ubuntu-24.04
     timeout-minutes: 1
     steps:
-      - run: echo "test and build-flatpak both passed"
+      - run: echo "test, test-distro, build-flatpak and build-appimage all passed"
 
   core-checks:
     name: core checks
@@ -1670,6 +1839,13 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           pattern: Virtaal-flatpak-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Download AppImages
+        uses: actions/download-artifact@v8
+        with:
+          pattern: Virtaal-appimage-*
           path: release-assets
           merge-multiple: true
 

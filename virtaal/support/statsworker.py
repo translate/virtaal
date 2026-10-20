@@ -60,8 +60,12 @@ def _start_next():
 
     from virtaal.support import helperprocess
 
-    filename = _queued.pop(0)
     statsdb.StatsCache()  # Sets the default stats file.
+    if statsdb.StatsCache.defaultfile in statsdb.StatsCache.unusable_files:
+        # A child couldn't use it either, and has no memory to share.
+        _queued.clear()
+        return
+    filename = _queued.pop(0)
     _running = subprocess.Popen(
         helperprocess.command(__name__) + [statsdb.StatsCache.defaultfile, filename],
         env=helperprocess.env())

@@ -5,7 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""Corpus sweep: every corpus value through one group of inputs.
+"""Sweep: every corpus value through one group of inputs, or every
+malformed file (malformed.py) and awkward path through opening and saving.
 
 Runs one section in a real Virtaal, in a fixed order, and writes each
 case's problems to a results file (see record.py). fuzz_ui.py starts it
@@ -25,6 +26,9 @@ sys.path.insert(0, HERE)
 sys.path.insert(1, os.path.abspath(os.path.join(HERE, '..', '..', '..')))
 
 from corpus import API_ONLY, CORPUS, short  # noqa: E402
+from editing import EDIT_SECTIONS, ui_languages  # noqa: E402
+from malformed import FILE_SWEEPS  # noqa: E402
+from services import SERVICES  # noqa: E402
 
 # Files with a corpus value in one field of each unit: sweep, extension, field.
 SOURCE_FILES = (
@@ -48,7 +52,14 @@ SECTIONS = {
     'addlang': ('addlang-name', 'addlang-code', 'addlang-plural'),
     'lookup': ('lookup-name', 'lookup-url', 'lookup-query'),
     'translator': ('translator-name', 'translator-email', 'translator-team'),
+    'files': FILE_SWEEPS,
+    'paths': ('paths', 'saving'),
 }
+# One section per service, each with its own config (services.py).
+SECTIONS.update({'service-' + name: ('service-' + name,) for name in SERVICES})
+# Editing paths and interface languages (editing.py), each with its own config.
+SECTIONS.update({name: (name,) for name in EDIT_SECTIONS})
+SECTIONS.update({'ui-' + code: ('ui-' + code,) for code in ui_languages()})
 
 GLib = Gtk = None
 
@@ -585,13 +596,168 @@ class Sweep:
         for key, text in (('name', 'Fuzz Tester'), ('email', 'fuzz@example.org'), ('team', '')):
             pan_app.settings.translator[key] = text
 
+    def refusable(self, call):
+        """call(), where failing cleanly - a logged error and an error
+        dialog, nothing else - is fine and only noted."""
+        self.rec.hold()
+        try:
+            result = call()
+        except Exception:
+            self.rec.release()
+            raise
+        held = self.rec.release(keep=False)
+        if not result and all(kind in ('log-error', 'error-dialog') for kind, _, _ in held):
+            self.rec.note('refused: %s' % short(held[-1][2] if held else '', 200))
+        else:
+            for problem in held:
+                self.rec.problem(*problem)
+        return result
+
+    def files(self):
+        from malformed import READ_ONLY_FORMATS, file_cases
+        folder = os.path.join(self.args.workdir, 'files')
+        os.makedirs(folder, exist_ok=True)
+        cases = file_cases()
+        for sweep in dict.fromkeys(sweep for sweep, *_ in cases):
+            own = [(None, name, (ext, content, must_open)) for s, name, ext, content, must_open in cases if s == sweep]
+            for i, (case, (ext, content, must_open)) in enumerate(self.cases(sweep, own)):
+                path = os.path.join(folder, '%s-%d%s' % (sweep, i, '.' + ext if ext else ''))
+                try:
+                    if content is None:
+                        os.makedirs(path, exist_ok=True)
+                    else:
+                        with open(path, 'wb') as f:
+                            f.write(content)
+                    yield from self._open_and_save(path, must_open, save=ext not in READ_ONLY_FORMATS)
+                except Exception:
+                    self.failed()
+
+    def _open_and_save(self, path, must_open, save=True, save_to=None, save_may_fail=False):
+        """Open a file, visit its units, edit one, save and reload it."""
+        from translate.storage import factory
+        sc = self.mc.store_controller
+        opened = self.refusable(lambda: self.mc.open_file(path))
+        yield from self.settle(5)
+        if not opened:
+            if must_open:
+                self.rec.problem('refused', '', 'a file that should open was refused')
+            return
+        try:
+            units = sc.store.get_units()
+            for index in sorted(set(list(range(min(len(units), 30))) + [len(units) - 1])):
+                sc.cursor.force_index(index)
+                yield from self.settle(2)
+            self.mc.unit_controller.set_unit_target(0, 'fuzz edit')
+            yield from self.settle(2)
+            if not save:
+                return
+            out = save_to or path + '-saved' + (os.path.splitext(path)[1] or '.po')
+            if out == path:
+                # Ctrl+S: a read-only file asks where to save instead.
+                saved = self.refusable(lambda: self.mc.save_file())
+            else:
+                saved = self.refusable(lambda: self.mc.save_file(out))
+            yield from self.settle(2)
+            if not saved:
+                if not save_may_fail:
+                    self.rec.problem('save-failed', '', 'save_file(%s) failed' % short(out))
+                return
+            try:
+                factory.getobject(out)
+            except Exception as error:
+                self.rec.problem('save-unreadable', type(error).__name__, str(error))
+        finally:
+            sc.set_modified(False)
+            sc.close_file()
+            yield from self.settle(2)
+
+    def paths(self):
+        from malformed import PO
+        base = os.path.join(self.args.workdir, 'paths')
+        windows = sys.platform.startswith('win')
+
+        def put(relative, content=PO):
+            path = os.path.join(base, relative)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, 'wb') as f:
+                f.write(content)
+            return path
+
+        def directory(relative):
+            path = os.path.join(base, relative)
+            os.makedirs(path, exist_ok=True)
+            return path
+
+        def symlink():
+            target = put('link-target.po')
+            link = os.path.join(base, 'link.po')
+            try:
+                os.symlink(target, link)
+            except (OSError, NotImplementedError):
+                return None  # needs a privilege on Windows
+            return link
+
+        def read_only_file():
+            path = put('read-only.po')
+            os.chmod(path, 0o444)
+            return path
+
+        def read_only_folder():
+            path = put('read-only folder/file.po')
+            os.chmod(os.path.dirname(path), 0o555)
+            return path
+
+        # case, path maker, must open, saving may fail
+        cases = [
+            ('non-ASCII name', lambda: put('ünïcödé 文件/lêer.po'), True, False),
+            ('spaces', lambda: put('a folder/a file.po'), True, False),
+            # Windows paths stop at 260 characters.
+            ('200-character name', lambda: put('x' * 196 + '.po'), not windows, False),
+            ('no extension', lambda: put('translations'), False, False),
+            ('missing file', lambda: os.path.join(base, 'missing.po'), False, False),
+            ('directory', lambda: directory('folder.po'), False, False),
+            ('symlink', symlink, True, False),
+            ('read-only file', read_only_file, True, True),
+            ('read-only folder', read_only_folder, True, True),
+        ]
+        if windows:
+            cases += [
+                ('reserved name', lambda: os.path.join(base, 'CON.po'), False, False),
+                ('trailing dot', lambda: put('trailing.po') + '.', False, False),
+                ('extended-length path', lambda: '\\\\?\\' + os.path.abspath(put('extended.po')), False, False),
+            ]
+        for case, (make, must_open, save_may_fail) in self.cases('paths', [(None, c, (m, o, f)) for c, m, o, f in cases]):
+            try:
+                path = make()
+                if path is None:
+                    self.rec.note('not possible here')
+                    continue
+                yield from self._open_and_save(path, must_open, save_to=path, save_may_fail=save_may_fail)
+            except Exception:
+                self.failed()
+
+        for case, value in self.cases('saving', [(None, 'over an existing file', None),
+                                                 (None, 'into a missing folder', None)]):
+            try:
+                source = put('save-source.po')
+                if case == 'over an existing file':
+                    yield from self._open_and_save(source, True, save_to=put('existing.po'))
+                else:
+                    yield from self._open_and_save(source, True, save_to=os.path.join(base, 'nowhere', 'x.po'),
+                                                   save_may_fail=True)
+            except Exception:
+                self.failed()
+        for root, dirs, _ in os.walk(base):
+            for name in dirs:
+                os.chmod(os.path.join(root, name), 0o755)
+
 
 def main():
     global GLib, Gtk
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import GLib, Gtk
-    from record import Recorder
+    from record import SLOW_SECONDS, Recorder
 
     parser = argparse.ArgumentParser()
     parser.add_argument('section', choices=SECTIONS)
@@ -602,14 +768,29 @@ def main():
     parser.add_argument('--skip-file')
     args = parser.parse_args()
 
-    recorder = Recorder(args.results, args.case_timeout)
+    # Service sweeps wait for slow replies on purpose.
+    recorder = Recorder(args.results, args.case_timeout,
+                        slow_seconds=None if args.section.startswith('service-') else SLOW_SECONDS)
     recorder.sweep = args.section
     recorder.install()
 
     from virtaal.common import pan_app
+    service = args.section[len('service-'):] if args.section.startswith('service-') else None
+    if service:
+        import services
+        url = services.start_server()
+        services.configure(service, url, pan_app.get_config_dir())
+    editing_section = args.section in EDIT_SECTIONS or args.section.startswith('ui-')
+    if editing_section:
+        import editing
+        editing.configure(args.section, pan_app.get_config_dir())
+        # virtaal.ini was read on import; take the section's changes.
+        pan_app.settings.read()
     pan_app.settings.translator['name'] = 'Fuzz Tester'
     pan_app.settings.translator['email'] = 'fuzz@example.org'
     from virtaal.main import Virtaal
+    if service:
+        services.patch_fixed_urls(service, url)
 
     app = Virtaal('')
     # Virtaal installs its crash dialog as the excepthook.
@@ -620,7 +801,12 @@ def main():
 
     def driver():
         yield from sweep.settle(20)
-        yield from getattr(sweep, args.section)()
+        if service:
+            yield from services.run(sweep, service)
+        elif editing_section:
+            yield from editing.run(sweep, args.section)
+        else:
+            yield from getattr(sweep, args.section)()
         recorder.done()
         if app.main_controller.plugin_controller:
             app.main_controller.plugin_controller.shutdown()

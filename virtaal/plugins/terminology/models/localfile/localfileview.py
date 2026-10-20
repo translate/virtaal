@@ -499,14 +499,16 @@ class TermAddDialog:
         src_text = self.ent_source.get_text()
         tgt_text = self.ent_target.get_text()
 
-        if not src_text.strip() or not tgt_text.strip():
+        if not src_text.strip():
             # An empty source would be saved as a second header in a PO
             # glossary, and a blank one matches the header (#4334).
             self.btn_add_term.props.sensitive = False
             return
 
-        dup = self.term_model.get_duplicates(src_text, tgt_text)
-        if dup:
+        if not tgt_text.strip():
+            # Still show the source's existing translations below.
+            self.btn_add_term.props.sensitive = False
+        elif self.term_model.get_duplicates(src_text, tgt_text):
             self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))
             set_widget_bg_color(self.eb_add_term_errors, current_theme['warning_bg'])
             self.eb_add_term_errors.show_all()
@@ -523,7 +525,8 @@ class TermAddDialog:
             separator = lang_factory.getlanguage(ui_language).listseperator
 
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-            translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])
+            translations = separator.join([_('<b>%s</b>') % GLib.markup_escape_text(str(u.target), -1)
+                                           for u in same_src_units])
             errormsg = _('Existing translations: %(translations)s') % {
                 'translations': translations
             }

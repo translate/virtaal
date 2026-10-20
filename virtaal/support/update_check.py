@@ -62,11 +62,12 @@ def is_newer(remote_version, local_version):
 def find_asset_url(assets, plat=platform):
     """Pick the release asset's browser_download_url matching this
         platform, or None if no confident match exists - either an
-        unsupported platform (e.g. Linux, whose Flatpak isn't frozen
+        unsupported platform (e.g. a Linux Flatpak, which isn't frozen
         and so never checks) or a release missing the expected
         asset. Names are exactly what .github/workflows/ci.yml's
         release job produces: 'virtaal-<version>-setup.exe' and the
-        version-independent 'Virtaal-macos-<arch>.dmg'."""
+        version-independent 'Virtaal-macos-<arch>.dmg' and
+        'Virtaal-linux-<arch>.AppImage'."""
     if plat.is_windows:
         suffix = '-setup.exe'
         matches = [a for a in assets if a.get('name', '').endswith(suffix)]
@@ -74,6 +75,8 @@ def find_asset_url(assets, plat=platform):
         matches = [a for a in assets if a.get('name') == 'Virtaal-macos-arm64.dmg']
     elif plat.is_mac and plat.is_intel:
         matches = [a for a in assets if a.get('name') == 'Virtaal-macos-x86_64.dmg']
+    elif plat.is_appimage:
+        matches = [a for a in assets if a.get('name') == 'Virtaal-linux-%s.AppImage' % plat.machine]
     else:
         matches = []
     return matches[0]['browser_download_url'] if matches else None

@@ -56,12 +56,13 @@ class Plugin(BasePlugin):
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
 
-        if platform.is_frozen:
+        if platform.is_frozen and not platform.is_appimage:
             # No version-matched gtkspell3 bundled yet (UI-stage work) -
             # a frozen build must never trust a system-found one: a
             # mismatched GTK3 copy crashes outright (GTK_IS_TEXT_VIEW
             # assertion, ObjC duplicate-class registration) rather than
-            # just failing to import.
+            # just failing to import. The AppImage bundles the
+            # gtkspell3 built against its own GTK.
             raise PluginUnsupported("gtkspell3 isn't bundled in a frozen build")
 
         if platform.is_windows:
@@ -140,6 +141,8 @@ class Plugin(BasePlugin):
 
     def _disable_checking(self, text_view):
         """Disable checking on the given text_view."""
+        # Drop any activation still waiting to run (#4441).
+        text_view.spell_pending = None
         if getattr(text_view, 'spell_lang', 'xxxx') is None:
             # No change necessary - already disabled
             return
@@ -197,6 +200,8 @@ class Plugin(BasePlugin):
             self._disable_checking(text_view)
             return
 
+        # Activation runs on idle; only the latest language may run (#4441).
+        text_view.spell_pending = language
         if getattr(text_view, 'spell_lang', None) == language:
             # No change necessary - already enabled
             return
@@ -204,6 +209,9 @@ class Plugin(BasePlugin):
 
     def _activate_checker(self, text_view, language):
         # All the expensive stuff in here called on idle.
+        if getattr(text_view, 'spell_pending', None) != language:
+            # The language changed again before this ran.
+            return
         try:
             spell = None
             try:
@@ -217,8 +225,12 @@ class Plugin(BasePlugin):
                 spell = self.gtkspell.Checker()
                 # Creating a checker binds gtkspell3 to its own catalogs.
                 rebind_library_domain(b"gtkspell3")
+                # Attaching checks the text, so it needs a language
+                # first (#4439).
+                spell.set_language(language)
                 spell.attach(text_view)
-            spell.set_language(language)
+            else:
+                spell.set_language(language)
             spell.recheck_all()
             text_view.spell_lang = language
         except Exception as e:

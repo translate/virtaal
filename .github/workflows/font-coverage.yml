@@ -1,0 +1,66 @@
+name: Font coverage
+
+# Not a pass/fail gate on every push. Checks the latest main build's
+# macOS and Windows packages against the runners' fonts as they are this
+# week (#4421): every shipped interface language's messages and every
+# language's own name, in the UI and editor fonts. Gaps already filed are
+# listed in KNOWN_GAPS (virtaal/support/fontcoverage.py). Strict, unlike
+# CI: a red run means a new gap, or a listed one that displays now
+# (remove its entry).
+
+on:
+  schedule:
+    - cron: "0 5 * * 1" # 05:00 UTC Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Downloads the packages of the latest successful CI run on main.
+  actions: read
+
+jobs:
+  font-coverage-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download the latest main build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run=$(gh run list --workflow ci.yml --branch main --event push --status success --limit 1 \
+            --json databaseId -q '.[0].databaseId')
+          echo "CI run $run"
+          gh run download "$run" -n Virtaal-macos-app-${{ matrix.arch }} -D dist
+          ditto -x -k dist/Virtaal-macos-app.zip dist
+
+      - name: Check the interface languages display in the bundle's fonts
+        run: devsupport/packaging/macos/check_font_coverage.sh dist/Virtaal.app --strict
+
+  font-coverage-windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download the latest main build
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $run = gh run list --workflow ci.yml --branch main --event push --status success --limit 1 --json databaseId -q '.[0].databaseId'
+          "CI run $run"
+          gh run download $run -n Virtaal-windows-bundle -D dist\virtaal
+
+      - name: Check the interface languages display in the bundle's fonts
+        shell: pwsh
+        run: devsupport\packaging\windows\check_font_coverage.ps1 dist\virtaal -Strict

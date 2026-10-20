@@ -76,10 +76,16 @@ def _unknown_glyphs(text, font_name):
 @pytest.mark.skipif(not platform.is_mac, reason="macOS system UI font")
 @pytest.mark.parametrize('text', ['सबै', 'ਸਾਰੇ', 'అన్నీ', 'ગુજરાતી', 'தமிழ்', 'മലയാളം', 'ଓଡ଼ିଆ'])
 def test_macos_ui_font_renders_indic_scripts(text):
-    # #4107: Pango finds no font for these from .AppleSystemUIFont alone.
-    assert _unknown_glyphs(text, '.AppleSystemUIFont 13') > 0
+    # #4107: on macOS 26 Pango finds no font for these from
+    # .AppleSystemUIFont alone; macOS 15 finds one by itself.
     assert _unknown_glyphs(text, rendering.with_font_fallbacks('.AppleSystemUIFont 13')) == 0
 
+
+@pytest.mark.skipif(not platform.is_mac, reason="macOS system UI font")
+def test_macos_ui_font_renders_gtks_ratio_sign():
+    # #4465: GTK's catalogs write times as "15∶30" (U+2236 RATIO), which
+    # macOS 15's UI font has no glyph for.
+    assert _unknown_glyphs('15∶30', rendering.with_font_fallbacks('.AppleSystemUIFont 13')) == 0
 
 @pytest.mark.skipif(not platform.is_windows, reason="Windows fonts")
 @pytest.mark.parametrize('font', ['Segoe UI 10', 'Consolas 10'])
@@ -87,3 +93,11 @@ def test_windows_fonts_render_ethiopic(font):
     # #4208: Pango only falls back to a fixed list of Windows families.
     assert _unknown_glyphs('ሰላም', font) > 0
     assert _unknown_glyphs('ሰላም', rendering.with_font_fallbacks(font)) == 0
+
+
+@pytest.mark.skipif(not platform.is_windows, reason="Windows fonts")
+@pytest.mark.parametrize('font', ['Segoe UI 10', 'Consolas 10'])
+@pytest.mark.parametrize('text', ['सबै', 'বাংলা', 'ਸਾਰੇ', 'සිංහල', 'అన్నీ', 'ไทย'])
+def test_windows_fonts_render_indic_scripts_and_thai(font, text):
+    # #4464: Pango's list names Indic fonts Windows no longer installs.
+    assert _unknown_glyphs(text, rendering.with_font_fallbacks(font)) == 0

@@ -77,6 +77,11 @@ class Virtaal:
         import gc
         gc.disable()
 
+        # Before the window exists, so the desktop matches it to the entry.
+        if platform.is_appimage:
+            from virtaal.support import appimage
+            appimage.integrate()
+
         # We try to get the welcomescreen loaded as early as possible
         from virtaal.controllers.maincontroller import MainController
         from virtaal.controllers.storecontroller import StoreController
@@ -197,7 +202,7 @@ class Virtaal:
         defer(main_controller.load_plugins)
         defer(self._check_for_config_recovery)
 
-        # Only bundled builds (macOS .app, Windows installer) can't
+        # Only bundled builds (macOS .app, Windows installer, AppImage) can't
         # already control their own updates the way a checkout/pip
         # install can.
         if platform.is_frozen:

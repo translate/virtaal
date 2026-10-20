@@ -90,7 +90,7 @@ class PythonConsole(Gtk.ScrolledWindow):
         inp_mark = buffer.get_mark("input")
         inp = buffer.get_iter_at_mark(inp_mark)
         cur = buffer.get_end_iter()
-        line = buffer.get_text(inp, cur)
+        line = buffer.get_text(inp, cur, include_hidden_chars=True)
         self.current_command = self.current_command + line + "\n"
         self.history_add(line)
 
@@ -119,7 +119,7 @@ class PythonConsole(Gtk.ScrolledWindow):
         # Get the command line
         inp = buffer.get_iter_at_mark(inp_mark)
         cur = buffer.get_end_iter()
-        line = buffer.get_text(inp, cur)
+        line = buffer.get_text(inp, cur, include_hidden_chars=True)
         self.current_command = self.current_command + line + "\n"
         self.history_add(line)
 
@@ -194,7 +194,7 @@ class PythonConsole(Gtk.ScrolledWindow):
         buffer = self.view.get_buffer()
         inp = buffer.get_iter_at_mark(buffer.get_mark("input"))
         cur = buffer.get_end_iter()
-        return buffer.get_text(inp, cur)
+        return buffer.get_text(inp, cur, include_hidden_chars=True)
 
     def set_command_line(self, command):
         buffer = self.view.get_buffer()

@@ -1,0 +1,91 @@
+name: Config and service fuzzing
+
+# Not a pass/fail gate on every push. Starts Virtaal once per case, with
+# one config value, a whole config file or one of the data files Virtaal
+# keeps (tm.db, stats.db, the glossary, downloads) replaced by something
+# broken (devsupport/testing/fuzz/fuzz_config.py), then answers every
+# translation service from a local stand-in server with corpus text and
+# bad replies (devsupport/testing/fuzz/services.py), and opens the main
+# windows in every shipped interface language (editing.py). Failures already filed
+# are listed in devsupport/testing/fuzz/known_bugs.py; a red run means a
+# new failure, or a listed one that no longer happens (remove its entry).
+
+on:
+  schedule:
+    - cron: "0 4 * * 1" # 04:00 UTC Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # known_bugs.py entries for closed issues fail the run.
+  issues: read
+
+jobs:
+  fuzz-config-linux:
+    runs-on: ubuntu-24.04
+    # About 1,200 start-ups, 8 at a time; each is killed after 75 s.
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            iso-codes
+            libcairo2-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            librsvg2-common
+            pkg-config
+            python3-dev
+            xvfb
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pygobject
+
+      - name: Install virtaal
+        run: pip install .[spellcheck] pytest
+
+      - name: Test the fuzzer
+        run: python -m pytest -p no:cacheprovider devsupport/testing/fuzz
+
+      - name: Fuzz the config
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python devsupport/testing/fuzz/fuzz_config.py --results fuzz-config-results
+        env:
+          PYTHONFAULTHANDLER: "1"
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Fuzz the translation services and interface languages
+        if: always()
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python devsupport/testing/fuzz/fuzz_ui.py --no-random --sections services,ui --results fuzz-service-results
+        env:
+          PYTHONFAULTHANDLER: "1"
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fuzz-config-results
+          path: |
+            fuzz-config-results/
+            fuzz-service-results/
+          if-no-files-found: ignore

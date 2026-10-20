@@ -16,6 +16,7 @@ which needs no appId.
 """
 
 import json
+import logging
 from urllib.parse import urlencode
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
@@ -78,24 +79,30 @@ class TMModel(BaseTMModel):
 
     def got_language_pairs(self, val):
         """Handle the response from the web service to set up language pairs."""
-        data = json.loads(val)
-        if data['responseStatus'] != 200:
-            import logging
-            logging.debug("Failed to get languages:\n%s", (data['responseDetails']))
-            return
-
-        self.language_pairs = [(pair['sourceLanguage'], pair['targetLanguage']) for pair in data['responseData']]
+        try:
+            data = json.loads(val)
+            if data['responseStatus'] != 200:
+                logging.debug("Failed to get languages:\n%s", (data['responseDetails']))
+                return
+            self.language_pairs = [(pair['sourceLanguage'], pair['targetLanguage']) for pair in data['responseData']]
+        except (ValueError, KeyError, TypeError) as exc:
+            # Not JSON, or of another shape (#4438).
+            logging.warning("Ignoring an Apertium language list it can't read: %s", exc)
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
-        data = json.loads(val)
-
-        if data['responseStatus'] != 200:
-            import logging
-            logging.debug("Failed to translate '%s':\n%s", query_str, data['responseDetails'])
+        try:
+            data = json.loads(val)
+            if data['responseStatus'] != 200:
+                logging.debug("Failed to translate '%s':\n%s", query_str, data['responseDetails'])
+                return
+            target = data['responseData']['translatedText']
+            if not isinstance(target, str):
+                raise TypeError('translatedText is %s' % type(target).__name__)
+        except (ValueError, KeyError, TypeError) as exc:
+            # Not JSON, or of another shape (#4438).
+            logging.warning("Ignoring an Apertium translation it can't read: %s", exc)
             return
-
-        target = data['responseData']['translatedText']
         target = unescape_html_entities(target)
         if target.endswith("\n") and not query_str.endswith("\n"):
             target = target[:-1]# chop of \n

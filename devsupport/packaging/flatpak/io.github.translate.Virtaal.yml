@@ -1,6 +1,6 @@
 id: io.github.translate.Virtaal
 runtime: org.gnome.Platform
-runtime-version: "50"
+runtime-version: "51"
 sdk: org.gnome.Sdk
 command: virtaal
 # Every UI language in the app itself: Preferences offers them all, and
@@ -64,9 +64,11 @@ modules:
         ${FLATPAK_DEST}/share/applications/io.github.translate.Virtaal.desktop
       - install -Dm644 share/metainfo/io.github.translate.Virtaal.metainfo.xml
         ${FLATPAK_DEST}/share/metainfo/io.github.translate.Virtaal.metainfo.xml
-      # flatpak only exports a mimetype package named after the app id.
-      - install -Dm644 share/mime/packages/virtaal-mimetype.xml
-        ${FLATPAK_DEST}/share/mime/packages/io.github.translate.Virtaal.xml
+      # flatpak only exports a mimetype package named after the app id,
+      # and drops its content (magic) rules with a warning per rule.
+      - mkdir -p ${FLATPAK_DEST}/share/mime/packages
+      - sed '/<magic/,/<\/magic>/d' share/mime/packages/virtaal-mimetype.xml
+        > ${FLATPAK_DEST}/share/mime/packages/io.github.translate.Virtaal.xml
     sources:
       - type: dir
         path: ../../..

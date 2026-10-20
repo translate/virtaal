@@ -100,7 +100,7 @@ def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
     plugin._seen_languages = {}
     plugin._enchant_languages = []
 
-    Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=None, language=language)
+    Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=SimpleNamespace(), language=language)
 
     assert plugin.enchant.checked == [expected]
 
@@ -259,7 +259,7 @@ def test_activate_checker_reuses_an_existing_checker():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=existing)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -274,7 +274,7 @@ def test_activate_checker_creates_and_attaches_a_new_checker_when_none_exists():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=None)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -295,7 +295,7 @@ def test_activate_checker_rebinds_gtkspells_domain_after_creating_a_checker(monk
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell, _created = _fake_gtkspell(existing=None)
 
-    plugin._activate_checker(SimpleNamespace(), 'en_US')
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
 
     assert rebound == [b'gtkspell3']
 
@@ -304,7 +304,7 @@ def test_activate_checker_ignores_a_systemerror_from_get_from_text_view(caplog):
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(get_from_text_view_raises=SystemError('mandriva'))
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     with caplog.at_level('DEBUG'):
         plugin._activate_checker(text_view, 'en_US')  # must not raise
@@ -323,11 +323,93 @@ def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
 
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_BrokenChecker)
-    text_view = SimpleNamespace()
+    text_view = SimpleNamespace(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')  # must not raise
 
     assert plugin.gtkspell is None
+
+
+
+def _lang_plugin(monkeypatch, known_dicts):
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell, created = _fake_gtkspell(existing=None)
+    plugin.enchant = _FakeEnchant(known_dicts=known_dicts)
+    plugin._seen_languages = {}
+    plugin._enchant_languages = sorted(known_dicts)
+    scheduled = []
+    monkeypatch.setattr(spellchecker.GLib, 'idle_add', lambda func, *args, **kw: scheduled.append((func, args)))
+    return plugin, created, scheduled
+
+
+def test_a_pending_activation_is_dropped_when_the_language_loses_its_dictionary(monkeypatch):
+    # #4441: English was scheduled first; switching to a language with no
+    # dictionary yet must not let that pending activation attach English.
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = SimpleNamespace()
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    plugin._on_unit_lang_changed(None, text_view, 'af')
+    for func, args in scheduled:
+        func(*args)
+
+    assert created == []
+    assert text_view.spell_lang is None
+
+
+def test_only_the_latest_pending_language_is_activated(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US', 'af_ZA'})
+    text_view = SimpleNamespace()
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    plugin._on_unit_lang_changed(None, text_view, 'af')
+    for func, args in scheduled:
+        func(*args)
+
+    assert [c.language for c in created] == ['af_ZA']
+    assert text_view.spell_lang == 'af_ZA'
+
+
+def test_activate_checker_sets_the_language_before_attaching():
+    # #4439: attaching a checker with no language yet rechecked the text
+    # without a speller ('speller != NULL' criticals).
+    order = []
+
+    class _Checker(_FakeChecker):
+        get_from_text_view = staticmethod(lambda tv: None)
+
+        def set_language(self, language):
+            order.append('set_language')
+            super().set_language(language)
+
+        def attach(self, text_view):
+            order.append('attach')
+            super().attach(text_view)
+
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = SimpleNamespace(Checker=_Checker)
+
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
+
+    assert order == ['set_language', 'attach']
+
+
+
+def test_activate_checker_leaves_nothing_attached_when_set_language_fails():
+    class _Checker(_FakeChecker):
+        get_from_text_view = staticmethod(lambda tv: None)
+
+        def set_language(self, language):
+            raise RuntimeError('no dictionary')
+
+    attached = []
+    _Checker.attach = lambda self, text_view: attached.append(text_view)
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = SimpleNamespace(Checker=_Checker)
+
+    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
+
+    assert attached == []
 
 
 # _on_populate_popup() #
@@ -501,12 +583,31 @@ def test_destroy_disconnects_signals_and_disables_every_textview():
     assert plugin._signal_tracker._ids == []
 
 
-def test_unsupported_in_any_frozen_build(monkeypatch):
-    """A frozen build never bundles a version-matched gtkspell3 - a
-    system-found one can mismatch the frozen app's own bundled GTK3
-    and crash outright."""
+def test_unsupported_in_a_frozen_build(monkeypatch):
+    """The Windows and macOS builds don't bundle a version-matched
+    gtkspell3 - a system-found one can mismatch the frozen app's own
+    bundled GTK3 and crash outright."""
     monkeypatch.setattr(platform, 'is_frozen', True)
-    with pytest.raises(PluginUnsupported):
+    monkeypatch.setattr(platform, 'is_appimage', False)
+    with pytest.raises(PluginUnsupported, match='frozen'):
+        Plugin('spellchecker', None)
+
+
+def test_appimage_passes_the_frozen_build_check(monkeypatch):
+    """The AppImage bundles gtkspell3 with its own GTK."""
+    try:
+        import gi
+        gi.require_version('GtkSpell', '3.0')
+        from gi.repository import GtkSpell  # noqa: F401
+    except (ImportError, ValueError):
+        pytest.skip("GtkSpell 3.0 typelib not installed - optional")
+    monkeypatch.setattr(platform, 'is_frozen', True)
+    monkeypatch.setattr(platform, 'is_appimage', True)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    # Stops the plugin before it needs a main_controller.
+    monkeypatch.setattr(spellchecker, 'import_enchant', lambda: None)
+
+    with pytest.raises(PluginUnsupported, match='pyenchant'):
         Plugin('spellchecker', None)
 
 

@@ -8,11 +8,13 @@
 import locale
 import os
 
+import pytest
 from translate.storage.placeables import StringElem
 
 from virtaal.common.platform import platform
 from virtaal.support import translate_compat
 from virtaal.support.translate_compat import (
+    _first_alternative,
     _fix_language_name,
     forceunicode,
     gettext_country,
@@ -222,3 +224,21 @@ def test_tr_lang_falls_back_to_the_name_when_the_code_isnt_translated():
 
 def test_tr_lang_by_code_keeps_a_dialects_country():
     assert tr_lang('de')('Portuguese (Brazil)', 'pt_BR') == 'Portugiesisch (Brasilien)'
+
+
+@pytest.mark.parametrize('english,name,expected', [
+    ('Chinese', '中文; 汉语; 华语', '中文'),
+    ('Irish', 'irsk; gælisk (irsk)', 'irsk'),
+    # A semicolon standing in for the English name's own comma.
+    ('Gaelic, Scottish', 'Gėlų; škotų', 'Gėlų; škotų'),
+    # Inside a qualifier.
+    ('Bislama', 'Bislama (Vanuatu; Kuzey Pasifik)', 'Bislama (Vanuatu; Kuzey Pasifik)'),
+    ('German', 'Deutsch', 'Deutsch'),
+])
+def test_first_alternative(english, name, expected):
+    assert _first_alternative(english, name) == expected
+
+
+def test_tr_lang_by_code_names_only_the_first_of_a_catalogs_alternatives():
+    # #4461: zh_CN's catalog names Chinese "中文; 汉语; 华语".
+    assert tr_lang('zh_CN')('Chinese (China)', 'zh_CN') == '中文 (中国)'

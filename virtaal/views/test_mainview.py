@@ -28,6 +28,7 @@ import pytest
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gtk
 
+from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.views import mainview
 from virtaal.views.mainview import MainView
@@ -3007,3 +3008,24 @@ def test_translator_dialog_returns_nothing_when_cancelled(monkeypatch):
     result, _seen = _run_translator_dialog(monkeypatch, Gtk.ResponseType.CANCEL, typed=['X', 'Y', 'Z'])
 
     assert result is None
+
+
+@pytest.mark.parametrize('width, height, x, y', [
+    ('abc', '1.5', 'x', '10'),
+    ('', '99999999999', '', ''),
+    ('0', '-5', '10', '-99999999'),
+])
+def test_restore_window_geometry_ignores_bad_values(monkeypatch, width, height, x, y):
+    # #4340: Virtaal didn't start (ValueError/OverflowError).
+    monkeypatch.setattr(pan_app.settings, 'general', dict(
+        pan_app.settings.general, windowwidth=width, windowheight=height, windowx=x, windowy=y))
+    calls = []
+    view = SimpleNamespace(main_window=SimpleNamespace(
+        set_icon_from_file=lambda path: None,
+        resize=lambda w, h: calls.append(('resize', w, h)),
+        move=lambda wx, wy: calls.append(('move', wx, wy))))
+
+    MainView._restore_window_geometry(view)
+
+    defaults = pan_app.Settings.general
+    assert calls == [('resize', defaults['windowwidth'], defaults['windowheight'])]

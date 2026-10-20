@@ -35,7 +35,8 @@ class TMModel(remotetm.TMModel):
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.load_config()
-        self.config["tmserver_port"] = int(self.config["tmserver_port"])
+        self.config["tmserver_port"] = pan_app.config_int(
+            self.config["tmserver_port"], int(self.default_config["tmserver_port"]), 1, 65535, "tmserver_port")
 
         port = self._pick_port()
         command = self._build_tmserver_command(port, controller)

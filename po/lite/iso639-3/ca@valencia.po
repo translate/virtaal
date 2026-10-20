@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: ca@valencia\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+#: aka
+msgid "Akan"
+msgstr "àkan"
+
+#: amh
+msgid "Amharic"
+msgstr "amhàric"
+
+#: ara
+msgid "Arabic"
+msgstr "àrab"
+
+#: ast
+msgid "Asturian"
+msgstr "asturià"
+
+#: eus
+msgid "Basque"
+msgstr "Basc"
+
+#: bel
+msgid "Belarusian"
+msgstr "Bielorús"
+
+#: ben
+msgid "Bengali"
+msgstr ""
+
+#: bul
+msgid "Bulgarian"
+msgstr "búlgar"
+
+#: cat
+msgid "Catalan"
+msgstr "Català"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "Xinès"
+
+#: ces
+msgid "Czech"
+msgstr "Txec"
+
+#: dan
+msgid "Danish"
+msgstr "Danès"
+
+#: nld
+msgid "Dutch"
+msgstr "neerlandès"
+
+#: eng
+msgid "English"
+msgstr "Anglès"
+
+#: fao
+msgid "Faroese"
+msgstr "Feroès"
+
+#: fin
+msgid "Finnish"
+msgstr "Finès"
+
+#: fra
+msgid "French"
+msgstr "Francès"
+
+#: ful
+msgid "Fulah"
+msgstr "ful"
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr "ganda"
+
+#: deu
+msgid "German"
+msgstr "alemany"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "grec modern (des del 1453)"
+
+#: heb
+msgid "Hebrew"
+msgstr "Hebreu"
+
+#: hin
+msgid "Hindi"
+msgstr ""
+
+#: hun
+msgid "Hungarian"
+msgstr "hongarès"
+
+#: isl
+msgid "Icelandic"
+msgstr "Islandès"
+
+#: ita
+msgid "Italian"
+msgstr ""
+
+#: jpn
+msgid "Japanese"
+msgstr "Japonès"
+
+#: kor
+msgid "Korean"
+msgstr "Coreà"
+
+#: lit
+msgid "Lithuanian"
+msgstr ""
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr "Occità"
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "Polonès"
+
+#: por
+msgid "Portuguese"
+msgstr "Portuguès"
+
+#: rus
+msgid "Russian"
+msgstr "Rus"
+
+#: srp
+msgid "Serbian"
+msgstr "Serbi"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "eslovac"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "sotho"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "Espanyol"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "Suec"
+
+#: tel
+msgid "Telugu"
+msgstr "telugu"
+
+#: tha
+msgid "Thai"
+msgstr "Tai"
+
+#: tur
+msgid "Turkish"
+msgstr "Turc"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "ucraïnès"
+
+#: vie
+msgid "Vietnamese"
+msgstr "Vietnamita"
+
+#: zul
+msgid "Zulu"
+msgstr "zulu"

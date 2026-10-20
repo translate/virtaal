@@ -13,29 +13,237 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Virtaal 0.3.1\n"
 
+#: afr
 msgid "Afrikaans"
 msgstr "isiBhunu"
 
+#: aka
+msgid "Akan"
+msgstr ""
+
+#: amh
+msgid "Amharic"
+msgstr ""
+
+#: ara
+msgid "Arabic"
+msgstr "isi-Arabhu"
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr "Isi-Basque"
+
+#: bel
+msgid "Belarusian"
+msgstr ""
+
+#: ben
+msgid "Bengali"
+msgstr ""
+
+#: bul
+msgid "Bulgarian"
+msgstr "Isi-Buligariyana"
+
+#: cat
+msgid "Catalan"
+msgstr "Isi-Khathalani"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "Isi-Shayina"
+
+#: ces
+msgid "Czech"
+msgstr "Isi Czechiya"
+
+#: dan
+msgid "Danish"
+msgstr "Isi-Danishi"
+
+#: nld
+msgid "Dutch"
+msgstr "Isi-Danishi"
+
+#: eng
 msgid "English"
 msgstr "isiNgisi"
 
+#: fao
+msgid "Faroese"
+msgstr ""
+
+#: fin
+msgid "Finnish"
+msgstr "Isi-Finishi"
+
+#: fra
+msgid "French"
+msgstr "Isi-Frentshi"
+
+#: ful
+msgid "Fulah"
+msgstr ""
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr ""
+
+#: deu
+msgid "German"
+msgstr "isi-Jalimani"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr ""
+
+#: heb
+msgid "Hebrew"
+msgstr "Isi-Hebheru"
+
+#: hin
+msgid "Hindi"
+msgstr ""
+
+#: hun
+msgid "Hungarian"
+msgstr "Isi-Hangariyani"
+
+#: isl
+msgid "Icelandic"
+msgstr "isi-Icilendikhi"
+
+#: ita
+msgid "Italian"
+msgstr "Isi-Taliyane"
+
+#: jpn
+msgid "Japanese"
+msgstr "Isi-Jaliphani"
+
+#: kor
+msgid "Korean"
+msgstr "Isi-Koreyani"
+
+#: lit
+msgid "Lithuanian"
+msgstr "Isi-Lithuwaniya"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "Isi-Pholishi"
+
+#: por
+msgid "Portuguese"
+msgstr "Isi-Phuthukesi"
+
+#: rus
+msgid "Russian"
+msgstr "Isi-Rashiyani"
+
+#: srp
+msgid "Serbian"
+msgstr "Isi-Sebhiyani"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "Isi-Silovaki"
+
+#: sot
 msgid "Sotho, Southern"
 msgstr "isiSuthu"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "Isi-Panishi"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "Isi-Swedishi"
+
+#: tel
+msgid "Telugu"
+msgstr ""
+
+#: tha
+msgid "Thai"
+msgstr "Isi-Thayi"
+
+#: tur
+msgid "Turkish"
+msgstr "Isi-Thekishi"
+
+#: ukr
+msgid "Ukrainian"
+msgstr ""
+
+#: vie
+msgid "Vietnamese"
+msgstr "Isi-Vitheyinamise"
+
+#: zul
+msgid "Zulu"
+msgstr "isiZulu"
 
 msgid "Swazi"
 msgstr "isiSwazi"
 
+#: tso
 msgid "Tsonga"
 msgstr "isiTsonga"
 
+#: tsn
 msgid "Tswana"
 msgstr "isiTshwana"
 
+#: ven
 msgid "Venda"
 msgstr "isiVenda"
 
+#: xho
 msgid "Xhosa"
 msgstr "isiXhosa"
-
-msgid "Zulu"
-msgstr "isiZulu"

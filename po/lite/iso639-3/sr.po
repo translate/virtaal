@@ -1,0 +1,231 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "африканс"
+
+#: aka
+msgid "Akan"
+msgstr "акан"
+
+#: amh
+msgid "Amharic"
+msgstr "амхарски"
+
+#: ara
+msgid "Arabic"
+msgstr "арапски"
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr "баскијски"
+
+#: bel
+msgid "Belarusian"
+msgstr "белоруски"
+
+#: ben
+msgid "Bengali"
+msgstr "бенгалски"
+
+#: bul
+msgid "Bulgarian"
+msgstr "бугарски"
+
+#: cat
+msgid "Catalan"
+msgstr "каталонски"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "кинески"
+
+#: ces
+msgid "Czech"
+msgstr "чешки"
+
+#: dan
+msgid "Danish"
+msgstr "дански"
+
+#: nld
+msgid "Dutch"
+msgstr "холандски"
+
+#: eng
+msgid "English"
+msgstr "енглески"
+
+#: fao
+msgid "Faroese"
+msgstr "фарски"
+
+#: fin
+msgid "Finnish"
+msgstr "фински"
+
+#: fra
+msgid "French"
+msgstr "француски"
+
+#: ful
+msgid "Fulah"
+msgstr "фула"
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr "ганда"
+
+#: deu
+msgid "German"
+msgstr "немачки"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "грчки, савремени (1453.—)"
+
+#: heb
+msgid "Hebrew"
+msgstr "хебрејски"
+
+#: hin
+msgid "Hindi"
+msgstr "хинду"
+
+#: hun
+msgid "Hungarian"
+msgstr "мађарски"
+
+#: isl
+msgid "Icelandic"
+msgstr "исландски"
+
+#: ita
+msgid "Italian"
+msgstr "италијански"
+
+#: jpn
+msgid "Japanese"
+msgstr "јапански"
+
+#: kor
+msgid "Korean"
+msgstr "корејски"
+
+#: lit
+msgid "Lithuanian"
+msgstr "литвански"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "пољски"
+
+#: por
+msgid "Portuguese"
+msgstr "португалски"
+
+#: rus
+msgid "Russian"
+msgstr "руски"
+
+#: srp
+msgid "Serbian"
+msgstr "српски"
+
+#: sin
+msgid "Sinhala"
+msgstr "синхалешко писмо"
+
+#: slk
+msgid "Slovak"
+msgstr "словачки"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "сото, јужни"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "шпански"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "шведски"
+
+#: tel
+msgid "Telugu"
+msgstr "телугу писмо"
+
+#: tha
+msgid "Thai"
+msgstr "тајландски"
+
+#: tur
+msgid "Turkish"
+msgstr "турски"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "украјински"
+
+#: vie
+msgid "Vietnamese"
+msgstr "вијетнамски"
+
+#: zul
+msgid "Zulu"
+msgstr "зулу"

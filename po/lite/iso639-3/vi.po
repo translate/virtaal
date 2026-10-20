@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "Tiếng Hà Lan-Nam Phi"
+
+#: aka
+msgid "Akan"
+msgstr "Tiếng A-can"
+
+#: amh
+msgid "Amharic"
+msgstr "Tiếng Am-ha-ri"
+
+#: ara
+msgid "Arabic"
+msgstr "Tiếng A-rập"
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr "Tiếng Baxcơ"
+
+#: bel
+msgid "Belarusian"
+msgstr "Tiếng Be-la-ruxợ"
+
+#: ben
+msgid "Bengali"
+msgstr "Tiếng Băng Gan"
+
+#: bul
+msgid "Bulgarian"
+msgstr "Tiếng Bảo Gai Lơi"
+
+#: cat
+msgid "Catalan"
+msgstr "Tiếng Catalăng"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "Tiếng Trung Hoa"
+
+#: ces
+msgid "Czech"
+msgstr "Tiếng Séc"
+
+#: dan
+msgid "Danish"
+msgstr "Tiếng Đan Mạch"
+
+#: nld
+msgid "Dutch"
+msgstr "Tiếng Hòa Lan"
+
+#: eng
+msgid "English"
+msgstr "Tiếng Anh"
+
+#: fao
+msgid "Faroese"
+msgstr "Tiếng Pha-rô"
+
+#: fin
+msgid "Finnish"
+msgstr "Tiếng Phần Lan"
+
+#: fra
+msgid "French"
+msgstr "Tiếng Pháp"
+
+#: ful
+msgid "Fulah"
+msgstr "Tiếng Phu-la"
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr "Tiếng Gan-đa"
+
+#: deu
+msgid "German"
+msgstr "Tiếng Đức"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "Tiếng Hy Lạp, Cận đại (sau năm 1453)"
+
+#: heb
+msgid "Hebrew"
+msgstr "Tiếng Do Thái"
+
+#: hin
+msgid "Hindi"
+msgstr "Tiếng Hin-đi"
+
+#: hun
+msgid "Hungarian"
+msgstr "Tiếng Hung Gia Lợi"
+
+#: isl
+msgid "Icelandic"
+msgstr "Tiếng Băng đảo"
+
+#: ita
+msgid "Italian"
+msgstr "Tiếng Ý"
+
+#: jpn
+msgid "Japanese"
+msgstr "Tiếng Nhật"
+
+#: kor
+msgid "Korean"
+msgstr "Tiếng Hàn Quốc"
+
+#: lit
+msgid "Lithuanian"
+msgstr "Tiếng Li-tu-a-ni"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "Tiếng Ba Lan"
+
+#: por
+msgid "Portuguese"
+msgstr "Tiếng Bồ Đào Nha"
+
+#: rus
+msgid "Russian"
+msgstr "Tiếng Nga"
+
+#: srp
+msgid "Serbian"
+msgstr "Tiếng Xéc bi"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "Tiếng Xlô-vác"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "Tiếng Xo-tô, Nam"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "Tiếng Tây Ban Nha"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "Tiếng Thuỵ Điển"
+
+#: tel
+msgid "Telugu"
+msgstr "Tiếng Te-lu-gu"
+
+#: tha
+msgid "Thai"
+msgstr "Tiếng Thái Lan"
+
+#: tur
+msgid "Turkish"
+msgstr "Tiếng Thổ Nhĩ Kỳ"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "Tiếng Ukraina"
+
+#: vie
+msgid "Vietnamese"
+msgstr "Tiếng Việt"
+
+#: zul
+msgid "Zulu"
+msgstr "Tiếng Du-lu"

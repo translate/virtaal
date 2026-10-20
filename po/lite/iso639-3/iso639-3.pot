@@ -1,0 +1,228 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 13:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr ""
+
+#: aka
+msgid "Akan"
+msgstr ""
+
+#: amh
+msgid "Amharic"
+msgstr ""
+
+#: ara
+msgid "Arabic"
+msgstr ""
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr ""
+
+#: bel
+msgid "Belarusian"
+msgstr ""
+
+#: ben
+msgid "Bengali"
+msgstr ""
+
+#: bul
+msgid "Bulgarian"
+msgstr ""
+
+#: cat
+msgid "Catalan"
+msgstr ""
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr ""
+
+#: ces
+msgid "Czech"
+msgstr ""
+
+#: dan
+msgid "Danish"
+msgstr ""
+
+#: nld
+msgid "Dutch"
+msgstr ""
+
+#: eng
+msgid "English"
+msgstr ""
+
+#: fao
+msgid "Faroese"
+msgstr ""
+
+#: fin
+msgid "Finnish"
+msgstr ""
+
+#: fra
+msgid "French"
+msgstr ""
+
+#: ful
+msgid "Fulah"
+msgstr ""
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr ""
+
+#: deu
+msgid "German"
+msgstr ""
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr ""
+
+#: heb
+msgid "Hebrew"
+msgstr ""
+
+#: hin
+msgid "Hindi"
+msgstr ""
+
+#: hun
+msgid "Hungarian"
+msgstr ""
+
+#: isl
+msgid "Icelandic"
+msgstr ""
+
+#: ita
+msgid "Italian"
+msgstr ""
+
+#: jpn
+msgid "Japanese"
+msgstr ""
+
+#: kor
+msgid "Korean"
+msgstr ""
+
+#: lit
+msgid "Lithuanian"
+msgstr ""
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr ""
+
+#: por
+msgid "Portuguese"
+msgstr ""
+
+#: rus
+msgid "Russian"
+msgstr ""
+
+#: srp
+msgid "Serbian"
+msgstr ""
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr ""
+
+#: sot
+msgid "Sotho, Southern"
+msgstr ""
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr ""
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr ""
+
+#: tel
+msgid "Telugu"
+msgstr ""
+
+#: tha
+msgid "Thai"
+msgstr ""
+
+#: tur
+msgid "Turkish"
+msgstr ""
+
+#: ukr
+msgid "Ukrainian"
+msgstr ""
+
+#: vie
+msgid "Vietnamese"
+msgstr ""
+
+#: zul
+msgid "Zulu"
+msgstr ""

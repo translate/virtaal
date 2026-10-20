@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "アフリカーンス語"
+
+#: aka
+msgid "Akan"
+msgstr "アカン語"
+
+#: amh
+msgid "Amharic"
+msgstr "アムハラ語"
+
+#: ara
+msgid "Arabic"
+msgstr "アラビア語"
+
+#: ast
+msgid "Asturian"
+msgstr ""
+
+#: eus
+msgid "Basque"
+msgstr "バスク語"
+
+#: bel
+msgid "Belarusian"
+msgstr "白ロシア語"
+
+#: ben
+msgid "Bengali"
+msgstr "ベンガル語"
+
+#: bul
+msgid "Bulgarian"
+msgstr "ブルガリア語"
+
+#: cat
+msgid "Catalan"
+msgstr "カタロニア語"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "中国語"
+
+#: ces
+msgid "Czech"
+msgstr "チェコ語"
+
+#: dan
+msgid "Danish"
+msgstr "デンマーク語"
+
+#: nld
+msgid "Dutch"
+msgstr "オランダ語"
+
+#: eng
+msgid "English"
+msgstr "英語"
+
+#: fao
+msgid "Faroese"
+msgstr "フェロー語"
+
+#: fin
+msgid "Finnish"
+msgstr "フィン語"
+
+#: fra
+msgid "French"
+msgstr "フランス語"
+
+#: ful
+msgid "Fulah"
+msgstr "フラ語"
+
+#: glg
+msgid "Galician"
+msgstr ""
+
+#: lug
+msgid "Ganda"
+msgstr "ガンダ語"
+
+#: deu
+msgid "German"
+msgstr "ドイツ語"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "ギリシア語, 現代 (1453-)"
+
+#: heb
+msgid "Hebrew"
+msgstr "ヘブライ語"
+
+#: hin
+msgid "Hindi"
+msgstr "ヒンディー語"
+
+#: hun
+msgid "Hungarian"
+msgstr "ハンガリー語"
+
+#: isl
+msgid "Icelandic"
+msgstr "アイスランド語"
+
+#: ita
+msgid "Italian"
+msgstr "イタリア語"
+
+#: jpn
+msgid "Japanese"
+msgstr "日本語"
+
+#: kor
+msgid "Korean"
+msgstr "朝鮮語"
+
+#: lit
+msgid "Lithuanian"
+msgstr "リトアニア語"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr ""
+
+#: pan
+msgid "Panjabi"
+msgstr ""
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "ポーランド語"
+
+#: por
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
+#: rus
+msgid "Russian"
+msgstr "ロシア語"
+
+#: srp
+msgid "Serbian"
+msgstr "セルビア語"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "スロヴァキア語"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "ソト語, 南"
+
+#: sot
+msgid "Southern Sotho"
+msgstr "南ソト語"
+
+#: spa
+msgid "Spanish"
+msgstr "スペイン語"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "スウェーデン語"
+
+#: tel
+msgid "Telugu"
+msgstr "テルグ語"
+
+#: tha
+msgid "Thai"
+msgstr "タイ語"
+
+#: tur
+msgid "Turkish"
+msgstr "トルコ語"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "ウクライナ語"
+
+#: vie
+msgid "Vietnamese"
+msgstr "ベトナム語"
+
+#: zul
+msgid "Zulu"
+msgstr "ズールー語"

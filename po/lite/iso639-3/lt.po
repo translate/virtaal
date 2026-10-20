@@ -1,0 +1,231 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 12:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: afr
+msgid "Afrikaans"
+msgstr "Būrų (afrikanų)"
+
+#: aka
+msgid "Akan"
+msgstr "Akanų"
+
+#: amh
+msgid "Amharic"
+msgstr "Amharų"
+
+#: ara
+msgid "Arabic"
+msgstr "Arabų"
+
+#: ast
+msgid "Asturian"
+msgstr "Asturianų"
+
+#: eus
+msgid "Basque"
+msgstr "Baskų"
+
+#: bel
+msgid "Belarusian"
+msgstr "Baltarusių"
+
+#: ben
+msgid "Bengali"
+msgstr "Bengalų"
+
+#: bul
+msgid "Bulgarian"
+msgstr "Bulgarų"
+
+#: cat
+msgid "Catalan"
+msgstr "Katalonų"
+
+#: cgg
+msgid "Chiga"
+msgstr ""
+
+#: zho
+msgid "Chinese"
+msgstr "Kinų"
+
+#: ces
+msgid "Czech"
+msgstr "Čekų"
+
+#: dan
+msgid "Danish"
+msgstr "Danų"
+
+#: nld
+msgid "Dutch"
+msgstr "Olandų"
+
+#: eng
+msgid "English"
+msgstr "Anglų"
+
+#: fao
+msgid "Faroese"
+msgstr "Farerų"
+
+#: fin
+msgid "Finnish"
+msgstr "Suomių"
+
+#: fra
+msgid "French"
+msgstr "Prancūzų"
+
+#: ful
+msgid "Fulah"
+msgstr "Fulahų"
+
+#: glg
+msgid "Galician"
+msgstr "Galisų"
+
+#: lug
+msgid "Ganda"
+msgstr "Ganda"
+
+#: deu
+msgid "German"
+msgstr "Vokiečių"
+
+#: ell
+msgid "Greek, Modern (1453-)"
+msgstr "Graikų, šiuolaikinė (1453-)"
+
+#: heb
+msgid "Hebrew"
+msgstr "Hebrajų"
+
+#: hin
+msgid "Hindi"
+msgstr "Hindi"
+
+#: hun
+msgid "Hungarian"
+msgstr "Vengrų"
+
+#: isl
+msgid "Icelandic"
+msgstr "Islandų"
+
+#: ita
+msgid "Italian"
+msgstr "Italų"
+
+#: jpn
+msgid "Japanese"
+msgstr "Japonų"
+
+#: kor
+msgid "Korean"
+msgstr "Korėjiečių"
+
+#: lit
+msgid "Lithuanian"
+msgstr "Lietuvių"
+
+#: ell
+msgid "Modern Greek (1453-)"
+msgstr ""
+
+#: nep
+msgid "Nepali (macrolanguage)"
+msgstr ""
+
+#: oci
+msgid "Occitan (post 1500)"
+msgstr "Očitarų (po 1500)"
+
+#: pan
+msgid "Panjabi"
+msgstr "Pendžabų"
+
+#: nso
+msgid "Pedi"
+msgstr ""
+
+#: pol
+msgid "Polish"
+msgstr "Lenkų"
+
+#: por
+msgid "Portuguese"
+msgstr "Portugalų"
+
+#: rus
+msgid "Russian"
+msgstr "Rusų"
+
+#: srp
+msgid "Serbian"
+msgstr "Serbų"
+
+#: sin
+msgid "Sinhala"
+msgstr ""
+
+#: slk
+msgid "Slovak"
+msgstr "Slovakų"
+
+#: sot
+msgid "Sotho, Southern"
+msgstr "Pietų sotų"
+
+#: sot
+msgid "Southern Sotho"
+msgstr ""
+
+#: spa
+msgid "Spanish"
+msgstr "Ispanų"
+
+#: swa
+msgid "Swahili (macrolanguage)"
+msgstr ""
+
+#: swe
+msgid "Swedish"
+msgstr "Švedų"
+
+#: tel
+msgid "Telugu"
+msgstr "Telugų"
+
+#: tha
+msgid "Thai"
+msgstr "Tajų"
+
+#: tur
+msgid "Turkish"
+msgstr "Turkų"
+
+#: ukr
+msgid "Ukrainian"
+msgstr "Ukrainiečių"
+
+#: vie
+msgid "Vietnamese"
+msgstr "Vietnamiečių"
+
+#: zul
+msgid "Zulu"
+msgstr "Zulų (zulusų)"

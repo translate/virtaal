@@ -158,8 +158,10 @@ def test_virtaals_own_catalog_names_a_language_family(tmp_path, monkeypatch):
 
 
 def test_shipped_language_name_lite_catalogs_are_read(tmp_path, monkeypatch):
-    # setup.py compiles each po/LINGUAS-lite entry to <domain>.mo, so a
-    # domain gettext_lang() doesn't look up is never read.
+    # setup.py compiles each po/LINGUAS-lite entry to <domain>.mo, read
+    # in its own domain: iso639-3 for languages, iso639-5 for families.
+    import pycountry
+
     from virtaal.support.libi18n import lite
     po_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'po')
     monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
@@ -170,7 +172,8 @@ def test_shipped_language_name_lite_catalogs_are_read(tmp_path, monkeypatch):
         po_file = os.path.join(po_dir, 'lite', domain, lang + '.po')
         lite.merge(None, po_file, str(tmp_path / lang / 'LC_MESSAGES' / (domain + '.mo')))
         messages = lite.read_lite_po(po_file)
-        assert any(gettext_lang(lang)(name) == messages[name] != name for name in messages if name)
+        read = gettext_domain(lang, domain, pycountry.LOCALES_DIR)
+        assert any(read(name) == messages[name] != name for name in messages if name)
 
 
 def test_pycountrys_catalog_wins_over_virtaals_own(tmp_path, monkeypatch):

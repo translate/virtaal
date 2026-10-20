@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
 import signal
 import socket
 import sys
@@ -214,3 +215,53 @@ def test_launch_tmserver_logs_and_reraises_on_oserror(monkeypatch):
 
     with pytest.raises(OSError):
         model._launch_tmserver(['the', 'command'], 55555)
+
+
+def _unchecked_model(**config):
+    model = TMModel.__new__(TMModel)
+    model.config = dict(TMModel.default_config, **config)
+    return model
+
+
+@pytest.mark.parametrize('host', ['', '  ', 'no-such-host.invalid', 'h\x00st', 'hôst.\u202e', '1.5', '8.8.8.8'])
+def test_check_config_replaces_a_host_that_cant_be_used(host, caplog):
+    # #4340: each port tried looked the host up again, blocking start-up.
+    model = _unchecked_model(tmserver_bind=host)
+
+    model._check_config()
+
+    assert model.config['tmserver_bind'] == 'localhost'
+    assert "can't be used" in caplog.text
+
+
+def test_check_config_keeps_a_usable_host():
+    model = _unchecked_model(tmserver_bind='127.0.0.1')
+
+    model._check_config()
+
+    assert model.config['tmserver_bind'] == '127.0.0.1'
+
+
+def test_check_config_puts_a_relative_tm_database_in_the_config_folder():
+    model = _unchecked_model(tmdb='tm.db')
+
+    model._check_config()
+
+    assert model.config['tmdb'] == os.path.join(pan_app.get_config_dir(), 'tm.db')
+
+
+def test_check_config_keeps_an_absolute_tm_database(tmp_path):
+    model = _unchecked_model(tmdb=str(tmp_path / 'tm.db'))
+
+    model._check_config()
+
+    assert model.config['tmdb'] == str(tmp_path / 'tm.db')
+
+
+@pytest.mark.parametrize('port', ['', 'abc', '0', '-1', '65536', '99999999999999999999'])
+def test_check_config_replaces_an_unusable_port(port):
+    model = _unchecked_model(tmserver_port=port)
+
+    model._check_config()
+
+    assert model.config['tmserver_port'] == 55555

@@ -279,7 +279,7 @@ msgstr "ברירת מחדל"
 #. * it isn't default:LTR or default:RTL it will not work
 #. Configuration: Direction
 msgid "default:LTR"
-msgstr "‫default:RTL"
+msgstr "default:RTL"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically

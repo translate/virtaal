@@ -236,6 +236,20 @@ def test_load_urldata_defaults_a_saved_entry_without_enabled_to_enabled(monkeypa
     assert saved['enabled'] is True
 
 
+def test_load_urldata_ignores_an_entry_without_a_name_or_url(monkeypatch, tmp_path, caplog):
+    # #4340: a section Virtaal didn't write raised KeyError at start-up.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[No Name]\nurl = http://example.com/?q=%(query)s\n'
+        '[No URL]\ndisplay_name = No URL\n'
+        '[Good]\ndisplay_name = Good\nurl = http://example.org/?q=%(query)s\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    names = [u['display_name'] for u in model.URLDATA]
+    assert 'Good' in names and 'No URL' not in names
+    assert caplog.text.count('without a name or URL') == 2
+
 def test_load_urldata_adds_new_defaults_missing_from_a_saved_config(monkeypatch, tmp_path):
     # A config saved before Bing/Yahoo existed only has the original
     # three entries - they shouldn't vanish just because a user

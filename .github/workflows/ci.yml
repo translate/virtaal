@@ -1202,7 +1202,7 @@ jobs:
       - name: Check every gap-filling lite catalog ships
         # A lite catalog only ships when po/LINGUAS-lite lists it.
         if: matrix.arch == 'arm64'
-        run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/update_lite_catalogs.py --check gtk30 glib20 gtkspell3 gtk-mac-integration
+        run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/update_lite_catalogs.py --check gtk30 glib20 gtkspell3 gtk-mac-integration iso639-3 iso639-5
 
       - name: Build translation packs
         # Each language's level 1, and levels 1 and 2, to translate first

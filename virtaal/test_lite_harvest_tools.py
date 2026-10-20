@@ -285,3 +285,56 @@ def test_unlisted_names_gap_fillers_missing_from_linguas_lite(lite_catalogs):
     (domain_dir.parent / "LINGUAS-lite").write_text("mac/af\n", encoding="utf-8")
 
     assert module.unlisted(["mac/af", "mac/ar"]) == ["mac/ar"]
+
+
+def test_names_template_lists_the_names_the_priorities_ask_for(lite_catalogs, tmp_path, monkeypatch):
+    module, _domain_dir = lite_catalogs
+    priorities = tmp_path / "virtaal.priorities.yaml"
+    priorities.write_text("domains:\n  iso639-3:\n    '1':\n    - English\n    '2':\n    - Zulu\n    - Arabic\n",
+                          encoding="utf-8")
+    monkeypatch.setattr(module, "PRIORITIES", str(priorities))
+
+    module.write_names_template("iso639-3")
+
+    text = (tmp_path / "iso639-3" / "iso639-3.pot").read_text(encoding="utf-8")
+    assert [line for line in text.splitlines() if line.startswith("msgid \"") and line != 'msgid ""'] == \
+        ['msgid "Arabic"', 'msgid "English"', 'msgid "Zulu"']
+
+
+def test_names_catalog_keeps_names_beyond_the_template(lite_catalogs, tmp_path):
+    module, _domain_dir = lite_catalogs
+    names = tmp_path / "iso639-3"
+    names.mkdir()
+    (names / "iso639-3.pot").write_text('msgid ""\nmsgstr ""\n\nmsgid "English"\nmsgstr ""\n', encoding="utf-8")
+    (names / "zu.po").write_text('msgid "English"\nmsgstr ""\n\nmsgid "Venda"\nmsgstr "isiVenda"\n', encoding="utf-8")
+
+    module.update("iso639-3", "zu", {("", "English"): "isiNgisi"})
+
+    text = (names / "zu.po").read_text(encoding="utf-8")
+    assert 'msgstr "isiVenda"' in text and 'msgstr "isiNgisi"' in text
+
+
+def test_names_upstream_is_pycountrys_catalogs(lite_catalogs):
+    import pycountry
+
+    module, _domain_dir = lite_catalogs
+
+    assert module.upstream_dir(None, "iso639-3") == pycountry.LOCALES_DIR
+
+
+@pytest.mark.parametrize("name, code", [("Hebrew", "heb"), ("Sotho, Southern", "sot"), ("Swazi", None)])
+def test_iso_code_matches_a_name_or_inverted_name(lite_catalogs, name, code):
+    module, _domain_dir = lite_catalogs
+
+    assert module.iso_code("iso639-3", name) == code
+
+
+def test_names_template_gives_each_name_its_iso_code(lite_catalogs, tmp_path, monkeypatch):
+    module, _domain_dir = lite_catalogs
+    priorities = tmp_path / "virtaal.priorities.yaml"
+    priorities.write_text("domains:\n  iso639-3:\n    '1':\n    - English\n", encoding="utf-8")
+    monkeypatch.setattr(module, "PRIORITIES", str(priorities))
+
+    module.write_names_template("iso639-3")
+
+    assert "#: eng\nmsgid \"English\"" in (tmp_path / "iso639-3" / "iso639-3.pot").read_text(encoding="utf-8")

@@ -1,0 +1,49 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: glib20 lite\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-06 00:20+0100\n"
+"PO-Revision-Date: 2026-10-20 10:24+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? 2 : 3);\n"
+"X-Generator: Poedit 3.10\n"
+
+#. Seen in: Properties dialog
+msgctxt "format-size"
+msgid "%.1f %s"
+msgstr "%.1f %s"
+
+msgctxt "format-size"
+msgid "%u %s"
+msgstr "%u %s"
+
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "בית"
+msgstr[1] "בתים"
+msgstr[2] "בתים"
+msgstr[3] "בתים"
+
+msgid "EB"
+msgstr "א״ב"
+
+msgid "GB"
+msgstr "ג״ב"
+
+#. Seen in: Properties dialog
+msgid "kB"
+msgstr "ק״ב"
+
+msgid "MB"
+msgstr "מ״ב"
+
+msgid "PB"
+msgstr "פ״ב"
+
+msgid "TB"
+msgstr "ט״ב"

@@ -229,7 +229,8 @@ msgstr "Isi-Vitheyinamise"
 msgid "Zulu"
 msgstr "isiZulu"
 
-msgid "Swazi"
+#: ssw
+msgid "Swati"
 msgstr "isiSwazi"
 
 #: tso

@@ -138,6 +138,10 @@ Currently we translate lite versions for:
 - GLib - <http://l10n.gnome.org/module/glib/>
 - gtk-mac-integration (macOS app menu) - <https://l10n.gnome.org/module/gtk-mac-integration/>
 - gettext-tools (msgfmt check messages) - <https://translationproject.org/domain/gettext-tools.html>
+- Language names (iso639-3, iso639-5), from pycountry - <https://hosted.weblate.org/projects/iso-codes/>.
+  Only English, the languages of wider communication and the languages
+  Virtaal ships (po/priorities.toml's `[names]`); a catalog keeps any
+  other names it already has.
 
 gettext-tools is the exception to the rule above: the macOS and Windows
 builds' libgettextpo comes without any catalogs, so its lite catalogs
@@ -168,7 +172,7 @@ and to apply the rule above against the libraries' installed catalogs
 a message the library doesn't - for the languages in `LINGUAS`):
 
 ```sh
-python devsupport/pseudo-translation/update_lite_catalogs.py gtk30 glib20 gtkspell3 gtk-mac-integration
+python devsupport/pseudo-translation/update_lite_catalogs.py gtk30 glib20 gtkspell3 gtk-mac-integration iso639-3 iso639-5
 ```
 
 The macOS build runs it with `--check`, which changes nothing and fails

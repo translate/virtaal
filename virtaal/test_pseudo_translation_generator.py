@@ -54,7 +54,8 @@ def test_lite_template_keys_match_mo_originals(generator):
 
     assert "format-size\x04%u %s" in keys
     assert "byte" in keys
-    assert generator.lite_template_keys("iso639-3") is None
+    assert "English" in generator.lite_template_keys("iso639-3")
+    assert generator.lite_template_keys("iso3166-1") is None
 
 
 def test_library_locale_dir_is_none_for_a_namespace_this_platform_lacks(generator, monkeypatch):

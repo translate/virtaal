@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
 import re
 from os import path
 from urllib import parse
@@ -138,6 +139,10 @@ class LookupModel(BaseLookupModel):
                 enabled[builtin_id] = u['enabled']
             # A virtaal- id matching no default was dropped from the code.
             elif not is_builtin(u):
+                if not u.get('display_name') or not u.get('url'):
+                    # Not something Virtaal saved (#4340).
+                    logging.warning("Ignoring a web look-up in %s without a name or URL: %r", self.urldata_file, u)
+                    continue
                 u['quoted'] = u.get('quoted') == 'True'
                 u.setdefault('id', _slugify(u['display_name']))
                 custom.append(u)

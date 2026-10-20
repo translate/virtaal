@@ -30,7 +30,8 @@ def _read_ini_recovering(parser, filename):
 
     Returns the backup path, or None if the file was fine (or absent)."""
     try:
-        parser.read(filename, encoding='utf-8')
+        # utf-8-sig: some Windows editors add a byte order mark (#4340).
+        parser.read(filename, encoding='utf-8-sig')
         return None
     except (ConfigParser.Error, UnicodeDecodeError) as e:
         for section in parser.sections():
@@ -48,6 +49,31 @@ def _read_ini_recovering(parser, filename):
         logging.warning("%r is corrupt (%s) - backed up to %r and starting fresh", filename, e, backup_path)
         return backup_path
 
+
+def config_int(value, default, minimum, maximum, name):
+    """value as a whole number from minimum to maximum, or default: a
+    hand edit or another tool can leave anything in a config file, and
+    a bad value used to stop Virtaal starting or turn a feature off
+    (#4340)."""
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        number = None
+    if number is None or not minimum <= number <= maximum:
+        import logging
+        logging.warning("Using %s for %s: %r isn't a whole number from %d to %d", default, name, value, minimum, maximum)
+        return default
+    return number
+
+def _write_ini(parser, filename):
+    """Write parser to filename, or log why it can't be (a directory in
+    its place, a read-only file, #4340) rather than fail to quit."""
+    try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            parser.write(f)
+    except OSError as e:
+        import logging
+        logging.warning("%r can't be saved: %s", filename, e)
 
 def get_config_dir():
     if platform.is_windows:
@@ -375,6 +401,7 @@ class Settings:
             self.translator[key] = value
         for key, value in self.config.items("general"):
             self.general[key] = value
+        language_defaults = dict(self.language)
         for key, value in self.config.items("language"):
             self.language[key] = value
         for key, value in self.config.items("placeable_state"):
@@ -386,9 +413,18 @@ class Settings:
         for key, value in self.config.items("installed_assets"):
             self.installed_assets[key] = value
 
-        # Make sure we have some kind of font names to work with
+        # A code that isn't one broke every TM request (#4340): "af",
+        # "zh_CN", "pt-BR", "sr@latin".
+        for lang in ('sourcelang', 'targetlang'):
+            if self.language[lang] and not re.fullmatch(r'[a-z]{2,3}(?:[_-][A-Za-z0-9]+)*(?:@[A-Za-z0-9]+)?', self.language[lang]):
+                import logging
+                logging.warning("Using %s for %s: %r isn't a language code", language_defaults[lang], lang, self.language[lang])
+                self.language[lang] = language_defaults[lang]
+
+        # Make sure we have some kind of font names to work with, and
+        # ones GTK's CSS accepts: a newline broke the editor (#4340).
         for font in ('sourcefont', 'targetfont'):
-            if not self.language[font]:
+            if not self.language[font] or re.search(r'[\x00-\x1f\x7f]', self.language[font]):
                 self.language[font] = defaultfont
 
     def write(self):
@@ -419,9 +455,7 @@ class Settings:
         project_dir = os.path.split(self.filename)[0]
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
-        file = open(self.filename, 'w', encoding='utf-8')
-        self.config.write(file)
-        file.close()
+        _write_ini(self.config, self.filename)
 
         self.language['sourcefont'] = fonts[0]
         self.language['targetfont'] = fonts[1]
@@ -732,6 +766,4 @@ def save_config(filename, config, section=None):
                 value = ','.join(value)
             parser.set(section, key, str(value))
 
-    conffile = open(filename, 'w', encoding='utf-8')
-    parser.write(conffile)
-    conffile.close()
+    _write_ini(parser, filename)

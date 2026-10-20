@@ -35,7 +35,7 @@ class TMModel(remotetm.TMModel):
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.load_config()
-        self.config["tmserver_port"] = int(self.config["tmserver_port"])
+        self._check_config()
 
         port = self._pick_port()
         command = self._build_tmserver_command(port, controller)
@@ -45,6 +45,26 @@ class TMModel(remotetm.TMModel):
         # want in this case.
         BaseTMModel.__init__(self, controller)
         self._signal_tracker.connect(self.controller.main_controller.store_controller, "store-saved", self.push_store)
+
+    def _check_config(self):
+        """Replace config values the server can't use (#4340)."""
+        self.config["tmserver_port"] = pan_app.config_int(
+            self.config["tmserver_port"], int(self.default_config["tmserver_port"]), 1, 65535, "tmserver_port")
+        # One try here: finding a free port otherwise looks the host up
+        # once per port tried, for minutes, and then fails. Resolving
+        # isn't enough either: "1.5" is an address, but not this host's.
+        host = self.config["tmserver_bind"]
+        try:
+            if not host.strip():
+                raise ValueError("blank")
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind((host, 0))
+        except (OSError, UnicodeError, ValueError, TypeError) as e:
+            default = self.default_config["tmserver_bind"]
+            logging.warning("Using %s for tmserver_bind: %r can't be used (%s)", default, host, e)
+            self.config["tmserver_bind"] = default
+        # Relative to the config folder, not wherever Virtaal was started.
+        self.config["tmdb"] = os.path.join(pan_app.get_config_dir(), os.path.expanduser(self.config["tmdb"]))
 
     def _pick_port(self):
         # test if port specified in config is free

@@ -130,6 +130,18 @@ def test_read_ini_recovering_leaves_a_valid_file_alone(tmp_path):
     assert path.exists()
 
 
+def test_read_ini_recovering_reads_a_file_with_a_byte_order_mark(tmp_path):
+    # #4340: some Windows editors add one; it was taken for corruption
+    # and every setting in the file was replaced.
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\xef\xbb\xbf[general]\nlastdir = /tmp\n")
+
+    parser = pan_app.ConfigParser.RawConfigParser()
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path is None
+    assert parser.get("general", "lastdir") == "/tmp"
+
 def test_read_ini_recovering_backs_up_a_corrupt_file(tmp_path):
     # Real Windows crash (#3327): a user's virtaal.ini got zero-filled,
     # raising configparser.MissingSectionHeaderError unhandled at
@@ -166,6 +178,37 @@ def test_settings_recovers_from_a_corrupt_virtaal_ini(tmp_path):
     assert settings.config_recovery_backup == str(path) + ".broken"
     assert settings.config.sections() == settings.sections  # all empty, none lost
 
+
+@pytest.mark.parametrize('value', ['ఆంగ్ల', 'en\u202e', 'af za', 'af\x00', 'Engels', 'english', 'EN'])
+def test_settings_replaces_a_language_that_isnt_a_code(tmp_path, value, caplog):
+    # #4340: a non-ASCII sourcelang broke every TM request.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcelang = %s\ntargetlang = %s\n" % (value, value), encoding='utf-8')
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.language['sourcelang'] == 'en'
+    assert settings.language['targetlang'] == pan_app.data.simplify_to_common(pan_app.get_locale_lang())
+    assert "isn't a language code" in caplog.text
+
+
+@pytest.mark.parametrize('value', ['af', 'nso', 'sr@latin', 'ca@valencia', 'zh_CN', 'zh_Hant', 'pt-BR'])
+def test_settings_keeps_a_language_code(tmp_path, value):
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcelang = %s\n" % value)
+
+    assert pan_app.Settings(str(path)).language['sourcelang'] == value
+
+
+def test_settings_replaces_a_font_with_a_control_character(tmp_path):
+    # #4340: a newline in a font name broke the unit editor.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcefont = Sans\n\tBold 10\ntargetfont = Serif\x07 12\n")
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.language['sourcefont'] == pan_app.defaultfont
+    assert settings.language['targetfont'] == pan_app.defaultfont
 
 def test_save_config_without_a_section_removes_entries_absent_from_the_new_data(tmp_path):
     # #1906: deleting a web look-up entry showed as removed in the UI
@@ -668,6 +711,31 @@ def test_settings_instances_do_not_share_values(tmp_path):
     assert settings.installed_assets == {}
 
 
+def test_settings_write_skips_a_config_file_that_is_a_directory(tmp_path, caplog):
+    # #4340: quitting raised IsADirectoryError.
+    seed = tmp_path / 'seed.ini'
+    seed.write_text('')
+    settings = pan_app.Settings(str(seed))
+    path = tmp_path / 'virtaal.ini'
+    path.mkdir()
+    settings.filename = str(path)
+
+    settings.write()  # must not raise
+
+    assert path.is_dir()
+    assert settings.language['sourcefont'] == pan_app.defaultfont
+    assert "can't be saved" in caplog.text
+
+
+def test_save_config_skips_a_config_file_that_is_a_directory(tmp_path, caplog):
+    path = tmp_path / 'tm.ini'
+    path.mkdir()
+
+    pan_app.save_config(str(path), {'url': 'x'}, section='remotetm')  # must not raise
+
+    assert path.is_dir()
+    assert "can't be saved" in caplog.text
+
 def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
     seed = tmp_path / 'seed.ini'
     seed.write_text('')
@@ -1027,3 +1095,21 @@ def test_save_config_keeps_a_percent_sign(tmp_path):
     pan_app.save_config(path, {'uk': {'plural': 'n%10==1 ? 0 : 1'}})
 
     assert pan_app.load_config(path, 'uk') == {'plural': 'n%10==1 ? 0 : 1'}
+
+
+# config_int() #
+
+@pytest.mark.parametrize('value, expected', [
+    ('400', 400), ('1', 1), ('32767', 32767),
+    ('', 450), ('1.5', 450), ('abc', 450), ('True', 450), (None, 450),
+    ('0', 450), ('-3', 450), ('99999999999999999999', 450),
+])
+def test_config_int_falls_back_to_the_default_outside_its_range(value, expected):
+    # #4340: a bad value stopped Virtaal starting or turned a plugin off.
+    assert pan_app.config_int(value, 450, 1, 32767, 'width') == expected
+
+
+def test_config_int_logs_the_value_it_replaced(caplog):
+    pan_app.config_int('abc', 5, 0, 1000, 'max_matches')
+
+    assert "Using 5 for max_matches: 'abc'" in caplog.text

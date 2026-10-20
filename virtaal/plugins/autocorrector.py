@@ -7,6 +7,7 @@
 
 """Contains the AutoCorrector class."""
 
+import logging
 import os
 import re
 
@@ -48,6 +49,8 @@ class AutoCorrector:
             """
         self.main_controller = main_controller
         self.lang = None
+        self.unreadable = False
+        """Whether the last list loaded couldn't be read (#4431)"""
         if acorpath is None or not os.path.isdir(acorpath):
             acorpath = os.path.curdir
         self.acorpath = acorpath
@@ -123,6 +126,7 @@ class AutoCorrector:
         if lang == self.lang and not force:
             return
 
+        self.unreadable = False
         if not lang:
             self.correctiondict = {}
             self.lang = ''
@@ -136,7 +140,6 @@ class AutoCorrector:
             return
 
         from lxml import etree
-        xml = etree.fromstring(xml_bytes)
         # Sample element from DocumentList.xml:
         #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>  # codespell:ignore teh
         # entry.values() returns a 2-tuple of the "abbreviated-name" and
@@ -144,7 +147,19 @@ class AutoCorrector:
         # "ca"'s) also have license-header XML comments as top-level
         # children - iterchildren(etree.Element) excludes those, since
         # a comment's own .values() is always empty.
-        self.correctiondict = dict([entry.values() for entry in xml.iterchildren(etree.Element)])
+        try:
+            xml = etree.fromstring(xml_bytes)
+            if etree.QName(xml).localname != 'block-list':
+                raise ValueError('not an autocorrect list: <%s>' % xml.tag)
+            self.correctiondict = dict([entry.values() for entry in xml.iterchildren(etree.Element)])
+        except (etree.XMLSyntaxError, ValueError) as e:
+            # A download that was cut short, or something else saved in
+            # its place (a captive portal's page, #4431).
+            logging.warning("Ignoring the autocorrect list for %s, it can't be read: %s", lang, e)
+            self.correctiondict = {}
+            self.lang = ''
+            self.unreadable = True
+            return
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
@@ -311,7 +326,7 @@ class Plugin(BasePlugin):
                         return start_live()
                     return  # manifest is authoritative - genuinely nothing for this locale
                 key = installed_asset_key('autocorrect', lang)
-                if pan_app.settings.installed_assets.get(key) == entry_shas(entry):
+                if pan_app.settings.installed_assets.get(key) == entry_shas(entry) and not self.autocorr.unreadable:
                     return  # already installed and unchanged
                 self._schedule_after_idle_lull(lambda: start_known(entry))
 

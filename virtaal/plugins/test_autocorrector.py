@@ -46,6 +46,38 @@ def test_load_dictionary_reads_the_exact_locale_directory(tmp_path):
     assert corrector.correctiondict['adt'][0] == 'dat'
 
 
+@pytest.mark.parametrize('content', [
+    b'',
+    AF_ZA_DOCUMENT_LIST[:len(AF_ZA_DOCUMENT_LIST) // 2],
+    b'\x00\xff\xfe binary',
+    b'<html><body>Sign in to the Wi-Fi</body></html>',
+    b'<html>Sign in to the Wi-Fi</html>',
+    b'<xliff version="1.2"><file original="x"><body/></file></xliff>',
+], ids=['empty', 'truncated', 'binary', 'HTML page', 'HTML text only', 'other XML'])
+def test_load_dictionary_ignores_a_list_it_cant_read(tmp_path, caplog, content):
+    # #4431: a bad download must not raise every time the list loads.
+    _write_document_list(tmp_path, 'af_ZA', content)
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+
+    corrector.load_dictionary('af_ZA')  # must not raise
+
+    assert corrector.correctiondict == {}
+    assert corrector.lang == ''
+    assert corrector.unreadable
+    assert "can't be read" in caplog.text
+
+
+def test_load_dictionary_clears_unreadable_once_a_list_loads(tmp_path):
+    _write_document_list(tmp_path, 'af_ZA', b'')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+    corrector.load_dictionary('af_ZA')
+    _write_document_list(tmp_path, 'af_ZA')
+
+    corrector.load_dictionary('af_ZA', force=True)
+
+    assert not corrector.unreadable
+    assert 'adt' in corrector.correctiondict
+
 def test_load_dictionary_skips_leading_comments(tmp_path):
     # "ca"'s real DocumentList.xml (and others) have license-header XML
     # comments as top-level children, alongside the real block entries.
@@ -566,6 +598,23 @@ def test_skips_download_when_installed_sha_already_matches_the_manifest(monkeypa
     assert _FakeAutocorrectDownloader.started == []
     assert _FakeAutocorrectDownloader.known_files_started == []
 
+
+def test_downloads_again_when_the_installed_list_cant_be_read(monkeypatch, tmp_path):
+    # #4431: the installed record matches, but the file on disk is bad.
+    pan_app.settings.installed_assets = {installed_asset_key('autocorrect', 'xx'): entry_shas(_XX_ENTRY)}
+    _write_document_list(tmp_path, 'xx', b'<html>captive portal</html>')
+    lull_calls = []
+    plugin, main_controller, calls = _init_plugin(
+        monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx',
+        manifest_entries={'xx': _XX_ENTRY}, lull_calls=lull_calls)
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+    for callback in lull_calls:
+        callback()
+
+    assert _FakeAutocorrectDownloader.known_files_started == [('xx', 'xx', ['DocumentList.xml'])]
 
 def test_records_installed_sha_only_on_a_successful_known_download(monkeypatch, tmp_path):
     pan_app.settings.installed_assets = {}

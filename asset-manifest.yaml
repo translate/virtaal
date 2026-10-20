@@ -875,6 +875,16 @@ dictionary:
     - name: ko_KR.dic
       sha: 88ba338618c7ab5d3128bff77f6b8706ddc1d87a
     folder: ko_KR
+  lij:
+    files: &id017
+    - name: lij_IT.aff
+      sha: b43b189456ca8f8e324cc64d1c171e192fb13ee4
+    - name: lij_IT.dic
+      sha: e7c53529b15534f8500ee2894f97860b880f1af6
+    folder: lij_IT
+  lij_IT:
+    files: *id017
+    folder: lij_IT
   lo_LA:
     files:
     - name: lo_LA.aff
@@ -925,20 +935,20 @@ dictionary:
       sha: 074a083cd85a458cd53653600b1438b3e40e750b
     folder: ne_NP
   nl_AW:
-    files: &id017
+    files: &id018
     - name: nl_NL.aff
       sha: 28c160b72e6e6779d910d91e105a3df9b26f79c3
     - name: nl_NL.dic
       sha: 444fd9c6243b0e4c873786f32e086fd9ed0a6075
     folder: nl_NL
   nl_BE:
-    files: *id017
+    files: *id018
     folder: nl_NL
   nl_NL:
-    files: *id017
+    files: *id018
     folder: nl_NL
   nl_SR:
-    files: *id017
+    files: *id018
     folder: nl_NL
   nn_NO:
     files:
@@ -948,14 +958,14 @@ dictionary:
       sha: 166c3a7b254a0f42a230549e358ddfce5ed582a8
     folder: 'no'
   oc_FR:
-    files: &id018
+    files: &id019
     - name: oc_FR.aff
       sha: 0f99aacb42a9a836c36c8f1698828a5adff4953b
     - name: oc_FR.dic
       sha: 18d63d0fc1bfc61bb7127c835220291ab3ab7eeb
     folder: oc_FR
   oc_FR_lengadoc:
-    files: *id018
+    files: *id019
     folder: oc_FR
   or_IN:
     files:
@@ -1028,27 +1038,27 @@ dictionary:
       sha: f52338bef93ac732f8a77f8e9201372526caf8ef
     folder: sq_AL
   sr_CS:
-    files: &id020
+    files: &id021
     - name: sr.aff
       sha: 4d34e90c5cc2f540de81868024178f1c00148b50
     - name: sr.dic
       sha: 428c7492fc867827733e9c5df29eab419efed167
     folder: sr
   sr_Latn_CS:
-    files: &id019
+    files: &id020
     - name: sr-Latn.aff
       sha: 73cfaf094c12292cdcdcbc1daa536169a4901985
     - name: sr-Latn.dic
       sha: f876334232b1bc5bcee737cefb395ffa4e2220a8
     folder: sr
   sr_Latn_RS:
-    files: *id019
-    folder: sr
-  sr_RS:
     files: *id020
     folder: sr
+  sr_RS:
+    files: *id021
+    folder: sr
   sv:
-    files: &id021
+    files: &id022
     - name: sv_SE.aff
       sha: f767007dbbe6bd53ade64900258bbdbc5a2b2075
     - name: sv_SE.dic
@@ -1062,7 +1072,7 @@ dictionary:
       sha: 2ca5343a3f5c6075b171a7722b9388ba5b11eb51
     folder: sv_SE
   sv_SE:
-    files: *id021
+    files: *id022
     folder: sv_SE
   sw_TZ:
     files:
@@ -1079,14 +1089,14 @@ dictionary:
       sha: 95af60d3f9accc163587d96c5640b5853f470854
     folder: ta_IN
   te:
-    files: &id022
+    files: &id023
     - name: te_IN.aff
       sha: 148aca62107fa52eb2f8f2671e5ba2a6bd0724d8
     - name: te_IN.dic
       sha: cfed8626ecbd39e0ccd694c685d9fa4c34c33f2b
     folder: te_IN
   te_IN:
-    files: *id022
+    files: *id023
     folder: te_IN
   th_TH:
     files:
@@ -1096,14 +1106,14 @@ dictionary:
       sha: 477890cb3b17a1eb5e5aaf4bc6cf6d6b77dde167
     folder: th_TH
   tr:
-    files: &id023
+    files: &id024
     - name: tr_TR.aff
       sha: 975fb9eb39d1759d2a6fe5bc358b6a9ad22d41e9
     - name: tr_TR.dic
       sha: 341ed7c918b9b2a53db363a880ba897209e4d0fc
     folder: tr_TR
   tr_TR:
-    files: *id023
+    files: *id024
     folder: tr_TR
   uk_UA:
     files:
@@ -1126,12 +1136,12 @@ thesaurus:
       sha: 27350100cd3d26975c6896c56e2cb492f49b9078
     folder: bg_BG
   de:
-    files: &id024
+    files: &id025
     - name: th_de_DE_v2.dat
       sha: d87b468675c64835f33e5108452b72555045697d
     folder: de
   de_AT:
-    files: *id024
+    files: *id025
     folder: de
   de_CH:
     files:
@@ -1139,63 +1149,63 @@ thesaurus:
       sha: 6e39864503f9e1f9531bbcdccf62c32be1e1683c
     folder: de
   de_DE:
-    files: *id024
+    files: *id025
     folder: de
   en_AU:
-    files: &id025
+    files: &id026
     - name: th_en_US_v2.dat
       sha: 035f9721fe08789806b6318221ce33467f149de4
     folder: en
   en_BS:
-    files: *id025
+    files: *id026
     folder: en
   en_BZ:
-    files: *id025
+    files: *id026
     folder: en
   en_CA:
-    files: *id025
+    files: *id026
     folder: en
   en_GB:
-    files: *id025
+    files: *id026
     folder: en
   en_GH:
-    files: *id025
+    files: *id026
     folder: en
   en_IE:
-    files: *id025
+    files: *id026
     folder: en
   en_IL:
-    files: *id025
+    files: *id026
     folder: en
   en_IN:
-    files: *id025
+    files: *id026
     folder: en
   en_JM:
-    files: *id025
+    files: *id026
     folder: en
   en_MW:
-    files: *id025
+    files: *id026
     folder: en
   en_NA:
-    files: *id025
+    files: *id026
     folder: en
   en_NZ:
-    files: *id025
+    files: *id026
     folder: en
   en_PH:
-    files: *id025
+    files: *id026
     folder: en
   en_TT:
-    files: *id025
+    files: *id026
     folder: en
   en_US:
-    files: *id025
+    files: *id026
     folder: en
   en_ZA:
-    files: *id025
+    files: *id026
     folder: en
   en_ZW:
-    files: *id025
+    files: *id026
     folder: en
   eo:
     files:
@@ -1203,12 +1213,12 @@ thesaurus:
       sha: 73bb7e1e8ef4afb46fd77ece468f86c8ee34e729
     folder: eo
   it_CH:
-    files: &id026
+    files: &id027
     - name: th_it_IT_v2.dat
       sha: 61884d9ffebdbe12b3ae21c83ba78c92712751a7
     folder: it_IT
   it_IT:
-    files: *id026
+    files: *id027
     folder: it_IT
   lv_LV:
     files:

@@ -179,6 +179,37 @@ def test_settings_recovers_from_a_corrupt_virtaal_ini(tmp_path):
     assert settings.config.sections() == settings.sections  # all empty, none lost
 
 
+@pytest.mark.parametrize('value', ['ఆంగ్ల', 'en\u202e', 'af za', 'af\x00', 'Engels', 'english', 'EN'])
+def test_settings_replaces_a_language_that_isnt_a_code(tmp_path, value, caplog):
+    # #4340: a non-ASCII sourcelang broke every TM request.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcelang = %s\ntargetlang = %s\n" % (value, value), encoding='utf-8')
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.language['sourcelang'] == 'en'
+    assert settings.language['targetlang'] == pan_app.data.simplify_to_common(pan_app.get_locale_lang())
+    assert "isn't a language code" in caplog.text
+
+
+@pytest.mark.parametrize('value', ['af', 'nso', 'sr@latin', 'ca@valencia', 'zh_CN', 'zh_Hant', 'pt-BR'])
+def test_settings_keeps_a_language_code(tmp_path, value):
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcelang = %s\n" % value)
+
+    assert pan_app.Settings(str(path)).language['sourcelang'] == value
+
+
+def test_settings_replaces_a_font_with_a_control_character(tmp_path):
+    # #4340: a newline in a font name broke the unit editor.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcefont = Sans\n\tBold 10\ntargetfont = Serif\x07 12\n")
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.language['sourcefont'] == pan_app.defaultfont
+    assert settings.language['targetfont'] == pan_app.defaultfont
+
 def test_save_config_without_a_section_removes_entries_absent_from_the_new_data(tmp_path):
     # #1906: deleting a web look-up entry showed as removed in the UI
     # but stayed in weblookup.ini - each entry is its own section, and

@@ -401,6 +401,7 @@ class Settings:
             self.translator[key] = value
         for key, value in self.config.items("general"):
             self.general[key] = value
+        language_defaults = dict(self.language)
         for key, value in self.config.items("language"):
             self.language[key] = value
         for key, value in self.config.items("placeable_state"):
@@ -412,9 +413,18 @@ class Settings:
         for key, value in self.config.items("installed_assets"):
             self.installed_assets[key] = value
 
-        # Make sure we have some kind of font names to work with
+        # A code that isn't one broke every TM request (#4340): "af",
+        # "zh_CN", "pt-BR", "sr@latin".
+        for lang in ('sourcelang', 'targetlang'):
+            if self.language[lang] and not re.fullmatch(r'[a-z]{2,3}(?:[_-][A-Za-z0-9]+)*(?:@[A-Za-z0-9]+)?', self.language[lang]):
+                import logging
+                logging.warning("Using %s for %s: %r isn't a language code", language_defaults[lang], lang, self.language[lang])
+                self.language[lang] = language_defaults[lang]
+
+        # Make sure we have some kind of font names to work with, and
+        # ones GTK's CSS accepts: a newline broke the editor (#4340).
         for font in ('sourcefont', 'targetfont'):
-            if not self.language[font]:
+            if not self.language[font] or re.search(r'[\x00-\x1f\x7f]', self.language[font]):
                 self.language[font] = defaultfont
 
     def write(self):

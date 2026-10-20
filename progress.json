@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-19T23:47:47Z",
- "commit": "dcb25d24c0328c29cd1208cb629d0fc2863a0d3a",
+ "generated": "2026-10-20T19:04:12Z",
+ "commit": "6f01be1e2a0c44817dc10ca43b7edf71b344dced",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -192,12 +192,12 @@
    "code": "eu",
    "name": "Basque",
    "endonym": "euskara",
-   "core_missing": 1,
+   "core_missing": 0,
    "rest_missing": 0,
-   "needed": 1,
+   "needed": 0,
    "level2_missing": 0,
    "level3_missing": 0,
-   "ships": "50%"
+   "ships": "level 1"
   },
   {
    "code": "ff",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/39342887629"
+ "packs": "https://github.com/translate/virtaal/actions/runs/39479856295"
 }

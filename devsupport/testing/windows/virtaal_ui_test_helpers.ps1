@@ -428,7 +428,10 @@ function Send-VirtaalKeys {
     [VirtaalWin32]::SetForegroundWindow($Instance.Hwnd) | Out-Null
     Start-Sleep -Milliseconds 300
     $fg = [VirtaalWin32]::GetForegroundWindow()
-    if ($fg -ne $Instance.Hwnd) {
+    $owner = [uint32]0
+    [void][VirtaalWin32]::GetWindowThreadProcessId($fg, [ref]$owner)
+    # A Virtaal dialog stays in front of the main window.
+    if ($owner -ne $Instance.Process.Id) {
         Write-Host "::warning::Virtaal isn't the foreground window before sending '$Keys' - focus is on `"$(Get-VirtaalWindowText $fg)`""
     }
     [System.Windows.Forms.SendKeys]::SendWait($Keys)

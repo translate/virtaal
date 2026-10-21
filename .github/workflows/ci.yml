@@ -798,6 +798,7 @@ jobs:
         # The bundled libgettextpo translating through the bundled
         # gettext-tools catalog. virtaal.exe has no console, so it writes
         # to a file.
+        timeout-minutes: 2
         shell: pwsh
         run: |
           $out = "$env:RUNNER_TEMP\gettextpo.txt"
@@ -811,6 +812,7 @@ jobs:
         # Every shipped language's messages and its own name, in the UI
         # and editor fonts (#4421). A known gap that displays now is only
         # a warning here; the weekly font-coverage.yml fails on it.
+        timeout-minutes: 5
         shell: pwsh
         run: devsupport\packaging\windows\check_font_coverage.ps1 dist\virtaal
 
@@ -1300,6 +1302,7 @@ jobs:
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo, not Homebrew's, translating through
         # the bundled gettext-tools catalog.
+        timeout-minutes: 2
         run: |
           dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.gettextpo /tmp/gettextpo.txt
           cat /tmp/gettextpo.txt
@@ -1310,6 +1313,7 @@ jobs:
         # Every shipped language's messages and its own name, in the UI
         # and editor fonts (#4421). A known gap that displays now is only
         # a warning here; the weekly font-coverage.yml fails on it.
+        timeout-minutes: 5
         run: devsupport/packaging/macos/check_font_coverage.sh dist/Virtaal.app
 
       - name: Notarize the bundle

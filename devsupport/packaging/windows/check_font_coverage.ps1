@@ -13,10 +13,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# virtaal.exe has no console, so it writes to a file.
-$out = Join-Path ([System.IO.Path]::GetTempPath()) "fontcoverage.txt"
-Start-Process -Wait -FilePath (Join-Path $Bundle "virtaal.exe") -ArgumentList "--run-module", "virtaal.support.fontcoverage", $out
-$result = Get-Content $out -Encoding utf8
+$result = & (Join-Path $PSScriptRoot "run_module.ps1") $Bundle virtaal.support.fontcoverage -TimeoutSeconds 240
+if ($LASTEXITCODE) { exit 1 }
 $result
 $filled = @($result | Where-Object { $_ -match 'displays now' })
 $filled | ForEach-Object { Write-Output "::warning::$_" }

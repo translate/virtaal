@@ -759,7 +759,10 @@ jobs:
 
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.x"
+          # Not 3.15: unicode_segmentation_rs's abi3t wheel needs a
+          # python3t.dll that PyInstaller can't find, so the bundle fails
+          # to import translate.storage.pypo.
+          python-version: "3.14"
           cache: pip
           cache-dependency-path: pyproject.toml
 

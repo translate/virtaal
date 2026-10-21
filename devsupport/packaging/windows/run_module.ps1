@@ -13,7 +13,9 @@ param(
 $ErrorActionPreference = "Stop"
 
 $out = Join-Path ([System.IO.Path]::GetTempPath()) "$Module.txt"
-Remove-Item $out -ErrorAction SilentlyContinue
+$stacks = "$out.stacks"
+Remove-Item $out, $stacks -ErrorAction SilentlyContinue
+$env:VIRTAAL_STACK_DUMP = "$($TimeoutSeconds - 10):$stacks"
 # Not Start-Process -Wait: that also waits for any process virtaal.exe
 # leaves running.
 $p = Start-Process -PassThru -FilePath (Join-Path $Bundle "virtaal.exe") -ArgumentList "--run-module", $Module, $out
@@ -22,6 +24,12 @@ foreach ($child in Get-CimInstance Win32_Process -Filter "ParentProcessId = $($p
     Write-Host "::warning::virtaal.exe left $($child.Name) running: $($child.CommandLine)"
 }
 if (-not $exited) {
+    $p.Refresh()
+    Write-Host "Window: $($p.MainWindowTitle)"
+    foreach ($log in $stacks, "$env:APPDATA\Virtaal\stdout_virtaal.log", "$env:APPDATA\Virtaal\stderr_virtaal.log") {
+        Write-Host "--- $log ---"
+        Get-Content $log -Tail 60 -ErrorAction SilentlyContinue | Write-Host
+    }
     Stop-Process -Id $p.Id -Force
     Write-Host "::error::virtaal.exe --run-module $Module didn't exit in $TimeoutSeconds s (output written: $(Test-Path $out))"
     exit 1

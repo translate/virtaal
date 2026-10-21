@@ -72,7 +72,7 @@ repos:
         name: check flatpak's pinned deps are in sync with pyproject.toml
         entry: devsupport/packaging/flatpak/check_flatpak_deps_sync.py
         language: system
-        files: ^(pyproject\.toml|devsupport/packaging/flatpak/virtaal-python-deps\.yaml)$
+        files: ^(pyproject\.toml|devsupport/packaging/flatpak/(virtaal-python-deps\.yaml|check_flatpak_deps_sync\.py))$
         pass_filenames: false
       - id: check-copyright-header
         name: check the unified copyright header (.license.header.txt)

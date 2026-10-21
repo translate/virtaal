@@ -7,7 +7,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 """Check that every pyproject.toml [project.dependencies] entry has a
-matching module in virtaal-python-deps.yaml.
+matching module in virtaal-python-deps.yaml, at the pinned version.
 
 flatpak-builder's sandboxed build has no network access during the
 module-build step, so each pip package's source must be pre-declared
@@ -20,6 +20,7 @@ tomllib or PyYAML: pyproject.toml declares support back to Python 3.10
 (tomllib is 3.11+), and adding a parsing dependency just for this check
 would be its own kind of self-defeating drift risk."""
 
+import operator
 import re
 import sys
 from pathlib import Path
@@ -35,7 +36,7 @@ def normalize(name):
     return re.sub(r'[._-]+', '-', name.strip()).lower()
 
 
-def pyproject_dependency_names(text):
+def pyproject_requirements(text):
     match = re.search(r'dependencies\s*=\s*\[(.*?)\]', text, re.DOTALL)
     if not match:
         raise ValueError('no [project.dependencies] list found in pyproject.toml')
@@ -45,7 +46,6 @@ def pyproject_dependency_names(text):
     block = '\n'.join(
         line for line in match.group(1).splitlines() if not line.strip().startswith('#')
     )
-    names = []
     # Double-quote delimited only, not a "either quote char" alternation:
     # a PEP 508 environment marker (e.g. "pkg==1.0; python_version < '3.11'")
     # has its own single-quoted substring inside the double-quoted
@@ -53,13 +53,77 @@ def pyproject_dependency_names(text):
     # mismatches the pairing and picks up "3.11" as a bogus package name.
     # Every requirement string in this file is double-quoted by
     # convention; content can freely contain single quotes.
-    for requirement in re.findall(r'"([^"]*)"', block):
+    return re.findall(r'"([^"]*)"', block)
+
+
+def pyproject_dependency_names(text):
+    names = []
+    for requirement in pyproject_requirements(text):
         # PEP 508: name is the leading identifier, before any version
         # specifier/extra/marker.
         name_match = re.match(r'^([A-Za-z0-9][A-Za-z0-9._-]*)', requirement)
         if name_match:
             names.append(name_match.group(1))
     return names
+
+
+MARKER_OPS = {'<': operator.lt, '<=': operator.le, '>': operator.gt,
+              '>=': operator.ge, '==': operator.eq, '!=': operator.ne}
+
+
+def version_tuple(version):
+    return tuple(int(part) for part in version.split('.'))
+
+
+def marker_applies(marker, python):
+    """Evaluate a "python_version <op> 'X.Y'" marker; nothing else is
+    used here, so anything else is an error rather than a guess."""
+    if not marker:
+        return True
+    match = re.fullmatch(r"\s*python_version\s*(<=|>=|==|!=|<|>)\s*'([\d.]+)'\s*", marker)
+    if not match:
+        raise ValueError('unsupported environment marker: %s' % marker)
+    return MARKER_OPS[match.group(1)](python, version_tuple(match.group(2)))
+
+
+def pyproject_pins(text, python):
+    """{normalized name: (name, version)} for the == pins that apply to
+    the given Python."""
+    pins = {}
+    for requirement in pyproject_requirements(text):
+        spec, _, marker = requirement.partition(';')
+        match = re.fullmatch(r'\s*([A-Za-z0-9][A-Za-z0-9._-]*)\s*==\s*(\S+)\s*', spec)
+        if match and marker_applies(marker, python):
+            pins[normalize(match.group(1))] = (match.group(1), match.group(2))
+    return pins
+
+
+def flatpak_python(text):
+    """The runtime's Python, from its CPython-specific wheels (cp314-cp314);
+    abi3 wheels only give a minimum."""
+    tags = set(re.findall(r'-cp3(\d+)-cp3\1-', text))
+    if len(tags) != 1:
+        raise ValueError('expected one cp3XY-cp3XY wheel tag in %s, found %s'
+                         % (DEPS_YAML.name, sorted(tags) or 'none'))
+    return (3, int(tags.pop()))
+
+
+def flatpak_versions(text):
+    """{normalized name: {version}} from every wheel and sdist URL."""
+    versions = {}
+    for filename in re.findall(r'^\s*url:\s*\S+/([^/\s]+)\s*$', text, re.MULTILINE):
+        match = re.fullmatch(r'(.+?)-(\d[^-]*?)(?:-.*\.whl|\.tar\.gz|\.zip)', filename)
+        if match:
+            versions.setdefault(normalize(match.group(1)), set()).add(match.group(2))
+    return versions
+
+
+def version_mismatches(pyproject_text, yaml_text):
+    pins = pyproject_pins(pyproject_text, flatpak_python(yaml_text))
+    versions = flatpak_versions(yaml_text)
+    return [(name, version, sorted(versions.get(key, ())))
+            for key, (name, version) in pins.items()
+            if versions.get(key) != {version}]
 
 
 def flatpak_module_names(text):
@@ -98,8 +162,10 @@ def check_installed(app_dir):
 def main():
     if sys.argv[1:2] == ['--installed']:
         return check_installed(sys.argv[2])
-    pyproject_deps = pyproject_dependency_names(PYPROJECT.read_text(encoding='utf-8'))
-    module_names = flatpak_module_names(DEPS_YAML.read_text(encoding='utf-8'))
+    pyproject_text = PYPROJECT.read_text(encoding='utf-8')
+    yaml_text = DEPS_YAML.read_text(encoding='utf-8')
+    pyproject_deps = pyproject_dependency_names(pyproject_text)
+    module_names = flatpak_module_names(yaml_text)
     known = set()
     for module in module_names:
         if module.lower().startswith('python3-'):
@@ -117,7 +183,18 @@ def main():
         print('originally generated via flatpak-pip-generator).')
         return 1
 
-    print('All %d pyproject.toml dependencies have a matching flatpak module.' % len(pyproject_deps))
+    mismatches = version_mismatches(pyproject_text, yaml_text)
+    if mismatches:
+        print('pyproject.toml pins a different version than %s bundles:'
+              % DEPS_YAML.relative_to(REPO_ROOT))
+        for name, version, bundled in mismatches:
+            print(' - %s==%s (bundled: %s)' % (name, version, ', '.join(bundled) or 'none'))
+        print()
+        print("Update each package's url and sha256 to the pinned version.")
+        return 1
+
+    print('All %d pyproject.toml dependencies have a matching flatpak module at the'
+          ' pinned version.' % len(pyproject_deps))
     return 0
 
 

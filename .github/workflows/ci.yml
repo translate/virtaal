@@ -796,14 +796,12 @@ jobs:
 
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo translating through the bundled
-        # gettext-tools catalog. virtaal.exe has no console, so it writes
-        # to a file.
+        # gettext-tools catalog.
         timeout-minutes: 2
         shell: pwsh
         run: |
-          $out = "$env:RUNNER_TEMP\gettextpo.txt"
-          Start-Process -Wait -FilePath dist\virtaal\virtaal.exe -ArgumentList "--run-module", "virtaal.support.gettextpo", $out
-          $result = Get-Content $out -Encoding utf8
+          $result = devsupport\packaging\windows\run_module.ps1 dist\virtaal virtaal.support.gettextpo
+          if ($LASTEXITCODE) { exit 1 }
           $result
           if (-not ($result -match '^library: .*\\dist\\virtaal\\')) { throw "Not the bundled libgettextpo" }
           if (-not ($result -match '^message: die Anzahl der Formatspezifikationen')) { throw "msgfmt's message isn't translated" }

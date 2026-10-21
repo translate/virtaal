@@ -931,7 +931,10 @@ class TextBox(Gtk.TextView):
         if self.elem is None:
             return
 
-        ins_text = forceunicode(ins_text[:length])
+        # length counts UTF-8 bytes. Backspace after a combining mark (Indic
+        # vowel signs, Arabic harakat) deletes the whole cluster, then
+        # reinserts it with a length that leaves out the last character.
+        ins_text = forceunicode(ins_text).encode('utf-8')[:length].decode('utf-8')
         if self.text_filter is not None:
             filtered = self.text_filter(ins_text)
             if filtered != ins_text:

@@ -335,6 +335,25 @@ class TestTextBoxEditing(TestScaffolding):
 
         assert editor.text == 'First line.Second line.'
 
+    @pytest.mark.parametrize('typed, left', [
+        ('কি', 'ক'),  # Bengali consonant + vowel sign
+        ('ক্ষি', 'ক্ষ'),  # Bengali conjunct + vowel sign
+        ('हिंदी', 'हिंद'),  # Devanagari
+        ('بَ', 'ب'),  # Arabic letter + fatha (#986)
+    ])
+    def test_backspace_after_a_combining_mark_deletes_only_the_mark(self, typed, left):
+        editor = self._editor(PLACEABLES_PO, 0)
+        editor.place(editor.buffer.get_char_count())
+        editor.type(typed)
+
+        editor.backspace()
+
+        assert editor.text == 'First line.\nSecond line.' + left
+
+        editor.undo()
+
+        assert editor.text == 'First line.\nSecond line.' + typed
+
     # Random edits: whatever a translator does, the buffer keeps showing
     # the tree, undoing everything gets the original back and redoing
     # everything gets the last text back.

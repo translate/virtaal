@@ -17,6 +17,13 @@ if len(sys.argv) > 2 and sys.argv[1] == '--run-module':
     import runpy
     module_name = sys.argv[2]
     sys.argv = sys.argv[2:]
+    # For a CI check that may hang: every thread's stack, after a delay.
+    import os
+    stack_dump = os.environ.get('VIRTAAL_STACK_DUMP')
+    if stack_dump:
+        import faulthandler
+        delay, path = stack_dump.split(':', 1)
+        faulthandler.dump_traceback_later(int(delay), file=open(path, 'w'))
     runpy.run_module(module_name, run_name='__main__')
     sys.exit(0)
 

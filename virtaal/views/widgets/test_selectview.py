@@ -182,3 +182,52 @@ def test_a_row_shows_markup_characters_in_its_name_and_description(bold_name):
     assert widget.lbl_name.get_text() == 'Spelling & Grammar'
     assert widget.lbl_desc.get_text() == 'Tags, such as <b> & </i>'
     assert _row_text(sview) == 'Spelling & Grammar\nTags, such as <b> & </i>'
+
+
+def test_configure_button_passes_the_views_toplevel():
+    calls = []
+    sview = SelectView(items=[{'name': 'A', 'data': 'a', 'config': calls.append}])
+    parent = Gtk.Box()
+    parent.add(sview)
+    button = sview.get_model()[0][4].get_children()[-1]
+
+    button.emit('clicked')
+
+    assert calls == [parent]
+
+
+def test_toggling_a_row_emits_whether_it_is_now_enabled():
+    sview = SelectView(items=[{'name': 'A', 'enabled': False, 'data': 'a'}])
+    emitted = []
+    sview.connect('item-enabled', lambda view, item: emitted.append(('enabled', item['data'])))
+    sview.connect('item-disabled', lambda view, item: emitted.append(('disabled', item['data'])))
+
+    sview._on_item_toggled(None, '0')
+    sview._on_item_toggled(None, '0')
+
+    assert emitted == [('enabled', 'a'), ('disabled', 'a')]
+
+
+def test_get_item_ignores_an_iter_whose_row_was_removed():
+    sview = _make_view()
+    model = sview.get_model()
+    itr = model.get_iter_first()
+    model.remove(model.get_iter_first())
+
+    assert sview.get_item(itr) is None
+
+
+def test_select_item_clears_the_selection_for_an_item_not_in_the_list():
+    sview = _make_view()
+    sview.select_item(sview.get_all_items()[0])
+
+    sview.select_item({'name': 'C', 'data': 'c'})
+
+    assert sview.get_selected_item() is None
+
+
+def test_keys_are_left_to_the_default_handling_without_a_cursor_row():
+    sview = _make_view()
+
+    assert sview._on_key_press(sview, SimpleNamespace(keyval=Gdk.KEY_space)) is False
+    assert all(item['enabled'] for item in sview.get_all_items())

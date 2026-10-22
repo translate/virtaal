@@ -180,12 +180,7 @@ class PlaceablesController(BaseController):
             parsers = self.parsers
 
         for elem in elems:
-            elem = elem
-            parsed = parse_placeables(elem, parsers)
-            if isinstance(elem, str) and parsed != StringElem(elem):
-                parent = elem.get_parent_elem(elem)
-                if parent is not None:
-                    parent.sub[parent.sub.index(elem)] = StringElem(parsed)
+            parse_placeables(elem, parsers)
         return elems
 
     def get_parsers_for_textbox(self, textbox):

@@ -131,7 +131,6 @@ class Plugin(BasePlugin):
             config_filename = path.join(self.poedit_dir, 'net.poedit.Poedit.cfg')
         else:
             config_filename = path.join(self.poedit_dir, 'config')
-        get_thing = None
         if not path.exists(config_filename):
             # winreg (no underscore) is the Python 3 name; the Python 2
             # name was _winreg.
@@ -140,12 +139,9 @@ class Plugin(BasePlugin):
             except Exception as e:
                 return
 
-            def get_thing(section, item):
-                key_path = r"Software\Vaclav Slavik\Poedit"
-                if section:
-                    key_path += "\\" + section
+            def get_thing(item):
                 try:
-                    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path)
+                    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit")
                     return winreg.QueryValueEx(key, item)[0]
                 except OSError:
                     return None
@@ -156,16 +152,12 @@ class Plugin(BasePlugin):
             contents = StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
             poedit_config_file.close()
             self.poedit_config.read_file(contents)
-            def get_thing(section, item):
-                dictionary = dict(self.poedit_config.items(section or 'poedit_headerless_file'))
-                return dictionary.get(item, None)
+            def get_thing(item):
+                return self.poedit_config.get('poedit_headerless_file', item, fallback=None)
 
-        if get_thing is None:
-            return
-
-        lastdir = get_thing('', 'last_file_path')
-        name = get_thing('', 'translator_name')
-        translator_email = get_thing('', 'translator_email')
+        lastdir = get_thing('last_file_path')
+        name = get_thing('translator_name')
+        translator_email = get_thing('translator_email')
 
         if lastdir:
             pan_app.settings.general['lastdir'] = lastdir

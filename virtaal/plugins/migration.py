@@ -141,24 +141,14 @@ class Plugin(BasePlugin):
                 return
 
             def get_thing(section, item):
-                key = None
+                key_path = r"Software\Vaclav Slavik\Poedit"
+                if section:
+                    key_path += "\\" + section
                 try:
-                    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit\%s" % section)
+                    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path)
+                    return winreg.QueryValueEx(key, item)[0]
                 except OSError:
-                    return
-
-                data = None
-                try:
-                    # This is very inefficient, but who cares?
-                    for i in range(100):
-                        name, data, type = winreg.EnumValue(key, i)
-                        if name == item:
-                            break
-                except OSError as e:
-                    pass
-                except Exception as e:
-                    logging.exception("Error obtaining from registry: %s, %s", section, item)
-                return data
+                    return None
 
         else:
             self.poedit_config = ConfigParser.ConfigParser()

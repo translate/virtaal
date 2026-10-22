@@ -289,6 +289,11 @@ def test_get_ext_from_url_returns_none_without_an_extension(tmp_path):
     assert model._get_ext_from_url('https://pontoon.mozilla.org/terminology/af') is None
 
 
+def test_get_ext_from_url_returns_none_for_a_trailing_dot(tmp_path):
+    model = _model(tmp_path)
+    assert model._get_ext_from_url('https://pontoon.mozilla.org/terminology/af.') is None
+
+
 def test_get_ext_from_url_returns_none_for_an_empty_path(tmp_path):
     model = _model(tmp_path)
     assert model._get_ext_from_url('https://pontoon.mozilla.org') is None

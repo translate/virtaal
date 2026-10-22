@@ -50,7 +50,7 @@ import threading
 
 from gi.repository import GLib, Gtk
 
-from virtaal.common import pan_app
+from virtaal.common import SignalTracker, pan_app
 from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support import mythes
 from virtaal.support.asset_manifest import AssetManifest
@@ -124,12 +124,16 @@ class LookupModel(BaseLookupModel):
         self._auto_tried = set()  # locale_codes an automatic check/download was already attempted for
 
         lang_controller = self.controller.main_controller.lang_controller
-        lang_controller.connect('source-lang-changed', self._on_lang_changed)
-        lang_controller.connect('target-lang-changed', self._on_lang_changed)
+        self._signal_tracker = SignalTracker()
+        self._signal_tracker.connect(lang_controller, 'source-lang-changed', self._on_lang_changed)
+        self._signal_tracker.connect(lang_controller, 'target-lang-changed', self._on_lang_changed)
         if lang_controller.source_lang:
             self._maybe_auto_download(lang_controller.source_lang.code)
         if lang_controller.target_lang:
             self._maybe_auto_download(lang_controller.target_lang.code)
+
+    def destroy(self):
+        self._signal_tracker.disconnect_all()
 
     def _get_asset_manifest(self):
         if self._asset_manifest is None:

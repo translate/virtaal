@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 
-from gi.repository import Gdk, GObject, Gtk, Pango
+from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 
 from virtaal.support.libi18n.numbers import format_percent
 from virtaal.views import markup, rendering
@@ -225,7 +225,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
             return 0, 0, 0, 0
 
         label = Gtk.Label()
-        label.set_markup('<small>%s</small>' % self.matchdata['tmsource'])
+        label.set_markup('<small>%s</small>' % GLib.markup_escape_text(self.matchdata['tmsource']))
         label.get_pango_context().set_base_gravity(Pango.Gravity.AUTO)
         label.set_angle(270)
         size = label.get_layout().get_pixel_size()
@@ -247,7 +247,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
         y = cell_area.y + y_offset + self.YPAD
 
         label = Gtk.Label()
-        label.set_markup('<small>%s</small>' % self.matchdata['tmsource'])
+        label.set_markup('<small>%s</small>' % GLib.markup_escape_text(self.matchdata['tmsource']))
         label.get_pango_context().set_base_dir(Pango.Direction.TTB_LTR)
         if widget.get_direction() == Gtk.TextDirection.RTL:
             label.set_angle(90)

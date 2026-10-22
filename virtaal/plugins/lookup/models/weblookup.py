@@ -40,12 +40,8 @@ def _without_scheme(url):
 from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common import pan_app
+from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
 from virtaal.views.baseview import BaseView
-
-try:
-    from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
-except ImportError:
-    from virtaal_plugins.lookup.models.baselookupmodel import BaseLookupModel
 
 
 class LookupModel(BaseLookupModel):

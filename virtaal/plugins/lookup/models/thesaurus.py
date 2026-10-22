@@ -51,6 +51,7 @@ import threading
 from gi.repository import GLib, Gtk
 
 from virtaal.common import SignalTracker, pan_app
+from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
 from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support import mythes
 from virtaal.support.asset_manifest import AssetManifest
@@ -61,11 +62,6 @@ from virtaal.support.dictionary_source import (
     list_dictionary_folders,
 )
 from virtaal.support.thesaurus_downloader import ThesaurusDownloader
-
-try:
-    from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
-except ImportError:
-    from virtaal_plugins.lookup.models.baselookupmodel import BaseLookupModel
 
 
 def thesaurus_cache_dir():

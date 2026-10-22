@@ -107,6 +107,7 @@ class TMModel(remotetm.TMModel):
             raise
 
     def destroy(self):
+        self._signal_tracker.disconnect_all()
         if platform.is_windows:
             import ctypes
             ctypes.windll.kernel32.TerminateProcess(int(self.tmserver._handle), -1)

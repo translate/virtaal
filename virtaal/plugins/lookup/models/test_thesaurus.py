@@ -46,6 +46,11 @@ class _FakeLangController:
 
     def connect(self, signal, handler):
         self._handlers.setdefault(signal, []).append(handler)
+        return (signal, handler)
+
+    def disconnect(self, handler_id):
+        signal, handler = handler_id
+        self._handlers[signal].remove(handler)
 
     def emit(self, signal, code):
         for handler in self._handlers.get(signal, []):
@@ -643,3 +648,113 @@ def test_on_download_starts_a_check_not_a_direct_download(monkeypatch):
 
     assert 'pl_PL' in model._checking
     assert threads[0].target == model._check
+
+
+def test_create_menu_items_offers_a_download_when_the_cache_has_no_dat(monkeypatch, tmp_path):
+    # A download that failed part-way can leave the folder without one.
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    (tmp_path / 'pl_PL').mkdir()
+    (tmp_path / 'pl_PL' / 'README_th_pl_PL.txt').write_text('')
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    items = model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
+
+    assert threads == []
+    assert 'Download' in items[0].get_label()
+
+
+def test_synonyms_are_grouped_under_their_part_of_speech():
+    model = _make_model()
+    model._thesauruses['pl_PL'] = mythes.parse_thesaurus(
+        'UTF-8\nabaja|1\n(noun)|sukmana|płaszcz\n'.encode())
+
+    items = model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
+
+    children = items[0].get_submenu().get_children()
+    assert [i.get_label() for i in children] == ['(noun)', 'sukmana', 'płaszcz']
+    assert not children[0].get_sensitive()
+    assert children[1].get_sensitive()
+
+
+def test_replace_selection_does_nothing_without_a_selection():
+    buf = Gtk.TextBuffer()
+    buf.set_text('a płaszcz b')
+    textbox = _Textbox(buf)
+
+    model = _make_model()
+    model._replace_selection(textbox, 'sukmana')
+
+    assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a płaszcz b'
+    assert model.controller.main_controller.undo_controller.calls == []
+    assert textbox.emitted == []
+
+
+def test_on_download_finished_does_not_start_a_second_parse(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._parsing.add('pl_PL')
+
+    model._on_download_finished('pl_PL', True)
+
+    assert threads == []
+    assert 'pl_PL' in model._parsing
+
+
+def test_check_that_cannot_reach_the_server_can_be_retried(monkeypatch):
+    def offline():
+        raise OSError('Network is unreachable')
+    monkeypatch.setattr(thesaurus_module, 'fetch_dictionary_tree', offline)
+    _patch_idle_add_to_run_immediately(monkeypatch)
+    model = _make_model()
+    model._checking.add('af_ZA')
+
+    model._check('af_ZA')
+
+    assert 'af_ZA' not in model._checking
+    assert 'af_ZA' not in model._unavailable
+    assert 'Download' in model.create_menu_items('word', 'source', 'af_ZA', 'en', None)[0].get_label()
+
+
+def test_parse_loads_a_cached_dat(monkeypatch, tmp_path):
+    _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
+    _patch_idle_add_to_run_immediately(monkeypatch)
+    model = _make_model()
+    model._parsing.add('pl_PL')
+
+    model._parse('pl_PL', str(tmp_path / 'pl_PL' / 'th_sample.dat'))
+
+    assert 'pl_PL' not in model._parsing
+    items = model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
+    assert [i.get_label() for i in items[0].get_submenu().get_children()] == ['abaja', 'sukmana', 'płaszcz']
+
+
+def test_parse_of_a_corrupt_dat_is_not_retried(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _write_dat(tmp_path, 'pl_PL', b'\xff\xfe\x00not a thesaurus')
+    _patch_idle_add_to_run_immediately(monkeypatch)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._parsing.add('pl_PL')
+
+    model._parse('pl_PL', str(tmp_path / 'pl_PL' / 'th_sample.dat'))
+
+    assert 'pl_PL' not in model._parsing
+    assert 'pl_PL' in model._parse_failed
+    model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
+    assert threads == []
+
+
+def test_a_destroyed_model_no_longer_downloads_for_a_new_language(monkeypatch, tmp_path):
+    # Disabling the thesaurus in Select Look-up Services destroys it.
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model.destroy()
+    model.controller.main_controller.lang_controller.emit('target-lang-changed', 'pl_PL')
+
+    assert threads == []
+    assert 'pl_PL' not in model._auto_tried

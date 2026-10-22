@@ -282,7 +282,6 @@ class TextBox(Gtk.TextView):
                 #logging.debug('[%s] at offset %d' % (str(elem).encode('utf-8'), offset))
                 start_index = offset
                 end_index = offset + elem.gui_info.length()
-                interval = end_index - start_index
                 for tag, tag_start, tag_end in elem.gui_info.create_tags():
                     if tag is None:
                         continue
@@ -292,7 +291,7 @@ class TextBox(Gtk.TextView):
                     if tag_end is None:
                         tag_end = end_index
                     if tag_start < 0:
-                        tag_start += interval + 1
+                        tag_start += end_index + 1
                     else:
                         tag_start += start_index
                     if tag_end < 0:

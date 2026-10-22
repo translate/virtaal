@@ -170,3 +170,71 @@ def test_checked_messages_are_freed_with_the_rebuilt_file(monkeypatch):
         assert checker.check_unit(store.units[-1])
 
     assert len(frees) == 2
+
+
+BAD_C_FORMAT = b'#, c-format\nmsgid "Hello %s"\nmsgstr "Hallo"\n'
+C_FORMAT_PROBLEM = "number of format specifications in 'msgid' and 'msgstr' does not match"
+
+
+def test_context_is_checked_with_its_message():
+    assert check(b'#, c-format\nmsgctxt "menu"\nmsgid "Hello %s"\nmsgstr "Hallo"\n') == [C_FORMAT_PROBLEM]
+
+
+def test_check_without_a_header():
+    store = po.pofile.parsestring(HEADER + BAD_C_FORMAT)
+
+    assert gettextpo.MsgfmtChecker().check_unit(store.units[-1]) == [C_FORMAT_PROBLEM]
+
+
+def test_a_problem_reported_outside_a_check_is_dropped():
+    checker = gettextpo.MsgfmtChecker()
+
+    checker._add_problem(b'not from a checked message')
+
+    assert checker._problems is None
+
+
+@pytest.fixture
+def ui_languages(monkeypatch):
+    # Not the real one: it would switch the whole test process's UI language.
+    from virtaal.common import pan_app
+    languages = []
+    monkeypatch.setattr(pan_app, 'set_ui_language', languages.append)
+    return languages
+
+
+def test_self_check_reports_the_library_and_a_c_format_problem(ui_languages):
+    # What the packaged builds' smoke tests run: the library they load,
+    # and msgfmt's message in the UI language asked for.
+    path, message = gettextpo.self_check('de')
+
+    assert path == gettextpo._lib.path
+    assert message
+    assert ui_languages == ['de']
+
+
+def _run_main(monkeypatch, *args):
+    import runpy
+    import sys
+    monkeypatch.setattr(sys, 'argv', ['gettextpo', *args])
+    # run_module() warns if the module is already imported.
+    monkeypatch.delitem(sys.modules, 'virtaal.support.gettextpo')
+    runpy.run_module('virtaal.support.gettextpo', run_name='__main__')
+
+
+def test_run_module_prints_the_report(monkeypatch, capsys, ui_languages):
+    _run_main(monkeypatch)
+
+    library, message = capsys.readouterr().out.splitlines()
+    assert library.startswith('library: ') and library != 'library: None'
+    assert message.startswith('message: ') and message != 'message: None'
+    assert ui_languages == ['de']
+
+
+def test_run_module_writes_the_report_to_a_file(monkeypatch, capsys, tmp_path, ui_languages):
+    output = tmp_path / 'report.txt'
+
+    _run_main(monkeypatch, str(output))
+
+    assert capsys.readouterr().out == ''
+    assert output.read_text(encoding='utf-8').startswith('library: ')

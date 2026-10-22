@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gdk, Gtk
 
 from virtaal.views.widgets.selectview import SelectView
@@ -163,3 +164,21 @@ def test_configure_button_responds_to_the_clicked_signal():
     button.emit('clicked')
 
     assert calls
+
+
+def _row_text(sview, row=0):
+    """The text the list draws for a row that isn't being edited."""
+    cell = sview.namedesc_col.get_cells()[0]
+    string = sview._get_widget_string(sview.get_model()[row][4])
+    return cell.create_pango_layout(string, sview, 300).get_text()
+
+
+@pytest.mark.parametrize('bold_name', [True, False])
+def test_a_row_shows_markup_characters_in_its_name_and_description(bold_name):
+    sview = SelectView(items=[{'name': 'Spelling & Grammar', 'desc': 'Tags, such as <b> & </i>',
+                               'data': 'a'}], bold_name=bold_name)
+    widget = sview.get_model()[0][4].get_children()[0]
+
+    assert widget.lbl_name.get_text() == 'Spelling & Grammar'
+    assert widget.lbl_desc.get_text() == 'Tags, such as <b> & </i>'
+    assert _row_text(sview) == 'Spelling & Grammar\nTags, such as <b> & </i>'

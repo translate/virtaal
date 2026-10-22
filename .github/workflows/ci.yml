@@ -1718,22 +1718,35 @@ jobs:
 
       - name: Smoke test - bare distributions
         # Only what every desktop has installed: no GTK, no Python.
-        # In parallel: each runs in its own container.
+        # In parallel: each runs in its own container, and normally
+        # takes under two minutes.
+        timeout-minutes: 15
         run: |
           images=(ubuntu:22.04 ubuntu:24.04 debian:13 fedora:44)
           pids=()
           for image in "${images[@]}"; do
-            devsupport/packaging/linux/smoke_test_distro.sh "$image" \
-              build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage > "smoke-${image/:/-}.log" 2>&1 &
+            log="smoke-${image/:/-}.log"
+            (
+              start=$SECONDS
+              status=0
+              timeout -k 10 600 devsupport/packaging/linux/smoke_test_distro.sh "$image" \
+                build/appimage/Virtaal-linux-${{ matrix.arch }}.AppImage > "$log" 2>&1 || status=$?
+              echo "$((SECONDS - start))" > "$log.secs"
+              exit "$status"
+            ) &
             pids+=($!)
           done
           failed=()
           for i in "${!images[@]}"; do
             status=0
             wait "${pids[$i]}" || status=$?
-            echo "::group::${images[$i]} (exit $status)"
-            cat "smoke-${images[$i]/:/-}.log"
+            log="smoke-${images[$i]/:/-}.log"
+            echo "::group::${images[$i]} (exit $status, $(cat "$log.secs")s)"
+            cat "$log"
             echo "::endgroup::"
+            if [ "$status" = 124 ]; then
+              echo "::error::AppImage smoke test on ${images[$i]} timed out"
+            fi
             [ "$status" = 0 ] || failed+=("${images[$i]}")
           done
           if [ ${#failed[@]} -gt 0 ]; then

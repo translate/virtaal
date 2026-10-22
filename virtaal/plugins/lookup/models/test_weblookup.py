@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import pytest
-from gi.repository import Gtk
+from gi.repository import GdkPixbuf, Gtk
 
 from virtaal.plugins.lookup.models import weblookup
 from virtaal.plugins.lookup.models.weblookup import (
@@ -148,6 +148,37 @@ def test_add_dialog_saves_the_name_and_url_trimmed(monkeypatch):
 
     assert (url['display_name'], url['url']) == ('My Site', 'http://example.com/?q=%(query)s')
 
+def test_config_dialog_opens_over_its_parent_with_its_icon():
+    parent = Gtk.Window()
+    icon = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, 16, 16)
+    parent.set_icon(icon)
+
+    dialog = WebLookupConfigDialog(parent)
+
+    assert dialog.dialog.get_transient_for() is parent
+    assert dialog.dialog.get_icon() is icon
+
+
+def test_a_lookup_added_in_the_config_dialog_is_listed(monkeypatch):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [dict(u) for u in LookupModel.URLDATA]
+
+    def _type_and_confirm():
+        dialog.add_dialog.ent_url_name.set_text('My Site')
+        dialog.add_dialog.ent_url.set_text('https://example.org/?q=%(query)s')
+        return Gtk.ResponseType.OK
+    monkeypatch.setattr(dialog.add_dialog.dialog, 'run', _type_and_confirm)
+
+    dialog.btn_url_add.clicked()
+
+    assert dialog.urldata[-1] == {
+        'id': 'my_site', 'display_name': 'My Site', 'url': 'https://example.org/?q=%(query)s',
+        'quoted': False, 'enabled': True,
+    }
+    assert dialog.lst_urls[-1][dialog.COL_NAME] == 'My Site'
+
+
 # Disabling a web look-up
 
 def _model(monkeypatch, tmp_path):
@@ -223,6 +254,22 @@ def test_create_menu_items_fills_every_placeholder_and_a_doubled_percent(monkeyp
     ], query='a b', role='target')
 
     assert opened == ['https://af.example.org/en/en-af/a%20b?off=50%']
+
+
+def test_activating_a_lookup_opens_its_url_in_the_browser(monkeypatch, tmp_path):
+    opened = []
+    monkeypatch.setattr('virtaal.support.openmailto.open', opened.append)
+    model = _model(monkeypatch, tmp_path)
+
+    for item in model.create_menu_items('two words', 'source', 'en', 'af', None):
+        item.activate()
+
+    # Google's query is quoted, so it searches for the phrase.
+    assert opened == [
+        'https://www.google.com/search?q="two%20words"',
+        'https://en.wikipedia.org/wiki/two%20words',
+        'https://en.wiktionary.org/wiki/two%20words',
+    ]
 
 
 def test_load_urldata_defaults_a_saved_entry_without_enabled_to_enabled(monkeypatch, tmp_path):

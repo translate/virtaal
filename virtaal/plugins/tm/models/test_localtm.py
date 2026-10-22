@@ -13,7 +13,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from virtaal.common import pan_app
+from virtaal.common import SignalTracker, pan_app
 from virtaal.common.platform import Platform
 from virtaal.plugins.tm.models import localtm
 from virtaal.plugins.tm.models.localtm import TMModel, find_free_port
@@ -73,6 +73,7 @@ def test_destroy_uses_sigterm_on_posix(monkeypatch):
 
     model = TMModel.__new__(TMModel)
     model.tmserver = SimpleNamespace(pid=12345)
+    model._signal_tracker = SignalTracker()
 
     model.destroy()
 
@@ -94,6 +95,7 @@ def test_destroy_uses_terminateprocess_on_windows(monkeypatch):
 
     model = TMModel.__new__(TMModel)
     model.tmserver = SimpleNamespace(_handle=999)
+    model._signal_tracker = SignalTracker()
 
     model.destroy()
 

@@ -143,7 +143,6 @@ class _FakeMainView:
 
 def _make_controller(textbox, unit):
     controller = UndoController.__new__(UndoController)
-    controller.enabled = True
     controller.model = UndoModel(controller)
     controller._pending_refresh = None
     controller.main_controller = _FakeMainController()

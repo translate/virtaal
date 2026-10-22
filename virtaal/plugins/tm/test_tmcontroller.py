@@ -531,6 +531,16 @@ def test_summon_with_suggestions_already_shown_does_not_requery():
     assert events == []
 
 
+def test_summon_without_a_unit_does_nothing():
+    controller, events = _suggestions_controller(None)
+    controller.storecursor = SimpleNamespace(deref=lambda: None)
+
+    controller.summon()
+
+    assert controller.view.summoned is False
+    assert events == []
+
+
 def test_summon_without_a_file_does_nothing():
     controller, events = _suggestions_controller(None)
     controller.storecursor = None

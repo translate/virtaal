@@ -45,6 +45,15 @@ def test_font_fallbacks_keep_the_size_and_style(monkeypatch):
     assert rendering.with_font_fallbacks('Segoe UI Bold 13') == 'Segoe UI,Ebrima Bold 13'
 
 
+def test_font_fallbacks_are_added_once(monkeypatch):
+    # Each MainView adds them to GTK's process-wide UI font.
+    monkeypatch.setattr(rendering, 'font_fallbacks', lambda: ('Ebrima', 'Nirmala UI'))
+
+    once = rendering.with_font_fallbacks('Segoe UI 9')
+
+    assert rendering.with_font_fallbacks(once) == once == 'Segoe UI,Ebrima,Nirmala UI 9'
+
+
 def test_font_fallbacks_leave_the_font_alone_without_fallbacks(monkeypatch):
     monkeypatch.setattr(rendering, 'font_fallbacks', lambda: ())
 

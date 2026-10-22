@@ -50,7 +50,8 @@ def with_font_fallbacks(font_name):
     if not fallbacks:
         return font_name
     desc = Pango.FontDescription.from_string(font_name)
-    desc.set_family(','.join([desc.get_family(), *fallbacks]))
+    families = desc.get_family().split(',')
+    desc.set_family(','.join(families + [f for f in fallbacks if f not in families]))
     return desc.to_string()
 
 

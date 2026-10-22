@@ -28,8 +28,8 @@
 # not maintained", issue translate/translate#4018), along with its
 # siblings bundleprojstore.py and project.py.
 # Virtaal's own project/bundle file support (open_file()'s .zip branch,
-# save_file()'s project branch, export_project_file()) still needs it,
-# so it's vendored rather than dropped - see translate/virtaal#3632.
+# save_file()'s project branch) still needs it, so it's vendored rather
+# than dropped - see translate/virtaal#3632.
 # append_file()'s open() was changed to binary mode - see
 # translate/virtaal#3609.
 # get_file()'s two "is the resolved name actually a real file" checks

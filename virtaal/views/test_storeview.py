@@ -57,53 +57,6 @@ class TestStoreView(TestScaffolding):
 
         assert calls[-1] == 1
 
-    def test_on_export_reports_a_failure_as_an_error_dialog(self, monkeypatch):
-        view = self.store_controller.view
-        monkeypatch.setattr(self.store_controller, 'export_project_file',
-                             lambda **kw: (_ for _ in ()).throw(ValueError('boom')))
-        errors = []
-        monkeypatch.setattr(self.main_controller.view, 'show_error_dialog',
-                             lambda title='', message='': errors.append((title, message)))
-
-        view._on_export(None)
-
-        assert len(errors) == 1
-        assert errors[0][0] == 'Export failed'
-        assert 'boom' in errors[0][1]
-
-    def test_on_export_open_reports_a_failure_as_an_error_dialog(self, monkeypatch):
-        view = self.store_controller.view
-        monkeypatch.setattr(self.store_controller, 'export_project_file',
-                             lambda **kw: (_ for _ in ()).throw(ValueError('boom')))
-        errors = []
-        monkeypatch.setattr(self.main_controller.view, 'show_error_dialog',
-                             lambda title='', message='': errors.append((title, message)))
-
-        view._on_export_open(None)
-
-        assert errors[0][0] == 'Export failed'
-
-    def test_on_preview_reports_a_failure_as_an_error_dialog(self, monkeypatch):
-        view = self.store_controller.view
-        monkeypatch.setattr(self.store_controller, 'export_project_file',
-                             lambda **kw: (_ for _ in ()).throw(ValueError('boom')))
-        errors = []
-        monkeypatch.setattr(self.main_controller.view, 'show_error_dialog',
-                             lambda title='', message='': errors.append((title, message)))
-
-        view._on_preview(None)
-
-        assert errors[0][0] == 'Preview failed'
-
-    def test_on_export_succeeds_silently(self, monkeypatch):
-        view = self.store_controller.view
-        calls = []
-        monkeypatch.setattr(self.store_controller, 'export_project_file', lambda **kw: calls.append(kw))
-
-        view._on_export(None)
-
-        assert calls == [{'filename': None}]
-
     def test_on_style_set_applies_a_background_provider(self):
         view = self.store_controller.view
         first_provider = view._treeview_bg_provider

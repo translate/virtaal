@@ -28,8 +28,8 @@
 # not maintained", issue translate/translate#4018), along with its
 # siblings bundleprojstore.py and projstore.py.
 # Virtaal's own project/bundle file support (open_file()'s .zip branch,
-# save_file()'s project branch, export_project_file()) still needs it,
-# so it's vendored rather than dropped - see translate/virtaal#3632.
+# save_file()'s project branch) still needs it, so it's vendored rather
+# than dropped - see translate/virtaal#3632.
 
 import os
 from typing import cast

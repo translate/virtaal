@@ -327,8 +327,6 @@ class TextBox(Gtk.TextView):
         if not self.suggestion_is_visible():
             return
         selection = self.buffer.get_selection_bounds()
-        if not selection:
-            return
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.delete(*selection)
@@ -476,9 +474,6 @@ class TextBox(Gtk.TextView):
 
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
-
-        if not cursor_iter:
-            raise ValueError('Could not get TextIter for position %d (%d)' % (cursor_pos, len(self.get_text())))
         #logging.debug('setting cursor to position %d' % (cursor_pos))
         self.buffer.place_cursor(cursor_iter)
         # Make sure the cursor is visible to reduce jitters (with backspace at

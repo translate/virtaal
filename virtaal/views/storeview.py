@@ -242,33 +242,6 @@ class StoreView(BaseView):
         editing_stopped = self._update_visible_rows(restart_editing=False)
         self._treeview.select_index(cursor.index, force=editing_stopped)
 
-    def _on_export(self, menu_item):
-        # TODO: Get file name from user.
-        try:
-            self.controller.export_project_file(filename=None)
-        except Exception as exc:
-            self.controller.main_controller.view.show_error_dialog(
-                title=_("Export failed"), message=str(exc)
-            )
-
-    def _on_export_open(self, menu_item):
-        # TODO: Get file name from user.
-        try:
-            self.controller.export_project_file(filename=None, openafter=True)
-        except Exception as exc:
-            self.controller.main_controller.view.show_error_dialog(
-                title=_("Export failed"), message=str(exc)
-            )
-
-    def _on_preview(self, menu_item):
-        # TODO: Get file name from user.
-        try:
-            self.controller.export_project_file(filename=None, openafter=True, readonly=True)
-        except Exception as exc:
-            self.controller.main_controller.view.show_error_dialog(
-                title=_("Preview failed"), message=str(exc)
-            )
-
     def _on_style_set(self, widget, prev_style=None):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.

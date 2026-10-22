@@ -50,7 +50,6 @@ def _controller():
     GObjectWrapper.__init__(controller)
     controller.project = None
     controller.store = None
-    controller._tempfiles = []
     controller.handler_ids = {}
     controller._loading_store = False
     return controller
@@ -61,17 +60,6 @@ def _controller():
 def test_destroy_with_nothing_open_is_a_noop():
     controller = _controller()
     controller.destroy()  # must not raise
-
-
-def test_destroy_unlinks_tempfiles_and_swallows_errors(tmp_path):
-    controller = _controller()
-    real_tempfile = tmp_path / "preview.po"
-    real_tempfile.write_text("data")
-    controller._tempfiles = [str(real_tempfile), str(tmp_path / "already-gone.po")]
-
-    controller.destroy()  # must not raise despite the second unlink failing
-
-    assert not real_tempfile.exists()
 
 
 def test_destroy_deletes_the_project():

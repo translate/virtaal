@@ -5,16 +5,19 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from io import BytesIO
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, GObject, Gtk
 from test_scaffolding import TestScaffolding
-from translate.storage import factory, xliff
+from translate.storage import factory, po, xliff
 from translate.storage.placeables import general, parse
 from translate.storage.placeables.strelem import StringElem
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
+from virtaal.views import placeablesguiinfo
+from virtaal.views.theme import current_theme
 from virtaal.views.widgets import textbox as textbox_module
 from virtaal.views.widgets.textbox import (
     TextBox,
@@ -29,6 +32,16 @@ XLIFF_ONE_UNIT = b"""<?xml version="1.0" encoding="UTF-8"?>
 <body><trans-unit id="1"><source>Open</source></trans-unit></body>
 </file>
 </xliff>
+"""
+PLURAL_PO = b"""msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n"
+
+msgid "%s file"
+msgid_plural "%s files"
+msgstr[0] ""
+msgstr[1] ""
 """
 
 
@@ -96,6 +109,59 @@ def test_unlock_partly_covered_leaves_keeps_a_fully_covered_placeable():
     unlock_partly_covered_leaves(elem, 3, 6)
 
     assert elem.sub[-1] is placeable
+
+
+def test_unlock_partly_covered_leaves_skips_a_placeable_that_is_the_whole_tree():
+    # Nothing to replace it in: the root has no parent.
+    placeable = _parsed('%s files').flatten()[0]
+    assert not placeable.iseditable
+
+    assert not unlock_partly_covered_leaves(placeable, 1, 1)
+    assert str(placeable) == '%s'
+
+
+def test_delete_inside_widget_leaf_deletes_a_range_outside_the_leaf_normally():
+    tree = _parsed('ab %s cd')
+    placeable = tree.flatten()[1]
+    fake_self = SimpleNamespace(elem=tree)
+
+    deleted, _parent, _index = TextBox._delete_inside_widget_leaf(fake_self, placeable, 0, 2)
+
+    assert str(deleted) == 'ab'
+    assert str(tree) == ' %s cd'
+
+
+class _MainController(GObject.Object):
+    """Registers controllers one by one, as the real one does at start-up."""
+    __gsignals__ = {
+        'controller-registered': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+    }
+    placeables_controller = None
+    undo_controller = None
+
+    def register(self, name, controller):
+        setattr(self, name, controller)
+        self.emit('controller-registered', controller)
+
+
+class _TaggedGUI(placeablesguiinfo.StringElemGUI):
+    """GUI info whose tags use the offset forms create_tags() may return."""
+    TAGS = {'skipped': None, 'first': (0, -2), 'last': (-2, None), 'clamped': (-10, 1)}
+
+    def create_tags(self):
+        tags = []
+        for name, span in self.TAGS.items():
+            if span is None:
+                tags.append((None, None, None))
+            else:
+                tags.append((Gtk.TextTag(name=name), *span))
+        return tags
+
+
+def _tagged_offsets(textbox, name):
+    tag = textbox.buffer.get_tag_table().lookup(name)
+    return [i for i in range(textbox.buffer.get_char_count())
+            if textbox.buffer.get_iter_at_offset(i).has_tag(tag)]
 
 
 class TestTextBox(TestScaffolding):
@@ -885,6 +951,189 @@ class TestTextBox(TestScaffolding):
         textbox.buffer.insert_interactive_at_cursor('\x0b', -1, True)
 
         assert textbox.get_text().endswith('\x0b')
+
+    def test_show_suggestion_given_a_suggestion_inserts_it_once(self):
+        textbox = TextBox(self.main_controller, text='abc')
+
+        textbox.show_suggestion({'text': 'XY', 'offset': 3})
+
+        assert textbox.get_text() == 'abcXY'
+        assert textbox.suggestion_is_visible()
+
+    def test_typing_while_a_suggestion_shows_drops_it(self, monkeypatch):
+        textbox = TextBox(self.main_controller, text='abc')
+        textbox.suggestion = {'text': 'XY', 'offset': 3}
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: False)
+
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_a))
+
+        assert textbox.suggestion is None
+        assert textbox.get_text() == 'abc'
+
+    def test_select_elem_rejects_both_an_elem_and_an_offset(self):
+        textbox = TextBox(self.main_controller, text='%s files')
+
+        with pytest.raises(ValueError):
+            textbox.select_elem(elem=textbox.selectable_elems()[0], offset=0)
+
+    def test_select_elem_by_offset_without_placeables_selects_nothing(self):
+        textbox = TextBox(self.main_controller, text='no placeables')
+
+        textbox.select_elem(offset=0)
+
+        assert textbox.selected_elem is None
+
+    def test_select_elem_colours_a_placeable_that_has_no_gui_info(self):
+        textbox = TextBox(self.main_controller, text='%s files')
+        placeable = textbox.selectable_elems()[0]
+        del placeable.gui_info
+
+        textbox.select_elem(elem=placeable)
+
+        assert textbox.selected_elem is placeable
+        assert placeable.gui_info.fg == current_theme['selected_placeable_fg']
+        assert placeable.gui_info.bg == current_theme['selected_placeable_bg']
+
+    def test_selectable_elems_is_empty_without_text(self):
+        assert TextBox(self.main_controller).selectable_elems() == []
+
+    def test_move_elem_selection_without_placeables_selects_nothing(self):
+        textbox = TextBox(self.main_controller, text='no placeables')
+
+        textbox.move_elem_selection(1)
+
+        assert textbox.selected_elem is None
+
+    def test_move_elem_selection_back_from_no_selection_selects_the_last_placeable(self):
+        target = self._target_for('Click <a>here</a> to continue.')
+        source = target.selector_textbox
+        source.select_elem(None)
+
+        target.move_elem_selection(-1)
+
+        assert source.selected_elem is source.selectable_elems()[-1]
+
+    def test_move_elem_selection_highlights_only_the_selecting_plural_source(self, monkeypatch):
+        # Not the open store, so its plural count comes from the language.
+        monkeypatch.setattr(self.lang_controller, 'get_target_nplurals', lambda: 2)
+        view = self.unit_controller.load_unit(po.pofile(BytesIO(PLURAL_PO)).units[1])
+        target = view.targets[0]
+        assert len(target.selector_textboxes) == 2
+
+        target.move_elem_selection(1)
+
+        def css(source):
+            return source.get_parent()._selector_fg_provider.to_string()
+        selector, other = target.selector_textbox, target.selector_textboxes[1]
+        assert selector is target.selector_textboxes[0]
+        expected = Gtk.CssProvider()
+        expected.load_from_data(('* { color: %s; }' % target.selector_color).encode())
+        assert css(selector) == expected.to_string()
+        assert css(other) != css(selector)
+
+    def test_refresh_without_an_elem_parses_the_shown_text(self):
+        textbox = TextBox(self.main_controller, text='%s files')
+        textbox.set_visible(True)
+        textbox.elem = None
+
+        textbox.refresh()
+
+        assert str(textbox.elem) == '%s files'
+        assert [str(e) for e in textbox.selectable_elems()] == ['%s']
+
+    def test_update_tree_without_an_elem_renders_an_empty_one(self):
+        textbox = TextBox(self.main_controller)
+
+        textbox.update_tree()
+
+        assert str(textbox.elem) == ''
+        assert textbox.elem.gui_info is not None
+
+    def test_apply_gui_info_places_tags_relative_to_the_placeable(self):
+        # The placeable is "%s", at 3-5; a negative offset counts from its end.
+        textbox = TextBox(self.main_controller, text='ab %s cd')
+        placeable = textbox.selectable_elems()[0]
+        placeable.gui_info = _TaggedGUI(elem=placeable, textbox=textbox)
+
+        textbox.apply_gui_info(placeable, include_subtree=False)
+
+        assert _tagged_offsets(textbox, 'first') == [3]
+        assert _tagged_offsets(textbox, 'last') == [4]
+        assert _tagged_offsets(textbox, 'clamped') == [3]
+        assert textbox.buffer.get_tag_table().lookup('skipped') is None
+
+    def test_insert_translation_inserts_a_plain_string_at_the_cursor(self):
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')
+        textbox.place_cursor(2)
+        elem = SimpleNamespace(
+            gui_info=SimpleNamespace(get_insert_candidates=lambda: None),
+            translate=lambda: ' new')
+
+        assert textbox.insert_translation(elem)
+
+        assert textbox.get_text() == '%s new files copied'
+        assert textbox.get_cursor_position() == 6
+
+    def test_insert_candidates_are_not_shown_for_an_unmapped_textbox(self, monkeypatch):
+        monkeypatch.setattr(textbox_module.GLib, 'idle_add', lambda func: func())
+        textbox = TextBox(self.main_controller, text='%s files')
+        elem = SimpleNamespace(gui_info=SimpleNamespace(get_insert_candidates=lambda: ['drank']))
+
+        assert not textbox.insert_translation(elem)
+
+        assert textbox._completion_popup is None
+
+    def test_a_target_out_of_step_with_its_tree_is_rebuilt(self, monkeypatch):
+        warnings = []
+        monkeypatch.setattr(textbox_module.logging, 'warning', lambda msg, *args: warnings.append(msg))
+        textbox = TextBox(self.main_controller, text='%s files')
+        textbox.set_visible(True)
+        textbox.elem.sub = [StringElem('changed')]
+
+        textbox.buffer.begin_user_action()
+        textbox.buffer.end_user_action()
+
+        assert warnings == ['Target text out of step with its placeables: %r']
+        assert textbox.get_text() == 'changed'
+
+    def test_deleting_text_the_tree_no_longer_has_is_ignored(self):
+        textbox = TextBox(self.main_controller, text='abc')
+        textbox.elem.sub = [StringElem('')]
+        deleted = []
+        textbox.connect('text-deleted', lambda *args: deleted.append(args))
+
+        textbox.buffer.delete(textbox.buffer.get_iter_at_offset(1), textbox.buffer.get_iter_at_offset(2))
+
+        assert deleted == []
+        assert str(textbox.elem) == ''
+
+    def test_controllers_registered_after_the_textbox_are_picked_up(self):
+        main_controller = _MainController()
+        textbox = TextBox(main_controller)
+        placeables, undo = object(), object()
+
+        main_controller.register('placeables_controller', placeables)
+        main_controller.register('undo_controller', undo)
+        main_controller.register('undo_controller', object())
+
+        assert textbox.placeables_controller is placeables
+        assert textbox.undo_controller is undo
+
+    def test_editing_before_the_controllers_exist_is_plain_text_editing(self):
+        textbox = TextBox(_MainController())
+        buffer = textbox.buffer
+
+        buffer.begin_user_action()
+        buffer.insert_at_cursor('abc')
+        buffer.delete(buffer.get_iter_at_offset(0), buffer.get_iter_at_offset(1))
+        buffer.end_user_action()
+
+        assert textbox.get_text() == 'bc'
+        assert textbox.elem is None
+        elem = StringElem('x')
+        textbox.add_default_gui_info(elem)
+        assert getattr(elem, 'gui_info', None) is None
 
 
 class _FakeKeyEvent:

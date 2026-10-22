@@ -22,6 +22,16 @@ from virtaal.views.widgets import textbox as textbox_module
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
 PLACEABLES_XLIFF = "devsupport/testfiles/placeables.xliff"
+NESTED_G_XLIFF = """<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+<file original="test" source-language="en" target-language="af" datatype="plaintext">
+<body><trans-unit id="1">
+<source>A <g id="1">x <x id="2"/> y</g> b</source>
+<target>A <g id="1">x <x id="2"/> y</g> b</target>
+</trans-unit></body>
+</file>
+</xliff>
+"""
 
 
 class _Editor:
@@ -218,6 +228,41 @@ class TestTextBoxEditing(TestScaffolding):
 
         assert editor.text == 'An openings isolated tag.'
         assert str(editor.textbox.elem.sub[1]) == 'openings'
+
+    # NESTED_G_XLIFF, "A <g>x <x/> y</g> b": "<1|" at 2, "x " at 3-4, the
+    # <x/> at 5, " y" at 6-7, "|1>" at 8.
+
+    def _nested_g_editor(self, tmp_path):
+        path = tmp_path / 'nested.xlf'
+        path.write_text(NESTED_G_XLIFF)
+        return self._editor(str(path), 0)
+
+    def test_typing_at_the_inside_start_of_a_g_holding_a_placeable(self, tmp_path):
+        editor = self._nested_g_editor(tmp_path)
+        editor.place(3)
+
+        editor.type('Z')
+
+        assert editor.text == 'A Zx  y b'
+        assert str(self._g(editor)[0]) == 'Zx  y'
+
+    def test_typing_at_the_inside_end_of_a_g_holding_a_placeable(self, tmp_path):
+        editor = self._nested_g_editor(tmp_path)
+        editor.place(8)
+
+        editor.type('Z')
+
+        assert editor.text == 'A x  yZ b'
+        assert str(self._g(editor)[0]) == 'x  yZ'
+
+    def test_typing_inside_a_locked_g_changes_nothing(self, tmp_path):
+        editor = self._nested_g_editor(tmp_path)
+        self._g(editor)[0].iseditable = False
+        editor.place(3)
+
+        editor.type('Z')
+
+        assert editor.text == 'A x  y b'
 
     def test_deleting_an_x_can_be_undone(self):
         # "A line break<x/>after it.": X has a widget and no text.

@@ -288,6 +288,23 @@ def test_saving_adds_a_missing_language_header(tmp_path, monkeypatch):
     assert header["Language"] == "de"
 
 
+def test_saving_keeps_each_targets_normalisation_form(tmp_path, monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: None)
+    path = tmp_path / "forms.po"
+    path.write_text('msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+                    'msgid "Coffee"\nmsgstr "Café"\n\n'
+                    'msgid "Vietnamese"\nmsgstr "Tiếng Việt"\n\n'
+                    'msgid "Korean"\nmsgstr ""\n', encoding="utf-8")
+    model = StoreModel(str(path), _SavingController("de"))
+    model.get_units()[2].target = '한'  # NFD 한
+
+    model.save_file()
+
+    saved = [u.target for u in StoreModel(str(path), _FakeController()).get_units()]
+    assert saved == ['Café', 'Tiếng Việt', '한']
+
+
 # Slovenian with Virtaal's form count (4) but a different form order.
 _SL_PLURAL_FORMS = "nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);"
 

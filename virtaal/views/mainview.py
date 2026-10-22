@@ -843,16 +843,6 @@ class MainView(BaseView):
             # Note that if nplurals == 1, the default equation "0" is correct
             return nplurals, lang.pluralequation
 
-    def append_menu(self, name):
-        """Add a menu with the given name to the menu bar."""
-        menu = Gtk.Menu()
-        menuitem = Gtk.MenuItem(name)
-        menuitem.set_submenu(menu)
-        self.menu_structure.append(menuitem)
-        if self.menu_structure.get_property('visible'):
-            self.menu_structure.show_all()
-        return menuitem
-
     def append_menu_item(self, name, menu, after=None):
         """Add a new menu item with the given name to the menu with the given
             name (C{menu})."""
@@ -892,23 +882,14 @@ class MainView(BaseView):
 
         return None
 
-    def find_menu_item(self, label, menu=None):
-        """Find the menu item with the given label and in the menu with the
-            given name (if it exists).
+    def find_menu_item(self, label, menu):
+        """Find the menu item with the given label in C{menu}'s submenu.
 
             @param label: The label of the menu item to find.
-            @param menu: The (optional) (name of the) menu to search in."""
-        if not isinstance(menu, Gtk.MenuItem):
-            menu = self.find_menu(label)
-        if menu is not None:
-            menus = [menu]
-        else:
-            menus = [mi for mi in self.menu_structure.get_children()]
-
-        for menuitem in menus:
-            for item in menuitem.get_submenu().get_children():
-                if item.get_child() and str(item.get_child().get_text()) == str(label):
-                    return item, menuitem
+            @param menu: The menu bar item to search in."""
+        for item in menu.get_submenu().get_children():
+            if item.get_child() and str(item.get_child().get_text()) == str(label):
+                return item, menu
 
         if '_' in label:
             return self.find_menu_item(label.replace('_', ''), menu)

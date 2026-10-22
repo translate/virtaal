@@ -9,15 +9,33 @@ IMAGE="$1"
 APPIMAGE="$(realpath "$2")"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
-docker run --rm \
+echo "== pulling $IMAGE"
+pull() {
+    if command -v timeout >/dev/null; then
+        timeout 120 docker pull -q "$IMAGE"
+    else
+        docker pull -q "$IMAGE"
+    fi
+}
+for attempt in 1 2 3; do
+    pull && break
+    [ "$attempt" = 3 ] && exit 1
+done
+echo "== pulled (${SECONDS}s)"
+
+docker run --rm --init \
     -v "$APPIMAGE:/test/Virtaal.AppImage:ro" \
     -v "$HERE/smoke_test_appimage.sh:/test/smoke_test_appimage.sh:ro" \
     "$IMAGE" bash -c '
 set -eu
 . /etc/os-release
+echo "== installing packages"
 case "$ID" in
     ubuntu|debian)
         export DEBIAN_FRONTEND=noninteractive
+        # dnf retries a stalled download by default; apt needs telling.
+        printf "%s\n" "Acquire::Retries \"3\";" "Acquire::http::Timeout \"30\";" \
+            "Acquire::https::Timeout \"30\";" > /etc/apt/apt.conf.d/80retries
         apt-get update -qq >/dev/null
         apt-get install -y -qq --no-install-recommends xvfb xauth hunspell-en-us \
             libxcb1 libwayland-client0 libwayland-egl1 libwayland-cursor0 libfontconfig1 procps \
@@ -39,5 +57,6 @@ case "$ID" in
         exit 1
         ;;
 esac
+echo "== packages installed (${SECONDS}s)"
 /test/smoke_test_appimage.sh /test/Virtaal.AppImage
 '

@@ -20,33 +20,37 @@ LAUNCH=("$APPIMAGE")
 if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
     LAUNCH=(xvfb-run -a --server-args="-screen 0 1024x768x24" "$APPIMAGE")
 fi
+# The first run also extracts the AppImage.
 run() {
-    "${LAUNCH[@]}" "$@"
+    timeout -k 5 120 "${LAUNCH[@]}" "$@"
+}
+stage() {
+    echo "== $* (${SECONDS}s)"
 }
 
-echo "== version, with the build's commit"
+stage "version, with the build's commit"
 run --version | tee "$LOGS/version.txt"
 if grep -q "(unknown)" "$LOGS/version.txt"; then
     echo "The build's commit isn't recorded" >&2
     exit 1
 fi
 
-echo "== msgfmt check library"
+stage "msgfmt check library"
 run --run-module virtaal.support.gettextpo | tee "$LOGS/gettextpo.txt"
 grep -q "^library: /.*/libgettextpo.so.0$" "$LOGS/gettextpo.txt"
 
-echo "== bundled translations"
+stage "bundled translations"
 LANGUAGE=de run --help | tee "$LOGS/help.txt"
 grep -q "Fehleranalysefeatures aktivieren" "$LOGS/help.txt"
 
-echo "== spell checking, with the host's dictionary"
+stage "spell checking, with the host's dictionary"
 run --run-module virtaal.support.enchant_compat en_US | tee "$LOGS/enchant.txt"
 grep -q "^enchant: /.*/enchant/lib/libenchant-2.so.2$" "$LOGS/enchant.txt"
 grep -q "^providers: .*hunspell" "$LOGS/enchant.txt"
 grep -q "^dictionary: True$" "$LOGS/enchant.txt"
 grep -q "^gtkspell: ok$" "$LOGS/enchant.txt"
 
-echo "== the desktop's settings, not the build machine's"
+stage "the desktop's settings, not the build machine's"
 if command -v gsettings >/dev/null; then
     host="$(gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")"
     echo 'from gi.repository import Gio; print("icon-theme=" + Gio.Settings.new("org.gnome.desktop.interface").get_string("icon-theme"))' \
@@ -60,14 +64,14 @@ if command -v gsettings >/dev/null; then
     fi
 fi
 
-echo "== IBus's input method module under Wayland, unless the user chose one"
+stage "IBus's input method module under Wayland, unless the user chose one"
 probe='import os; print("im=" + os.environ.get("GTK_IM_MODULE", "none"))'
-im="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
-chosen="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus GTK_IM_MODULE=fcitx "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
+im="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus timeout -k 5 60 "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
+chosen="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus GTK_IM_MODULE=fcitx timeout -k 5 60 "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
 echo "$im, with fcitx chosen: $chosen"
 [ "$im" = im=ibus ] && [ "$chosen" = im=fcitx ]
 
-echo "== a browser gets the host's libraries, not the bundle's"
+stage "a browser gets the host's libraries, not the bundle's"
 mkdir -p "$LOGS/bin"
 printf '#!/bin/sh\nenv > "%s"\n' "$LOGS/xdg-open-env.txt" > "$LOGS/bin/xdg-open"
 chmod +x "$LOGS/bin/xdg-open"
@@ -79,7 +83,7 @@ if grep -E "^(LD_LIBRARY_PATH|GI_TYPELIB_PATH|GTK_PATH|GTK_IM_MODULE_FILE|GDK_PI
     exit 1
 fi
 
-echo "== a file opens, with a bundled input method"
+stage "a file opens, with a bundled input method"
 # A fresh home: no earlier config. Stopped after 20 seconds. XIM needs
 # no input method server to load.
 mkdir -p "$LOGS/home"

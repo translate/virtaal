@@ -63,23 +63,6 @@ class BundleProjectStore(ProjectStore):
             self.zip.close()
             self.zip = ZipFile(fname, "a")
 
-    # CLASS METHODS #
-    @classmethod
-    def from_project(cls, proj, fname=None):
-        if fname is None:
-            fname = "bundle.zip"
-
-        bundle = BundleProjectStore(fname)
-        for fn in proj.sourcefiles:
-            bundle.append_sourcefile(proj.get_file(fn))
-        for fn in proj.transfiles:
-            bundle.append_transfile(proj.get_file(fn))
-        for fn in proj.targetfiles:
-            bundle.append_targetfile(proj.get_file(fn))
-        bundle.settings = proj.settings.copy()
-        bundle.save()
-        return bundle
-
     # METHODS #
     def append_file(self, afile, fname, ftype="trans", delete_orig=False):
         """

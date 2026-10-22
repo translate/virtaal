@@ -577,7 +577,8 @@ class TextBox(Gtk.TextView):
 
     def show_suggestion(self, suggestion=None):
         if isinstance(suggestion, dict):
-            self.suggestion = suggestion
+            self.suggestion = suggestion  # The setter shows it.
+            return
         if self.suggestion is None:
             return
         iters = (self.buffer.get_iter_at_offset(self.suggestion['offset']),)

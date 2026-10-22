@@ -167,7 +167,7 @@ class EntryDialog(Gtk.Dialog):
     """A simple dialog containing a dialog for user input."""
 
     def __init__(self, parent):
-        super().__init__(title='Input Dialog', parent=parent)
+        super().__init__(title='Input Dialog', transient_for=parent)
         self.set_size_request(450, 100)
 
         self.lbl_message = Gtk.Label()
@@ -426,30 +426,27 @@ class MainView(BaseView):
 
     @cached_property
     def error_dialog(self):
-        dialog = Gtk.MessageDialog(self.main_window,
-                                    Gtk.DialogFlags.MODAL,
-                                    Gtk.MessageType.ERROR,
-                                    Gtk.ButtonsType.OK)
+        dialog = Gtk.MessageDialog(transient_for=self.main_window, modal=True,
+                                    message_type=Gtk.MessageType.ERROR,
+                                    buttons=Gtk.ButtonsType.OK)
         dialog.set_title(_("Error"))
         return dialog
 
     @cached_property
     def prompt_dialog(self):
         # Yes/No prompt dialog
-        dialog = Gtk.MessageDialog(self.main_window,
-                                    Gtk.DialogFlags.MODAL,
-                                    Gtk.MessageType.QUESTION,
-                                    Gtk.ButtonsType.YES_NO)
+        dialog = Gtk.MessageDialog(transient_for=self.main_window, modal=True,
+                                    message_type=Gtk.MessageType.QUESTION,
+                                    buttons=Gtk.ButtonsType.YES_NO)
         dialog.set_default_response(Gtk.ResponseType.NO)
         return dialog
 
     @cached_property
     def info_dialog(self):
         # Informational dialog
-        return Gtk.MessageDialog(self.main_window,
-                                  Gtk.DialogFlags.MODAL,
-                                  Gtk.MessageType.INFO,
-                                  Gtk.ButtonsType.OK)
+        return Gtk.MessageDialog(transient_for=self.main_window, modal=True,
+                                  message_type=Gtk.MessageType.INFO,
+                                  buttons=Gtk.ButtonsType.OK)
 
     @cached_property
     def open_chooser(self):
@@ -536,11 +533,11 @@ class MainView(BaseView):
         # Save confirmation dialog (Save/Discard/Cancel buttons)
         (RESPONSE_SAVE, RESPONSE_DISCARD) = (Gtk.ResponseType.YES, Gtk.ResponseType.NO)
         dialog = Gtk.MessageDialog(
-            self.main_window,
-            Gtk.DialogFlags.MODAL,
-            Gtk.MessageType.QUESTION,
-            Gtk.ButtonsType.NONE,
-            _("The current file has been modified.\nDo you want to save your changes?")
+            transient_for=self.main_window,
+            modal=True,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.NONE,
+            text=_("The current file has been modified.\nDo you want to save your changes?"),
         )
         dialog.__save_button = dialog.add_button(_("_Save"), RESPONSE_SAVE)
         dialog.add_button(_("_Discard"), RESPONSE_DISCARD)

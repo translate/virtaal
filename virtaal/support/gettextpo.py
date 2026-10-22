@@ -156,11 +156,12 @@ class MsgfmtChecker:
     REBUILD_AFTER = 1000
 
     def __init__(self):
+        # Before raising: __del__ frees these.
+        self._file = None
+        self._iterator = None
         self._lib = _load_library()
         if self._lib is None:
             raise RuntimeError('libgettextpo is not available')
-        self._file = None
-        self._iterator = None
         self._header = None
         self._checked = 0
         self._message = None

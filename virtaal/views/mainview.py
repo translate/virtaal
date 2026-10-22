@@ -1137,16 +1137,20 @@ class MainView(BaseView):
             self.app_menu = Gtk.Menu()
             self.btn_app.connect('pressed', self._on_app_pressed)
             self.btn_app.show()
-        for child in self.menu_structure:
-            child.reparent(self.app_menu)
+        self._move_menus(self.menu_structure, self.app_menu)
         self.menu_structure = self.app_menu
         self.btn_app.show()
 
     def hide_app_icon(self):
         self.btn_app.hide()
-        for child in self.app_menu:
-            child.reparent(self.menubar)
+        self._move_menus(self.app_menu, self.menubar)
         self.menu_structure = self.menubar
+
+    @staticmethod
+    def _move_menus(source, target):
+        for child in source.get_children():
+            source.remove(child)
+            target.append(child)
 
     # SIGNAL HANDLERS #
     def _on_controller_registered(self, main_controller, new_controller):
@@ -1662,7 +1666,8 @@ class MainView(BaseView):
         return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_app_pressed(self, btn):
-        self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())
+        self.app_menu.popup_at_widget(btn, Gdk.Gravity.SOUTH_WEST, Gdk.Gravity.NORTH_WEST,
+                                      Gtk.get_current_event())
 
     def _on_osx_openfile_event(self, macapp, filename):
         # Note! A limitation of GtkosxApplication is that we cannot perform

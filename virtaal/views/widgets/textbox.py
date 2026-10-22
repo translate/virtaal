@@ -18,16 +18,12 @@ from virtaal.views.theme import current_theme
 
 
 def colors_equal(a, b):
-    """Compare two colors that could be Gdk.RGBA, Gdk.Color, or str."""
-    if isinstance(a, Gdk.Color):
-        a = a.to_string()
+    """Compare two colors that could be Gdk.RGBA or str."""
     if isinstance(a, str):
         x = Gdk.RGBA()
         x.parse(a)
         a = x
 
-    if isinstance(b, Gdk.Color):
-        b = b.to_string()
     if isinstance(b, str):
         x = Gdk.RGBA()
         x.parse(b)

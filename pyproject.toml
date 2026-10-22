@@ -165,6 +165,8 @@ omit = [
     "virtaal/plugins/_python_console.py",
     "virtaal/plugins/tm/models/_dummytm.py",
     "virtaal/views/widgets/demo_cellrendererwidget.py",
+    "virtaal/views/widgets/demo_listnav.py",
+    "virtaal/views/widgets/demo_popupwidgetbutton.py",
     "virtaal/views/widgets/demo_selectdialog.py",
     "virtaal/views/widgets/demo_selectview.py",
     "virtaal/views/widgets/demo_textbox.py",

@@ -269,23 +269,3 @@ class PopupWidgetButton(Gtk.ToggleButton):
         # moving the pop-up redraws the button again.
         if self.popup.props.visible and self._anchor() != self._placed_anchor:
             self._update_popup_geometry()
-
-
-if __name__ == '__main__':
-    btn = PopupWidgetButton(label='TestMe', widget=Gtk.Button('Click me'))
-
-    hb = Gtk.HBox()
-    hb.pack_start(Gtk.Button('Left', True, True, 0), expand=False, fill=False)
-    hb.pack_start(btn,                 expand=False, fill=False)
-    hb.pack_start(Gtk.Button('Right', True, True, 0), expand=False, fill=False)
-    vb = Gtk.VBox()
-    vb.pack_start(hb, expand=False, fill=False)
-
-    from gtk import Window
-    wnd = Window()
-    wnd.set_size_request(400, 300)
-    wnd.set_title('Pop-up Window Button Test')
-    wnd.add(vb)
-    wnd.connect('destroy', lambda *args: Gtk.main_quit())
-    wnd.show_all()
-    Gtk.main()

@@ -22,6 +22,20 @@ from virtaal.views.widgets import textbox as textbox_module
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
 PLACEABLES_XLIFF = "devsupport/testfiles/placeables.xliff"
+
+_ONE_UNIT_PO = 'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\nmsgid "Coffee"\nmsgstr "%s"\n'
+
+# Text GTK lays out as clusters of several code points.
+CLUSTER_TEXTS = [
+    'ক্ষমা',  # Bengali conjunct
+    'हिंदी',  # Devanagari
+    'بَيْت',  # Arabic harakat
+    'กี่',  # Thai tone mark
+    'שָׁלוֹם',  # Hebrew niqqud
+    'Việt',  # NFC
+    'Việt',  # NFD
+    '한국',  # NFD 한국
+]
 NESTED_G_XLIFF = """<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
 <file original="test" source-language="en" target-language="af" datatype="plaintext">
@@ -56,13 +70,17 @@ class _Editor:
 
     def type(self, text):
         for char in text:
-            # What GtkTextView's input-method commit does with a keystroke.
-            self.buffer.begin_user_action()
-            self.buffer.delete_selection(True, True)
-            self.buffer.insert_interactive_at_cursor(char, -1, True)
-            self.buffer.end_user_action()
-            self.run_idle()
-            self.check()
+            self.commit(char)
+
+    def commit(self, text):
+        # What GtkTextView's input-method commit does - one keystroke, or
+        # a whole syllable from an input method that commits clusters.
+        self.buffer.begin_user_action()
+        self.buffer.delete_selection(True, True)
+        self.buffer.insert_interactive_at_cursor(text, -1, True)
+        self.buffer.end_user_action()
+        self.run_idle()
+        self.check()
 
     def backspace(self, times=1):
         for _ in range(times):
@@ -398,6 +416,131 @@ class TestTextBoxEditing(TestScaffolding):
         editor.undo()
 
         assert editor.text == 'First line.\nSecond line.' + typed
+
+        editor.redo()
+
+        assert editor.text == 'First line.\nSecond line.' + left
+
+    # Pango deletes a Latin, Greek or Cyrillic letter together with its
+    # marks.
+
+    @pytest.mark.parametrize('typed, left', [
+        ('é', ''),  # NFD é
+        ('Việ', 'Vi'),  # NFD ệ
+        ('ά', ''),  # NFD ά
+        ('й', ''),  # NFD й
+    ])
+    def test_backspace_after_a_latin_combining_mark_deletes_the_whole_letter(self, typed, left):
+        editor = self._editor(PLACEABLES_PO, 0)
+        original = editor.text
+        editor.place(editor.buffer.get_char_count())
+        editor.type(typed)
+
+        editor.backspace()
+
+        assert editor.text == original + left
+
+        editor.undo()
+
+        assert editor.text == original + typed
+
+        editor.redo()
+
+        assert editor.text == original + left
+
+    @pytest.mark.parametrize('cluster', [
+        'कि',  # Devanagari consonant + vowel sign
+        'กี่',  # Thai consonant + vowel + tone mark
+        'שָׁ',  # Hebrew shin + qamats + shin dot
+        'é',  # NFD é
+        '한',  # NFD 한
+    ])
+    def test_delete_before_a_cluster_removes_all_of_it(self, cluster):
+        editor = self._editor(PLACEABLES_PO, 0)
+        original = editor.text
+        start = editor.buffer.get_char_count()
+        editor.place(start)
+        editor.type(cluster + 'x')
+        editor.place(start)
+
+        editor.delete()
+
+        assert editor.text == original + 'x'
+
+        editor.undo()
+
+        assert editor.text == original + cluster + 'x'
+
+        editor.redo()
+
+        assert editor.text == original + 'x'
+
+    @pytest.mark.parametrize('text', ['ক্ষি', 'Việt', 'שָׁלוֹם'])
+    def test_typing_over_selected_marks_replaces_all_of_them(self, text):
+        editor = self._editor(PLACEABLES_PO, 0)
+        original = editor.text
+        start = editor.buffer.get_char_count()
+        editor.place(start)
+        editor.type(text)
+        editor.select(start, start + len(text))
+
+        editor.type('X')
+
+        assert editor.text == original + 'X'
+
+        editor.undo()
+
+        assert editor.text == original + text
+
+        editor.redo()
+
+        assert editor.text == original + 'X'
+
+    @pytest.mark.parametrize('text', CLUSTER_TEXTS)
+    def test_an_input_method_commit_undoes_and_redoes_in_one_step(self, text):
+        editor = self._editor(PLACEABLES_PO, 0)
+        original = editor.text
+        editor.place(editor.buffer.get_char_count())
+
+        editor.commit(text)
+
+        assert editor.text == original + text
+
+        editor.undo()
+
+        assert editor.text == original
+
+        editor.redo()
+
+        assert editor.text == original + text
+
+    @pytest.mark.parametrize('text', CLUSTER_TEXTS)
+    def test_undoing_and_redoing_typed_marks_keeps_every_code_point(self, text):
+        editor = self._editor(PLACEABLES_PO, 0)
+        original = editor.text
+        editor.place(editor.buffer.get_char_count())
+        editor.type(text)
+
+        for _ in text:
+            editor.undo()
+
+        assert editor.text == original
+
+        for _ in text:
+            editor.redo()
+
+        assert editor.text == original + text
+
+    def test_editing_keeps_each_parts_own_normalisation_form(self, tmp_path):
+        path = tmp_path / 'nfd.po'
+        path.write_text(_ONE_UNIT_PO % 'Café %s', encoding='utf-8')
+        editor = self._editor(str(path), 0)
+        editor.place(editor.buffer.get_char_count())
+
+        editor.type(' café')
+
+        assert editor.text == 'Café %s café'
+        assert self.unit_controller.current_unit.target == 'Café %s café'
 
     # Random edits: whatever a translator does, the buffer keeps showing
     # the tree, undoing everything gets the original back and redoing

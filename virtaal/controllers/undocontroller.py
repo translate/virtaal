@@ -31,7 +31,6 @@ class UndoController(BaseController):
         self.main_controller.undo_controller = self
         self.unit_controller = self.main_controller.store_controller.unit_controller
 
-        self.enabled = True
         from virtaal.models.undomodel import UndoModel
         self.model = UndoModel(self)
         # The refresh() scheduled by _schedule_cursor_restore() that
@@ -87,21 +86,7 @@ class UndoController(BaseController):
         mainview.add_accel_group(self.accel_group)
 
 
-    # DECORATORS #
-    def if_enabled(method):
-        def enabled_method(self, *args, **kwargs):
-            if self.enabled:
-                return method(self, *args, **kwargs)
-        return enabled_method
-
-
     # METHODS #
-    def disable(self):
-        self.enabled = False
-
-    def enable(self):
-        self.enabled = True
-
     def push_current_text(self, textbox):
         """Save the current text in the given (target) text box on the undo stack."""
         current_text = textbox.elem.copy()
@@ -367,7 +352,6 @@ class UndoController(BaseController):
         target_unit = self.model.entry_unit(entry)
         return target_unit is not None and target_unit is not self.unit_controller.current_unit
 
-    @if_enabled
     def _on_undo_activated(self, *args):
         top = self.model.peek()
         if not top:
@@ -393,7 +377,6 @@ class UndoController(BaseController):
 
         self._correct_state_after_undo_redo(self.model.entry_unit(undo_info))
 
-    @if_enabled
     def _on_redo_activated(self, *args):
         top = self.model.peek_redo()
         if not top:
@@ -451,7 +434,6 @@ class UndoController(BaseController):
 
         self._update_sensitivity()
 
-    @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):
         before = self._take_elem_before_edit(target_num)
         def undo_action(unit):
@@ -495,7 +477,6 @@ class UndoController(BaseController):
         self.model.push(data)
         self._update_sensitivity()
 
-    @if_enabled
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
         #logging.debug('_on_unit_insert_text(ins_text="%r", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
         len_ins_text = len(ins_text) # remember, since ins_text might change

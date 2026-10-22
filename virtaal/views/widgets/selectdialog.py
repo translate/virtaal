@@ -83,7 +83,7 @@ class SelectDialog(GObjectWrapper):
         if items is not None:
             self.sview.set_model(items)
         if isinstance(parent, Gtk.Widget):
-            self.dialog.reparent(parent)
+            self.set_transient_for(parent)
         self.dialog.show_all()
         self.dialog.present()
         transient_for = self.dialog.get_transient_for()

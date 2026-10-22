@@ -235,7 +235,7 @@ class PlaceablesController(BaseController):
 
     def _on_quit(self, main_ctrlr):
         for parser in general.parsers:
-            classname = parser.__self__.__name__
+            classname = parser.__self__.__name__.lower()
             enabled = parser in self.parsers
             if classname in pan_app.settings.placeable_state or not enabled:
-                pan_app.settings.placeable_state[classname.lower()] = enabled and 'enabled' or 'disabled'
+                pan_app.settings.placeable_state[classname] = enabled and 'enabled' or 'disabled'

@@ -1035,6 +1035,43 @@ def test_update_search_caches_each_matchs_current_text(monkeypatch):
     assert mode._match_text_cache[key] == match.get_getter()()
 
 
+@pytest.mark.parametrize('target, search, found', [
+    ('café crème', 'é', 'é'),  # NFD target, NFC search
+    ('café', 'é', 'é'),  # NFC target, NFD search
+    ('café', 'É', 'é'),  # ignoring case
+    ('Việt', 'Việt', 'Việt'),  # marks in the other order
+    ('한국', '한국',
+     '한국'),  # NFD jamo, NFC syllables
+    ('क़', 'क़', 'क़'),  # क़, which NFC decomposes
+])
+def test_update_search_matches_across_normalisation_forms(monkeypatch, target, search, found):
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.idle_add', lambda f: None)
+    mode = _update_search_mode([_xliff_unit('a', target)], search)
+
+    mode.update_search()
+
+    assert [m.get_getter()()[m.start:m.end] for m in mode.matches] == [found]
+
+
+def test_replace_all_keeps_the_rest_of_the_target_in_its_own_form(monkeypatch):
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.idle_add', lambda f: None)
+    units = [_xliff_unit('a', 'café crème é')]
+    mode = _update_search_mode(units, 'é')
+    mode.update_search()
+    mode.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(
+            unit_controller=None,
+            undo_controller=SimpleNamespace(record_start=lambda: None, record_stop=lambda: None),
+        ))
+    mode.ent_replace = SimpleNamespace(get_text=lambda: 'E')
+    mode._search_timeout = 0
+    mode.update_search = lambda: None
+
+    mode._replace_all()
+
+    assert units[0].target == 'cafE crème E'
+
+
 def test_update_search_navigates_nothing_when_nothing_matches(monkeypatch):
     monkeypatch.setattr('virtaal.modes.searchmode.GLib.idle_add', lambda f: None)
     units = [_xliff_unit('a', 'dog'), _xliff_unit('b', 'fish')]

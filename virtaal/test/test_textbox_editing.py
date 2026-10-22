@@ -10,6 +10,7 @@ GTK's key bindings and input-method commit - with undo and redo through
 the real UndoController."""
 
 import random
+from types import SimpleNamespace
 
 import pytest
 from gi.repository import GLib, Gtk
@@ -18,6 +19,8 @@ from translate.storage import factory
 from translate.storage.placeables import base, general
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
+from virtaal.modes.searchmode import SearchMode
+from virtaal.support.pogrep_compat import GrepFilter
 from virtaal.views.widgets import textbox as textbox_module
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
@@ -541,6 +544,27 @@ class TestTextBoxEditing(TestScaffolding):
 
         assert editor.text == 'Café %s café'
         assert self.unit_controller.current_unit.target == 'Café %s café'
+
+    @pytest.mark.parametrize('target, search, found', [
+        ('%s café {0} é', 'é', 'é'),  # NFD target, NFC search
+        ('%s café {0} é', 'é', 'é'),  # NFC target, NFD search
+    ])
+    def test_search_highlights_the_targets_own_code_points(self, tmp_path, target, search, found):
+        path = tmp_path / 'search.po'
+        path.write_text(_ONE_UNIT_PO % target, encoding='utf-8')
+        editor = self._editor(str(path), 0)
+        unit = self.unit_controller.current_unit
+        mode = SearchMode.__new__(SearchMode)
+        mode.unitview = SimpleNamespace(unit=unit, sources=[], targets=[editor.textbox])
+        mode.matches, _ = GrepFilter(searchstring=search, searchparts=('target',), ignorecase=False,
+                                     useregexp=False, max_matches=10).getmatches([unit])
+
+        mode._highlight_textbox_matches(editor.textbox, select_match=False)
+
+        tag = editor.buffer.get_tag_table().lookup('search_highlight')
+        highlighted = ''.join(char for i, char in enumerate(editor.textbox.get_text())
+                              if editor.buffer.get_iter_at_offset(i).has_tag(tag))
+        assert highlighted == found * 2
 
     # Random edits: whatever a translator does, the buffer keeps showing
     # the tree, undoing everything gets the original back and redoing

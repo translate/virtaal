@@ -31,7 +31,8 @@
 # save_file()'s project branch, export_project_file()) still needs it,
 # so it's vendored rather than dropped - see translate/virtaal#3632.
 # _update_from_tempfiles()'s open() was changed to binary mode - see
-# translate/virtaal#3609.
+# translate/virtaal#3609. update_file() adds a project file missing from
+# the archive instead of failing - see translate/virtaal#4533.
 
 import contextlib
 import os
@@ -220,11 +221,8 @@ class BundleProjectStore(ProjectStore):
         if pfname not in self._files:
             raise FileNotInProjectError(pfname)
 
-        if pfname not in self.zip.namelist():
-            super().update_file(pfname, infile)
-            return
-
-        self._zip_delete([pfname])
+        if pfname in self.zip.namelist():
+            self._zip_delete([pfname])
         self._zip_add(pfname, infile)
 
     def _load_settings(self) -> None:  # ty:ignore[invalid-method-override]

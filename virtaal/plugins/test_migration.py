@@ -6,7 +6,10 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import sqlite3
+import sys
 from types import SimpleNamespace
+
+import pytest
 
 from virtaal.common.platform import platform
 from virtaal.plugins import migration
@@ -112,6 +115,17 @@ def test_poedit_settings_import_reads_the_headerless_config_file(tmp_path, monke
     assert migration.pan_app.settings.translator['name'] == 'Jane'
     assert migration.pan_app.settings.translator['email'] == 'jane@example.com'
     assert plugin.migrated == ['Poedit settings']
+
+
+def test_poedit_settings_import_reads_the_macos_config_file(tmp_path, monkeypatch):
+    settings = _settings(monkeypatch)
+    plugin = _poedit_plugin(tmp_path)
+    monkeypatch.setattr(platform, 'is_mac', True)
+    (tmp_path / 'poedit' / 'net.poedit.Poedit.cfg').write_text('translator_name = Jane\n')
+
+    plugin.poedit_settings_import()
+
+    assert settings.translator == {'name': 'Jane'}
 
 
 def test_poedit_settings_import_does_nothing_without_a_config_file_or_registry(tmp_path, monkeypatch):
@@ -373,3 +387,171 @@ def test_init_plugin_shows_nothing_migrated_when_all_imports_find_nothing(tmp_pa
     plugin._init_plugin()
 
     assert plugin._shown == [('Nothing migrated', 'Virtaal was not able to migrate any settings or data')]
+
+
+# The Windows registry: Poedit keeps its settings there when there's no
+# config file.
+
+class _FakeWinreg:
+    """The calls migration makes on winreg, over a dict of keys, each a
+        list of (name, data) values."""
+    HKEY_CURRENT_USER = 'HKCU'
+    REG_SZ = 1
+
+    def __init__(self, keys):
+        self.keys = keys
+
+    def OpenKey(self, root, sub_key):
+        sub_key = sub_key.rstrip('\\')
+        if (root, sub_key) not in self.keys:
+            raise FileNotFoundError(2, 'The system cannot find the file specified')
+        return (root, sub_key)
+
+    def QueryValueEx(self, key, name):
+        for value_name, data in self.keys[key]:
+            if value_name == name:
+                return data, self.REG_SZ
+        raise FileNotFoundError(2, 'The system cannot find the file specified')
+
+
+POEDIT_KEY = ('HKCU', r'Software\Vaclav Slavik\Poedit')
+
+
+def _registry(monkeypatch, keys):
+    monkeypatch.setattr(platform, 'is_windows', True)
+    monkeypatch.setitem(sys.modules, 'winreg', _FakeWinreg(keys))
+
+
+def test_poedit_config_exists_true_with_poedit_in_the_registry(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    _registry(monkeypatch, {POEDIT_KEY: []})
+
+    assert _plugin(tmp_path)._poedit_config_exists() is True
+
+
+def test_poedit_config_exists_false_without_poedit_in_the_registry(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    _registry(monkeypatch, {})
+
+    assert _plugin(tmp_path)._poedit_config_exists() is False
+
+
+def _settings(monkeypatch):
+    monkeypatch.setattr(migration.pan_app.settings, 'general', {})
+    monkeypatch.setattr(migration.pan_app.settings, 'translator', {})
+    monkeypatch.setattr(migration.pan_app.settings, 'write', lambda: None)
+    return migration.pan_app.settings
+
+
+def test_poedit_settings_import_reads_the_registry(tmp_path, monkeypatch):
+    settings = _settings(monkeypatch)
+    _registry(monkeypatch, {POEDIT_KEY: [
+        ('last_file_path', r'C:\Projects'),
+        ('translator_name', 'Jane'),
+        ('translator_email', 'jane@example.com'),
+    ]})
+    plugin = _poedit_plugin(tmp_path, monkeypatch=monkeypatch)
+
+    plugin.poedit_settings_import()
+
+    assert settings.general == {'lastdir': r'C:\Projects'}
+    assert settings.translator == {'name': 'Jane', 'email': 'jane@example.com'}
+    assert plugin.migrated == ['Poedit settings']
+
+
+def test_poedit_settings_import_leaves_out_a_setting_missing_from_the_registry(tmp_path, monkeypatch):
+    settings = _settings(monkeypatch)
+    _registry(monkeypatch, {POEDIT_KEY: [
+        ('translator_name', 'Jane'),
+        ('last_file_path', r'C:\Projects'),
+    ]})
+    plugin = _poedit_plugin(tmp_path, monkeypatch=monkeypatch)
+
+    plugin.poedit_settings_import()
+
+    assert settings.translator == {'name': 'Jane'}
+
+
+def test_poedit_settings_import_does_nothing_without_poedit_in_the_registry(tmp_path, monkeypatch):
+    settings = _settings(monkeypatch)
+    _registry(monkeypatch, {})
+    plugin = _poedit_plugin(tmp_path, monkeypatch=monkeypatch)
+
+    plugin.poedit_settings_import()
+
+    assert settings.general == {}
+    assert settings.translator == {}
+    assert plugin.migrated == []
+
+
+@pytest.mark.skipif(not platform.is_windows, reason='needs the Windows registry')
+def test_poedit_settings_import_reads_the_real_registry(tmp_path, monkeypatch):
+    import winreg
+    key_path = r'Software\Vaclav Slavik\Poedit'
+    try:
+        winreg.CloseKey(winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path))
+        pytest.skip("Poedit's own settings are in the registry")
+    except OSError:
+        pass
+    settings = _settings(monkeypatch)
+    key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, key_path)
+    try:
+        winreg.SetValueEx(key, 'translator_name', 0, winreg.REG_SZ, 'Jane')
+        winreg.SetValueEx(key, 'last_file_path', 0, winreg.REG_SZ, str(tmp_path))
+        plugin = _poedit_plugin(tmp_path, monkeypatch=monkeypatch)
+
+        assert plugin._poedit_config_exists()
+        plugin.poedit_settings_import()
+    finally:
+        winreg.CloseKey(key)
+        winreg.DeleteKey(winreg.HKEY_CURRENT_USER, key_path)
+
+    assert settings.general == {'lastdir': str(tmp_path)}
+    assert settings.translator == {'name': 'Jane'}
+
+
+# The plugin as Virtaal starts it: everything found under the user's
+# home directory.
+
+def _start(tmp_path, monkeypatch, accepts):
+    home = tmp_path / 'home'
+    home.mkdir()
+    monkeypatch.setenv('HOME', str(home))
+    monkeypatch.setenv('USERPROFILE', str(home))  # Windows' home
+    monkeypatch.setenv('XDG_CONFIG_HOME', str(home / '.config'))
+    monkeypatch.setenv('XDG_DATA_HOME', str(home / '.local' / 'share'))
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(migration.pan_app, 'get_config_dir', lambda: str(tmp_path / 'config'))
+    monkeypatch.setattr(migration.Plugin, 'default_config', {'tmdb': str(tmp_path / 'tm.db')})
+    monkeypatch.setattr(migration.pan_app.settings, 'plugin_state', {})
+    settings = _settings(monkeypatch)
+    shown = []
+    main_controller = SimpleNamespace(
+        show_prompt=lambda title, message: accepts,
+        show_info=lambda title, message: shown.append(title),
+    )
+    return home, settings, main_controller, shown
+
+
+def test_starting_imports_poedits_settings_when_the_user_agrees(tmp_path, monkeypatch):
+    home, settings, main_controller, shown = _start(tmp_path, monkeypatch, accepts=True)
+    (home / '.poedit').mkdir()
+    (home / '.poedit' / 'config').write_text('translator_name = Jane\n')
+
+    plugin = migration.Plugin('migration', main_controller)
+
+    assert plugin.config['tmdb'] == str(tmp_path / 'tm.db')
+    assert settings.translator == {'name': 'Jane'}
+    assert shown == ['Migration completed']
+    assert settings.plugin_state == {'migration': 'disabled'}
+
+
+def test_starting_with_nothing_to_import_asks_nothing(tmp_path, monkeypatch):
+    _home, settings, main_controller, shown = _start(tmp_path, monkeypatch, accepts=True)
+    main_controller.show_prompt = lambda title, message: pytest.fail('asked to migrate')
+
+    migration.Plugin('migration', main_controller)
+
+    assert shown == []
+    assert settings.plugin_state == {'migration': 'disabled'}

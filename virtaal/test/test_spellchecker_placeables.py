@@ -7,13 +7,17 @@
 
 """The spell checker plugin with real GtkSpell on a real target text box."""
 
+from types import SimpleNamespace
+
 import gi
 import pytest
+from gi.repository import GObject
 from test_scaffolding import TestScaffolding
 from translate.storage import factory
 
 from virtaal.common import SignalTracker
 from virtaal.controllers.placeablescontroller import PlaceablesController
+from virtaal.plugins import spellchecker
 from virtaal.plugins.spellchecker import Plugin
 
 try:
@@ -38,9 +42,25 @@ def _misspelled(textbox):
     return words + [word] if word else words
 
 
+class _UnitView(GObject.Object):
+    """A unit view that hasn't made its text boxes yet."""
+    __gsignals__ = {
+        'sources-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'targets-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'textview-language-changed': (GObject.SignalFlags.RUN_FIRST, None, (object, object)),
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.sources = []
+        self.targets = []
+
+
 @pytest.mark.skipif(GtkSpell is None or not enchant.dict_exists('en_US'),
                     reason='needs GtkSpell and an en_US dictionary')
 class TestSpellCheckerPlaceables(TestScaffolding):
+    plugin = checker = None
+
     def setup_class(self):
         TestScaffolding.setup_class(self)
         PlaceablesController(self.main_controller)
@@ -60,8 +80,11 @@ class TestSpellCheckerPlaceables(TestScaffolding):
         return textbox, plugin, checker
 
     def teardown_method(self):
-        self.plugin._signal_tracker.disconnect_all()
-        self.checker.detach()
+        if self.plugin is not None:
+            self.plugin._signal_tracker.disconnect_all()
+        if self.checker is not None:
+            self.checker.detach()
+        self.plugin = self.checker = None
 
     def test_words_in_placeables_are_not_marked(self):
         # #4253
@@ -88,3 +111,45 @@ class TestSpellCheckerPlaceables(TestScaffolding):
         self.checker.recheck_all()
 
         assert _misspelled(textbox) == ['hxqere']
+
+    def _start(self, monkeypatch, main_controller):
+        idle = []
+        monkeypatch.setattr(spellchecker.GLib, 'idle_add', lambda func, *args, **kwargs: idle.append((func, args)))
+        plugin = Plugin('spellchecker', main_controller)
+        for func, args in idle:
+            func(*args)
+        return plugin
+
+    def test_starting_checks_each_text_box_in_its_language(self, monkeypatch):
+        view = self.unit_controller.load_unit(factory.getobject("devsupport/testfiles/placeables.po").getunits()[6])
+        monkeypatch.setattr(self.lang_controller, '_source_lang', SimpleNamespace(code='en'))
+        monkeypatch.setattr(self.lang_controller, '_target_lang', SimpleNamespace(code='xx'))
+
+        plugin = self._start(monkeypatch, self.main_controller)
+        try:
+            for source in view.sources:
+                assert source.spell_lang == 'en_US'
+                assert GtkSpell.Checker.get_from_text_view(source).get_language() == 'en_US'
+            for target in view.targets:
+                assert target.spell_lang is None
+                assert GtkSpell.Checker.get_from_text_view(target) is None
+        finally:
+            plugin.destroy()
+
+        assert all(GtkSpell.Checker.get_from_text_view(source) is None for source in view.sources)
+
+    def test_text_boxes_made_after_starting_are_checked(self, monkeypatch):
+        view = self.unit_controller.load_unit(factory.getobject("devsupport/testfiles/placeables.po").getunits()[6])
+        textbox = view.targets[0]
+        unit_view = _UnitView()
+        main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view))
+        self.plugin = self._start(monkeypatch, main_controller)
+
+        unit_view.emit('targets-created', [textbox])
+        textbox.set_text('%(couXnt)s files renamd')
+        self.checker = GtkSpell.Checker()
+        self.checker.attach(textbox)
+        self.checker.set_language('en_US')
+        self.checker.recheck_all()
+
+        assert _misspelled(textbox) == ['renamd']

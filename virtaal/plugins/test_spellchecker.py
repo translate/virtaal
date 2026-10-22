@@ -583,6 +583,14 @@ def test_destroy_disconnects_signals_and_disables_every_textview():
     assert plugin._signal_tracker._ids == []
 
 
+def test_a_text_view_without_placeables_has_its_words_checked():
+    text_view = Gtk.TextView()
+    text_view.get_buffer().set_text('renamd')
+    start, end = text_view.get_buffer().get_bounds()
+
+    assert not spellchecker._in_placeable(text_view, start, end)
+
+
 def test_unsupported_in_a_frozen_build(monkeypatch):
     """The Windows and macOS builds don't bundle a version-matched
     gtkspell3 - a system-found one can mismatch the frozen app's own
@@ -617,6 +625,23 @@ def test_unsupported_on_windows_with_a_non_ascii_username(monkeypatch):
     monkeypatch.setenv('APPDATA', 'C:\\Users\\\u00e9lise\\AppData\\Roaming')
 
     with pytest.raises(PluginUnsupported):
+        Plugin('spellchecker', None)
+
+
+def test_unsupported_without_gtkspell(monkeypatch):
+    """The GtkSpell typelib isn't always installed."""
+    import gi
+    require_version = gi.require_version
+
+    def missing_gtkspell(namespace, version):
+        if namespace == 'GtkSpell':
+            raise ValueError('Namespace GtkSpell not available')
+        return require_version(namespace, version)
+    monkeypatch.setattr(gi, 'require_version', missing_gtkspell)
+    monkeypatch.setattr(platform, 'is_frozen', False)
+    monkeypatch.setattr(platform, 'is_windows', False)
+
+    with pytest.raises(PluginUnsupported, match='GtkSpell'):
         Plugin('spellchecker', None)
 
 

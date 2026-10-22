@@ -18,7 +18,11 @@ from gi.repository import Gtk
 
 from virtaal.common import pan_app
 from virtaal.plugins.autocorrector import AutoCorrector, Plugin
-from virtaal.support.asset_manifest import entry_shas, installed_asset_key
+from virtaal.support.asset_manifest import (
+    AssetManifest,
+    entry_shas,
+    installed_asset_key,
+)
 from virtaal.support.test_autocorrect_source import AF_ZA_DOCUMENT_LIST
 from virtaal.views.widgets.textbox import TextBox
 
@@ -682,3 +686,17 @@ def test_plugin_destroy_skips_the_optional_cursor_disconnect_when_never_set(monk
     plugin.destroy()  # must not raise despite no _cursor_changed_id ever set
 
     assert ('disconnect', 'store-sig') in calls
+
+
+def test_the_plugin_reads_the_asset_manifest_from_the_config_dir(tmp_path, monkeypatch):
+    # Without one passed in, the plugin makes its own the first time
+    # it looks for a download.
+    monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path))
+    plugin = Plugin.__new__(Plugin)
+    plugin._asset_manifest = None
+
+    manifest = plugin._get_asset_manifest()
+
+    assert isinstance(manifest, AssetManifest)
+    assert os.path.dirname(manifest._cache_path) == str(tmp_path)
+    assert plugin._get_asset_manifest() is manifest

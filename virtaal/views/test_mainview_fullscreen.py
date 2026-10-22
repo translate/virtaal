@@ -11,7 +11,7 @@ the app button and back."""
 import sys
 
 import pytest
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from virtaal.common.platform import platform
 from virtaal.test.test_scaffolding import TestScaffolding
@@ -98,13 +98,18 @@ class TestFullscreenMenus(TestScaffolding):
         finally:
             menu.disconnect(handler)
 
-    def test_the_app_button_pops_up_its_menu(self):
+    def test_the_app_button_pops_up_its_menu_under_the_button(self, monkeypatch):
+        # Whether GTK then shows it depends on getting a pointer grab, which
+        # a test's synthetic press without a click doesn't reliably get.
         self._fullscreen(True)
+        popups = []
+        monkeypatch.setattr(self.view.app_menu, 'popup_at_widget',
+                            lambda widget, widget_anchor, menu_anchor, event: popups.append(
+                                (widget, widget_anchor, menu_anchor)))
 
         self.view.btn_app.emit('pressed')
 
-        assert self.view.app_menu.get_visible()
-        self.view.app_menu.popdown()
+        assert popups == [(self.view.btn_app, Gdk.Gravity.SOUTH_WEST, Gdk.Gravity.NORTH_WEST)]
 
     def test_macos_keeps_its_menus_in_place(self, monkeypatch):
         # They're in the native menu bar there.

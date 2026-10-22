@@ -142,8 +142,6 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         return s
 
     def get_all_items(self):
-        if not self._model:
-            return None
         return [
             {
                 'enabled': row[COL_ENABLED],
@@ -154,8 +152,6 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         ]
 
     def get_item(self, iter):
-        if not self._model:
-            return None
         if not self._model.iter_is_valid(iter):
             return None
 
@@ -253,8 +249,6 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
     # EVENT HANDLERS #
     def _on_item_toggled(self, cellr, path):
         iter = self._model.get_iter(path)
-        if not iter:
-            return
         item_info = self.get_item(iter)
         item_info['enabled'] = not item_info['enabled']
         self._model.set_value(iter, COL_ENABLED, item_info['enabled'])

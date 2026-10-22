@@ -13,11 +13,7 @@ from translate.storage import factory
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
-
-try:
-    from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
-except ImportError:
-    from virtaal_plugins.terminology.models.basetermmodel import BaseTerminologyModel
+from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
 
 from .localfileview import LocalFileView
 

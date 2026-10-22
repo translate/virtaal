@@ -7,7 +7,7 @@
 
 from locale import strxfrm
 
-from gi.repository import Gdk, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -88,12 +88,13 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
         vbox.lbl_name = None
         if 'name' in item and item['name']:
-            name = (self.bold_name and '<b>%s</b>' or '%s') % (item['name'])
             lbl = Gtk.Label()
             lbl.set_xalign(0)
             lbl.set_yalign(0)
-            lbl.set_text(name)
-            lbl.set_use_markup(self.bold_name)
+            if self.bold_name:
+                lbl.set_markup('<b>%s</b>' % GLib.markup_escape_text(item['name']))
+            else:
+                lbl.set_text(item['name'])
             lbl.set_property('xpad', 2)
             lbl.set_margin_top(2)
             vbox.pack_start(lbl, True, True, 0)
@@ -132,11 +133,12 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         s = ''
         widget = widget.get_children()[0]
         if widget.lbl_name:
-            s = widget.lbl_name.get_label()
+            if widget.lbl_name.get_use_markup():
+                s = widget.lbl_name.get_label()
+            else:
+                s = GLib.markup_escape_text(widget.lbl_name.get_text())
         if widget.lbl_desc:
-            # avoid the import of xml.sax.saxutils.escape
-            escaped = widget.lbl_desc.get_text().replace("&", "&amp;").replace("<", "&lt;") # & must be first
-            s += '\n' + escaped
+            s += '\n' + GLib.markup_escape_text(widget.lbl_desc.get_text())
         return s
 
     def get_all_items(self):

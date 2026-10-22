@@ -300,16 +300,15 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
 
     def translate_unit(self, unit_source, source_langs, target_langs):
         """Return TM suggestions for unit_source."""
-        if isinstance(source_langs, list):
-            source_langs = [data.normalize_code(lang) for lang in source_langs]
-            source_langs = ",".join(source_langs)
-        else:
-            source_langs = data.normalize_code(source_langs)
-        if isinstance(target_langs, list):
-            target_langs = [data.normalize_code(lang) for lang in target_langs]
-            target_langs = ",".join(target_langs)
-        else:
-            target_langs = data.normalize_code(target_langs)
+        if not isinstance(source_langs, list):
+            source_langs = [source_langs]
+        source_langs = [data.normalize_code(lang) for lang in source_langs]
+        if not isinstance(target_langs, list):
+            target_langs = [target_langs]
+        target_langs = [data.normalize_code(lang) for lang in target_langs]
+        # One placeholder per language: "IN (?)" with "en,fr" matches neither.
+        langs_in = "s.lang IN (%s) AND t.lang IN (%s)" % (
+            ",".join("?" * len(source_langs)), ",".join("?" * len(target_langs)))
 
         minlen = min_levenshtein_length(len(unit_source), self.min_similarity)
         maxlen = max_levenshtein_length(
@@ -324,20 +323,20 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
         if self.fulltext and len(unit_words) > 3:
             logger.debug("fulltext matching")
             query = """SELECT s.text, t.text, s.context, s.lang, t.lang FROM sources s JOIN targets t ON s.sid = t.sid JOIN fulltext f ON s.sid = f.docid
-                       WHERE s.lang IN (?) AND t.lang IN (?) AND s.length BETWEEN ? AND ?
-                       AND fulltext MATCH ?"""
+                       WHERE %s AND s.length BETWEEN ? AND ?
+                       AND fulltext MATCH ?""" % langs_in
             # Quoted, so a word such as AND, NOT or NEAR isn't read as an
             # FTS operator (#4332). STRIP_REGEXP has removed any quote.
             search_str = " OR ".join('"%s"' % word for word in unit_words)
             self.cursor.execute(
-                query, (source_langs, target_langs, minlen, maxlen, search_str)
+                query, (*source_langs, *target_langs, minlen, maxlen, search_str)
             )
         else:
             logger.debug("nonfulltext matching")
             query = """SELECT s.text, t.text, s.context, s.lang, t.lang FROM sources s JOIN targets t ON s.sid = t.sid
-            WHERE s.lang IN (?) AND t.lang IN (?)
-            AND s.length >= ? AND s.length <= ?"""
-            self.cursor.execute(query, (source_langs, target_langs, minlen, maxlen))
+            WHERE %s
+            AND s.length >= ? AND s.length <= ?""" % langs_in
+            self.cursor.execute(query, (*source_langs, *target_langs, minlen, maxlen))
 
         results = []
         for row in self.cursor:

@@ -28,6 +28,7 @@ def unescape_html_entities(text):
                     pass
         else:
             return entity
+        return text
     return re.sub(r"&(#[0-9]+|\w+);", fixup, text)
 
 

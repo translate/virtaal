@@ -30,27 +30,41 @@ docker run --rm --init \
 set -eu
 . /etc/os-release
 echo "== installing packages"
+# A stalled mirror can hold apt or dnf for good: retry it.
+fetch() {
+    for attempt in 1 2 3; do
+        timeout 180 "$@" >/dev/null && return
+        echo "== $1 $2 failed (${SECONDS}s)"
+    done
+    return 1
+}
 case "$ID" in
     ubuntu|debian)
         export DEBIAN_FRONTEND=noninteractive
-        # dnf retries a stalled download by default; apt needs telling.
         printf "%s\n" "Acquire::Retries \"3\";" "Acquire::http::Timeout \"30\";" \
             "Acquire::https::Timeout \"30\";" > /etc/apt/apt.conf.d/80retries
-        apt-get update -qq >/dev/null
-        apt-get install -y -qq --no-install-recommends xvfb xauth hunspell-en-us \
-            libxcb1 libwayland-client0 libwayland-egl1 libwayland-cursor0 libfontconfig1 procps \
-            gsettings-desktop-schemas libglib2.0-bin >/dev/null
+        packages="xvfb xauth hunspell-en-us libxcb1 libwayland-client0 libwayland-egl1
+            libwayland-cursor0 libfontconfig1 procps gsettings-desktop-schemas libglib2.0-bin"
         # Ubuntu sets its desktop defaults (the Yaru theme) as schema
         # overrides for its own desktop.
         if [ "$ID" = ubuntu ]; then
-            apt-get install -y -qq --no-install-recommends ubuntu-settings >/dev/null
+            packages="$packages ubuntu-settings"
             export XDG_CURRENT_DESKTOP=ubuntu:GNOME
         fi
+        fetch apt-get update -qq
+        echo "== updated (${SECONDS}s)"
+        fetch apt-get install -y -qq --no-install-recommends --download-only $packages
+        echo "== downloaded (${SECONDS}s)"
+        apt-get install -y -qq --no-install-recommends $packages >/dev/null
         ;;
     fedora)
-        dnf install -y -q xorg-x11-server-Xvfb xvfb-run xauth hunspell-en-US \
-            libxcb libwayland-client libwayland-egl libwayland-cursor fontconfig procps-ng \
-            gsettings-desktop-schemas glib2 >/dev/null
+        packages="xorg-x11-server-Xvfb xvfb-run xauth hunspell-en-US libxcb libwayland-client
+            libwayland-egl libwayland-cursor fontconfig procps-ng gsettings-desktop-schemas glib2"
+        fetch dnf makecache -q
+        echo "== updated (${SECONDS}s)"
+        fetch dnf install -y -q --downloadonly $packages
+        echo "== downloaded (${SECONDS}s)"
+        dnf install -y -q $packages >/dev/null
         ;;
     *)
         echo "No package list for $ID" >&2

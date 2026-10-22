@@ -9,10 +9,10 @@ import time
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, GObject, Gtk, Pango
 
 from virtaal.common import pan_app
-from virtaal.plugins.tm.tmwidgets import TMSourceColRenderer, TMWindow
+from virtaal.plugins.tm.tmwidgets import TMMatchRenderer, TMSourceColRenderer, TMWindow
 
 
 class _FakeCellRenderer:
@@ -360,3 +360,123 @@ def test_update_geometry_shrinks_back_when_the_target_narrows():
 
     tmwindow.destroy()
     window.destroy()
+
+
+def test_update_geometry_waits_until_the_popup_is_realized():
+    window, _source, target = _make_source_and_target('top')
+    tmwindow = _make_tmwindow_with_matches(show=False)
+
+    tmwindow.update_geometry(target)
+
+    assert not tmwindow.get_realized()
+    tmwindow.destroy()
+    window.destroy()
+
+
+def test_update_geometry_waits_until_the_target_is_shown():
+    tmwindow = _make_tmwindow_with_matches()
+    width = tmwindow.get_window().get_width()
+    target = Gtk.TextView()
+    scrolled = Gtk.ScrolledWindow()
+    scrolled.add(target)
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    assert tmwindow.get_window().get_width() == width
+    tmwindow.destroy()
+
+
+def test_update_geometry_keeps_to_the_monitor_without_the_windows_frame(monkeypatch):
+    window, _source, target = _make_source_and_target('top')
+    tmwindow = _make_tmwindow_with_matches()
+    monkeypatch.setattr(target, 'get_toplevel', lambda: SimpleNamespace(get_window=lambda: None))
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    top, bottom = _popup_span(tmwindow)
+    workarea = Gdk.Display.get_default().get_monitor_at_window(
+        target.get_window(Gtk.TextWindowType.WIDGET)).get_workarea()
+    assert top >= _bottom(target)
+    assert bottom <= workarea.y + workarea.height
+    tmwindow.destroy()
+    window.destroy()
+
+
+def _drawn_pixels(renderer, widget):
+    """The pixels C{renderer} draws for its matchdata in a realized view
+        like C{widget}, beyond those of a row it draws nothing for."""
+    def render(matchdata):
+        liststore = Gtk.ListStore(GObject.TYPE_PYOBJECT)
+        liststore.append([matchdata])
+        view = Gtk.TreeView(model=liststore)
+        view.set_direction(widget.get_direction())
+        view.set_headers_visible(False)
+        view.append_column(Gtk.TreeViewColumn('', renderer, matchdata=0))
+        window = Gtk.OffscreenWindow()
+        window.set_size_request(400, 200)
+        window.add(view)
+        window.show_all()
+        _process_events()
+        pixels = window.get_pixbuf().get_pixels()
+        window.destroy()
+        return pixels
+    matchdata = renderer.matchdata
+    blank = render({'source': '', 'target': '', 'query_str': '', 'quality': 0})
+    drawn = render(matchdata)
+    renderer.matchdata = matchdata
+    return sum(1 for a, b in zip(drawn, blank) if a != b)
+
+
+@pytest.mark.parametrize('direction', [Gtk.TextDirection.LTR, Gtk.TextDirection.RTL])
+def test_tm_source_is_drawn_in_either_direction(direction):
+    widget = Gtk.TreeView()
+    widget.set_direction(direction)
+    renderer = TMSourceColRenderer(view=None)
+    renderer.matchdata = {'tmsource': 'Current file'}
+
+    assert _drawn_pixels(renderer, widget) > 0
+    assert renderer.get_property('matchdata') == {'tmsource': 'Current file'}
+
+
+def test_tm_source_with_markup_characters_is_shown():
+    # An XLIFF alt-trans origin attribute goes into the TM source as is.
+    widget = Gtk.TreeView()
+    renderer = TMSourceColRenderer(view=None)
+    renderer.matchdata = {'tmsource': 'Tom and Jerry'}
+    plain = renderer.do_get_size(widget, None)
+    renderer.matchdata = {'tmsource': 'Tom & Jerry'}
+
+    assert renderer.do_get_size(widget, None)[3] > plain[3] * 3 // 4
+    assert _drawn_pixels(renderer, widget) > 0
+
+
+def _match_renderer(**match):
+    renderer = TMMatchRenderer(_fake_view())
+    renderer.matchdata = dict({'quality': 90, 'query_str': 'query', 'source': 'source text', 'target': 'target text'}, **match)
+    return renderer
+
+
+def test_a_machine_translation_shows_only_its_target():
+    widget = Gtk.TreeView()
+    tm_height = _match_renderer().do_get_size(widget, None)[3]
+    mt = _match_renderer(quality=0, source='query')
+
+    mt_height = mt.do_get_size(widget, None)[3]
+
+    assert mt.source_layout is None
+    assert mt_height < tm_height
+    assert _drawn_pixels(mt, widget) > 0
+    assert mt.get_property('matchdata')['quality'] == 0
+
+
+def test_match_text_is_right_aligned_in_a_right_to_left_view():
+    widget = Gtk.TreeView()
+    widget.set_direction(Gtk.TextDirection.RTL)
+    renderer = _match_renderer()
+
+    renderer.do_get_size(widget, None)
+
+    assert renderer.target_layout.get_alignment() == Pango.Alignment.RIGHT
+    assert renderer.source_layout.get_alignment() == Pango.Alignment.RIGHT

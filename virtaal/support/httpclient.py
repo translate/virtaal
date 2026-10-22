@@ -32,7 +32,7 @@ class HTTPRequest(GObjectWrapper):
     }
 
     def __init__(self, url, method='GET', data=None, headers=None,
-            headers_only=False, user_agent=None, follow_location=False,
+            user_agent=None, follow_location=False,
             force_quiet=True, download=False):
         GObjectWrapper.__init__(self)
         self.result = BytesIO()
@@ -57,7 +57,7 @@ class HTTPRequest(GObjectWrapper):
         self._configure_timeouts(download)
         self._configure_ca_bundle()
         self._configure_windows_tls_workaround()
-        self._configure_method(method, data, headers, headers_only, user_agent, follow_location)
+        self._configure_method(method, data, headers, user_agent, follow_location)
         self._configure_proxy()
 
         # self reference required, because CurlMulti will only return
@@ -91,7 +91,7 @@ class HTTPRequest(GObjectWrapper):
         # doesn't name this constant, hence the literal.
         self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE | 8)
 
-    def _configure_method(self, method, data, headers, headers_only, user_agent, follow_location):
+    def _configure_method(self, method, data, headers, user_agent, follow_location):
         # let's set the HTTP request method
         if method == 'GET':
             self.curl.setopt(pycurl.HTTPGET, 1)
@@ -111,9 +111,6 @@ class HTTPRequest(GObjectWrapper):
                 self.curl.setopt(pycurl.POSTFIELDSIZE, len(self.data))
         if headers:
             self.curl.setopt(pycurl.HTTPHEADER, headers)
-        if headers_only:
-            self.curl.setopt(pycurl.HEADER, 1)
-            self.curl.setopt(pycurl.NOBODY, 1)
         if user_agent:
             self.curl.setopt(pycurl.USERAGENT, user_agent)
         if follow_location:
@@ -142,10 +139,6 @@ class HTTPRequest(GObjectWrapper):
 
     def get_effective_url(self):
         return self.curl.getinfo(pycurl.EFFECTIVE_URL)
-
-    def perform(self):
-        """run the request (blocks)"""
-        self.curl.perform()
 
     def handle_result(self):
         """called after http request is done"""

@@ -657,35 +657,58 @@ def test_get_locale_lang_falls_back_to_en_on_error(monkeypatch, caplog):
 
 # get_default_font() #
 
-def test_get_default_font_falls_back_to_gio_when_gconf_is_unavailable(monkeypatch):
-    import gi
-    real_require_version = gi.require_version
-    def fake_require_version(namespace, version):
-        if namespace == 'GConf':
-            raise ImportError('no GConf')
-        return real_require_version(namespace, version)
-    monkeypatch.setattr(gi, 'require_version', fake_require_version)
-
-    font = pan_app.get_default_font()
-
-    assert font  # the real system GSettings font name, whatever it is
+def _desktop_interface_schema():
+    from gi.repository import Gio
+    source = Gio.SettingsSchemaSource.get_default()
+    return source and source.lookup('org.gnome.desktop.interface', True)
 
 
-def test_get_default_font_falls_back_to_gtk_when_gconf_raises_unexpectedly(monkeypatch):
-    # The real, unmocked behaviour on a system with no GConf typelib at
-    # all: gi.require_version() itself raises ValueError, not
-    # ImportError - only the generic `except Exception` catches it.
-    import gi
-    real_require_version = gi.require_version
-    def fake_require_version(namespace, version):
-        if namespace == 'GConf':
-            raise ValueError('Namespace GConf not available')
-        return real_require_version(namespace, version)
-    monkeypatch.setattr(gi, 'require_version', fake_require_version)
+def test_get_default_font_uses_the_desktops_monospace_font_on_linux(monkeypatch):
+    if not _desktop_interface_schema():
+        pytest.skip("needs GNOME's desktop interface settings schema")
+    from gi.repository import Gio
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    desktop = Gio.Settings.new('org.gnome.desktop.interface').get_string('monospace-font-name')
+
+    assert pan_app.get_default_font() == desktop
+
+
+def test_get_default_font_without_the_desktop_schema_uses_gtks_size(monkeypatch):
+    from gi.repository import Gio
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(Gio.SettingsSchemaSource, 'get_default', staticmethod(lambda: None))
 
     font = pan_app.get_default_font()
 
     assert font.startswith('monospace ')
+    assert font.split(' ')[-1].replace('.', '').isdigit()
+
+
+def test_get_default_font_falls_back_to_gtks_size_when_the_desktop_settings_fail(monkeypatch):
+    from gi.repository import Gio
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    def broken():
+        raise RuntimeError('no settings backend')
+    monkeypatch.setattr(Gio.SettingsSchemaSource, 'get_default', staticmethod(broken))
+
+    assert pan_app.get_default_font().startswith('monospace ')
+
+
+@pytest.mark.parametrize('flag', ['is_mac', 'is_windows'])
+def test_get_default_font_ignores_bundled_desktop_settings_on_mac_and_windows(monkeypatch, flag):
+    # A bundle's schemas are its build machine's, not the user's.
+    from gi.repository import Gio
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(pan_app.platform, flag, True)
+    def never(*args):
+        raise AssertionError('read the desktop settings')
+    monkeypatch.setattr(Gio.Settings, 'new', staticmethod(never))
+
+    assert pan_app.get_default_font().startswith('monospace ')
 
 
 # Settings #

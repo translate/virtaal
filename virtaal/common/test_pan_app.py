@@ -713,6 +713,28 @@ def test_get_default_font_ignores_bundled_desktop_settings_on_mac_and_windows(mo
 
 # Settings #
 
+def test_settings_reads_every_section_of_virtaal_ini(tmp_path):
+    path = tmp_path / 'virtaal.ini'
+    path.write_text(
+        '[translator]\nname = Ann\n'
+        '[general]\nlastdir = /tmp/work\nwindowwidth = 1024\n'
+        '[placeable_state]\nxmltagplaceable = disabled\n'
+        '[plugin_state]\nautocorrector = enabled\n'
+        '[undo]\ndepth = 50\n', encoding='utf-8')
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.translator['name'] == 'Ann'
+    assert settings.general['lastdir'] == '/tmp/work'
+    # Values come back as text; their users convert them (config_int()).
+    assert settings.general['windowwidth'] == '1024'
+    assert settings.general['windowheight'] == 544
+    assert settings.placeable_state['xmltagplaceable'] == 'disabled'
+    assert settings.placeable_state['altattrplaceable'] == 'disabled'
+    assert settings.plugin_state['autocorrector'] == 'enabled'
+    assert settings.undo['depth'] == '50'
+
+
 def test_settings_raises_for_a_missing_explicit_filename(tmp_path):
     with pytest.raises(Exception):
         pan_app.Settings(str(tmp_path / 'does-not-exist.ini'))
@@ -1136,3 +1158,82 @@ def test_config_int_logs_the_value_it_replaced(caplog):
     pan_app.config_int('abc', 5, 0, 1000, 'max_matches')
 
     assert "Using 5 for max_matches: 'abc'" in caplog.text
+
+
+# install_saved_ui_language() #
+
+@pytest.fixture
+def ui_language_globals(monkeypatch):
+    monkeypatch.setattr(pan_app, 'ui_language', pan_app.ui_language)
+    monkeypatch.setattr(pan_app, 'has_ui_translation', pan_app.has_ui_translation)
+
+
+def test_install_saved_ui_language_installs_the_saved_language(monkeypatch, ui_language_globals):
+    installed = []
+    monkeypatch.setitem(pan_app.settings.language, 'uilang', 'af')
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr(pan_app, '_install_explicit_ui_language',
+                        lambda lang, languages, fallback: installed.append((lang, languages, fallback)))
+    monkeypatch.setattr('builtins._', lambda s: s or 'PO header')  # a real catalog is loaded
+
+    pan_app.install_saved_ui_language()
+
+    # The OS language is gettext's fallback for a saved language it lacks.
+    assert installed == [('af', ['af', 'fr'], True)]
+    assert pan_app.ui_language == 'af'
+    assert pan_app.has_ui_translation is True
+
+
+def test_install_saved_ui_language_uses_the_os_language_without_a_saved_one(monkeypatch, ui_language_globals):
+    installed = []
+    monkeypatch.setitem(pan_app.settings.language, 'uilang', '')
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr(pan_app, '_install_system_ui_language', lambda: installed.append('system'))
+    monkeypatch.setattr('builtins._', lambda s: s or 'PO header')
+
+    pan_app.install_saved_ui_language()
+
+    assert installed == ['system']
+    assert pan_app.ui_language == 'fr'
+
+
+def test_install_saved_ui_language_reports_en_without_a_catalog(monkeypatch, ui_language_globals):
+    monkeypatch.setitem(pan_app.settings.language, 'uilang', 'af')
+    monkeypatch.setattr(pan_app, '_install_explicit_ui_language', lambda lang, languages, fallback: None)
+    monkeypatch.setattr('builtins._', lambda s: s)  # NullTranslations-style passthrough
+
+    pan_app.install_saved_ui_language()
+
+    assert pan_app.ui_language == 'en'
+    assert pan_app.has_ui_translation is False
+
+
+# _english_language_name() #
+
+def test_english_language_name_without_pycountry_is_none_for_a_code_toolkit_lacks(monkeypatch):
+    from virtaal.support import translate_compat
+    monkeypatch.setattr(translate_compat, 'pycountry', None)
+
+    assert pan_app._english_language_name('xqz') is None
+    assert pan_app._english_language_name('af') == 'Afrikaans'
+
+
+# _redirect_output_to_logs() #
+
+def test_redirect_output_to_logs_writes_stdout_and_stderr_to_the_config_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(pan_app.sys, 'stdout', pan_app.sys.stdout)
+    monkeypatch.setattr(pan_app.sys, 'stderr', pan_app.sys.stderr)
+
+    pan_app._redirect_output_to_logs()
+    try:
+        pan_app.sys.stdout.write('out line\n')
+        pan_app.sys.stderr.write('err line\n')
+    finally:
+        pan_app.sys.stdout.close()
+        pan_app.sys.stderr.close()
+
+    for name, line in (('stdout', 'out line\n'), ('stderr', 'err line\n')):
+        log = (tmp_path / f'{name}_virtaal.log').read_text(encoding='utf-8')
+        assert pan_app._LAUNCH_MARKER_RE.match(log)
+        assert log.endswith(line)

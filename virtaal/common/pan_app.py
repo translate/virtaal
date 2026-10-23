@@ -134,14 +134,17 @@ def _open_frozen_log(path):
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
-if platform.is_windows and platform.is_frozen:
+def _redirect_output_to_logs():
     import time
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = _open_frozen_log(filename_template % ('stdout'))
     sys.stderr = _open_frozen_log(filename_template % ('stderr'))
-    _launch_marker = _build_launch_marker(time.strftime('%Y-%m-%d %H:%M:%S'))
-    sys.stdout.write(_launch_marker)
-    sys.stderr.write(_launch_marker)
+    launch_marker = _build_launch_marker(time.strftime('%Y-%m-%d %H:%M:%S'))
+    sys.stdout.write(launch_marker)
+    sys.stderr.write(launch_marker)
+
+if platform.is_windows and platform.is_frozen:  # pragma: no cover
+    _redirect_output_to_logs()
 
 
 # Ok, now we can continue with what we actually wanted to do
@@ -662,7 +665,7 @@ def set_ui_language(lang):
 main_dir = platform.bundle_dir or os.path.dirname(sys.argv[0])
 
 
-if platform.is_windows and platform.is_frozen:
+if platform.is_windows and platform.is_frozen:  # pragma: no cover
     fix_libintl(main_dir)
 
 
@@ -691,7 +694,7 @@ def _set_enchant_env_vars(enchant_dir):
     os.environ.setdefault('ENCHANT_DATA_DIR', os.path.join(enchant_dir, 'share', 'enchant'))
 
 # Frozen Intel-only - no arm64 build of the bundled dylib exists yet.
-if platform.is_mac and platform.is_frozen and platform.is_intel:
+if platform.is_mac and platform.is_frozen and platform.is_intel:  # pragma: no cover
     try:
         _set_enchant_env_vars(get_abs_data_filename(["enchant_intel"]))
     except ValueError:

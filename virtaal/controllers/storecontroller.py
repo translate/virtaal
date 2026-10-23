@@ -274,10 +274,6 @@ class StoreController(BaseController):
             self.store.save_file()
 
             proj_fname = self.project.get_proj_filename(self.real_filename)
-            if not proj_fname:
-                # This really shouldn't happen
-                raise ValueError("Unable to determine file's project name: %s" % (self.real_filename))
-
             with open(self.real_filename, 'rb') as infile:
                 self.project.update_file(proj_fname, infile)
             self.project.convert_forward(proj_fname, overwrite_output=True)

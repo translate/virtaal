@@ -80,20 +80,11 @@ class UndoModel(BaseModel):
             entry = entry[0] if entry else None
         return entry.get('unit') if isinstance(entry, dict) else None
 
-    def pop(self, permanent=False):
+    def pop(self):
         if not self.undo_stack or not (0 <= self.index < len(self.undo_stack)):
             return None
-
-        if not permanent:
-            self.index -= 1
-            return self.undo_stack[self.index+1]
-
-        # self.index does not necessarily point to the last element in the list, so we have
-        # to throw away the rest of the list first.
-        self.undo_stack = self.undo_stack[:self.index]
-        item = self.undo_stack.pop()
-        self.index = len(self.undo_stack) - 1
-        return item
+        self.index -= 1
+        return self.undo_stack[self.index+1]
 
     def push(self, undo_dict):
         """Push an undo-action onto the undo stack.

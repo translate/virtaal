@@ -203,44 +203,26 @@ def name():
     return name or ""
 
 def get_default_font():
-    default_font = 'monospace'
-    font_size = ''
-
-    # First try and get the default font size from GConf
-    try:
-        import gi
-        gi.require_version('GConf', '2.0')
-        from gi.repository import GConf
-        client = GConf.Client.get_default()
-        client.add_dir('/desktop/gnome/interface', GConf.ClientPreloadType.PRELOAD_NONE)
-        font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
-        font_size = font_name.split(' ')[-1]
-    except ImportError as ie:
+    # The desktop's own monospace font on Linux. Bundles carry their build
+    # machine's schemas, and Gio.Settings.new() aborts on a missing schema.
+    if not platform.is_mac and not platform.is_windows:
         try:
             from gi.repository import Gio
-            settings = Gio.Settings.new('org.gnome.desktop.interface')
-            font_name = settings.get_string('monospace-font-name')
-            if font_name:
-                return font_name
-        except ImportError as ie2:
+            source = Gio.SettingsSchemaSource.get_default()
+            if source is not None and source.lookup('org.gnome.desktop.interface', True):
+                font_name = Gio.Settings.new('org.gnome.desktop.interface').get_string('monospace-font-name')
+                if font_name:
+                    return font_name
+        except Exception:
             import logging
-            logging.debug('Unable to import gconf module: %s', ie2)
-    except Exception:
-        # Ignore any other errors and try the next method
-        pass
+            logging.debug('Unable to read the desktop monospace font', exc_info=True)
 
-    # Get the default font size from Gtk
-    if not font_size:
-        import gi
-        gi.require_version('Gtk', '3.0')
-        from gi.repository import Gtk
-        font_name = Gtk.Label().get_pango_context().get_font_description().to_string()
-        font_size = font_name.split(' ')[-1]
-
-    if font_size:
-        default_font += ' ' + font_size
-
-    return default_font
+    # Otherwise monospace, at GTK's default size.
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    font_name = Gtk.Label().get_pango_context().get_font_description().to_string()
+    return 'monospace ' + font_name.split(' ')[-1]
 
 defaultfont = get_default_font()
 

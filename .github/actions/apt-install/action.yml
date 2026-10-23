@@ -7,23 +7,29 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Compute cache key
+    # Keyed on the exact .debs to download, so an Ubuntu update gets a
+    # new cache straight away; the previous archive still seeds it.
+    - name: Update the package lists and compute the cache key
       id: key
       shell: bash
       env:
         PACKAGES: ${{ inputs.packages }}
       run: |
+        echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
+          | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
+        for _ in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
         # shellcheck disable=SC2086  # word-split the package list
         hash=$(printf '%s\n' $PACKAGES | sort | sha256sum | cut -c1-16)
+        # shellcheck disable=SC2086  # word-split the package list
+        debs=$(apt-get install --print-uris -qq $PACKAGES | cut -d' ' -f2 | sort | sha256sum | cut -c1-16)
         echo "prefix=apt-$ImageOS-$RUNNER_ARCH-$hash-" >> "$GITHUB_OUTPUT"
-        echo "week=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+        echo "debs=$debs" >> "$GITHUB_OUTPUT"
 
-    # A new key each week so the cache picks up updated packages; the
-    # previous week's archive still seeds it.
-    - uses: actions/cache@v6
+    - uses: actions/cache/restore@v6
+      id: restore
       with:
         path: ~/apt-archives
-        key: ${{ steps.key.outputs.prefix }}${{ steps.key.outputs.week }}
+        key: ${{ steps.key.outputs.prefix }}${{ steps.key.outputs.debs }}
         restore-keys: ${{ steps.key.outputs.prefix }}
 
     - name: Install packages
@@ -31,15 +37,12 @@ runs:
       env:
         PACKAGES: ${{ inputs.packages }}
       run: |
-        echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-          | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
         shopt -s nullglob
         mkdir -p ~/apt-archives
         debs=(~/apt-archives/*.deb)
         if [ ${#debs[@]} -gt 0 ]; then
           sudo cp "${debs[@]}" /var/cache/apt/archives/
         fi
-        for _ in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
         # shellcheck disable=SC2086  # word-split the package list
         sudo apt-get install -y -o APT::Keep-Downloaded-Packages=true $PACKAGES
         sudo apt-get autoclean -y
@@ -48,3 +51,9 @@ runs:
         if [ ${#debs[@]} -gt 0 ]; then
           cp "${debs[@]}" ~/apt-archives/
         fi
+
+    - uses: actions/cache/save@v6
+      if: steps.restore.outputs.cache-hit != 'true'
+      with:
+        path: ~/apt-archives
+        key: ${{ steps.key.outputs.prefix }}${{ steps.key.outputs.debs }}

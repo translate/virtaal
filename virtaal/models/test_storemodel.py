@@ -499,3 +499,75 @@ def test_update_file_for_a_file_no_longer_on_disk(tmp_path):
     model.update_file(str(new_path))
 
     assert compared == [{'total': (1, 2), 'translated': (1, 1), 'untranslated': (0, 1)}]
+
+
+_GERMAN_SOURCE_XLIFF = b'''<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+<file original="test" source-language="de" target-language="af" datatype="plaintext"><body>
+<trans-unit id="1"><source>Offnen</source></trans-unit>
+</body></file></xliff>
+'''
+
+
+def test_the_source_language_comes_from_the_files_first_unit(tmp_path):
+    path = tmp_path / "german.xlf"
+    path.write_bytes(_GERMAN_SOURCE_XLIFF)
+
+    model = StoreModel(str(path), _FakeController())
+
+    assert model.get_source_language() == "de"
+
+
+def test_the_store_type_is_the_formats_name(tmp_path):
+    assert _states_model(tmp_path).get_store_type() == "Gettext PO file"
+
+
+def test_a_file_object_without_a_name_loads_as_a_project_file():
+    # A file opened from inside a project bundle.
+    from io import BytesIO
+
+    model = StoreModel(BytesIO(_STATES_PO), _FakeController())
+
+    assert model.filename == '<projectfile>'
+    assert [unit.source for unit in model.get_units()] == ['Open', 'Save', 'Close']
+
+
+def test_a_file_object_names_itself_with_its_filename():
+    from io import BytesIO
+
+    class Named(BytesIO):
+        filename = 'states.po'
+
+    model = StoreModel(Named(_STATES_PO), _FakeController())
+
+    assert model.filename == 'states.po'
+
+
+def test_without_stats_a_unit_changes_no_state_lists(tmp_path):
+    model = _states_model(tmp_path)
+    model.stats = None
+
+    assert model.update_unit_stats(0) is False
+
+
+def test_without_a_file_there_are_no_checks():
+    model = StoreModel.__new__(StoreModel)
+    model._trans_store = None
+
+    model.update_checks()
+
+    assert model.checks is None
+
+
+def test_saving_records_the_projects_checks_style(tmp_path, monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: None)
+    path = tmp_path / "style.po"
+    path.write_bytes(_STATES_PO)
+    controller = _SavingController("af")
+    controller.main_controller.checks_controller.code = "openoffice"
+
+    StoreModel(str(path), controller).save_file()
+
+    header = StoreModel(str(path), _FakeController())._trans_store.parseheader()
+    assert header["X-Project-Style"] == "openoffice"

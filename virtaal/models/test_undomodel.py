@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
+
 from virtaal.models.undomodel import UndoModel
 
 
@@ -291,3 +293,46 @@ def test_attach_state_after_is_a_noop_without_state_before():
     model.attach_state_after(unit, 0)
 
     assert 'state_after' not in model.undo_stack[-1]
+
+
+def test_push_rejects_an_entry_without_the_text_edit_keys():
+    model = UndoModel(controller=None)
+
+    with pytest.raises(ValueError):
+        model.push({'action': _noop, 'unit': _UNIT})
+
+
+def test_push_after_an_undo_drops_the_undone_entry():
+    model = UndoModel(controller=None)
+    model.push(_entry(1))
+    model.push(_entry(2))
+    model.pop()
+
+    model.push(_entry(3))
+
+    assert [entry['id'] for entry in model.undo_stack] == [1, 3]
+
+
+def test_attach_state_after_is_a_noop_for_a_kind_tagged_entry():
+    model = UndoModel(controller=None)
+    unit = object()
+    model.push({'kind': 'state', 'unit': unit, 'state_before': 80})
+
+    model.attach_state_after(unit, 0)
+
+    assert 'state_after' not in model.undo_stack[-1]
+
+
+def test_record_start_while_recording_raises():
+    model = UndoModel(controller=None)
+    model.record_start()
+
+    with pytest.raises(Exception, match='already recording'):
+        model.record_start()
+
+
+def test_record_stop_without_recording_raises():
+    model = UndoModel(controller=None)
+
+    with pytest.raises(Exception, match='not recording'):
+        model.record_stop()

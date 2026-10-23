@@ -767,3 +767,52 @@ def test_undo_and_redo_recheck_the_current_unit():
 
     controller._on_redo_activated()
     assert checked == [unit, unit]
+
+
+def _without_snapshot(text):
+    # A text box keeps a copy of its tree from before each edit, and undo
+    # restores that; these fall back to replaying the edit by offset.
+    textbox = _FakeTextbox(text)
+    textbox.elem_before_edit = None
+    return textbox
+
+
+def test_undo_without_a_snapshot_puts_deleted_text_back_inside_its_placeable():
+    from translate.storage.placeables.base import G
+    textbox = _without_snapshot('')
+    g = G(id='1', sub=[StringElem('c')])
+    textbox.elem = StringElem([StringElem('a '), g, StringElem(' d')])
+    textbox.elem.gui_info = _FakeGuiInfo()
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+
+    # "b" was deleted from the start of the <g>'s "bc".
+    controller._on_unit_delete_text(None, unit, StringElem('b'), g, 2, 2, textbox.elem, 0)
+    controller._on_undo_activated()
+
+    assert str(textbox.elem) == 'a bc d'
+    assert str(g) == 'bc'
+
+
+def test_undo_without_a_snapshot_removes_an_inserted_placeable():
+    from translate.storage.placeables.base import X
+    textbox = _without_snapshot('')
+    x = X(id='2')
+    x.gui_info = SimpleNamespace(widgets=[object()], length=lambda: 1)
+    textbox.elem = StringElem([StringElem('ab'), x])
+    textbox.elem.gui_info = _FakeGuiInfo()
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+
+    controller._on_unit_insert_text(None, unit, x, 2, textbox.elem, 0)
+    controller._on_undo_activated()
+
+    assert str(textbox.elem) == 'ab'
+    assert not any(e is x for e in textbox.elem.depth_first())
+
+
+def test_an_entry_without_a_cursor_position_restores_no_cursor():
+    controller = _make_controller(_FakeTextbox(''), _FakeUnit())
+
+    assert controller._cursor_for_entry({'targetn': 0, 'unit': None}, use_redo_cursorpos=False) is None
+    assert controller._cursor_for_entry([{'targetn': 0, 'cursorpos': 3}], use_redo_cursorpos=False) == (0, 3)

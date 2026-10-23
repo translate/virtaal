@@ -180,11 +180,8 @@ class StoreController(BaseController):
 
         from virtaal.models.storemodel import StoreModel
         from virtaal.support import bundleprojstore
-        try:
-            from virtaal.support.project import Project
-            self.project = Project(bundleprojstore.BundleProjectStore(filename))
-        except bundleprojstore.InvalidBundleError as err:
-            logging.exception('Unable to load project bundle')
+        from virtaal.support.project import Project
+        self.project = Project(bundleprojstore.BundleProjectStore(filename))
 
         if not len(self.project.store.transfiles):
             # FIXME: Ask the user to select a source file to convert?

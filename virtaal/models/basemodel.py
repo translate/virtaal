@@ -13,25 +13,6 @@ class BaseModel(GObject.GObject):
 
     __gtype_name__ = "BaseModel"
 
-    __gsignals__ = {
-        "loaded": (GObject.SignalFlags.RUN_FIRST, None, ()),
-        "saved": (GObject.SignalFlags.RUN_FIRST, None, ()),
-    }
-
     # INITIALIZERS #
     def __init__(self):
         super().__init__()
-
-
-    # ACCESSORS #
-    def is_modified(self):
-        return False
-
-    # METHODS #
-    def loaded(self):
-        """Emits the "loaded" signal."""
-        self.emit('loaded')
-
-    def saved(self):
-        """Emits the "saved" signal."""
-        self.emit('saved')

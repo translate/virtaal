@@ -1136,9 +1136,10 @@ jobs:
     timeout-minutes: 45
     env:
       # Secrets aren't exposed to fork PRs: those builds are signed
-      # ad-hoc and not notarized.
+      # ad-hoc. Pull requests aren't notarized; the merge queue, main
+      # and tags are.
       MACOS_SIGNING: ${{ secrets.MACOS_CERTIFICATE != '' }}
-      MACOS_NOTARIZING: ${{ secrets.MACOS_CERTIFICATE != '' && secrets.APPLE_API_KEY != '' }}
+      MACOS_NOTARIZING: ${{ github.event_name != 'pull_request' && secrets.MACOS_CERTIFICATE != '' && secrets.APPLE_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v7
         with:

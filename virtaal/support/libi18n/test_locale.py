@@ -19,11 +19,13 @@ from virtaal.support.libi18n.locale import (
     _bundled_macos_libintl,
     _getlang,
     _isofromlangid,
+    _macos_locale,
     _putenv,
     bind_libintl_posix,
     fix_libintl,
     fix_locale,
     get_win32_lang,
+    macos_to_posix,
 )
 
 
@@ -97,6 +99,7 @@ def test_getlang_falls_back_to_win32_lang_when_unset(monkeypatch):
 
 def test_fix_locale_sets_the_language_env_var_when_given_a_lang(monkeypatch):
     monkeypatch.setattr(locale_module.platform, 'is_windows', False)
+    monkeypatch.setattr(locale_module.platform, 'is_mac', False)
     monkeypatch.delenv('LANGUAGE', raising=False)
 
     fix_locale('af')
@@ -106,6 +109,7 @@ def test_fix_locale_sets_the_language_env_var_when_given_a_lang(monkeypatch):
 
 def test_fix_locale_does_nothing_without_a_lang_on_posix(monkeypatch):
     monkeypatch.setattr(locale_module.platform, 'is_windows', False)
+    monkeypatch.setattr(locale_module.platform, 'is_mac', False)
     monkeypatch.delenv('LANGUAGE', raising=False)
 
     fix_locale(None)
@@ -138,6 +142,105 @@ def test_fix_locale_on_windows_falls_back_to_getlang_when_no_lang_given(monkeypa
     fix_locale(None)
 
     assert locale_module.os.environ['LANGUAGE'] == 'fr'
+
+
+@pytest.mark.parametrize('code, posix', [
+    ('de', 'de'),
+    ('de-DE', 'de_DE'),
+    ('pt-BR', 'pt_BR'),
+    ('es-419', 'es_419'),
+    ('zh-Hans', 'zh_CN'),
+    ('zh-Hans-CN', 'zh_CN'),
+    ('zh-Hant-HK', 'zh_TW'),
+    ('sr-Latn', 'sr@latin'),
+    ('sr-Cyrl-RS', 'sr_RS'),
+    ('ca-ES-valencia', 'ca@valencia'),
+])
+def test_macos_to_posix(code, posix):
+    assert macos_to_posix(code) == posix
+
+
+def _mac_without_locale_env(monkeypatch, preferred):
+    monkeypatch.setattr(locale_module.platform, 'is_mac', True)
+    monkeypatch.setattr(locale_module.platform, 'is_windows', False)
+    monkeypatch.setattr(locale_module, 'get_macos_preferred_languages', lambda: preferred)
+    for name in ('LANG', 'LC_ALL', 'LC_MESSAGES', 'LANGUAGE'):
+        monkeypatch.delenv(name, raising=False)
+
+
+def test_fix_locale_on_macos_uses_the_preferred_languages(monkeypatch):
+    # Started from Finder, an app gets no LANG.
+    _mac_without_locale_env(monkeypatch, ['de-DE', 'zh-Hant'])
+    probed = []
+    monkeypatch.setattr(locale_module, '_macos_locale', lambda languages: probed.append(languages) or 'de_DE.UTF-8')
+
+    fix_locale(None)
+
+    # Not the others too: each string missing from German would be Chinese.
+    assert os.environ['LANGUAGE'] == 'de_DE'
+    assert os.environ['LANG'] == 'de_DE.UTF-8'
+    assert probed == [['de_DE']]
+
+
+def test_fix_locale_on_macos_gives_a_chosen_language_a_locale(monkeypatch):
+    # Or libintl, under the C locale, ignores LANGUAGE.
+    _mac_without_locale_env(monkeypatch, ['de-DE'])
+    monkeypatch.setattr(locale_module, '_macos_locale', lambda languages: 'af_ZA.UTF-8' if languages == ['af'] else None)
+
+    fix_locale('af')
+
+    assert os.environ['LANGUAGE'] == 'af'
+    assert os.environ['LANG'] == 'af_ZA.UTF-8'
+
+
+def test_fix_locale_on_macos_leaves_a_set_locale_alone(monkeypatch):
+    _mac_without_locale_env(monkeypatch, ['de-DE'])
+    monkeypatch.setenv('LANG', 'fr_FR.UTF-8')
+
+    fix_locale(None)
+
+    assert os.environ['LANG'] == 'fr_FR.UTF-8'
+    assert 'LANGUAGE' not in os.environ
+
+
+def test_fix_locale_on_macos_without_preferred_languages_changes_nothing(monkeypatch):
+    _mac_without_locale_env(monkeypatch, [])
+
+    fix_locale(None)
+
+    assert 'LANGUAGE' not in os.environ
+    assert 'LANG' not in os.environ
+
+
+@pytest.mark.skipif(sys.platform != 'darwin', reason='macOS locales')
+def test_macos_locale_picks_the_first_language_with_a_locale():
+    import locale
+    before = locale.setlocale(locale.LC_ALL)
+
+    assert _macos_locale(['xx', 'de']) == 'de_DE.UTF-8'
+    # No es_419 locale: the language's own.
+    assert _macos_locale(['es_419']) == 'es_ES.UTF-8'
+    assert _macos_locale(['xx']) is None
+    assert locale.setlocale(locale.LC_ALL) == before
+
+
+@pytest.mark.skipif(sys.platform != 'darwin', reason='Core Foundation')
+def test_a_finder_launch_uses_the_macos_preferred_language(tmp_path):
+    # -AppleLanguages stands in for System Settings, in a process with
+    # Finder's empty environment.
+    import subprocess
+    script = (
+        "import os; from virtaal.common import pan_app;"
+        "from virtaal.support.libi18n.locale import get_macos_preferred_languages;"
+        "print(get_macos_preferred_languages(), os.environ.get('LANGUAGE'), os.environ.get('LANG'),"
+        " pan_app.ui_language, pan_app.settings.language['targetlang'])"
+    )
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    result = subprocess.run(
+        [sys.executable, '-c', script, '-AppleLanguages', '(de, fr-CA)'],
+        env={'HOME': str(tmp_path), 'PYTHONPATH': root}, capture_output=True, text=True, check=True)
+
+    assert result.stdout.split('\n')[-2] == "['de', 'fr-CA'] de de_DE.UTF-8 de de"
 
 
 def test_bundled_macos_libintl_finds_the_versioned_file(tmp_path):

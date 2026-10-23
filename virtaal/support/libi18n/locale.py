@@ -323,10 +323,101 @@ def _putenv(name, value):
     del msvcrt
 
 
+def get_macos_preferred_languages():
+    """The user's preferred languages, as macOS's BCP 47 codes ("de-DE",
+        "zh-Hans"), most preferred first."""
+    import ctypes
+    import ctypes.util
+    cf = ctypes.CDLL(ctypes.util.find_library('CoreFoundation'))
+    cf.CFLocaleCopyPreferredLanguages.restype = ctypes.c_void_p
+    cf.CFArrayGetCount.restype = ctypes.c_long
+    cf.CFArrayGetCount.argtypes = [ctypes.c_void_p]
+    cf.CFArrayGetValueAtIndex.restype = ctypes.c_void_p
+    cf.CFArrayGetValueAtIndex.argtypes = [ctypes.c_void_p, ctypes.c_long]
+    cf.CFStringGetCString.restype = ctypes.c_bool
+    cf.CFStringGetCString.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_long, ctypes.c_uint32]
+    cf.CFRelease.argtypes = [ctypes.c_void_p]
+    kCFStringEncodingUTF8 = 0x08000100
+    languages = cf.CFLocaleCopyPreferredLanguages()
+    if not languages:
+        return []
+    try:
+        codes = []
+        for i in range(cf.CFArrayGetCount(languages)):
+            buf = ctypes.create_string_buffer(64)
+            if cf.CFStringGetCString(cf.CFArrayGetValueAtIndex(languages, i), buf, len(buf), kCFStringEncodingUTF8):
+                codes.append(buf.value.decode('utf-8'))
+        return codes
+    finally:
+        cf.CFRelease(languages)
+
+
+# Script and variant subtags with a POSIX equivalent; others are dropped.
+_MACOS_SUBTAGS = {
+    ('zh', 'Hans'): 'zh_CN',
+    ('zh', 'Hant'): 'zh_TW',
+    ('sr', 'Latn'): 'sr@latin',
+    ('ca', 'valencia'): 'ca@valencia',
+}
+
+
+def macos_to_posix(code):
+    """A macOS BCP 47 language code as a POSIX one: "pt-BR" -> "pt_BR"."""
+    parts = code.split('-')
+    language, rest = parts[0], parts[1:]
+    for subtag in rest:
+        if (language, subtag) in _MACOS_SUBTAGS:
+            return _MACOS_SUBTAGS[language, subtag]
+    regions = [subtag for subtag in rest if len(subtag) == 2 or subtag.isdigit()]
+    return '%s_%s' % (language, regions[0]) if regions else language
+
+
+def _macos_locale(languages):
+    """The first of C{languages} with a UTF-8 locale on this Mac, as a
+        LANG value, or None."""
+    import locale
+    saved = locale.setlocale(locale.LC_ALL)
+    try:
+        for language in languages:
+            language = language.split('@')[0]
+            # Then the language alone: macOS has no es_419 locale, but es_ES.
+            for candidate in (language, language.split('_')[0]):
+                name = locale.normalize(candidate).split('.')[0] + '.UTF-8'
+                try:
+                    locale.setlocale(locale.LC_ALL, name)
+                except locale.Error:
+                    continue
+                return name
+        return None
+    finally:
+        locale.setlocale(locale.LC_ALL, saved)
+
+
+def _fix_macos_locale(lang):
+    """An app started from Finder gets no LANG, so gettext would only find
+        English and libintl, under the C locale, ignores LANGUAGE: use the
+        user's preferred languages instead."""
+    if any(os.environ.get(name) for name in ('LC_ALL', 'LC_MESSAGES', 'LANG')):
+        return
+    if not lang:
+        # Only the first: gettext would take each string missing from its
+        # catalog from the next language's.
+        preferred = get_macos_preferred_languages()
+        if not preferred:
+            return
+        lang = macos_to_posix(preferred[0])
+        os.environ['LANGUAGE'] = lang
+    name = _macos_locale([lang])
+    if name:
+        os.environ['LANG'] = name
+
+
 def fix_locale(lang=None):
     """This fixes some strange issues to ensure locale and gettext works
     correctly, also within GtkBuilder, even with a non-default locale passed as
     parameter."""
+    if platform.is_mac:
+        _fix_macos_locale(lang)
     if platform.is_windows:
         lang = lang or _getlang()
 

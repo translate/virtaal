@@ -177,9 +177,13 @@ default_config_name = "virtaal.ini"
 
 
 def osx_lang():
-    """Do some non-posix things to get the language on OSX."""
-    import CoreFoundation
-    return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
+    """The user's most preferred language on macOS, or None."""
+    from virtaal.support.libi18n.locale import (
+        get_macos_preferred_languages,
+        macos_to_posix,
+    )
+    languages = get_macos_preferred_languages()
+    return macos_to_posix(languages[0]) if languages else None
 
 def get_locale_lang():
     # guess default target lang based on locale, simplify to commonly used form

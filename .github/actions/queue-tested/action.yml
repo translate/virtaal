@@ -1,0 +1,23 @@
+name: Check whether the merge queue tested this commit
+description: >-
+  On a push to main, whether a merge-queue CI run already passed for the
+  same commit, so the push run can skip repeating its checks.
+outputs:
+  tested:
+    description: "'true' when a merge-queue run of ci.yml passed for this commit."
+    value: ${{ steps.check.outputs.tested }}
+runs:
+  using: composite
+  steps:
+    - id: check
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        tested=false
+        if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF" = refs/heads/main ]; then
+          n=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?head_sha=$GITHUB_SHA&event=merge_group&status=success" \
+            --jq .total_count) || n=0
+          [ "$n" -gt 0 ] && tested=true
+        fi
+        echo "tested=$tested" | tee -a "$GITHUB_OUTPUT"

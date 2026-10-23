@@ -19,6 +19,8 @@ on:
 
 permissions:
   contents: read
+  # queue-tested looks up this commit's merge-queue run.
+  actions: read
 
 # A new push to a PR cancels that PR's older run. Every other event
 # gets a unique group (run_id) so main, tag and merge-queue runs are
@@ -161,6 +163,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
+
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
@@ -202,6 +208,7 @@ jobs:
         run: pip install .[spellcheck]
 
       - name: Generate and check AppData screenshots
+        if: steps.queue.outputs.tested != 'true'
         id: screenshots
         # Deliberately non-blocking (#3625): io.github.translate.Virtaal.metainfo.xml.in's
         # <image> tags are plain raw.githubusercontent.com URLs, not files
@@ -250,6 +257,7 @@ jobs:
           retention-days: 30
 
       - name: Generate and check docs screenshots
+        if: steps.queue.outputs.tested != 'true'
         id: docs-screenshots
         # Same non-blocking contract as the AppData check above (#3746):
         # docs/screenshots.rst's images are just as cosmetic - flag drift,
@@ -295,6 +303,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
+
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
@@ -334,6 +346,7 @@ jobs:
         run: pip install .[spellcheck]
 
       - name: Check translation priorities
+        if: steps.queue.outputs.tested != 'true'
         # GTK's own messages need a real locale: glibc ignores LANGUAGE
         # under C.UTF-8. generate_priorities.py names languages with
         # Virtaal's own code, which needs a display too.
@@ -429,6 +442,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
+
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
@@ -473,9 +490,11 @@ jobs:
           pip install .[test,spellcheck]
 
       - name: Compile-check all Python files
+        if: steps.queue.outputs.tested != 'true'
         run: find . -name "*.py" -exec python -m py_compile {} +
 
       - name: Run tests
+        if: steps.queue.outputs.tested != 'true'
         # Coverage only collected/uploaded once, on one matrix version -
         # every version already runs the same tests, so N uploads would
         # just be redundant, not N times the information.
@@ -487,7 +506,7 @@ jobs:
           fi
 
       - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.13'
+        if: matrix.python-version == '3.13' && steps.queue.outputs.tested != 'true'
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -495,6 +514,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Smoke test the CLI
+        if: steps.queue.outputs.tested != 'true'
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 
   test-distro:
@@ -506,6 +526,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           submodules: true
+
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
 
       - name: Install system dependencies
         uses: $/.github/actions/apt-install
@@ -536,6 +560,7 @@ jobs:
           pip install .[test,spellcheck]
 
       - name: Run tests
+        if: steps.queue.outputs.tested != 'true'
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
 
   test-windows:
@@ -571,6 +596,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           submodules: true
+
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
 
       - name: Cache GTK3 (gvsbuild)
         id: cache-gtk
@@ -652,9 +681,11 @@ jobs:
         run: pip install .
 
       - name: Compile-check all Python files
+        if: steps.queue.outputs.tested != 'true'
         run: python -m compileall -q .
 
       - name: Smoke test the GTK3 import
+        if: steps.queue.outputs.tested != 'true'
         # Cheap, fast canary isolating GTK3 DLL/typelib loading from
         # pytest and virtaal's own code - the first real
         # `from gi.repository import Gtk` in the whole job.
@@ -672,6 +703,7 @@ jobs:
         timeout-minutes: 30
 
       - name: Run tests
+        if: steps.queue.outputs.tested != 'true'
         # No xvfb-run equivalent needed - Windows always has its own
         # native windowing system available, even in a non-interactive
         # CI session, unlike X11. Coverage collected here too, not just
@@ -685,6 +717,7 @@ jobs:
           PYTHONFAULTHANDLER: "1"
 
       - name: Upload coverage to Codecov
+        if: steps.queue.outputs.tested != 'true'
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -692,6 +725,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Smoke test the CLI
+        if: steps.queue.outputs.tested != 'true'
         run: virtaal --help
 
   build-windows-installer:
@@ -1013,6 +1047,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
+
       - name: Install system dependencies (Homebrew)
         # pygobject3/gtk+3 for the app itself, gtk-mac-integration for
         # native macOS menu-bar support, enchant/gtkspell3 for the
@@ -1063,9 +1101,11 @@ jobs:
         run: pip install --ignore-installed .[test,spellcheck]
 
       - name: Compile-check all Python files
+        if: steps.queue.outputs.tested != 'true'
         run: find . -name "*.py" -exec python -m py_compile {} +
 
       - name: Run tests
+        if: steps.queue.outputs.tested != 'true'
         # No xvfb-run equivalent: macOS's WindowServer is a real system
         # daemon that's always running, even in CI, unlike X11 which has
         # no display server at all without one. Coverage collected here
@@ -1092,6 +1132,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload coverage to Codecov
+        if: steps.queue.outputs.tested != 'true'
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -1099,6 +1140,7 @@ jobs:
           fail_ci_if_error: false
 
       - name: Smoke test the CLI
+        if: steps.queue.outputs.tested != 'true'
         run: virtaal --help
 
   build-macos-app:
@@ -1503,6 +1545,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
+
       - name: Install flatpak and flatpak-builder
         uses: $/.github/actions/apt-install
         with:
@@ -1551,11 +1597,13 @@ jobs:
             --repo=repo build-dir io.github.translate.Virtaal.yml
 
       - name: Check every Python dependency is in the app
+        if: steps.queue.outputs.tested != 'true'
         # Smoke tests run in the SDK, which can provide a package the
         # app is missing.
         run: python3 devsupport/packaging/flatpak/check_flatpak_deps_sync.py --installed devsupport/packaging/flatpak/build-dir/files
 
       - name: Validate the installed metainfo
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         # The real, translated file as flatpak-builder actually installed
         # it, not the source template - catches a launchable/icon/id
@@ -1567,6 +1615,7 @@ jobs:
           appstreamcli validate --no-net --pedantic --explain "$metainfo"
 
       - name: Lint for Flathub
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         # The manifest as it would be submitted (building this commit from
         # git), and a repo built the way Flathub builds it: screenshots
@@ -1590,6 +1639,7 @@ jobs:
           lint repo repo-flathub
 
       - name: Smoke test - the built app actually runs
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         # No display server on this runner - same headless gap the
         # Linux `test` job's own `xvfb-run` step already solves.
@@ -1599,6 +1649,7 @@ jobs:
             virtaal --version
 
       - name: Smoke test - the spell checker's GtkSpell loads
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
@@ -1606,6 +1657,7 @@ jobs:
             python3 -c "import gi; gi.require_version('GtkSpell', '3.0'); from gi.repository import GtkSpell; GtkSpell.Checker()"
 
       - name: Smoke test - the msgfmt check's library loads
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         # The runtime's libgettextpo. Its message stays English: the
         # runner's C locale makes glibc ignore the language.
@@ -1625,6 +1677,7 @@ jobs:
             repo Virtaal-linux-${{ matrix.arch }}.flatpak io.github.translate.Virtaal
 
       - name: Smoke test - the bundle installs and runs
+        if: steps.queue.outputs.tested != 'true'
         working-directory: devsupport/packaging/flatpak
         run: |
           set -o pipefail
@@ -1638,6 +1691,7 @@ jobs:
             "from virtaal.common import pan_app; n = len(pan_app.get_available_ui_languages()); print(n, 'UI languages'); assert n > 20"
 
       - name: Run the tests inside the installed Flatpak
+        if: steps.queue.outputs.tested != 'true'
         # The GNOME runtime's own Python and GTK, which the Flatpak ships;
         # pytest-cov is left out (coverage comes from the test job). The
         # installed app, not flatpak-builder --run: the runtime decodes
@@ -1675,6 +1729,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
+
+      - name: Check whether the merge queue tested this commit
+        id: queue
+        uses: $/.github/actions/queue-tested
 
       - name: Install the build packages
         uses: $/.github/actions/apt-install
@@ -1718,6 +1776,7 @@ jobs:
         run: xvfb-run -a devsupport/packaging/linux/build_appimage.sh
 
       - name: Smoke test - bare distributions
+        if: steps.queue.outputs.tested != 'true'
         # Only what every desktop has installed: no GTK, no Python.
         # In parallel: each runs in its own container, and normally
         # takes under two minutes.

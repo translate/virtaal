@@ -35,15 +35,13 @@ class LanguageModel(BaseModel):
     languages = {}
 
     # INITIALIZERS #
-    def __init__(self, langcode='und', more_langs=None):
+    def __init__(self, langcode='und'):
         """Constructor.
             Looks up the language information based on the given language code
             (C{langcode})."""
         super().__init__()
         if not self.languages:
             self.languages.update(toolkit_langs)
-        if more_langs is not None:
-            self.languages.update(more_langs)
         self.load(langcode)
 
 

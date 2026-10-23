@@ -180,7 +180,6 @@ class StoreModel(BaseModel):
         self._edited_units = set()
         self.update_stats()
         self._fill_stats_cache()
-        #self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 
     def save_file(self, filename=None):
@@ -326,7 +325,6 @@ class StoreModel(BaseModel):
         # save (#3808).
         self._trans_store.filename = oldfilename
         self._trans_store.fileobj = oldfileobj
-        self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 
     def get_declared_nplurals(self):
@@ -365,18 +363,6 @@ class StoreModel(BaseModel):
                 (len(unit.target.strings) for unit in store.units
                     if isinstance(unit.target, multistring)),
                 default=None)
-
-    def _correct_header(self, store):
-        """This ensures that the file has a header if it is a poheader type of
-        file, and fixes the statistics if we had to add a header."""
-        # Copied as-is from Document._correct_header()
-        from translate.storage.poheader import poheader
-        if isinstance(store, poheader) and not store.header():
-            store.updateheader(add=True)
-            new_stats = {}
-            for key, values in self.stats.items():
-                new_stats[key] = [value+1 for value in values]
-            self.stats = new_stats
 
     def _update_header(self):
         """Make sure that headers are complete and update with current time (if applicable)."""

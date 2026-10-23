@@ -643,6 +643,20 @@ def test_get_locale_lang_uses_osx_lang_when_locale_is_unset_on_mac(monkeypatch):
     assert pan_app.get_locale_lang() == pan_app.data.simplify_to_common('fr_FR')
 
 
+def test_osx_lang_returns_the_most_preferred_language(monkeypatch):
+    from virtaal.support.libi18n import locale as locale_module
+    monkeypatch.setattr(locale_module, 'get_macos_preferred_languages', lambda: ['zh-Hant-TW', 'en'])
+
+    assert pan_app.osx_lang() == 'zh_TW'
+
+
+def test_osx_lang_returns_none_without_preferred_languages(monkeypatch):
+    from virtaal.support.libi18n import locale as locale_module
+    monkeypatch.setattr(locale_module, 'get_macos_preferred_languages', lambda: [])
+
+    assert pan_app.osx_lang() is None
+
+
 def test_get_locale_lang_falls_back_to_en_on_error(monkeypatch, caplog):
     def _raise(*a):
         raise RuntimeError('no locale')

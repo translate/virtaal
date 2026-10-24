@@ -1,0 +1,57 @@
+name: Live services
+
+# Not a pass/fail gate on every push. Pull request CI leaves amaGama off
+# (#4560); this checks, through Virtaal's own client, that a lookup on the
+# live amaGama server still works. Run it by hand before a release.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # 06:00 UTC Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  amagama:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            iso-codes
+            libcairo2-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            librsvg2-common
+            pkg-config
+            python3-dev
+            xvfb
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pygobject
+
+      - name: Install virtaal
+        run: pip install . pytest
+
+      - name: Look up a unit on amaGama
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python -m pytest -p no:cacheprovider virtaal/plugins/tm/models/test_amagama_live.py
+        env:
+          VIRTAAL_LIVE_SERVICES: "1"

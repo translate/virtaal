@@ -164,6 +164,8 @@ omit = [
     "virtaal/plugins/_ipython_console/ipython_view.py",
     "virtaal/plugins/_python_console.py",
     "virtaal/plugins/tm/models/_dummytm.py",
+    # Skipped outside live-services.yml.
+    "virtaal/plugins/tm/models/test_amagama_live.py",
     "virtaal/views/widgets/demo_cellrendererwidget.py",
     "virtaal/views/widgets/demo_listnav.py",
     "virtaal/views/widgets/demo_popupwidgetbutton.py",

@@ -10,6 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 import virtaal.plugins.tm as tm_module
+from virtaal.common.platform import platform
 from virtaal.plugins.tm import Plugin
 
 
@@ -35,6 +36,8 @@ def _init(monkeypatch, main_controller=None):
 
 
 def test_init_plugin_parses_the_default_config(monkeypatch):
+    # amaGama is on by default outside CI.
+    monkeypatch.setattr(platform, '_environ', {})
     main_controller = SimpleNamespace()
 
     plugin, captured = _init(monkeypatch, main_controller)
@@ -47,6 +50,24 @@ def test_init_plugin_parses_the_default_config(monkeypatch):
         '_dummytm', 'remotetm', 'apertium', 'google_translate', 'moses']
     assert captured['config']['max_matches'] == 5
     assert captured['config']['min_quality'] == 70
+
+
+def test_init_plugin_disables_amagama_under_ci(monkeypatch):
+    monkeypatch.setattr(platform, '_environ', {'GITHUB_ACTIONS': 'true'})
+
+    _plugin, captured = _init(monkeypatch)
+
+    assert captured['config']['disabled_models'] == [
+        '_dummytm', 'remotetm', 'apertium', 'google_translate', 'moses', 'amagama']
+
+
+def test_init_plugin_config_overrides_the_ci_default(monkeypatch, isolated_config_dir):
+    monkeypatch.setattr(platform, '_environ', {'GITHUB_ACTIONS': 'true'})
+    (isolated_config_dir / Plugin.CONFIG_FILENAME).write_text('[tm]\ndisabled_models = apertium\n')
+
+    _plugin, captured = _init(monkeypatch)
+
+    assert captured['config']['disabled_models'] == ['apertium']
 
 
 def test_init_plugin_loads_and_coerces_an_overridden_config(monkeypatch, isolated_config_dir):

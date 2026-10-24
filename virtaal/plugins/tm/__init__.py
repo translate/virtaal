@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin
 
 from .tmcontroller import TMController
@@ -29,6 +30,11 @@ class Plugin(BasePlugin):
         self._init_plugin()
 
     def _init_plugin(self):
+        if platform.ci_name():
+            # CI starts the real app often; keep it off the public amaGama server.
+            self.default_config = dict(
+                self.default_config,
+                disabled_models=self.default_config['disabled_models'] + ',amagama')
         self.load_config()
         self.config['disabled_models'] = self.config['disabled_models'].split(',')
         self.config['max_matches'] = pan_app.config_int(

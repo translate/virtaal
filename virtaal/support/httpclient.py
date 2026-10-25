@@ -248,7 +248,8 @@ class HTTPClient:
 
     def set_virtaal_useragent(self):
         """Set a nice user agent indicating Virtaal, its version, how it
-            was built and any CI service running it, e.g.
+            was built, any CI service running it and whether it is a
+            hand-testing instance, e.g.
             "Virtaal/1.0.0 (Ubuntu 24.04) Build/source CI/github-actions"."""
         if self.user_agent and self.user_agent.startswith('Virtaal'):
             return
@@ -265,6 +266,8 @@ class HTTPClient:
         self.user_agent = 'Virtaal/%s (%s) Build/%s' % (version, os_name, platform.build_type())
         if platform.ci_name():
             self.user_agent += ' CI/%s' % platform.ci_name()
+        if platform.is_test_instance():
+            self.user_agent += ' Test/instance'
 
     def _linux_platform_string(self, platform):
         import os

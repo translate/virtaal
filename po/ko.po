@@ -1,9 +1,8 @@
 # Korean (ko) translation of Virtaal.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
 # 이 파일은 Virtaal 패키지와 동일한 라이선스로 배포됩니다
-# VenusGirl <venusgirl@outlook.com>, 2009.
-#
-#, fuzzy
+# Jihui Choi <jihui.choi@gmail.com>, 2009.
+# VenusGirl <venusgirl@outlook.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
@@ -16,6 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.10\n"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in

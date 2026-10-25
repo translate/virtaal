@@ -108,5 +108,11 @@ class Platform:
             return 'ci'
         return None
 
+    def is_test_instance(self):
+        """Whether this is a throwaway instance started for hand-testing
+            (VIRTAAL_TEST_INSTANCE set), so its requests can be told apart
+            from real use."""
+        return bool(self._environ.get('VIRTAAL_TEST_INSTANCE'))
+
 
 platform = Platform()

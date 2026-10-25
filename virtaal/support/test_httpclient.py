@@ -308,6 +308,7 @@ def test_set_virtaal_useragent_ends_with_the_build_type_and_ci_service(monkeypat
     from virtaal.support import httpclient
     monkeypatch.setattr(httpclient.platform, 'build_type', lambda: 'frozen')
     monkeypatch.setattr(httpclient.platform, 'ci_name', lambda: 'github-actions')
+    monkeypatch.setattr(httpclient.platform, 'is_test_instance', lambda: False)
     client = HTTPClient()
 
     client.set_virtaal_useragent()
@@ -320,11 +321,24 @@ def test_set_virtaal_useragent_leaves_out_ci_outside_ci(monkeypatch):
     from virtaal.support import httpclient
     monkeypatch.setattr(httpclient.platform, 'build_type', lambda: 'source')
     monkeypatch.setattr(httpclient.platform, 'ci_name', lambda: None)
+    monkeypatch.setattr(httpclient.platform, 'is_test_instance', lambda: False)
     client = HTTPClient()
 
     client.set_virtaal_useragent()
 
     assert client.user_agent.endswith(') Build/source')
+
+
+def test_set_virtaal_useragent_marks_a_test_instance(monkeypatch):
+    from virtaal.support import httpclient
+    monkeypatch.setattr(httpclient.platform, 'build_type', lambda: 'source')
+    monkeypatch.setattr(httpclient.platform, 'ci_name', lambda: None)
+    monkeypatch.setattr(httpclient.platform, 'is_test_instance', lambda: True)
+    client = HTTPClient()
+
+    client.set_virtaal_useragent()
+
+    assert client.user_agent.endswith(') Build/source Test/instance')
 
 
 def test_set_virtaal_useragent_reads_the_distro_from_os_release(monkeypatch, tmp_path):

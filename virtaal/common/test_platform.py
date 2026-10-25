@@ -214,3 +214,12 @@ def test_build_type_of_this_checkout_is_source():
 ])
 def test_ci_name(environ, expected):
     assert Platform(environ=environ).ci_name() == expected
+
+
+@pytest.mark.parametrize('environ, expected', [
+    ({'VIRTAAL_TEST_INSTANCE': '1'}, True),
+    ({'VIRTAAL_TEST_INSTANCE': ''}, False),
+    ({}, False),
+])
+def test_is_test_instance(environ, expected):
+    assert Platform(environ=environ).is_test_instance() is expected

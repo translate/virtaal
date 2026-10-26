@@ -1,15 +1,16 @@
+# Toni Hermoso <toniher@softcatala.cat>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-20 12:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2026-10-26 22:28+0000\n"
+"Last-Translator: Toni Hermoso <toniher@softcatala.cat>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Minairó 1.7.0\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -43,7 +44,7 @@ msgstr "Bielorús"
 
 #: ben
 msgid "Bengali"
-msgstr ""
+msgstr "bengalí"
 
 #: bul
 msgid "Bulgarian"
@@ -55,7 +56,7 @@ msgstr "Català"
 
 #: cgg
 msgid "Chiga"
-msgstr ""
+msgstr "chiga"
 
 #: zho
 msgid "Chinese"
@@ -95,7 +96,7 @@ msgstr "ful"
 
 #: glg
 msgid "Galician"
-msgstr ""
+msgstr "gallec"
 
 #: lug
 msgid "Ganda"
@@ -115,7 +116,7 @@ msgstr "Hebreu"
 
 #: hin
 msgid "Hindi"
-msgstr ""
+msgstr "hindi"
 
 #: hun
 msgid "Hungarian"
@@ -127,7 +128,7 @@ msgstr "Islandès"
 
 #: ita
 msgid "Italian"
-msgstr ""
+msgstr "italià"
 
 #: jpn
 msgid "Japanese"
@@ -139,15 +140,15 @@ msgstr "Coreà"
 
 #: lit
 msgid "Lithuanian"
-msgstr ""
+msgstr "lituà"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "grec modern (des del 1453)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "nepalès (macrollengua)"
 
 #: oci
 msgid "Occitan (post 1500)"
@@ -155,11 +156,11 @@ msgstr "Occità"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "panjabi"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "pedi"
 
 #: pol
 msgid "Polish"
@@ -179,7 +180,7 @@ msgstr "Serbi"
 
 #: sin
 msgid "Sinhala"
-msgstr ""
+msgstr "singalès"
 
 #: slk
 msgid "Slovak"
@@ -191,7 +192,7 @@ msgstr "sotho"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "sotho meridional"
 
 #: spa
 msgid "Spanish"
@@ -199,7 +200,7 @@ msgstr "Espanyol"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "suahili (macrollengua)"
 
 #: swe
 msgid "Swedish"

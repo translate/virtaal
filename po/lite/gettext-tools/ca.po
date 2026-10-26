@@ -1,15 +1,16 @@
+# Toni Hermoso <toniher@softcatala.cat>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: gettext-tools 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-10 13:25+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2026-10-26 22:28+0000\n"
+"Last-Translator: Toni Hermoso <toniher@softcatala.cat>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Minairó 1.7.0\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -38,6 +39,8 @@ msgstr ""
 msgid ""
 "a format specification for argument %zu, as in '%s', doesn't exist in '%s'"
 msgstr ""
+"no existeix una especificació de format per a l'argument %zu, com a «%s», a "
+"«%s»"
 
 #: src/format-awk.c:530
 #: src/format-boost.c:642
@@ -62,7 +65,7 @@ msgstr ""
 #: src/format-tcl.c:409
 #, c-format
 msgid "a format specification for argument %zu doesn't exist in '%s'"
-msgstr ""
+msgstr "no existeix una especificació de format per a l'argument %zu a «%s»"
 
 #: src/format-awk.c:554
 #: src/format-boost.c:666
@@ -88,11 +91,13 @@ msgstr ""
 msgid ""
 "format specifications in '%s' and '%s' for argument %zu are not the same"
 msgstr ""
+"les especificacions de format de «%s» i «%s» per a l'argument %zu no són les "
+"mateixes"
 
 #: src/format-boost.c:452
 #, c-format
 msgid "The directive number %zu starts with | but does not end with |."
-msgstr ""
+msgstr "La directiva número %zu comença amb «|» però no acaba amb «|»."
 
 #: src/format.c:160
 #, c-format
@@ -103,27 +108,27 @@ msgstr ""
 #: src/format-c++-brace.c:252
 #, c-format
 msgid "In the directive number %zu, the arg-id is too large."
-msgstr ""
+msgstr "En la directiva número %zu l'arg-id és massa gran."
 
 #: src/format-c++-brace.c:368
 #: src/format-c++-brace.c:463
 #, c-format
 msgid "In the directive number %zu, the width's arg-id is too large."
-msgstr ""
+msgstr "En la directiva número %zu l'arg-id de l'amplada és massa gran."
 
 #: src/format-c++-brace.c:423
 #, c-format
 msgid ""
 "In the directive number %zu, the width's arg-id is not terminated through '}"
 "'."
-msgstr ""
+msgstr "En la directiva número %zu l'arg-id de l'amplada no acaba amb «}»."
 
 #: src/format-c++-brace.c:518
 #, c-format
 msgid ""
 "In the directive number %zu, the precision's arg-id is not terminated "
 "through '}'."
-msgstr ""
+msgstr "En la directiva número %zu l'arg-id de la precisió no acaba amb «}»."
 
 #: src/format-c++-brace.c:580
 #, c-format
@@ -131,6 +136,8 @@ msgid ""
 "In the directive number %zu, the character '%c' is not a standard type "
 "specifier."
 msgstr ""
+"En la directiva número %zu el caràcter «%c» no és un especificador de tipus "
+"estàndard."
 
 #: src/format-c++-brace.c:581
 #, c-format
@@ -138,6 +145,8 @@ msgid ""
 "The character that terminates the directive number %zu is not a standard "
 "type specifier."
 msgstr ""
+"El caràcter que finalitza la directiva número %zu no és un especificador de "
+"tipus estàndard."
 
 #: src/format-c++-brace.c:589
 #, c-format
@@ -145,6 +154,8 @@ msgid ""
 "In the directive number %zu, the sign specification is incompatible with the "
 "type specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'especificació de signe és incompatible amb "
+"l'especificador de tipus «%c»."
 
 #: src/format-c++-brace.c:597
 #, c-format
@@ -152,6 +163,8 @@ msgid ""
 "In the directive number %zu, the '#' option is incompatible with the type "
 "specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'opció «#» és incompatible amb l'especificador "
+"de tipus «%c»."
 
 #: src/format-c++-brace.c:605
 #, c-format
@@ -159,6 +172,8 @@ msgid ""
 "In the directive number %zu, the '0' option is incompatible with the type "
 "specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'opció «0» és incompatible amb l'especificador "
+"de tipus «%c»."
 
 #: src/format-c++-brace.c:613
 #, c-format
@@ -166,6 +181,8 @@ msgid ""
 "In the directive number %zu, the precision specification is incompatible "
 "with the type specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'especificació de precisió és incompatible amb "
+"l'especificador de tipus «%c»."
 
 #: src/format-c++-brace.c:621
 #, c-format
@@ -173,6 +190,8 @@ msgid ""
 "In the directive number %zu, the 'L' option is incompatible with the type "
 "specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'opció «L» és incompatible amb l'especificador "
+"de tipus «%c»."
 
 #: src/format-c++-brace.c:722
 #, c-format
@@ -180,16 +199,18 @@ msgid ""
 "The directive number %zu, with all of its options, is not applicable to any "
 "type."
 msgstr ""
+"La directiva número %zu, amb totes les seves opcions, no és aplicable a cap "
+"tipus."
 
 #: src/format-c++-brace.c:734
 #, c-format
 msgid "The string ends in the middle of the directive number %zu."
-msgstr ""
+msgstr "La cadena acaba al mig de la directiva número %zu."
 
 #: src/format-c++-brace.c:742
 #, c-format
 msgid "The directive number %zu is not terminated through '}'."
-msgstr ""
+msgstr "La directiva número %zu no acaba amb «}»."
 
 #: src/format-c++-brace.c:764
 #: src/format-csharp.c:155
@@ -205,7 +226,7 @@ msgstr ""
 #: src/format-csharp.c:156
 #, c-format
 msgid "The string contains a lone '}' after directive number %zu."
-msgstr ""
+msgstr "La cadena conté un '}' solitari després de la directiva número %zu."
 
 #: src/format-c++-brace.c:984
 #, c-format
@@ -213,6 +234,8 @@ msgid ""
 "The format specification for argument %zu in '%s' is applicable to the types "
 "%s, but the format specification for argument %zu in '%s' is not."
 msgstr ""
+"L'especificació de format per a l'argument %zu a «%s» és aplicable als tipus "
+"%s, però l'especificació de format per a l'argument %zu a «%s» no ho és."
 
 #: src/format-c++-brace.c:997
 #, c-format
@@ -220,6 +243,9 @@ msgid ""
 "The format specification for argument %zu in '%s' uses a different "
 "presentation than the format specification for argument %zu in '%s'."
 msgstr ""
+"L'especificació de format per a l'argument %zu a «%s» utilitza una "
+"presentació diferent de l'especificació de format per a l'argument %zu a «%s"
+"»."
 
 #: src/format-c.c:35
 #, c-format
@@ -227,17 +253,22 @@ msgid ""
 "In the directive number %zu, the token after '<' is not the name of a format "
 "specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1."
 msgstr ""
+"En la directiva número %zu el testimoni després de «<» no és el nom d'una "
+"macro especificadora de format. Els noms de macro vàlids estan llistats a la "
+"secció 7.8.1 de l'ISO C 99."
 
 #: src/format-c.c:38
 #, c-format
 msgid ""
 "In the directive number %zu, the token after '<' is not followed by '>'."
 msgstr ""
+"En la directiva número %zu el testimoni després de «<» no va seguit de «>»."
 
 #: src/format-c.c:41
 #, c-format
 msgid "In the directive number %zu, the argument size specifier is invalid."
 msgstr ""
+"En la directiva número %zu l'especificador de mida de l'argument no és vàlid."
 
 #: src/format-c.c:44
 #: src/format-gfc-internal.c:274
@@ -245,6 +276,8 @@ msgstr ""
 msgid ""
 "The string refers to argument number %zu but ignores argument number %zu."
 msgstr ""
+"La cadena es refereix a l'argument número %zu però ignora l'argument número "
+"%zu."
 
 #: src/format-c.c:138
 #: src/format-csharp.c:201
@@ -260,12 +293,12 @@ msgstr "el nombre d’especificacions de format en «%s» i «%s» no coincideix
 #: src/format-java.c:203
 #, c-format
 msgid "In the directive number %zu, '{' is not followed by an argument number."
-msgstr ""
+msgstr "En la directiva número %zu «{» no va seguit d'un número d'argument."
 
 #: src/format-csharp.c:103
 #, c-format
 msgid "In the directive number %zu, ',' is not followed by a number."
-msgstr ""
+msgstr "En la directiva número %zu «,» no va seguit d'un número."
 
 #: src/format-csharp.c:124
 #: src/format-java.c:185
@@ -280,11 +313,12 @@ msgstr ""
 msgid ""
 "The directive number %zu ends with an invalid character '%c' instead of '}'."
 msgstr ""
+"La directiva número %zu acaba amb un caràcter no vàlid «%c» en lloc de «}»."
 
 #: src/format-csharp.c:134
 #, c-format
 msgid "The directive number %zu ends with an invalid character instead of '}'."
-msgstr ""
+msgstr "La directiva número %zu acaba amb un caràcter no vàlid en lloc de «}»."
 
 #: src/format-d.c:1651
 #, c-format
@@ -292,6 +326,8 @@ msgid ""
 "In the directive number %zu, the first argument number is greater than the "
 "second argument number."
 msgstr ""
+"En la directiva número %zu el primer número d'argument és més gran que el "
+"segon número d'argument."
 
 #: src/format-d.c:1654
 #, c-format
@@ -299,20 +335,23 @@ msgid ""
 "In the directive number %zu, the compound specifier consumes a variable "
 "number of arguments."
 msgstr ""
+"En la directiva número %zu l'especificador compost consumeix un nombre "
+"variable d'arguments."
 
 #: src/format-d.c:1657
 #, c-format
 msgid ""
 "In the directive number %zu, the compound specifier consumes %zu arguments."
 msgstr ""
+"En la directiva número %zu l'especificador compost consumeix %zu arguments."
 
 #: src/format-d.c:1660
 msgid "Found '%|' outside of '%(...%)'."
-msgstr ""
+msgstr "S'ha trobat «%|» fora de «%(...%)»."
 
 #: src/format-d.c:1663
 msgid "The string ends in the middle of a compound specifier."
-msgstr ""
+msgstr "La cadena acaba al mig d'un especificador compost."
 
 #: src/format-d.c:1666
 #, c-format
@@ -320,18 +359,22 @@ msgid ""
 "In the directive number %zu, there is an invalid directive in the delimiter "
 "part of a compound specifier."
 msgstr ""
+"En la directiva número %zu hi ha una directiva no vàlida a la part del "
+"delimitador d'un especificador compost."
 
 #: src/format-d.c:1669
 #: src/format-ocaml.c:768
 #, c-format
 msgid "Found '%%%c' without matching '%%%c'."
-msgstr ""
+msgstr "S'ha trobat «%%%c» sense coincidir «%%%c»."
 
 #: src/format-d.c:1672
 #, c-format
 msgid ""
 "The directive number %zu references an argument after the last argument."
 msgstr ""
+"La directiva número %zu fa referència a un argument després de l'últim "
+"argument."
 
 #: src/format-d.c:1676
 #: src/format-lisp.c:3419
@@ -360,23 +403,25 @@ msgid ""
 "The directive number %zu opens a quote group, but the previous one is not "
 "terminated."
 msgstr ""
+"La directiva número %zu obre un grup de cometes, però l'anterior no s'ha "
+"tancat."
 
 #: src/format-gcc-internal.c:238
 #: src/format-gcc-internal.c:248
 #: src/format-gcc-internal.c:258
 #, c-format
 msgid "The directive number %zu does not match a preceding '%%%c'."
-msgstr ""
+msgstr "La directiva número %zu no correspon a cap «%%%c» anterior."
 
 #: src/format-gcc-internal.c:344
 #, c-format
 msgid "In the directive number %zu, the flags combination is invalid."
-msgstr ""
+msgstr "En la directiva número %zu la combinació d'indicadors no és vàlida."
 
 #: src/format-gcc-internal.c:385
 #, c-format
 msgid "In the directive number %zu, a precision is not allowed before '%c'."
-msgstr ""
+msgstr "En la directiva número %zu no es permet una precisió abans de «%c»."
 
 #: src/format-gcc-internal.c:426
 #, c-format
@@ -384,6 +429,8 @@ msgid ""
 "In the directive number %zu, the argument number for the precision must be "
 "equal to %zu."
 msgstr ""
+"En la directiva número %zu el número d'argument per a la precisió ha de ser "
+"igual a %zu."
 
 #: src/format-gcc-internal.c:490
 #, c-format
@@ -391,11 +438,13 @@ msgid ""
 "In the directive number %zu, a precision specification is not allowed before "
 "'%c'."
 msgstr ""
+"En la directiva número %zu no es permet una especificació de precisió abans "
+"de «%c»."
 
 #: src/format-gcc-internal.c:498
 #, c-format
 msgid "In the directive number %zu, the precision specification is invalid."
-msgstr ""
+msgstr "En la directiva número %zu l'especificació de precisió no és vàlida."
 
 #: src/format-gcc-internal.c:524
 #, c-format
@@ -403,6 +452,8 @@ msgid ""
 "The directive number %zu opens a color group, but the previous one is not "
 "terminated."
 msgstr ""
+"La directiva número %zu obre un grup de color, però l'anterior no s'ha "
+"tancat."
 
 #: src/format-gcc-internal.c:535
 #, c-format
@@ -410,21 +461,22 @@ msgid ""
 "The directive number %zu opens a URL group, but the previous one is not "
 "terminated."
 msgstr ""
+"La directiva número %zu obre un grup d'URL, però l'anterior no s'ha tancat."
 
 #: src/format-gcc-internal.c:663
 #, c-format
 msgid "The quote group opened by the directive number %zu is not terminated."
-msgstr ""
+msgstr "El grup de cometes obert per la directiva número %zu no s'ha tancat."
 
 #: src/format-gcc-internal.c:668
 #, c-format
 msgid "The color group opened by the directive number %zu is not terminated."
-msgstr ""
+msgstr "El grup de color obert per la directiva número %zu no s'ha tancat."
 
 #: src/format-gcc-internal.c:673
 #, c-format
 msgid "The URL group opened by the directive number %zu is not terminated."
-msgstr ""
+msgstr "El grup d'URL obert per la directiva número %zu no s'ha tancat."
 
 #: src/format-gcc-internal.c:840
 #, c-format
@@ -452,17 +504,17 @@ msgstr "«%s» no empra «%%m» però «%s» empra «%%m»"
 #: src/format-rust.c:172
 #, c-format
 msgid "In the directive number %zu, the argument number is too large."
-msgstr ""
+msgstr "En la directiva número %zu el número d'argument és massa gran."
 
 #: src/format-go.c:221
 #, c-format
 msgid "In the directive number %zu, the width is too large."
-msgstr ""
+msgstr "En la directiva número %zu l'amplada és massa gran."
 
 #: src/format-go.c:326
 #, c-format
 msgid "In the directive number %zu, the precision is too large."
-msgstr ""
+msgstr "En la directiva número %zu la precisió és massa gran."
 
 #: src/format-invalid.h:23
 msgid "The string ends in the middle of a directive."
@@ -479,13 +531,14 @@ msgstr ""
 #: src/format-invalid.h:29
 #, c-format
 msgid "In the directive number %zu, the precision is missing."
-msgstr ""
+msgstr "En la directiva número %zu falta la precisió."
 
 #: src/format-invalid.h:32
 #, c-format
 msgid ""
 "In the directive number %zu, the argument number 0 is not a positive integer."
 msgstr ""
+"En la directiva número %zu el número d'argument 0 no és un enter positiu."
 
 #: src/format-invalid.h:34
 #, c-format
@@ -493,6 +546,8 @@ msgid ""
 "In the directive number %zu, the width's argument number 0 is not a positive "
 "integer."
 msgstr ""
+"En la directiva número %zu el número d'argument 0 de l'amplada no és un "
+"enter positiu."
 
 #: src/format-invalid.h:36
 #, c-format
@@ -500,6 +555,8 @@ msgid ""
 "In the directive number %zu, the precision's argument number 0 is not a "
 "positive integer."
 msgstr ""
+"En la directiva número %zu el número d'argument 0 de la precisió no és un "
+"enter positiu."
 
 #: src/format-invalid.h:40
 #, c-format
@@ -507,6 +564,8 @@ msgid ""
 "In the directive number %zu, the character '%c' is not a valid conversion "
 "specifier."
 msgstr ""
+"En la directiva número %zu el caràcter «%c» no és un especificador de "
+"conversió vàlid."
 
 #: src/format-invalid.h:41
 #, c-format
@@ -514,6 +573,8 @@ msgid ""
 "The character that terminates the directive number %zu is not a valid "
 "conversion specifier."
 msgstr ""
+"El caràcter que finalitza la directiva número %zu no és un especificador de "
+"conversió vàlid."
 
 #: src/format-invalid.h:44
 #, c-format
@@ -521,11 +582,13 @@ msgid ""
 "In the directive number %zu, the flag '%c' is invalid for the conversion "
 "'%c'."
 msgstr ""
+"En la directiva número %zu l'indicador «%c» no és vàlid per a la conversió "
+"«%c»."
 
 #: src/format-invalid.h:47
 #, c-format
 msgid "The string refers to argument number %zu in incompatible ways."
-msgstr ""
+msgstr "La cadena es refereix a l'argument número %zu de maneres incompatibles."
 
 #: src/format-java.c:238
 #, c-format
@@ -533,13 +596,15 @@ msgid ""
 "In the directive number %zu, the substring \"%s\" is not a valid date/time "
 "style."
 msgstr ""
+"En la directiva número %zu la subcadena «%s» no és un estil vàlid de data/"
+"hora."
 
 #: src/format-java.c:249
 #: src/format-java.c:283
 #: src/format-java.c:312
 #, c-format
 msgid "In the directive number %zu, \"%s\" is not followed by a comma."
-msgstr ""
+msgstr "En la directiva número %zu «%s» no va seguit d'una coma."
 
 #: src/format-java.c:272
 #, c-format
@@ -547,6 +612,7 @@ msgid ""
 "In the directive number %zu, the substring \"%s\" is not a valid number "
 "style."
 msgstr ""
+"En la directiva número %zu la subcadena «%s» no és un estil de nombre vàlid."
 
 #: src/format-java.c:321
 #, c-format
@@ -554,11 +620,13 @@ msgid ""
 "In the directive number %zu, the argument number is not followed by a comma "
 "and one of \"%s\", \"%s\", \"%s\", \"%s\"."
 msgstr ""
+"En la directiva número %zu el número d'argument no va seguit d'una coma i "
+"d'un de «%s», «%s», «%s», «%s»."
 
 #: src/format-java.c:566
 #, c-format
 msgid "In the directive number %zu, a choice contains no number."
-msgstr ""
+msgstr "En la directiva número %zu una elecció no conté cap número."
 
 #: src/format-java.c:577
 #, c-format
@@ -566,23 +634,29 @@ msgid ""
 "In the directive number %zu, a choice contains a number that is not followed "
 "by '<', '#' or '%s'."
 msgstr ""
+"En la directiva número %zu una elecció conté un número que no va seguit de "
+"«<», «#» o «%s»."
 
 #: src/format-java.c:738
 #, c-format
 msgid ""
 "a format specification for argument {%zu}, as in '%s', doesn't exist in '%s'"
 msgstr ""
+"no existeix una especificació de format per a l'argument {%zu}, com a «%s», "
+"a «%s»"
 
 #: src/format-java.c:750
 #, c-format
 msgid "a format specification for argument {%zu} doesn't exist in '%s'"
-msgstr ""
+msgstr "no existeix una especificació de format per a l'argument {%zu} a «%s»"
 
 #: src/format-java.c:774
 #, c-format
 msgid ""
 "format specifications in '%s' and '%s' for argument {%zu} are not the same"
 msgstr ""
+"les especificacions de format de «%s» i «%s» per a l'argument {%zu} no són "
+"les mateixes"
 
 #: src/format-java-printf.c:131
 #, c-format
@@ -590,18 +664,22 @@ msgid ""
 "In the directive number %zu, the reference to the argument of the previous "
 "directive is invalid."
 msgstr ""
+"En la directiva número %zu la referència a l'argument de la directiva "
+"anterior no és vàlida."
 
 #: src/format-java-printf.c:134
 #, c-format
 msgid ""
 "In the directive number %zu, a width is invalid for the conversion '%c'."
 msgstr ""
+"En la directiva número %zu una amplada no és vàlida per a la conversió «%c»."
 
 #: src/format-java-printf.c:137
 #, c-format
 msgid ""
 "In the directive number %zu, a precision is invalid for the conversion '%c'."
 msgstr ""
+"En la directiva número %zu una precisió no és vàlida per a la conversió «%c»."
 
 #: src/format-java-printf.c:141
 #, c-format
@@ -609,6 +687,8 @@ msgid ""
 "In the directive number %zu, for the conversion '%c', the character '%c' is "
 "not a valid conversion suffix."
 msgstr ""
+"En la directiva número %zu per a la conversió «%c», el caràcter «%c» no és "
+"un sufix vàlid de conversió."
 
 #: src/format-java-printf.c:142
 #, c-format
@@ -616,6 +696,8 @@ msgid ""
 "The character that terminates the directive number %zu, for the conversion "
 "'%c', is not a valid conversion suffix."
 msgstr ""
+"El caràcter que finalitza la directiva número %zu, per a la conversió «%c», "
+"no és un sufix de conversió vàlid."
 
 #: src/format-kde.c:149
 #, c-format
@@ -623,6 +705,8 @@ msgid ""
 "The string refers to argument number %zu but ignores the arguments %zu and "
 "%zu."
 msgstr ""
+"La cadena fa referència a l'argument número %zu, però ignora els arguments "
+"%zu i %zu."
 
 #: src/format-kde.c:236
 #: src/format-rust.c:516
@@ -631,6 +715,8 @@ msgid ""
 "a format specification for arguments %zu and %zu doesn't exist in '%s', only "
 "one argument may be ignored"
 msgstr ""
+"una especificació de format per als arguments %zu i %zu no existeix a «%s», "
+"només es pot ignorar un argument"
 
 #: src/format-kde-kuit.c:251
 #: src/format-kde-kuit.c:272
@@ -648,6 +734,8 @@ msgid ""
 "In the directive number %zu, parameter %zu is of type '%s' but a parameter "
 "of type '%s' is expected."
 msgstr ""
+"En la directiva número %zu el paràmetre %zu és del tipus «%s», però s'espera "
+"un paràmetre del tipus «%s»."
 
 #: src/format-lisp.c:2370
 #: src/format-scheme.c:2396
@@ -659,18 +747,23 @@ msgid_plural ""
 "In the directive number %zu, too many parameters are given; expected at most "
 "%zu parameters."
 msgstr[0] ""
+"En la directiva número %zu es donen massa paràmetres; s'espera com a màxim "
+"%zu paràmetre."
+msgstr[1] ""
+"En la directiva número %zu es donen massa paràmetres; s'esperen com a màxim "
+"%zu paràmetres."
 
 #: src/format-lisp.c:2492
 #: src/format-scheme.c:2494
 #, c-format
 msgid "In the directive number %zu, '%c' is not followed by a digit."
-msgstr ""
+msgstr "En la directiva número %zu «%c» no va seguit d'un dígit."
 
 #: src/format-lisp.c:2734
 #: src/format-scheme.c:2751
 #, c-format
 msgid "In the directive number %zu, the argument %d is negative."
-msgstr ""
+msgstr "En la directiva número %zu l'argument %d és negatiu."
 
 #: src/format-lisp.c:2803
 msgid "The string ends in the middle of a ~/.../ directive."
@@ -694,6 +787,8 @@ msgstr "S’ha trobat «~%c» sense el «~%c» corresponent."
 #, c-format
 msgid "In the directive number %zu, both the @ and the : modifiers are given."
 msgstr ""
+"En la directiva número %zu es donen tant el modificador @ com el modificador "
+":."
 
 #: src/format-lisp.c:2970
 #: src/format-scheme.c:2966
@@ -702,18 +797,20 @@ msgid ""
 "In the directive number %zu, '~:[' is not followed by two clauses, separated "
 "by '~;'."
 msgstr ""
+"En la directiva número %zu «~:[» no va seguit de dues clàusules separades "
+"per «~;»."
 
 #: src/format-lisp.c:3315
 #: src/format-scheme.c:3251
 #, c-format
 msgid "In the directive number %zu, '~;' is used in an invalid position."
-msgstr ""
+msgstr "En la directiva número %zu «~;» s'utilitza en una posició no vàlida."
 
 #: src/format-ocaml.c:562
 #: src/format-ocaml.c:661
 #, c-format
 msgid "Found '%s' without matching '%s'."
-msgstr ""
+msgstr "S'ha trobat «%s» sense el «%s» corresponent."
 
 #: src/format-perl-brace.c:194
 #: src/format-python-brace.c:555
@@ -731,11 +828,13 @@ msgid ""
 "In the directive number %zu, the size specifier is incompatible with the "
 "conversion specifier '%c'."
 msgstr ""
+"En la directiva número %zu l'especificador de mida és incompatible amb "
+"l'especificador de conversió «%c»."
 
 #: src/format-python-brace.c:192
 #, c-format
 msgid "In the directive number %zu, '%c' cannot start a getattr argument."
-msgstr ""
+msgstr "En la directiva número %zu «%c» no pot iniciar un argument getattr."
 
 #: src/format-python-brace.c:194
 #, c-format
@@ -743,11 +842,13 @@ msgid ""
 "In the directive number %zu, a getattr argument starts with a character that "
 "is not alphabetical or underscore."
 msgstr ""
+"En la directiva número %zu un argument getattr comença amb un caràcter que "
+"no és alfabètic ni un guió baix."
 
 #: src/format-python-brace.c:216
 #, c-format
 msgid "In the directive number %zu, '%c' cannot start a getitem argument."
-msgstr ""
+msgstr "En la directiva número %zu «%c» no pot iniciar un argument getitem."
 
 #: src/format-python-brace.c:218
 #, c-format
@@ -755,16 +856,18 @@ msgid ""
 "In the directive number %zu, a getitem argument starts with a character that "
 "is not alphanumerical or underscore."
 msgstr ""
+"En la directiva número %zu un argument getitem comença amb un caràcter que "
+"no és alfanumèric ni un guió baix."
 
 #: src/format-python-brace.c:228
 #, c-format
 msgid "In the directive number %zu, there is an unterminated getitem argument."
-msgstr ""
+msgstr "En la directiva número %zu hi ha un argument getitem sense acabar."
 
 #: src/format-python-brace.c:251
 #, c-format
 msgid "In the directive number %zu, '%c' cannot start a field name."
-msgstr ""
+msgstr "En la directiva número %zu «%c» no pot iniciar un nom de camp."
 
 #: src/format-python-brace.c:253
 #, c-format
@@ -772,6 +875,8 @@ msgid ""
 "In the directive number %zu, a field name starts with a character that is "
 "not alphanumerical or underscore."
 msgstr ""
+"En la directiva número %zu un nom de camp comença amb un caràcter que no és "
+"alfanumèric ni un guió baix."
 
 #: src/format-python-brace.c:266
 #, c-format
@@ -779,6 +884,8 @@ msgid ""
 "In the directive number %zu, no more nesting is allowed in a format "
 "specifier."
 msgstr ""
+"En la directiva número %zu no es permet imbricar més en un especificador de "
+"format."
 
 #: src/format-python-brace.c:302
 #: src/format-python-brace.c:355
@@ -786,7 +893,7 @@ msgstr ""
 #: src/format-rust.c:318
 #, c-format
 msgid "The directive number %zu is unterminated."
-msgstr ""
+msgstr "La directiva número %zu no està acabada."
 
 #: src/format-python-brace.c:372
 #: src/format-python-brace.c:389
@@ -794,6 +901,8 @@ msgid ""
 "The string refers to arguments both through absolute argument numbers and "
 "through unnamed argument specifications."
 msgstr ""
+"La cadena es refereix als arguments tant a través de nombres d'arguments "
+"absoluts com a través d'especificacions d'arguments sense nom."
 
 #: src/format-python-brace.c:543
 #: src/format-python.c:474
@@ -860,38 +969,38 @@ msgstr ""
 #: src/format-ruby.c:132
 #, c-format
 msgid "In the directive number %zu, two names are given for the same argument."
-msgstr ""
+msgstr "En la directiva número %zu es donen dos noms per al mateix argument."
 
 #: src/format-ruby.c:135
 #, c-format
 msgid ""
 "In the directive number %zu, two numbers are given for the same argument."
-msgstr ""
+msgstr "En la directiva número %zu es donen dos números per al mateix argument."
 
 #: src/format-ruby.c:138
 #, c-format
 msgid "In the directive number %zu, a flag is given after the width."
-msgstr ""
+msgstr "En la directiva número %zu es dona un indicador després de l'amplada."
 
 #: src/format-ruby.c:141
 #, c-format
 msgid "In the directive number %zu, a flag is given after the precision."
-msgstr ""
+msgstr "En la directiva número %zu es dona un indicador després de la precisió."
 
 #: src/format-ruby.c:144
 #, c-format
 msgid "In the directive number %zu, the width is given after the precision."
-msgstr ""
+msgstr "En la directiva número %zu l'amplada es dona després de la precisió."
 
 #: src/format-ruby.c:147
 #, c-format
 msgid "In the directive number %zu, a width is given twice."
-msgstr ""
+msgstr "En la directiva número %zu es dona una amplada dues vegades."
 
 #: src/format-ruby.c:150
 #, c-format
 msgid "In the directive number %zu, a precision is given twice."
-msgstr ""
+msgstr "En la directiva número %zu es dona una precisió dues vegades."
 
 #: src/format-ruby.c:865
 #, c-format
@@ -937,28 +1046,28 @@ msgstr "La cadena es refereix a una variable d’intèrpret amb un nom buit."
 
 #: src/format-sh-printf.c:335
 msgid "The string ends in the middle of an escape sequence."
-msgstr ""
+msgstr "La cadena acaba al mig d'una seqüència d'escapament."
 
 #: src/format-sh-printf.c:345
 #, c-format
 msgid "The escape sequence '%c%c' is unsupported (not in POSIX)."
-msgstr ""
+msgstr "La seqüència d'escapament «%c%c» no és compatible (no a POSIX)."
 
 #: src/format-sh-printf.c:346
 #, c-format
 msgid "The escape sequence '%c%c' is invalid."
-msgstr ""
+msgstr "La seqüència d'escapament «%c%c» no és vàlida."
 
 #: src/format-sh-printf.c:347
 msgid "This escape sequence is invalid."
-msgstr ""
+msgstr "Aquesta seqüència d'escapament no és vàlida."
 
 #: src/format-smalltalk.c:88
 #, c-format
 msgid ""
 "In the directive number %zu, the character '%c' is not a digit between 1 and "
 "9."
-msgstr ""
+msgstr "En la directiva número %zu el caràcter «%c» no és un dígit entre 1 i 9."
 
 #: src/format-smalltalk.c:89
 #, c-format
@@ -966,6 +1075,7 @@ msgid ""
 "The character that terminates the directive number %zu is not a digit "
 "between 1 and 9."
 msgstr ""
+"El caràcter que finalitza la directiva número %zu no és un dígit entre 1 i 9."
 
 #: src/msgl-check.c:110
 msgid "plural expression can produce division by zero"
@@ -977,7 +1087,7 @@ msgstr "l’expressió de «plural» pot produir un desbordament enter"
 
 #: src/msgl-check.c:116
 msgid "plural expression can produce stack overflow"
-msgstr ""
+msgstr "l'expressió de plural pot produir un desbordament de pila"
 
 #: src/msgl-check.c:130
 msgid "plural expression can produce negative values"

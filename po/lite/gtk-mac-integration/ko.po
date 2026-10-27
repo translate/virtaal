@@ -1,0 +1,31 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-mac-integration lite\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-06 07:41+0100\n"
+"PO-Revision-Date: 2026-10-25 09:50+0900\n"
+"Last-Translator: VenusGirl <venusgirl@outlook.com>\n"
+"Language-Team: VenusGirl <https://venusgirls.tistory.com/>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.10\n"
+
+msgid "About %s"
+msgstr "%s 정보"
+
+msgid "Hide %s"
+msgstr "%s 숨기기"
+
+msgid "Hide Others"
+msgstr "기타 숨기기"
+
+msgid "Quit %s"
+msgstr "%s 종료"
+
+msgid "Services"
+msgstr "서비스"
+
+msgid "Show All"
+msgstr "모두 표시"

@@ -1,21 +1,20 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: iso639-3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 12:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2026-10-20 13:27+0100\n"
+"PO-Revision-Date: 2026-10-25 10:15+0900\n"
+"Last-Translator: VenusGirl <venusgirl@outlook.com>\n"
+"Language-Team: VenusGirl <https://venusgirls.tistory.com/>\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
-"Language: ko\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.10\n"
 
 #: afr
 msgid "Afrikaans"
-msgstr "아프리칸스어"
+msgstr "아프리카어"
 
 #: aka
 msgid "Akan"
@@ -31,15 +30,15 @@ msgstr "아랍어"
 
 #: ast
 msgid "Asturian"
-msgstr ""
+msgstr "아스투리아스어"
 
 #: eus
 msgid "Basque"
-msgstr "바스크어"
+msgstr "바스크 사람"
 
 #: bel
 msgid "Belarusian"
-msgstr "벨로루시어"
+msgstr "벨라루스어"
 
 #: ben
 msgid "Bengali"
@@ -55,7 +54,7 @@ msgstr "카탈로니아어"
 
 #: cgg
 msgid "Chiga"
-msgstr ""
+msgstr "치가어"
 
 #: zho
 msgid "Chinese"
@@ -71,7 +70,7 @@ msgstr "덴마크어"
 
 #: nld
 msgid "Dutch"
-msgstr ""
+msgstr "네덜란드어"
 
 #: eng
 msgid "English"
@@ -79,7 +78,7 @@ msgstr "영어"
 
 #: fao
 msgid "Faroese"
-msgstr "페로스어"
+msgstr "페로어"
 
 #: fin
 msgid "Finnish"
@@ -107,7 +106,7 @@ msgstr "독일어"
 
 #: ell
 msgid "Greek, Modern (1453-)"
-msgstr "그리스어 (현대) (1453년 이후)"
+msgstr "그리스어, 현대 (1453년~)"
 
 #: heb
 msgid "Hebrew"
@@ -115,7 +114,7 @@ msgstr "히브리어"
 
 #: hin
 msgid "Hindi"
-msgstr "힌두어"
+msgstr "힌디어"
 
 #: hun
 msgid "Hungarian"
@@ -143,23 +142,23 @@ msgstr "리투아니아어"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "현대 그리스어(1453년~)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "네팔어 (거시언어)"
 
 #: oci
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "오크어 (1500년 이후)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "펀자브어"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "페디어"
 
 #: pol
 msgid "Polish"
@@ -187,11 +186,11 @@ msgstr "슬로바키아어"
 
 #: sot
 msgid "Sotho, Southern"
-msgstr "소토어 (남)"
+msgstr "소토어, 남부"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "남부 소토어"
 
 #: spa
 msgid "Spanish"
@@ -199,7 +198,7 @@ msgstr "스페인어"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "스와힐리어 (대언어)"
 
 #: swe
 msgid "Swedish"
@@ -215,11 +214,11 @@ msgstr "태국어"
 
 #: tur
 msgid "Turkish"
-msgstr "터키어"
+msgstr "튀르키예어"
 
 #: ukr
 msgid "Ukrainian"
-msgstr ""
+msgstr "우크라이나어"
 
 #: vie
 msgid "Vietnamese"

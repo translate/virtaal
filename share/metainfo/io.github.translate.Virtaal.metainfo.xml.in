@@ -55,6 +55,9 @@
   <color type="primary" scheme_preference="dark">#18265c</color>
  </branding>
  <releases>
+  <release version="1.0.0~rc2" date="2026-10-28" type="development">
+   <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-rc2</url>
+  </release>
   <release version="1.0.0~rc1" date="2026-10-14" type="development">
    <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-rc1</url>
   </release>

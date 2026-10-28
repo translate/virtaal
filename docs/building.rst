@@ -199,13 +199,15 @@ gtkspell3`` for spell checking)::
   brew install pygobject3 gtk+3 gtk-mac-integration enchant gtkspell3
   python3 -m venv --system-site-packages .venv
   . .venv/bin/activate
-  pip install .[test]
+  pip install .[test,spellcheck]
   python bin/virtaal
 
 Building a distributable ``.app``/``.dmg`` uses `PyInstaller
 <https://pyinstaller.org/>`_ and `dmgbuild
-<https://dmgbuild.readthedocs.io/>`_ on top of the above::
+<https://dmgbuild.readthedocs.io/>`_ on top of the above, and bundles
+Homebrew's Adwaita icon theme with librsvg to draw it::
 
+  brew install adwaita-icon-theme librsvg
   devsupport/packaging/macos/build_standalone.sh
   devsupport/packaging/macos/codesign_app.sh
   devsupport/packaging/macos/build_dmg.sh

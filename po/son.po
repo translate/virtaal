@@ -2449,14 +2449,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Fattandiyan hasaraw"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Moofuryan hasaraw"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Yee banda cee foo goyteeroo ra (Ctrl+Shift+Enter)"
@@ -3059,3 +3051,9 @@ msgstr "Sukari nda suubari booboyaŋ boŋše hanseyan"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Fasal faaba dobante"
+
+#~ msgid "Export failed"
+#~ msgstr "Fattandiyan hasaraw"
+
+#~ msgid "Preview failed"
+#~ msgstr "Moofuryan hasaraw"

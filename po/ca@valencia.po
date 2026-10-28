@@ -2458,14 +2458,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Ha fallat l'exportació"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Ha fallat la previsualització"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Aneu un pas arrere en el flux de treball (Ctrl+Maj+Retorn)"
@@ -3083,3 +3075,9 @@ msgstr "Molts connectors i opcions per a la personalització"
 
 #~ msgid "Virtaal - %(current_file)s %(modified_marker)s"
 #~ msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+
+#~ msgid "Export failed"
+#~ msgstr "Ha fallat l'exportació"
+
+#~ msgid "Preview failed"
+#~ msgstr "Ha fallat la previsualització"

@@ -2450,14 +2450,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Tiedoston vienti epäonnistui"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Esikatselu epäonnistui"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Siirry työnkulussa askel taaksepäin (Ctrl+Shift+Enter)"
@@ -3077,3 +3069,9 @@ msgstr "Useita liitännäisiä ja mukautusvaihtoehtoja"
 
 #~ msgid "Apertium Machine Translation"
 #~ msgstr "Apertium-konekäännös"
+
+#~ msgid "Export failed"
+#~ msgstr "Tiedoston vienti epäonnistui"
+
+#~ msgid "Preview failed"
+#~ msgstr "Esikatselu epäonnistui"

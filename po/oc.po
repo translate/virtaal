@@ -2446,14 +2446,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "L'importacion a pas capitat"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "L'apercebut a fracassat"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Recuolar d'una etapa dins lo flux de trabalhs (Ctrl+Maj+Entrada)"
@@ -3054,3 +3046,9 @@ msgstr "Nombroses empeutons e opcions de personalizacion"
 #, python-format
 #~ msgid "%s option does not take a value"
 #~ msgstr "l'opcion %s utiliza pas cap de valor"
+
+#~ msgid "Export failed"
+#~ msgstr "L'importacion a pas capitat"
+
+#~ msgid "Preview failed"
+#~ msgstr "L'apercebut a fracassat"

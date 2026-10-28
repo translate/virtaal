@@ -1381,7 +1381,6 @@ msgid "Wikipedia"
 msgstr "Wikipedia"
 
 #: virtaal/plugins/lookup/models/weblookup.py
-#| msgid "UTX Dictionary"
 msgid "Wiktionary"
 msgstr "Wiktionary"
 
@@ -1579,7 +1578,6 @@ msgid "Existing translations: %(translations)s"
 msgstr "Existující překlady: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
 msgstr "Mozilla Pontoon"
 
@@ -1740,7 +1738,6 @@ msgid "Close"
 msgstr "Zavřít"
 
 #: virtaal/support/crash_dialog.py
-#| msgid "Report a _Bug"
 msgid "Report This Bug…"
 msgstr "Nahlásit chybu…"
 
@@ -1868,9 +1865,6 @@ msgstr ""
 "přeložit, stiskněte proto Ctrl+Shift+V a proveďte případné potřebné úpravy."
 
 #: virtaal/support/tutorial.py
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
@@ -2516,14 +2510,6 @@ msgstr "(%s)"
 msgid "This file has unsaved changes."
 msgstr "Tento soubor obsahuje neuložené změny."
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Export se nezdařil"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Náhled se nezdařil"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "O jeden krok workflow zpět (Ctrl+Shift+Enter)"
@@ -2545,7 +2531,6 @@ msgid "Next state"
 msgstr "Následující stav"
 
 #: virtaal/views/widgets/aboutdialog.py
-#| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
@@ -3084,3 +3069,9 @@ msgstr "Mnoho rozšíření a možností přizpůsobení"
 #, python-format
 #~ msgid "%s option does not take a value"
 #~ msgstr "volba %s nepřijímá hodnotu"
+
+#~ msgid "Export failed"
+#~ msgstr "Export se nezdařil"
+
+#~ msgid "Preview failed"
+#~ msgstr "Náhled se nezdařil"

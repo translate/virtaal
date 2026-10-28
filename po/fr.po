@@ -2446,14 +2446,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "L'exportation a échoué"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "L'aperçu a échoué"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Reculer d'une étape dans le flux de travaux (Ctrl+Maj+Entrée)"
@@ -3084,3 +3076,9 @@ msgstr "Nombreux greffons et options de personnalisation"
 
 #~ msgid "Available _Suggestions"
 #~ msgstr "_Suggestions disponibles"
+
+#~ msgid "Export failed"
+#~ msgstr "L'exportation a échoué"
+
+#~ msgid "Preview failed"
+#~ msgstr "L'aperçu a échoué"

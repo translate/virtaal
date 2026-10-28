@@ -2449,14 +2449,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Eksportowanie zakończone niepowodzeniem"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Podgląd zakończony niepowodzeniem"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Należy cofnąć się o krok w przepływie pracy (Ctrl+Shift+Enter)"
@@ -3065,3 +3057,9 @@ msgstr "Rozszerzalność za pomocą wtyczek"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Obsługa wielu różnych formatów"
+
+#~ msgid "Export failed"
+#~ msgstr "Eksportowanie zakończone niepowodzeniem"
+
+#~ msgid "Preview failed"
+#~ msgstr "Podgląd zakończony niepowodzeniem"

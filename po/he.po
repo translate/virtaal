@@ -296,7 +296,6 @@ msgid "Language:"
 msgstr "שפה:"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
 msgstr "<b>שפה</b>"
 
@@ -407,14 +406,12 @@ msgstr "<u>שליף</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 msgstr ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
 msgstr "<u>עוד…</u>"
 
@@ -428,7 +425,6 @@ msgstr "<b><big>כיצד להתחיל</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 msgstr ""
@@ -450,7 +446,6 @@ msgstr "<u>מדריך תרגומים</u>"
 # 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 msgstr ""
@@ -465,7 +460,6 @@ msgid "Report a bug on GitHub"
 msgstr "דיווח על תקלה דרך GitHub"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
 msgstr "<u>דיווח על תקלה</u>"
 
@@ -482,7 +476,6 @@ msgid "Comma Separated Value"
 msgstr "ערכים מופרדים בפסיקים"
 
 #: devsupport/tmp_strings.py
-#| msgid "Current File"
 msgid "Fluent file"
 msgstr "קובץ Fluent"
 
@@ -499,7 +492,6 @@ msgid "Haiku catkeys file"
 msgstr "קובץ catkeys של Haiku"
 
 #: devsupport/tmp_strings.py
-#| msgid "Mozilla"
 msgid "Mozilla .lang"
 msgstr "‎.lang של Mozilla"
 
@@ -536,7 +528,6 @@ msgid "UTX Dictionary"
 msgstr "מילון UTX"
 
 #: devsupport/tmp_strings.py
-#| msgid "_Localization Guide"
 msgid "WiX Localization File"
 msgstr "קובץ תרגום WiX"
 
@@ -643,7 +634,6 @@ msgstr "בדיקות איות תוך כדי הקלדה"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Translated"
 msgid "Translate"
 msgstr "Translate"
 
@@ -975,12 +965,6 @@ msgstr "שמירה"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
-#| msgid ""
-#| "Could not save file.\n"
-#| "\n"
-#| "%(error_message)s\n"
-#| "\n"
-#| "Try saving to a different location."
 msgid ""
 "%(filename)s is read-only.\n"
 "\n"
@@ -1526,7 +1510,6 @@ msgstr "הוספת מו_נח…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
-#| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
 msgstr "הוספת המונח „%(selection)s”…"
 
@@ -2328,7 +2311,6 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
 msgstr "%(modified_marker)s%(current_file)s"
 
@@ -2368,13 +2350,11 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s': %(reason)s"
 msgstr "לא ניתן לפתוח את ‚%(file)s’‏: %(reason)s"
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s'."
 msgstr "לא ניתן לפתוח את ‚%(file)s’."
 
@@ -2493,14 +2473,6 @@ msgstr "(%s)"
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
 msgstr "יש שינויים בקובץ הזה שלא נשמרו."
-
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "הייצוא נכשל"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "התצוגה המקדימה נכשלה"
 
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
@@ -3063,3 +3035,9 @@ msgstr "תוספים רבים ואפשרויות התאמה אישית"
 
 #~ msgid "Extensive format support"
 #~ msgstr "תמיכה נרחבת במבנה"
+
+#~ msgid "Export failed"
+#~ msgstr "הייצוא נכשל"
+
+#~ msgid "Preview failed"
+#~ msgstr "התצוגה המקדימה נכשלה"

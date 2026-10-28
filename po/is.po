@@ -2450,14 +2450,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Úflutningur mistókst"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Forskoðun mistókst"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Færa sig eitt skref aftur á bak í verkflæðinu (Ctrl+Shift+Enter)"
@@ -3061,3 +3053,9 @@ msgstr "Margar viðbætur og sérsniðnir valkostir"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Yfirgripsmikill stuðningur við skráarsnið"
+
+#~ msgid "Export failed"
+#~ msgstr "Úflutningur mistókst"
+
+#~ msgid "Preview failed"
+#~ msgstr "Forskoðun mistókst"

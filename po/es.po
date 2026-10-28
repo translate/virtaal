@@ -2732,14 +2732,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Se ha detectado un fallo durante la exportación"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Fallo al generar la previsualización"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Retroceder un paso el estado del segmento (Ctrl+Shift+Enter)"
@@ -3376,3 +3368,9 @@ msgstr "Muchos complementos y opciones de configuración"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Compatibilidad con varios formatos"
+
+#~ msgid "Export failed"
+#~ msgstr "Se ha detectado un fallo durante la exportación"
+
+#~ msgid "Preview failed"
+#~ msgstr "Fallo al generar la previsualización"

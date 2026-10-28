@@ -413,7 +413,6 @@ msgstr "<u>Kopya Kağıdı</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 msgstr ""
@@ -433,7 +432,6 @@ msgstr "<b><big>Başlarken</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 msgstr ""
@@ -454,7 +452,6 @@ msgstr "<u>Yerelleştirme Rehberi</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 msgstr ""
@@ -469,7 +466,6 @@ msgid "Report a bug on GitHub"
 msgstr "GitHub'da bir hata bildirin"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
 msgstr "<u>Bir Hata Bildir</u>"
 
@@ -1587,7 +1583,6 @@ msgid "Existing translations: %(translations)s"
 msgstr "Varolan çeviriler: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
 msgstr "Mozilla Pontoon"
 
@@ -1839,9 +1834,6 @@ msgid ""
 msgstr ""
 
 #: virtaal/support/tutorial.py
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
@@ -2133,7 +2125,6 @@ msgid "Quality checks"
 msgstr "Kalite denetimleri"
 
 #: virtaal/views/langview.py
-#| msgid "New Language Pair"
 msgid "_New Language Pair…"
 msgstr "_Yeni Dil Çifti…"
 
@@ -2201,7 +2192,6 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
 msgstr "%(modified_marker)s%(current_file)s"
 
@@ -2365,14 +2355,6 @@ msgstr "(%s)"
 msgid "This file has unsaved changes."
 msgstr "Bu dosyada kaydedilmemiş değişiklikler var."
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Dışa aktarma başarısız oldu"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Önizleme başarısız oldu"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "İş akışında bir adım geri taşı (Ctrl+Shift+Enter)"
@@ -2386,12 +2368,10 @@ msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "İş akışında bir adım ileri taşı (Ctrl+Enter)"
 
 #: virtaal/views/unitview.py
-#| msgid "P_revious Placeable"
 msgid "Previous state"
 msgstr "Önceki durum"
 
 #: virtaal/views/unitview.py
-#| msgid "Select States"
 msgid "Next state"
 msgstr "Sonraki durum"
 
@@ -2602,7 +2582,6 @@ msgid "Show/Hide checks"
 msgstr "Denetimleri göster/gizle"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
 msgstr "Bu birim için çeviri önerilerini göster"
 
@@ -2611,12 +2590,10 @@ msgid "Turn translation suggestions on or off"
 msgstr "Çeviri önerilerini aç veya kapat"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
 msgstr "Gösterilirse çeviri önerilerini gizle"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
 msgstr "Yerel terminoloji dosyasına bir terim ekle"
 
@@ -2967,3 +2944,9 @@ msgstr "Özelleştirme için birçok eklenti ve seçenek"
 
 #~ msgid "Apertium Machine Translation"
 #~ msgstr "Apertium makine çevirisi"
+
+#~ msgid "Export failed"
+#~ msgstr "Dışa aktarma başarısız oldu"
+
+#~ msgid "Preview failed"
+#~ msgstr "Önizleme başarısız oldu"

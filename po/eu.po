@@ -31,9 +31,6 @@ msgstr "Itzulpen-tresna"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "A translation tool to help a human translator translate files into other "
-#| "languages"
 msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
@@ -110,7 +107,6 @@ msgid "<b>Translation</b>"
 msgstr "<b>Itzulpena</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
 msgstr "_Gehitu falta den hizkuntza…"
 
@@ -127,7 +123,6 @@ msgid "Re_vert to Saved"
 msgstr "Le_heneratu gordetakora"
 
 #: share/virtaal/virtaal.ui
-#| msgid "_Update to Template"
 msgid "_Update from Template"
 msgstr "Eg_uneratu txantiloitik"
 
@@ -166,7 +161,6 @@ msgstr "Transferitu iturburutik"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#| msgid "_Next Placeable"
 msgid "_Insert Placeable"
 msgstr "_Txertatu elementu berezia"
 
@@ -305,12 +299,10 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Letra-tipoak</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Language"
 msgid "Language:"
 msgstr "Hizkuntza:"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
 msgstr "<b>Hizkuntza</b>"
 
@@ -340,7 +332,6 @@ msgid "Properties"
 msgstr "Propietateak"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Local file"
 msgid "Saved file"
 msgstr "Gordetako fitxategia"
 
@@ -424,14 +415,12 @@ msgstr "<u>Txuleta</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 msgstr ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
 msgstr "<u>Gehiago…</u>"
 
@@ -445,7 +434,6 @@ msgstr "<b><big>Hasiberrientzat</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 msgstr ""
@@ -466,7 +454,6 @@ msgstr "<u>Lokalizazio-gida</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
 msgstr ""
@@ -477,12 +464,10 @@ msgid "<u>Feedback</u>"
 msgstr "<u>Feedback-a</u>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
 msgstr "Eman programa-errore baten berri GitHub-en"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
 msgstr "<u>Eman programa-errore baten berri</u>"
 
@@ -491,7 +476,6 @@ msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Laguntza</big></b>"
 
 #: devsupport/tmp_strings.py
-#| msgid "Machine translation"
 msgid "Base translation store"
 msgstr "Funtsezko itzulpenen biltegia"
 
@@ -500,7 +484,6 @@ msgid "Comma Separated Value"
 msgstr "Komaz bereizitako balioa"
 
 #: devsupport/tmp_strings.py
-#| msgid "Current File"
 msgid "Fluent file"
 msgstr "Fluent fitxategia"
 
@@ -517,7 +500,6 @@ msgid "Haiku catkeys file"
 msgstr "Haiku catkeys fitxategia"
 
 #: devsupport/tmp_strings.py
-#| msgid "Mozilla"
 msgid "Mozilla .lang"
 msgstr "Mozilla .lang"
 
@@ -546,7 +528,6 @@ msgid "TMX Translation Memory"
 msgstr "TMX itzulpen-memoria"
 
 #: devsupport/tmp_strings.py
-#| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
 msgstr "Trados itzulpen-memoria"
 
@@ -555,7 +536,6 @@ msgid "UTX Dictionary"
 msgstr "UTX hiztegia"
 
 #: devsupport/tmp_strings.py
-#| msgid "_Localization Guide"
 msgid "WiX Localization File"
 msgstr "WiX lokalizazio-fitxategia"
 
@@ -568,7 +548,6 @@ msgid "XLIFF Translation File"
 msgstr "XLIFF itzulpen-fitxategia"
 
 #: devsupport/tmp_strings.py
-#| msgid "XLIFF Translation File"
 msgid "SDL XLIFF Translation File"
 msgstr "SDL XLIFF itzulpen-fitxategia"
 
@@ -581,17 +560,14 @@ msgid "Edit with Virtaal"
 msgstr "Editatu Virtaal-ekin"
 
 #: devsupport/tmp_strings.py
-#| msgid "Usage: %s\n"
 msgid "usage: "
 msgstr "erabilera:"
 
 #: devsupport/tmp_strings.py
-#| msgid "%s option requires an argument"
 msgid "positional arguments"
 msgstr "argumentu posizionalak"
 
 #: devsupport/tmp_strings.py
-#| msgid "Options"
 msgid "options"
 msgstr "aukerak"
 
@@ -605,7 +581,6 @@ msgstr "erakutsi programaren bertsio-zenbakia eta irten"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
 msgstr "Virtaal itzulpen-tresna"
 
@@ -623,10 +598,6 @@ msgstr ""
 "kalitatea hobetzen laguntzeko."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "The initial focus is on software translation (localization or l10n), but "
-#| "we definitely intend it to be useful as a general purpose tool for "
-#| "Computer Aided Translation (CAT)."
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
@@ -642,7 +613,6 @@ msgstr "Zenbait eginbide:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
 msgstr "Itzulpenen berrerabilpena (itzulpen-memoria)"
 
@@ -669,13 +639,11 @@ msgid "Recognized elements don't need to be typed"
 msgstr "Antzemandako elementuak ez dira idatzi behar"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
 msgstr "Burutu kalitate-egiaztapenak idatzi ahala"
 
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Translated"
 msgid "Translate"
 msgstr "Itzuli"
 
@@ -1005,12 +973,6 @@ msgstr "Gorde"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
-#| msgid ""
-#| "Could not save file.\n"
-#| "\n"
-#| "%(error_message)s\n"
-#| "\n"
-#| "Try saving to a different location."
 msgid ""
 "%(filename)s is read-only.\n"
 "\n"
@@ -1085,7 +1047,6 @@ msgid "Revert to Saved"
 msgstr "Leheneratu gordetakora"
 
 #: virtaal/controllers/maincontroller.py
-#| msgid "Reload file from last saved copy and lose all changes?"
 msgid "Revert to the last saved copy and lose all changes?"
 msgstr "Leheneratu gordetako azken kopiara eta galdu aldaketa guztiak?"
 
@@ -1400,7 +1361,6 @@ msgstr "Deskargatu %(language)s hizkuntzarako sinonimoen-hiztegia…"
 
 #. l10n: The menu entry offering synonyms for the selected word.
 #: virtaal/plugins/lookup/models/thesaurus.py
-#| msgid "Acronyms"
 msgid "Synonyms"
 msgstr "Sinonimoak"
 
@@ -1424,7 +1384,6 @@ msgid "Wikipedia"
 msgstr "Wikipedia"
 
 #: virtaal/plugins/lookup/models/weblookup.py
-#| msgid "UTX Dictionary"
 msgid "Wiktionary"
 msgstr "Wiktionary"
 
@@ -1549,18 +1508,15 @@ msgid "Local terminology files"
 msgstr "Terminologia-fitxategi lokalak"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Terminology Files"
 msgid "Terminology _Files…"
 msgstr "Terminologia-_fitxategiak…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Add Term"
 msgid "Add _Term…"
 msgstr "Gehitu _terminoa…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
-#| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
 msgstr "Gehitu \"%(selection)s\" terminoa…"
 
@@ -1627,7 +1583,6 @@ msgid "Existing translations: %(translations)s"
 msgstr "Dauden itzulpenak: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
 msgstr "Mozilla Pontoon"
 
@@ -1789,7 +1744,6 @@ msgid "Close"
 msgstr "Itxi"
 
 #: virtaal/support/crash_dialog.py
-#| msgid "Report a _Bug"
 msgid "Report This Bug…"
 msgstr "Eman programa-errore honen _berri…"
 
@@ -1918,9 +1872,6 @@ msgstr ""
 "ahala."
 
 #: virtaal/support/tutorial.py
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
@@ -2344,7 +2295,6 @@ msgid "Quality checks"
 msgstr "Kalitate-egiaztapenak"
 
 #: virtaal/views/langview.py
-#| msgid "New Language Pair"
 msgid "_New Language Pair…"
 msgstr "Hizkuntza-pare _berria…"
 
@@ -2370,7 +2320,6 @@ msgid "Choose a Translation File"
 msgstr "Aukeratu itzulpen-fitxategia"
 
 #: virtaal/views/mainview.py
-#| msgid "Choose a Translation File"
 msgid "Choose a PO Template File"
 msgstr "Aukeratu PO txantiloi-fitxategia"
 
@@ -2387,7 +2336,6 @@ msgstr ""
 "Aldaketak gorde nahi dituzu?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#| msgid "Save"
 msgid "_Save"
 msgstr "_Gorde"
 
@@ -2416,7 +2364,6 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
 msgstr "%(modified_marker)s%(current_file)s"
 
@@ -2456,13 +2403,11 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s': %(reason)s"
 msgstr "Ezin da '%(file)s' ireki: %(reason)s"
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s'."
 msgstr "Ezin da '%(file)s' ireki."
 
@@ -2472,25 +2417,21 @@ msgstr "Berrabiarazi Virtaal hizkuntza berriak eragina har dezan."
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "Before:"
 msgid "Before"
 msgstr "Aurretik"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "After:"
 msgid "After"
 msgstr "Ondoren"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
-#| msgid "Unchanged"
 msgid "Change"
 msgstr "Aldaketa"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#| msgid "Total: %d"
 msgid "Total"
 msgstr "Guztira"
 
@@ -2499,7 +2440,6 @@ msgid "Source and target language are the same."
 msgstr "Iturburu- eta helburu-hizkuntzak berdinak dira."
 
 #: virtaal/views/mainview.py
-#| msgid "New Language Pair"
 msgid "Change Language Pair"
 msgstr "Aldatu hizkuntza-parea"
 
@@ -2537,12 +2477,10 @@ msgid "Conte_xt:"
 msgstr "Te_stuingurua:"
 
 #: virtaal/views/prefsview.py
-#| msgid "Poedit settings"
 msgid "Settings"
 msgstr "Ezarpenak"
 
 #: virtaal/views/prefsview.py
-#| msgid "Use default fonts"
 msgid "System default"
 msgstr "Sistemaren lehenetsia"
 
@@ -2587,14 +2525,6 @@ msgstr "(%s)"
 msgid "This file has unsaved changes."
 msgstr "Fitxategi honek gorde gabeko aldaketak ditu."
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Esportatzeak huts egin du"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Aurrebistak huts egin du"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Mugitu urrats bat atzera laneko fluxuan (Ktrl+Shift+Enter)"
@@ -2608,17 +2538,14 @@ msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Mugitu urrats bat aurrera laneko fluxuan (Ktrl+Shift+Enter)"
 
 #: virtaal/views/unitview.py
-#| msgid "P_revious Placeable"
 msgid "Previous state"
 msgstr "Aurreko egoera"
 
 #: virtaal/views/unitview.py
-#| msgid "Select States"
 msgid "Next state"
 msgstr "Hurrengo egoera"
 
 #: virtaal/views/widgets/aboutdialog.py
-#| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
@@ -2661,12 +2588,10 @@ msgstr ""
 "Julen Ruiz Aizpuru <julenx@gmail.com>"
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language"
 msgid "Edit Language"
 msgstr "Editatu hizkuntza"
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language name:"
 msgid "Enter a language name."
 msgstr "Idatzi hizkuntzaren izena."
 
@@ -2679,7 +2604,6 @@ msgid "Language code must be at least 2 characters long."
 msgstr "Hizkuntza-kodeak gutxienez 2 karaktere luze izan behar du."
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language code must be an ASCII string."
 msgid "Language code must not contain spaces."
 msgstr "Hizkuntza-kodeak ezin ditu zuriuneak eduki."
 
@@ -2698,7 +2622,6 @@ msgid "Code"
 msgstr "Kodea"
 
 #: virtaal/views/widgets/selectview.py
-#| msgid "Configure..."
 msgid "Configure…"
 msgstr "Konfiguratu…"
 
@@ -2711,7 +2634,6 @@ msgid "Open a file"
 msgstr "Ireki fitxategia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translated units from the current file"
 msgid "Save the current file"
 msgstr "Gorde uneko fitxategia"
 
@@ -2720,12 +2642,10 @@ msgid "Save the current file under a new name"
 msgstr "Gorde uneko fitxategia beste izen batekin"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Current File"
 msgid "Close the current file"
 msgstr "Itxi uneko fitxategia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Virtaal"
 msgid "Quit Virtaal"
 msgstr "Irten Virtaal-etik"
 
@@ -2746,12 +2666,10 @@ msgid "Show this Keyboard Shortcuts window"
 msgstr "Erakutsi teklatuaren lasterbideen leiho hau"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Navigation"
 msgid "Navigation"
 msgstr "Nabigazioa"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine translation"
 msgid "Move to next translation"
 msgstr "Joan hurrengo itzulpenera"
 
@@ -2792,12 +2710,10 @@ msgid "Units"
 msgstr "Unitateak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "P_revious placeable"
 msgid "Select previous placeable"
 msgstr "Hautatu aurreko elementu berezia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Next placeable"
 msgid "Select next placeable"
 msgstr "Hautatu hurrengo elementu berezia"
 
@@ -2806,7 +2722,6 @@ msgid "Insert the selected placeable"
 msgstr "Txertatu hautatutako elementu berezia"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
 msgstr "Ordezkatu itzulpena iturburuarekin"
 
@@ -2827,7 +2742,6 @@ msgid "Redo the last undone change"
 msgstr "Berregin desegindako azken aldaketa"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _suggestions"
 msgid "Use the first translation suggestion"
 msgstr "Erabili lehen itzulpen-gomendioa"
 
@@ -2836,22 +2750,18 @@ msgid "Show/Hide checks"
 msgstr "Erakutsi/ezkutatu egiaztapenak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _suggestions"
 msgid "Show translation suggestions for this unit"
 msgstr "Erakutsi unitate honetarako itzulpen-gomendioak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _suggestions"
 msgid "Turn translation suggestions on or off"
 msgstr "Aktibatu/desaktibatu itzulpen-gomendioak"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _suggestions"
 msgid "Hide translation suggestions, if shown"
 msgstr "Ezkutatu itzulpen-gomendioak, erakusten ari badira"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
 msgstr "Gehitu terminoa terminologia-fitxategi lokalean"
 
@@ -3336,3 +3246,9 @@ msgstr "Hainbat plugin eta pertsonalizatzeko aukerak"
 #~ msgstr ""
 #~ "Zalantzazko bezala markaturiko itzulpen bat editatzean, zalantzazko "
 #~ "etiketa automatikoki ezabatuko da."
+
+#~ msgid "Export failed"
+#~ msgstr "Esportatzeak huts egin du"
+
+#~ msgid "Preview failed"
+#~ msgstr "Aurrebistak huts egin du"

@@ -2308,14 +2308,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr ""
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr ""
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
@@ -2602,3 +2594,9 @@ msgstr "Many plugins and options for customisation"
 
 #~ msgid "XML Localization Interchange File Format"
 #~ msgstr "XML Localisation Interchange File Format"
+
+#~ msgid "Export failed"
+#~ msgstr ""
+
+#~ msgid "Preview failed"
+#~ msgstr ""

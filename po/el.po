@@ -2449,14 +2449,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Αποτυχία εξαγωγής"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Αποτυχία προεπισκόπησης"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Μετακίνηση ενός βήματος πίσω στη ροή εργασίας (Ctrl+Shift+Enter)"
@@ -3055,3 +3047,9 @@ msgstr "Πολλά πρόσθετα και επιλογές για προσαρ�
 #, python-format
 #~ msgid "%s option does not take a value"
 #~ msgstr "η επιλογή %s δεν παίρνει τιμή"
+
+#~ msgid "Export failed"
+#~ msgstr "Αποτυχία εξαγωγής"
+
+#~ msgid "Preview failed"
+#~ msgstr "Αποτυχία προεπισκόπησης"

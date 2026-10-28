@@ -2439,14 +2439,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Kon nie uitvoer nie"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Kon nie voorskou wys nie"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Skuif een stap terug in die werksvloei (Ctrl+Shift+Enter)"
@@ -3196,3 +3188,9 @@ msgstr "Baie inproppe en keuses vir aanpassing"
 #~ msgstr ""
 #~ "Gevorderde program vir rekenaar gesteunde vertaling vir lokaliseerders en "
 #~ "vertalers"
+
+#~ msgid "Export failed"
+#~ msgstr "Kon nie uitvoer nie"
+
+#~ msgid "Preview failed"
+#~ msgstr "Kon nie voorskou wys nie"

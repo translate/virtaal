@@ -2432,14 +2432,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Jiggito horaama"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Jiytindol haoraama"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Dirtu taaɓal fayde caggal e nder balgol golle (Ctrl+Shift+Enter)"
@@ -3043,3 +3035,9 @@ msgstr "Ceŋe keewɗe e cuɓe ngam taftaade"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Jaaɓgol hitooji keeɗi"
+
+#~ msgid "Export failed"
+#~ msgstr "Jiggito horaama"
+
+#~ msgid "Preview failed"
+#~ msgstr "Jiytindol haoraama"

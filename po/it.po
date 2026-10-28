@@ -2454,14 +2454,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Esporto fallito"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Anteprima fallita"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Torna indietro di un passaggio nel flusso di lavoro (Ctrl+Shift+Enter)"
@@ -3091,3 +3083,9 @@ msgstr "Numerosi plugin ed opzioni per la personalizzazione"
 
 #~ msgid "Apertium Machine Translation"
 #~ msgstr "Traduzione automatizzata Apertium"
+
+#~ msgid "Export failed"
+#~ msgstr "Esporto fallito"
+
+#~ msgid "Preview failed"
+#~ msgstr "Anteprima fallita"

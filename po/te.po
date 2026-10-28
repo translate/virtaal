@@ -2368,14 +2368,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "ఎగుమతి విఫలమైంది"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "మునుజూపు విఫలమైంది"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
@@ -2819,3 +2811,9 @@ msgstr ""
 
 #~ msgid "F_uzzy"
 #~ msgstr "సందేహాత్మకం (_u)"
+
+#~ msgid "Export failed"
+#~ msgstr "ఎగుమతి విఫలమైంది"
+
+#~ msgid "Preview failed"
+#~ msgstr "మునుజూపు విఫలమైంది"

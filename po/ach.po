@@ -2438,14 +2438,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Cwalo woko okwero"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Ngiyo okwero"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Dir cen yadi acel cen i mol pa tic (Ctrl+Shift+Enter)"
@@ -3050,3 +3042,9 @@ msgstr "Lamed ki yore mapol me yiko"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Kony ikom kite ma tek"
+
+#~ msgid "Export failed"
+#~ msgstr "Cwalo woko okwero"
+
+#~ msgid "Preview failed"
+#~ msgstr "Ngiyo okwero"

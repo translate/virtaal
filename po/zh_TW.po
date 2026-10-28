@@ -2433,14 +2433,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "匯出檔案"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "預覽檔案"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "回上一步 (Ctrl+Shift+Enter)"
@@ -3037,3 +3029,9 @@ msgstr "許多插件和定制選項"
 
 #~ msgid "The file \"%s\" does not exist."
 #~ msgstr "\"%s\" 文件不存在。"
+
+#~ msgid "Export failed"
+#~ msgstr "匯出檔案"
+
+#~ msgid "Preview failed"
+#~ msgstr "預覽檔案"

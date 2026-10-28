@@ -2450,14 +2450,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Ошибка экспортирования"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Ошибка предпросмотра"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Перейти на шаг назад (Ctrl+Shift+Enter)"
@@ -3082,3 +3074,9 @@ msgstr "Множество настроек и подключаемых моду
 
 #~ msgid "Available _Suggestions"
 #~ msgstr "_Предположения"
+
+#~ msgid "Export failed"
+#~ msgstr "Ошибка экспортирования"
+
+#~ msgid "Preview failed"
+#~ msgstr "Ошибка предпросмотра"

@@ -2464,14 +2464,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Eksportuoti nepavyko"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Peržiūrėti nepavyko"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Grįžti į ankstesnę darbo eigos būseną <Vald+Lyg2+Įvesti>"
@@ -3088,3 +3080,9 @@ msgstr "Daugybė papildinių ir individualizuojamų nuostatų"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Suderinamumas su įvairiais formatais"
+
+#~ msgid "Export failed"
+#~ msgstr "Eksportuoti nepavyko"
+
+#~ msgid "Preview failed"
+#~ msgstr "Peržiūrėti nepavyko"

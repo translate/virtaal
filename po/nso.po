@@ -2468,14 +2468,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Go romela ka ntle go padile"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Poeletšo e padile"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Boela morago ka kgato e tee go tšwelopele ya mošomo (Ctrl+Shift+Enter)"
@@ -3102,3 +3094,9 @@ msgstr "Ditsebišo-koketšo tše dintši le dikgetho tša tlwaetšo"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Thekgo ya fomate e okeditšwego"
+
+#~ msgid "Export failed"
+#~ msgstr "Go romela ka ntle go padile"
+
+#~ msgid "Preview failed"
+#~ msgstr "Poeletšo e padile"

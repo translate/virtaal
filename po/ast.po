@@ -2450,14 +2450,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Fallu al esportar"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Fallu al previsualizar"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Un pasu atrás nel fluxu de trabayu (Ctrl+Mayús+Intro)"
@@ -3060,3 +3052,9 @@ msgstr "Munchos plugins y opciones de personalización"
 
 #~ msgid "Extensive format support"
 #~ msgstr "Formatu estendíu sofitáu"
+
+#~ msgid "Export failed"
+#~ msgstr "Fallu al esportar"
+
+#~ msgid "Preview failed"
+#~ msgstr "Fallu al previsualizar"

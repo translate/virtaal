@@ -2459,14 +2459,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Ukuhambisa kuhlulekile"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Ukubuka kuqala kuhlulekile"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Phindela emuva ngesinyathelo esisodwa kumsebenzi (Ctrl+Shift+Enter)"
@@ -3119,3 +3111,9 @@ msgstr "Ama-plug-ins amanengi nezinketho zokwenza ngezifiso"
 
 #~ msgid "_Mode: "
 #~ msgstr "Indlela yokuhu_musha: "
+
+#~ msgid "Export failed"
+#~ msgstr "Ukuhambisa kuhlulekile"
+
+#~ msgid "Preview failed"
+#~ msgstr "Ukubuka kuqala kuhlulekile"

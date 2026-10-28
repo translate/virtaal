@@ -2556,14 +2556,6 @@ msgstr "(%s)"
 msgid "This file has unsaved changes."
 msgstr "Este arquivo tem alterações não salvas."
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Falha ao exportar"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Falha na visualização"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Mover um passo atrás no fluxo de trabalho (Ctrl+Shift+Enter)"
@@ -3237,3 +3229,9 @@ msgstr "Muitos plug-ins e opções para personalização"
 #~ msgstr ""
 #~ "Ao editar uma tradução aproximada, o marcador de aproximada será removido "
 #~ "automaticamente."
+
+#~ msgid "Export failed"
+#~ msgstr "Falha ao exportar"
+
+#~ msgid "Preview failed"
+#~ msgstr "Falha na visualização"

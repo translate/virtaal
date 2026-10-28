@@ -2434,14 +2434,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr ""
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr ""
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
@@ -2979,3 +2971,9 @@ msgstr ""
 
 #~ msgid "The file \"%s\" does not exist."
 #~ msgstr "फाइल \"%s\" अवस्थित छैन ।"
+
+#~ msgid "Export failed"
+#~ msgstr ""
+
+#~ msgid "Preview failed"
+#~ msgstr ""

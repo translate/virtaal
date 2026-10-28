@@ -2477,14 +2477,6 @@ msgstr "(%s)"
 msgid "This file has unsaved changes."
 msgstr "このファイルには未保存の変更があります。"
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "エクスポートに失敗しました"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "プレビューに失敗しました"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "作業フローを一つ前へ戻る (Ctrl+Shift+Enter)"
@@ -3042,3 +3034,9 @@ msgstr "カスタマイズのための多くのプラグインとオプション
 
 #~ msgid "Extensive format support"
 #~ msgstr "様々なフォーマットのサポート"
+
+#~ msgid "Export failed"
+#~ msgstr "エクスポートに失敗しました"
+
+#~ msgid "Preview failed"
+#~ msgstr "プレビューに失敗しました"

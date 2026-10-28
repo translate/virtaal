@@ -2439,14 +2439,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Exportovanie zlyhalo"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Ukážka zlyhala"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Pohnúť sa o krok späť v pracovnom priebehu (Ctrl+Shift+Enter)"
@@ -3039,3 +3031,9 @@ msgstr "Mnoho zásuvných modulov a možností pre prispôsobenie"
 #, python-format
 #~ msgid "%s option does not take a value"
 #~ msgstr "možnosť %s nevzala hodnotu"
+
+#~ msgid "Export failed"
+#~ msgstr "Exportovanie zlyhalo"
+
+#~ msgid "Preview failed"
+#~ msgstr "Ukážka zlyhala"

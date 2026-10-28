@@ -2684,14 +2684,6 @@ msgstr ""
 msgid "This file has unsaved changes."
 msgstr ""
 
-#: virtaal/views/storeview.py
-msgid "Export failed"
-msgstr "Eksport mislykkedes"
-
-#: virtaal/views/storeview.py
-msgid "Preview failed"
-msgstr "Forhåndsvisning mislykkedes"
-
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Gå ét skridt tilbage i arbejdsgangen (Ctrl+Skift+Enter)"
@@ -3313,3 +3305,9 @@ msgstr "Mange plugins og valgmuligheder for tilpasning"
 #, python-format
 #~ msgid "%s option does not take a value"
 #~ msgstr "valgmuligheden %s tager ikke imod en værdi"
+
+#~ msgid "Export failed"
+#~ msgstr "Eksport mislykkedes"
+
+#~ msgid "Preview failed"
+#~ msgstr "Forhåndsvisning mislykkedes"

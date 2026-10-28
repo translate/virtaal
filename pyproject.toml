@@ -49,7 +49,7 @@ dependencies = [
     "pycurl==7.48.0",
     # pycurl's own wheel bundles no CA bundle to verify against - see
     # httpclient.py's own _configure_ca_bundle().
-    "certifi==2026.10.19",
+    "certifi==2026.10.23",
     "diff_match_patch==20241021",
     # translate-toolkit 3.17.5 (the python_version < '3.11' pin above)
     # itself constrains lxml to <6.1 - a real cross-package conflict,
@@ -81,7 +81,7 @@ test = ["pytest==9.1.1", "pytest-cov==7.1.0", "pytest-xdist==3.8.0", "pytest-tim
 docs = ["Sphinx==9.1.0; python_version >= '3.12'"]
 # Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
 # enough yet for a repo-wide rollout.
-type-check = ["ty==0.0.89"]
+type-check = ["ty==0.0.91"]
 
 [project.urls]
 Homepage = "https://virtaal.translatehouse.org"

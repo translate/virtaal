@@ -6,7 +6,9 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
+import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -14,6 +16,7 @@ import pytest
 
 from virtaal import cli
 from virtaal.common import pan_app
+from virtaal.common.platform import Platform
 
 
 @pytest.fixture(autouse=True)
@@ -335,3 +338,53 @@ def test_developer_options_are_accepted_but_left_out_of_help(option):
     parser = cli.build_parser()
     assert option not in parser.format_help()
     assert option in parser._option_string_actions
+
+
+class _FakeGLib:
+    def __init__(self):
+        self.calls = []
+
+    def set_prgname(self, name):
+        self.calls.append(('prgname', name))
+
+    def set_application_name(self, name):
+        self.calls.append(('application_name', name))
+
+
+@pytest.mark.parametrize('platform, expected', [
+    (Platform(os_name='posix', sys_platform='linux', frozen=False, environ={}),
+     [('prgname', cli.APP_ID), ('application_name', 'Virtaal')]),
+    (Platform(os_name='posix', sys_platform='linux', frozen=False, environ={'FLATPAK_ID': cli.APP_ID}),
+     [('prgname', cli.APP_ID), ('application_name', 'Virtaal')]),
+    (Platform(os_name='posix', sys_platform='linux', frozen=True, environ={'APPIMAGE': '/x.AppImage'}), []),
+    (Platform(os_name='posix', sys_platform='darwin', frozen=False, environ={}), []),
+    (Platform(os_name='nt', sys_platform='win32', frozen=False, environ={}), []),
+], ids=['linux', 'flatpak', 'appimage', 'macos', 'windows'])
+def test_program_name_is_the_app_id_except_on_appimage_macos_and_windows(monkeypatch, platform, expected):
+    glib = _FakeGLib()
+    monkeypatch.setattr(cli, 'GLib', glib)
+
+    cli._set_program_name(platform)
+
+    assert glib.calls == expected
+
+
+def test_app_id_names_the_desktop_file_and_the_flatpak():
+    repo = Path(__file__).resolve().parent.parent
+    manifest = repo / 'devsupport' / 'packaging' / 'flatpak' / f'{cli.APP_ID}.yml'
+
+    assert (repo / 'share' / 'applications' / f'{cli.APP_ID}.desktop.in').is_file()
+    assert manifest.read_text().splitlines()[0] == f'id: {cli.APP_ID}'
+
+
+@pytest.mark.skipif(not sys.platform.startswith('linux'), reason='Linux only')
+def test_importing_cli_sets_the_program_name():
+    # GTK sends the program name as a Wayland window's app ID.
+    code = ('from virtaal import cli; from gi.repository import GLib, Gtk; '
+            'print(GLib.get_prgname(), GLib.get_application_name())')
+    env = dict(os.environ)
+    env.pop('APPIMAGE', None)
+    out = subprocess.run([sys.executable, '-c', code], env=env, capture_output=True,
+                         text=True, timeout=60, check=True).stdout
+
+    assert out.split() == [cli.APP_ID, 'Virtaal']

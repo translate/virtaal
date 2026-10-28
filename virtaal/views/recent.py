@@ -20,7 +20,7 @@ for name, extensions, mimetypes in factory.supported_files():
     if mimetypes:
         for mimetype in mimetypes:
             rf.add_mime_type(mimetype)
-for app in ("virtaal", "poedit", "kbabel", "lokalize", "gtranslator"):
+for app in ("virtaal", "Virtaal", "poedit", "kbabel", "lokalize", "gtranslator"):
     rf.add_application(app)
 
 rm = Gtk.RecentManager.get_default()

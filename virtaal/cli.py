@@ -20,8 +20,25 @@ from os import environ, path
 # foreign-struct registration for cairo.Context runs, or every draw
 # call fails with a TypeError. Harmless to do unconditionally.
 import cairo  # noqa: F401
+from gi.repository import GLib
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
+
+# The desktop file's name. Wayland desktops find a window's desktop file,
+# and so its icon, by app ID, which GTK takes from the program name.
+APP_ID = 'io.github.translate.Virtaal'
+
+
+def _set_program_name(platform):
+    """Before GTK starts. The AppImage's own desktop entry matches its
+        window by WM_CLASS instead."""
+    if platform.is_linux and not platform.is_appimage:
+        GLib.set_prgname(APP_ID)
+        GLib.set_application_name('Virtaal')
+
+
+_set_program_name(platform)
 
 # Some behaviour should vary, depending on whether Virtaal is packaged or not
 packaged = getattr(sys, 'frozen', False) or 'FLATPAK_ID' in environ

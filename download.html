@@ -5,17 +5,23 @@ title: Download
 <div class="container content">
   <div class="alert alert-info">
     <strong>Virtaal is under active development again</strong> - a
-    ground-up port to Python 3 and GTK3, with the first beta now
-    available below. Watch the <a href="{{ site.gh_url }}">repository</a>
-    for further releases.
+    ground-up port to Python 3 and GTK3. Watch the
+    <a href="{{ site.gh_url }}">repository</a> for further releases.
   </div>
 
   <h2>Download Virtaal</h2>
-  <p>The latest version is <strong>{{ site.latest_version }}</strong> (Windows
-    installer, macOS <code>.dmg</code>, Linux Flatpak). The macOS builds need
-    {{ site.macos_minimum }} or later.</p>
-  <p>On Linux, download the <code>.flatpak</code> for your computer
-    (<code>x86_64</code>, or <code>aarch64</code> for ARM) and install it with
+  <p>The latest version is <strong>{{ site.latest_version }}</strong>. On the
+    release page, download the file for your computer:</p>
+  <ul>
+    <li>Windows: <code>virtaal-{{ site.latest_version }}-setup.exe</code></li>
+    <li>Mac with Apple silicon (M1 and later):
+      <code>Virtaal-macos-arm64.dmg</code></li>
+    <li>Mac with an Intel processor: <code>Virtaal-macos-x86_64.dmg</code></li>
+    <li>Linux: <code>Virtaal-linux-x86_64.flatpak</code>, or
+      <code>Virtaal-linux-aarch64.flatpak</code> for ARM</li>
+  </ul>
+  <p>The macOS builds need {{ site.macos_minimum }} or later. On Linux,
+    install the Flatpak with
     <code>flatpak install --user Virtaal-linux-x86_64.flatpak</code>, using the
     file name you downloaded. Install each new release the same way.</p>
   <p><a class="btn btn-success btn-huge"

@@ -139,6 +139,7 @@ def test_macos_integration_without_gtk_mac_integration_leaves_the_menu_bar(monke
             raise ValueError('Namespace GtkosxApplication not available')
         return real_require_version(namespace, version)
     monkeypatch.setattr(gi, 'require_version', require_version)
+    monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
     view = mock.Mock()
 
     with caplog.at_level(logging.DEBUG):

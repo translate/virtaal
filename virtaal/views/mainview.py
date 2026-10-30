@@ -68,6 +68,13 @@ def _objc_send(receiver, selector, *args, argtypes=None, restype=ctypes.c_void_p
     return f(receiver, _objc_sel(selector), *args)
 
 
+def _disable_window_tabbing():
+    """macOS adds Show Tab Bar and Show All Tabs to the View menu while
+        automatic window tabbing is on; Virtaal has one window (#4615)."""
+    _objc_send(_objc_class("NSWindow"), "setAllowsAutomaticWindowTabbing:", False,
+               argtypes=[ctypes.c_bool], restype=None)
+
+
 def _wait_for_draw(widget, timeout=300):
     """Run the main loop until C{widget} has drawn and 50ms more, so the
         frame reaches the screen before the caller blocks the main loop;
@@ -346,6 +353,7 @@ class MainView(BaseView):
 
     def _setup_macos_integration(self):
         self._start_appearance_polling(self._detect_macos_is_dark)
+        _disable_window_tabbing()
 
         # Sometimes we have two resize grips: one from GTK, one from Aqua. We
         # might want to disable the GTK one:

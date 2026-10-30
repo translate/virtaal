@@ -34,7 +34,7 @@ KNOWN_BUGS = [
     dict(issue=4346, sweep=['addlang-plural', 'translator-name', 'translator-email', 'translator-team'],
          kind='config-roundtrip', match='', cases=STRIPPED + BLANK[1:]),
     # 5-15 s depending on the runner, so not required.
-    dict(issue=4347, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
+    dict(issue=4606, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
                             'glossary'] + SOURCES,
          kind='slow', match='', cases=['2000 lines'], strict=False),
     dict(issue=4348, sweep=SOURCES, kind='critical',
@@ -85,9 +85,9 @@ KNOWN_BUGS = [
     dict(issue=4443, sweep='spelling', kind='timeout', match='', cases=['100k chars'], platforms=['macos']),
     dict(issue=4448, sweep='spelling', kind='glib-warning', match='iso-codes', cases=ALL, platforms=['macos']),
     # Windows' runner is slower still; the stall also outlasts the case into the next few.
-    dict(issue=4347, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
+    dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
          strict=False),
-    dict(issue=4347, sweep='autocorrect', kind='slow', match='',
+    dict(issue=4606, sweep='autocorrect', kind='slow', match='',
          cases=['2000 lines', 'printf', 'python named', 'percent alone', 'url-escape'], strict=False),
     dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=['printf'], strict=False),
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),

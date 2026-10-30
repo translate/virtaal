@@ -400,6 +400,15 @@ def _force_english_translations():
 
 
 @pytest.fixture(autouse=True, scope="session")
+def _isolate_settings_file(tmp_path_factory):
+    """pan_app.settings is bound to the developer's real virtaal.ini at
+    import, and code under test saves it (#4082). Save to a temporary
+    file instead."""
+    from virtaal.common import pan_app
+    pan_app.settings.filename = str(tmp_path_factory.mktemp("config") / "virtaal.ini")
+
+
+@pytest.fixture(autouse=True, scope="session")
 def _isolate_stats_cache(tmp_path_factory):
     """Building a StoreModel (several test files) opens
     statsdb.StatsCache's default ~/.translate_toolkit/stats.db - under

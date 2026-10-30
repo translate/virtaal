@@ -11,6 +11,7 @@ from translate.lang import data
 
 from virtaal.models.langmodel import LanguageModel
 from virtaal.views.baseview import BaseView
+from virtaal.views.widgets.util import entry_value, keep_one_line
 
 
 class LanguageAddDialog:
@@ -36,6 +37,8 @@ class LanguageAddDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
+        keep_one_line(self.ent_langname)
+        keep_one_line(self.ent_plural)
         self.ent_langname.connect('changed', self._on_input_changed)
         self.ent_langcode.connect('changed', self._on_input_changed)
         self._update_ok_sensitivity()
@@ -52,7 +55,7 @@ class LanguageAddDialog:
 
     # ACCESSORS #
     def _get_langname(self):
-        return self.ent_langname.get_text()
+        return entry_value(self.ent_langname)
     def _set_langname(self, value):
         self.ent_langname.set_text(value)
     langname = property(_get_langname, _set_langname)
@@ -70,7 +73,7 @@ class LanguageAddDialog:
     nplurals = property(_get_nplurals, _set_nplurals)
 
     def _get_plural(self):
-        return self.ent_plural.get_text()
+        return entry_value(self.ent_plural)
     def _set_plural(self, value):
         self.ent_plural.set_text(value)
     plural = property(_get_plural, _set_plural)

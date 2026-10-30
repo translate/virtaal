@@ -3152,3 +3152,108 @@ def test_window_tabbing_off_takes_effect_on_macos():
     mainview._disable_window_tabbing()
 
     assert not mainview._objc_send(nswindow, 'allowsAutomaticWindowTabbing', restype=ctypes.c_bool)
+
+
+class _FakeSignals:
+    def __init__(self):
+        self.handlers = {}
+
+    def connect(self, signal, handler):
+        self.handlers[len(self.handlers) + 1] = (signal, handler)
+        return len(self.handlers)
+
+    def emit(self, signal):
+        for name, handler in list(self.handlers.values()):
+            if name == signal:
+                handler(self, None)
+
+    def handler_is_connected(self, handler):
+        return handler in self.handlers
+
+    def disconnect(self, handler):
+        del self.handlers[handler]
+
+
+class _FakeDialog(_FakeSignals):
+    def __init__(self):
+        super().__init__()
+        self.active = False
+        self.presented = 0
+
+    def is_active(self):
+        return self.active
+
+    def get_visible(self):
+        return True
+
+    def present(self):
+        self.presented += 1
+
+
+class _FakeWindow(_FakeSignals):
+    def __init__(self):
+        super().__init__()
+        self.transient_for = self.modal = None
+        self.visible = True
+        self.presented = 0
+
+    def set_transient_for(self, window):
+        self.transient_for = window
+
+    def set_modal(self, modal):
+        self.modal = modal
+
+    def get_visible(self):
+        return self.visible
+
+    def present(self):
+        self.presented += 1
+
+
+def _over_modal_dialog(monkeypatch, dialog):
+    view = mainview.MainView.__new__(mainview.MainView)
+    view.main_window = object()
+    monkeypatch.setattr('virtaal.views.unitview.modal_dialog', lambda window: dialog)
+    window = _FakeWindow()
+    view._over_modal_dialog(window)
+    return window
+
+
+def test_about_and_shortcuts_go_over_a_modal_dialog_with_the_focus(monkeypatch):
+    # #4617: opened behind Preferences they got no input and couldn't be closed.
+    prefs = _FakeDialog()
+
+    window = _over_modal_dialog(monkeypatch, prefs)
+
+    assert (window.transient_for, window.modal, window.presented) == (prefs, True, 1)
+
+
+def test_a_click_on_the_dialog_below_gives_the_focus_back(monkeypatch):
+    prefs = _FakeDialog()
+    window = _over_modal_dialog(monkeypatch, prefs)
+
+    prefs.active = True
+    prefs.emit('notify::is-active')
+
+    assert window.presented == 2
+
+
+def test_the_dialog_below_gets_the_focus_back_once_the_window_closes(monkeypatch):
+    prefs = _FakeDialog()
+    window = _over_modal_dialog(monkeypatch, prefs)
+
+    window.visible = False
+    window.emit('hide')
+    window.emit('destroy')
+    prefs.active = True
+    prefs.emit('notify::is-active')
+
+    assert prefs.presented == 1
+    assert window.presented == 1
+    assert prefs.handlers == {}
+
+
+def test_about_and_shortcuts_stay_as_they_are_without_a_modal_dialog(monkeypatch):
+    window = _over_modal_dialog(monkeypatch, None)
+
+    assert (window.transient_for, window.modal, window.presented) == (None, None, 0)

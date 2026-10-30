@@ -141,6 +141,10 @@ class TextBox(Gtk.TextView):
         self._completion_popup = None
         # The tag table is shared (search highlight, gtkspell): remove only ours.
         self._placeable_tags = []
+        # A selection is shown by tags over the placeables' own, so that
+        # selecting doesn't redo every placeable's tag (#4347).
+        self._selection_tags = []
+        self._selected_in_base = None
         self._last_cursor_offset = 0
         self.undo_controller = main_controller.undo_controller
 
@@ -269,7 +273,9 @@ class TextBox(Gtk.TextView):
         for sub in elem.sub:
             self.add_default_gui_info(sub)
 
-    def apply_gui_info(self, elem, include_subtree=True, offset=None):
+    def apply_gui_info(self, elem, include_subtree=True, offset=None, tags=None):
+        if tags is None:
+            tags = self._placeable_tags
         if getattr(elem, 'gui_info', None):
             if offset is None:
                 offset = self.elem.gui_info.index(elem)
@@ -304,7 +310,7 @@ class TextBox(Gtk.TextView):
                             not colors_equal(elem.gui_info.fg, placeablesguiinfo.StringElemGUI.fg) or \
                             not colors_equal(elem.gui_info.bg, placeablesguiinfo.StringElemGUI.bg):
                         self.buffer.get_tag_table().add(tag)
-                        self._placeable_tags.append(tag)
+                        tags.append(tag)
                         start_iter = self.buffer.get_iter_at_offset(tag_start)
                         end_iter = self.buffer.get_iter_at_offset(tag_end)
                         self.buffer.apply_tag(tag, start_iter, end_iter)
@@ -312,14 +318,38 @@ class TextBox(Gtk.TextView):
         if include_subtree:
             for sub, index in elem.gui_info.iter_sub_with_index():
                 if isinstance(sub, StringElem):
-                    self.apply_gui_info(sub, offset=index+offset)
+                    self.apply_gui_info(sub, offset=index+offset, tags=tags)
 
     def _remove_placeable_tags(self):
+        self._remove_selection_tags()
+        self._remove_tags(self._placeable_tags)
+        self._placeable_tags = []
+
+    def _remove_selection_tags(self):
+        self._remove_tags(self._selection_tags)
+        self._selection_tags = []
+
+    def _remove_tags(self, tags):
         tagtable = self.buffer.get_tag_table()
         # Newest first: GTK renumbers every tag above a removed one.
-        for tag in reversed(self._placeable_tags):
+        for tag in reversed(tags):
             tagtable.remove(tag)
-        self._placeable_tags = []
+
+    def _apply_all_tags(self):
+        self._remove_placeable_tags()
+        # The whole text's own colours, under every placeable's.
+        self.apply_gui_info(self.elem, include_subtree=False)
+        self.apply_gui_info(self.elem)
+        # Its tag has the selected colours until the next full apply.
+        self._selected_in_base = self.selected_elem
+
+    def _show_selection(self, elem):
+        """Show C{elem} as selected over the placeables' own tags."""
+        self._remove_selection_tags()
+        stale = self._selected_in_base
+        if stale is not None and stale is not elem and getattr(stale, 'gui_info', None):
+            self.apply_gui_info(stale, include_subtree=False, tags=self._selection_tags)
+        self.apply_gui_info(elem, include_subtree=False, tags=self._selection_tags)
 
     def get_cursor_position(self):
         return self.buffer.props.cursor_position
@@ -532,8 +562,7 @@ class TextBox(Gtk.TextView):
             if self.selected_elem_index is not None and not (0 <= offset < len(filtered_elems)):
                 # Clear selection when we go past the first or last placeable
                 self.select_elem(None)
-                self._remove_placeable_tags()
-                self.apply_gui_info(self.elem)
+                self._apply_all_tags()
                 return
             return self.select_elem(elem=filtered_elems[offset % len(filtered_elems)])
 
@@ -558,10 +587,7 @@ class TextBox(Gtk.TextView):
         else:
             elem.gui_info.fg = current_theme['selected_placeable_fg']
             elem.gui_info.bg = current_theme['selected_placeable_bg']
-        self._remove_placeable_tags()
-        self.apply_gui_info(self.elem, include_subtree=False)
-        self.apply_gui_info(self.elem)
-        self.apply_gui_info(elem, include_subtree=False)
+        self._show_selection(elem)
         cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
         self.place_cursor(cursor_offset)
         self.emit('element-selected', self.selected_elem)
@@ -615,9 +641,8 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_insert_text)
         self.buffer.handler_unblock_by_func(self._on_insert_text_after)
 
-        self._remove_placeable_tags()
         # At this point we have a tree of string elements with GUI info.
-        self.apply_gui_info(self.elem)
+        self._apply_all_tags()
 
 
     # EVENT HANDLERS #

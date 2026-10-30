@@ -24,12 +24,11 @@ msgstr "Virtaal"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 msgid "Translation Tool"
-msgstr "অনুবাদ ব্যবস্থা"
+msgstr "অনুবাদের সরঞ্জাম"
 
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "A translation tool to help a human translator translate files into other "
 #| "languages"
@@ -37,7 +36,7 @@ msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
-"এক ভাষা থেকে অন্য ভাষায় অনুবাদের উদ্দেশ্যে অনুবাদকদের জন্য উপলব্ধ একটি অনুবাদ ব্যবস্থা।"
+"অন্য ভাষায় ফাইল অনুবাদ করতে অনুবাদকের সাহায্যের জন্য উপলব্ধ অনুবাদ সরঞ্জাম"
 
 #: share/virtaal/virtaal.ui
 msgid "Add Missing Language"
@@ -105,14 +104,13 @@ msgid "<b>Translation</b>"
 msgstr "<b>অনুবাদের ভাষা</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
-msgstr "অনুপস্থিত ভাষা যোগ করুন"
+msgstr "অনুপস্থিত ভাষা যোগ করুন…(_A)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Edit Translation Language…"
-msgstr ""
+msgstr "অনুবাদের ভাষা পরিবর্তন করুন …(_E)"
 
 #: share/virtaal/virtaal.ui
 msgid "_File"
@@ -120,17 +118,16 @@ msgstr "ফাইল (_F)"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr ""
+msgstr "সংরক্ষিত অবস্থায় পুনঃস্থাপন (_v)"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Update to Template"
 msgid "_Update from Template"
-msgstr "টেমপ্লেট রূপে আপডেট করা হবে (_U)"
+msgstr "টেমপ্লেট থেকে নবীকরণ (_U)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Export"
-msgstr ""
+msgstr "এক্সপোর্ট করুন (_E)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Recent Files"
@@ -142,19 +139,19 @@ msgstr "সম্পাদনা (_E)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Redo"
-msgstr ""
+msgstr "পুনরায় করুন (_R)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Find…"
-msgstr ""
+msgstr "অনুসন্ধান…(_F)"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "পরবর্তী অনুসন্ধান (_x)"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr ""
+msgstr "পূর্ববর্তী অনুসন্ধান (_v)"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -163,10 +160,9 @@ msgstr "উৎস থেকে অনুকরণ"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "_Insert Placeable"
-msgstr "পরবর্তী সন্নিবেশযোগ্য বস্তু (_N)"
+msgstr "সন্নিবেশযোগ্য লেখা স্থাপন (_I)"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
@@ -175,7 +171,7 @@ msgstr "পূর্ববর্তী সন্নিবেশযোগ্য �
 
 #: share/virtaal/virtaal.ui
 msgid "_Next Placeable"
-msgstr "পরবর্তী সন্নিবেশযোগ্য বস্তু (_N)"
+msgstr "পরবর্তী সন্নিবেশযোগ্য লেখা (_N)"
 
 #: share/virtaal/virtaal.ui
 msgid "_View"
@@ -187,7 +183,7 @@ msgstr "সম্পূর্ণ পর্দায় প্রদর্শন (_F
 
 #: share/virtaal/virtaal.ui
 msgid "_Quality Checks"
-msgstr ""
+msgstr "গুণমান যাচই (_Q)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Navigation"
@@ -203,23 +199,23 @@ msgstr "এক পৃষ্ঠা নীচে (_P)"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
-msgstr ""
+msgstr "প্রথম একক (_F)"
 
 #: share/virtaal/virtaal.ui
 msgid "_Last Unit"
-msgstr ""
+msgstr "অন্তিম একক (_L)"
 
 #: share/virtaal/virtaal.ui
 msgid "Next Unit"
-msgstr ""
+msgstr "পরবর্তী একক"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Advance State"
-msgstr ""
+msgstr "পরবর্তী একক ও অবস্থার প্রগতি"
 
 #: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
 msgid "Next Unit and Reverse State"
-msgstr ""
+msgstr "পরবর্তী একক ও পূর্ববর্তী অবস্থায় স্থাপন"
 
 #: share/virtaal/virtaal.ui
 msgid "_Help"
@@ -247,7 +243,7 @@ msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
-msgstr ""
+msgstr "কি-বোর্ড শর্ট-কাট (_S)"
 
 #: share/virtaal/virtaal.ui
 msgid "Virtaal Preferences"
@@ -292,7 +288,7 @@ msgstr "উৎসের লেখা:"
 
 #: share/virtaal/virtaal.ui
 msgid "Target text:"
-msgstr "উদ্দিষ্ট লেখা:"
+msgstr "অনুবাদ করা লেখা:"
 
 #: share/virtaal/virtaal.ui
 msgid "Use _Default Fonts"
@@ -303,16 +299,14 @@ msgid "<b>Fonts</b>"
 msgstr "<b>ফন্ট</b>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Language"
 msgid "Language:"
-msgstr "ভাষা"
+msgstr "ভাষা:"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
-msgstr "<b>ভাষা সংক্রান্ত তথ্য</b>"
+msgstr "<b>ভাষা</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui
@@ -337,35 +331,35 @@ msgstr "বিবিধ প্লাগ-ইন"
 
 #: share/virtaal/virtaal.ui
 msgid "Properties"
-msgstr ""
+msgstr "বিবিধ বৈশিষ্ট্য"
 
 #: share/virtaal/virtaal.ui
 msgid "Saved file"
-msgstr ""
+msgstr "সংরক্ষিত ফাইল"
 
 #: share/virtaal/virtaal.ui
 msgid "With unsaved changes"
-msgstr ""
+msgstr "অসংরক্ষিত পরিবর্তন রয়েছে"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Words</b> (total):"
-msgstr ""
+msgstr "<b>শব্দ</b> (মোট সংখ্যা):"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Strings</b> (total):"
-msgstr ""
+msgstr "<b>বাক্য</b> (মোট সংখ্যা):"
 
 #: share/virtaal/virtaal.ui
 msgid "File type:"
-msgstr ""
+msgstr "ফাইলের ধরন:"
 
 #: share/virtaal/virtaal.ui
 msgid "File size:"
-msgstr ""
+msgstr "ফাইলের মাপ:"
 
 #: share/virtaal/virtaal.ui
 msgid "Location:"
-msgstr ""
+msgstr "অবস্থান:"
 
 #: share/virtaal/virtaal.ui
 msgid "Add Term"
@@ -430,10 +424,9 @@ msgid ""
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
-msgstr "<u>অধিক তথ্য...</u>"
+msgstr "<u>অতিরিক্ত…</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Features</u>"
@@ -462,7 +455,7 @@ msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Localization Guide</u>"
-msgstr "<u>স্থানীয়করণ পাঠ্য</u>"
+msgstr "<u>স্থানীয়করণ সহায়িকা</u>"
 
 # 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
@@ -477,36 +470,32 @@ msgid "<u>Feedback</u>"
 msgstr "<u>ফিড-ব্যাক</u>"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
-msgstr "বাগ সংক্রান্ত তথ্য দায়ের করুন (_B)"
+msgstr "GitHub-এ বাগ দায়ের করুন"
 
 #: share/virtaal/virtaal.ui
-#, fuzzy
 #| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
-msgstr "বাগ সংক্রান্ত তথ্য দায়ের করুন (_B)"
+msgstr "<u>বাগের তথ্য দায়ের করুন</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<b><big>Support</big></b>"
-msgstr "<b><big>সমর্থন</big></b>"
+msgstr "<b><big>সহায়তা</big></b>"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Base translation store"
-msgstr "সয়ংক্রিয় অনুবাদক"
+msgstr "অনুবাদিত তথ্যের মূল সংগ্রহ"
 
 #: devsupport/tmp_strings.py
 msgid "Comma Separated Value"
-msgstr ""
+msgstr "কমা বিভাজিত মান"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Fluent file"
-msgstr "বর্তমানে খোলা ফাইল"
+msgstr "Fluent ফাইল"
 
 #: devsupport/tmp_strings.py
 msgid "Gettext MO file"
@@ -518,13 +507,12 @@ msgstr "Gettext PO ফাইল"
 
 #: devsupport/tmp_strings.py
 msgid "Haiku catkeys file"
-msgstr ""
+msgstr "Haiku catkeys ফাইল"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "Mozilla Corporation"
 msgid "Mozilla .lang"
-msgstr "Mozilla Corporation"
+msgstr "Mozilla .lang"
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
@@ -551,20 +539,18 @@ msgid "TMX Translation Memory"
 msgstr "TMX অনুবাদ সংকলন"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
 msgstr "TMX অনুবাদ সংকলন"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX Dictionary"
-msgstr ""
+msgstr "UTX অভিধান"
 
 #: devsupport/tmp_strings.py
-#, fuzzy
 #| msgid "_Localization Guide"
 msgid "WiX Localization File"
-msgstr "অনুবাদ সহায়িকা (_L)"
+msgstr "WiX স্থানীয়করণ ফাইল"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Wordfast Translation Memory"
@@ -616,10 +602,9 @@ msgstr "show program's version number and exit"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
-msgstr "অনুবাদ ব্যবস্থা"
+msgstr "Virtaal অনুবাদ সরঞ্জাম"
 
 #. l10n: Paragraphs should be less than 600 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
@@ -629,9 +614,12 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal প্রোগ্রামের সাহায্যে অনুবাদ করা সম্ভব হয়। অনুবাদের সময় সরলতা ও শক্তি সংমিশ্রিত "
+"মনোরম অভিজ্ঞতাই এর লক্ষ্য। অনলাইন উপলব্ধ বিভিন্ন ধরনের জিনিসপত্র জুড়ে নির্মিত এই "
+"প্রোগ্রামের সাহায্যে অনুবাদের প্রক্রিয়াকে একদিকে  মজাদার করার পাশাপাশি, অনুবাদের গুণমান বৃদ্ধির "
+"দিকেও নজর দেওয়া হয়।   "
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
 #| "we definitely intend it to be useful as a general purpose tool for "
@@ -641,55 +629,52 @@ msgid ""
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
-"প্রথমে প্রধানত সফ্টওয়্যার অনুবাদের (localization or l10n) উদ্দেশ্যে নির্মাণ করা "
-"হলেও, বিভিন্ন ক্ষেত্রে অনুবাদের জন্য ব্যবহারযোগ্য Computer Aided Translation (CAT) "
-"অর্থাৎ কম্পিউটার সহযোগে অনুবাদ ব্যবস্থা রূপে এটি বিস্তার করতে আমরা ইচ্ছুক।"
+"প্রথমে প্রধানত সফ্টওয়্যার অনুবাদের (localization or l10n) উদ্দেশ্যে নির্মাণ করা হলেও, "
+"বিভিন্ন ক্ষেত্রে অনুবাদের জন্য ব্যবহারযোগ্য Computer Aided Translation (CAT) অর্থাৎ "
+"কম্পিউটার সহযোগে অনুবাদ ব্যবস্থা রূপে এটি বিস্তার করতে আমরা ইচ্ছুক।"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
-msgstr ""
+msgstr "কয়েকটি বৈশিষ্ট্য:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "উপস্থিত অনুবাদ: %(translations)s"
+msgstr "অনুবাদ পুনঃব্যবহার (অনুবাদ সংকলন)"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Terminology assistance"
-msgstr "টার্মিনোলজি সহায়ক"
+msgstr "পরিভাষা সহায়ক"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "অটোকমপ্লিটার ও অটোকারেক্টার"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "বিভিন্ন ভাষার নিজস্ব বৈশিষ্ট্যজনীন গুণমান যাচাইের ব্যবস্থা "
 
 #. l10n: Captions should be shorter than 50 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
-msgstr ""
+msgstr "সম্প্রতি ব্যবহৃত ফাইল ও নথি সহজে দেখা"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
-msgstr ""
+msgstr "পরিচিত সামগ্রী টাইপ করার প্রয়োজন নেই"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 #| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
-msgstr "টাইপ করার সময় স্বয়ংক্রিয়ভাবে লেখা সংশোধন করা হবে"
+msgstr "টাইপ করার সময় একবারে গুণমান পরীক্ষা করা হবে"
 
 # 78%
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#, fuzzy
 msgid "Translate"
-msgstr "অনুবাদ করা হয়েছে : %d"
+msgstr "অনুবাদ করুন"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
@@ -713,11 +698,11 @@ msgstr "Qt বার্তার ফাইল"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX"
-msgstr ""
+msgstr "UTX"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "Universal Terminology eXchange"
-msgstr ""
+msgstr "Universal Terminology eXchange"
 
 #: virtaal/cli.py
 msgid "LOG"
@@ -773,54 +758,54 @@ msgstr "Could not open profile file '%(filename)s'"
 
 # 83%
 #: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
-#, fuzzy
 msgid "Fuzzy"
-msgstr "ফাজি: (_u)"
+msgstr "ফাজি"
 
 # 75%
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
-#, fuzzy
 msgid "Untranslated"
-msgstr "অনুবাদ করা হয়নি: %d"
+msgstr "অনুবাদিত হয়নি"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Accelerators"
-msgstr ""
+msgstr "গতিবৃদ্ধি"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Acronyms"
-msgstr ""
+msgstr "সংক্ষিপ্ত শব্দ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Blank"
-msgstr ""
+msgstr "ফাঁকা"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Brackets"
-msgstr ""
+msgstr "বন্ধনী চিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Compendium conflict"
-msgstr ""
+msgstr "পরিভাষায় দ্বন্দ্ব"
 
 # 88%
 #. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
+"রুণা ভট্টাচার্য্য (runab@fedoraproject.org)\n"
+"সঙ্কর্ষণ মুখোপাধ্যায় (sankarshan@fedoraproject.org)"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"
-msgstr ""
+msgstr "উদ্ধৃতি চিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double spaces"
-msgstr ""
+msgstr "দুটি শূণ্যস্থান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Repeated word"
-msgstr ""
+msgstr "পুনরাবৃত শব্দ"
 
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/placeablescontroller.py
@@ -829,53 +814,52 @@ msgstr "ই-মেইল"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Ending punctuation"
-msgstr ""
+msgstr "সমাপ্তির চিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Ending whitespace"
-msgstr ""
+msgstr "সমাপ্তির ফাঁকাস্থান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Escapes"
-msgstr ""
+msgstr "এস্কেপ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "File paths"
-msgstr ""
+msgstr "ফাইলের পাথ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Functions"
-msgstr ""
+msgstr "ফাংশন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GConf values"
-msgstr ""
+msgstr "GConf মান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Old KDE comment"
-msgstr ""
+msgstr "পুরোনো KDE-র টিপ্পনি"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Long"
-msgstr ""
+msgstr "দীর্ঘ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Must translate words"
-msgstr ""
+msgstr "আবশ্যক অনুবাদ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Newlines"
-msgstr ""
+msgstr "নতুন পংক্তি"
 
 # 94%
 #: virtaal/controllers/checkscontroller.py
-#, fuzzy
 msgid "Number of plurals"
-msgstr "বহুবচনের সংখ্যা:"
+msgstr "বহুবচনের সংখ্যা"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Don't translate words"
-msgstr ""
+msgstr "অনুবাদের প্রয়োজন নেই "
 
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/placeablescontroller.py
@@ -884,63 +868,63 @@ msgstr "সংখ্যা"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Options"
-msgstr "Options"
+msgstr "প্রস্তাব"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "printf()"
-msgstr ""
+msgstr "printf()"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Punctuation spacing"
-msgstr ""
+msgstr "যতিচিহ্নের মধ্যবর্তী স্থান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Pure punctuation"
-msgstr ""
+msgstr "শুধুমাত্র যতিচিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Number of sentences"
-msgstr ""
+msgstr "বাক্যের সংখ্যা"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Short"
-msgstr ""
+msgstr "স্বল্প"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Simple capitalization"
-msgstr ""
+msgstr "বড় অক্ষরের সাধারণ ব্যবহার"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Simple plural(s)"
-msgstr ""
+msgstr "সাধারণ বহুসংখ্যা"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Single quotes"
-msgstr ""
+msgstr "একক উদ্ধৃতি চিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Spelling"
-msgstr ""
+msgstr "বানান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Starting capitalization"
-msgstr ""
+msgstr "ব্যাকের আরম্ভে বড় হরফ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Starting punctuation"
-msgstr ""
+msgstr "প্রারম্ভিক যতিচিহ্ন"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Starting whitespace"
-msgstr ""
+msgstr "প্রারম্ভিক ফাঁকাস্থান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Tabs"
-msgstr ""
+msgstr "ট্যাব"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Unchanged"
-msgstr ""
+msgstr "অপরিবর্তিত"
 
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/placeablescontroller.py
@@ -949,21 +933,20 @@ msgstr "URLs"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Valid characters"
-msgstr ""
+msgstr "বৈধ অক্ষর"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Placeholders"
-msgstr ""
+msgstr "স্থানধারক"
 
 # 87%
 #: virtaal/controllers/checkscontroller.py
-#, fuzzy
 msgid "XML tags"
 msgstr "XML ট্যাগ"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Default"
-msgstr ""
+msgstr "ডিফল্ট মান"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "LibreOffice"
@@ -979,7 +962,7 @@ msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Qt"
-msgstr ""
+msgstr "Qt"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
@@ -1117,7 +1100,7 @@ msgstr ""
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: virtaal/controllers/placeablescontroller.py
 msgid "CamelCase"
-msgstr "CamelCase (ক্যামেল-কেস)"
+msgstr "ক্যামেল-কেস"
 
 #: virtaal/controllers/placeablescontroller.py
 msgid ""
@@ -1254,7 +1237,7 @@ msgstr "ফাইলের আপডেট করা হয়েছে"
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Needs work"
-msgstr ""
+msgstr "পরিবর্তন প্রয়োজন"
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Rejected"
@@ -1266,7 +1249,7 @@ msgstr ""
 
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
-msgstr ""
+msgstr "অনুবাদিত"
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Reviewed"
@@ -1293,12 +1276,12 @@ msgstr "সমগ্র"
 
 #: virtaal/modes/qualitycheckmode.py
 msgid "Quality Checks"
-msgstr ""
+msgstr "গুণমান যাচই"
 
 #. l10n: This is the button where the user can select units by failing quality checks
 #: virtaal/modes/qualitycheckmode.py
 msgid "Select Checks"
-msgstr ""
+msgstr "যাচাইয়ের মান নির্বাচন করুন"
 
 #. l10n: This refers to quality checks
 #: virtaal/modes/qualitycheckmode.py
@@ -1343,12 +1326,12 @@ msgstr "সমগ্র প্রতিস্থাপন করুন (_A)"
 
 #: virtaal/modes/workflowmode.py
 msgid "Workflow"
-msgstr ""
+msgstr "কাজের পর্যায়ক্রম"
 
 #. l10n: This is the button where the user can select units by workflow state
 #: virtaal/modes/workflowmode.py
 msgid "Select States"
-msgstr ""
+msgstr "অবস্থা নির্বাচন"
 
 #. l10n: This refers to workflow states
 #: virtaal/modes/workflowmode.py
@@ -1544,11 +1527,11 @@ msgstr "Lokalize-র অনুবাদ সংকলন: %(database_name)s"
 
 #: virtaal/plugins/spellchecker.py
 msgid "Spell Checker"
-msgstr ""
+msgstr "বানান সংশোধন"
 
 #: virtaal/plugins/spellchecker.py
 msgid "Check spelling and provide suggestions"
-msgstr ""
+msgstr "বানান পরীক্ষা ও বিকল্প প্রস্তাব"
 
 #: virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
@@ -1575,22 +1558,20 @@ msgid "Local terminology files"
 msgstr "পরিভাষার স্থানীয় ফাইল যোগ করুন"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Terminology Files"
 msgid "Terminology _Files…"
-msgstr "পরিভাষার ফাইল"
+msgstr "পরিভাষার ফাইল… (_F)"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy
 #| msgid "Add Term"
 msgid "Add _Term…"
-msgstr "অভিব্যক্তি যোগ করুন"
+msgstr "পরিভাষা যোগ করুন (_T)"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
-msgstr "লুক-আপ \"%(selection)s\""
+msgstr "\"%(selection)s\" পরিভাষা যোগ করুন …"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "File"
@@ -1683,7 +1664,7 @@ msgstr "অনুবাদের মেমরি থেকে প্রাপ্
 #. l10n: Try to keep this as short as possible.
 #: virtaal/plugins/tm/models/amagama.py
 msgid "Amagama"
-msgstr ""
+msgstr "আমাগামা"
 
 #: virtaal/plugins/tm/models/amagama.py
 msgid "Previous translations for Free and Open Source Software"
@@ -1761,7 +1742,7 @@ msgstr "অনুবাদের প্রস্তাব (_S)"
 
 #: virtaal/plugins/tm/tmview.py
 msgid "Suggestions for This _Unit"
-msgstr ""
+msgstr "এই এককের জন্য প্রস্তাবিত অনুবাদ (_U)"
 
 #: virtaal/plugins/tm/tmview.py
 #, python-format
@@ -1825,6 +1806,7 @@ msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Virtaal সহায়তায় স্বাগতম। প্রথম অনুবাদ করার জন্য শুধূমাত্র \"স্বাগতম\" লিখে এন্টার টিপতে পারেন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1832,6 +1814,9 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"একটু বড় এই বাক্যটি অনুবাদ করুন। বানান পরীক্ষণ উপলব্ধ থাকলে, অন্যান্য ওয়ার্ড প্রসেসরের মতই "
+"বানানের ভুল ত্রুটি দেখানো হবে। এর জন্য, উইন্ডোর নিচের অংশের ডানদিকে সঠিক ভাষা বাছাই করা "
+"প্রয়োজন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1839,6 +1824,8 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"অনুবাদ করার সময় বেশ কয়েকটি প্রয়োজনীয় জিনিসের উপর নজর দেওয়া প্রয়োজন যা এই সহায়িকার "
+"মধ্যে দেখানো হয়েছে। এর ফলে কিছু সমস্যা এড়ানো যাবে ও অনুবাদের গুণমান ভালো হবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1847,6 +1834,9 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"কিছু নির্দেশ শুষুমাত্র কয়েকটি ভাষার ক্ষেত্রে প্রযোজ্য হবে। যেমন, আপনার ভাষায় যদি লাতিন অক্ষর "
+"ব্যবহার না হয়ে থাকে তাহলে কিছু নির্দেশ অনুসরণযোগ্য হবে না। অনেক ভাষার ক্ষেত্রে অনুবাদের "
+"নিজস্ব নিয়ম রয়েছে। "
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1854,6 +1844,8 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"বড় হরফের লেখার নিয়মনীতি অনেক ভাষায় গুরুত্বপূর্ণ। এই বার্তাটি অনুবাদ করার সময়  \"Virtaal\" "
+"শব্দটির মধ্যে হরফের ব্যবহারের ক্ষেত্রে বিশেষ নজর দেবেন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1863,6 +1855,10 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"এই বার্তাটি ইংরেজিতে লেখার সময় প্রায় প্রতিটি শব্দেই বড় হরফের অক্ষর ব্যবহার করা হয়েছে। "
+"অনেক ভাষায় এই নিয়ম দেখা যায় না। আপনার ভাষায় ইংরেজির অনুকরণে এই নিয়ম (যার নাম টাইটেল কেস) "
+"ব্যবহার করার বাধ্যতামুলক না হলে, বড় হরফের স্বাভাবিক নিয়ম প্রয়োগ করে অনুবাদ করুন। আপনার ভাষায় "
+"এই নিয়ম না থাকে সাধারণভাবে অনুবাদ করুন।  "
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1872,6 +1868,11 @@ msgid ""
 "copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"পূর্ববর্তী বার্তাটি অনুবাদ করা হয়ে থাকলে, অনুবাদের লেখা সমেত একটি উইন্ডো দেখানো হবে ও সাথে "
+"দেখা যাবে মূল ইংরেজি বার্তার সাথে অনুবাদিত লেখার কত শতাংশ মিল রয়েছে। Virtaal-র ট্রান্সলেশন "
+"মেমরির সাহায্যে এই সুবিধা উপলব্ধ হয়ে থাকে। Ctrl+1 টিপে প্রস্তাবিত লেখাটি বর্তমান বাক্যের "
+"অনুবাদ হিসাবে কপি করে নিন। প্রস্তাবিত অনুবাদ ব্যবহারের আগে অবশ্যই তার সঠিকতা যাচাই করে নেবেন"
+"।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1879,6 +1880,8 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"এই সরল বাক্যাটির আরম্ভে ইংরেজির একটি বড় হরফ ব্যবহার করা হয়েছে। আপনার ভাষায় যদি বড় হরফ "
+"ব্যবহৃত হয়ে থাকে তাহলে এই বাক্য অনুবাদ করার সময় প্রারম্ভে অতিসম্ভব বড় হরফের প্রয়োজন হবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1886,17 +1889,22 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"এই সরল বাক্যাটির আরম্ভে ইংরেজির একটি ছোট হরফ ব্যবহার করা হয়েছে। আপনার ভাষায় যদি বড় হরফ "
+"ব্যবহৃত হয়ে থাকে তাহলে এই বাক্য অনুবাদ করার সময় প্রারম্ভে অতিসম্ভব ছোট হরফের প্রয়োজন হবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"এই বাক্যটি প্রশ্নরূপে লেখা হয়েছে। অনুবাদের সময় সঠিক প্রশ্নচিহ্ন ব্যবহার করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"এই বাক্যটি একটি ফর্মের মধ্যেকার লেবেল রূপে ব্যবহার করা হয়েছে, ও একটি কোলোন চিহ্ন দিয়ে "
+"শেষ করা হয়েছে (:)।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1904,9 +1912,11 @@ msgid ""
 "copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
 "translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
+"মূল বাক্যের সিংহভাগ যদি অনুবাদের মধ্যে অপরিবর্তি থাকে তাহলে Ctrl+Shift+V ব্যবহার করে তা "
+"সম্পূর্ণ কপি করে পেস্ট করাই সমীচীন। এই বাক্যের প্রায় অনুবাদ যোগ্য কিছুই নেই, তাই "
+"Ctrl+Shift+V প্রয়োগ করুন ও প্রয়োজনে শুধরে নেবেন।"
 
 #: virtaal/support/tutorial.py
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1915,8 +1925,9 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"সন্নিবেশযোগ্য বস্তু রূপে চিহ্নিত লেখার অংশগুলি স্বয়ংক্রিয়ভাবে উজ্জ্বল করা যাবে ও "
-"অনুবাদের মধ্যে সংযোজন করা যাবে।"
+"সন্নিবেশযোগ্য বস্তু রূপে চিহ্নিত লেখাগুলির তুলনামূলকভাবে বিশেষ, যেমন © চিহ্নটি, ও এই  "
+"অংশগুলি স্বয়ংক্রিয়ভাবে উজ্জ্বল করা যাবে ও অনুবাদের মধ্যে সংযোজন করা যাবে।Alt+Right সহযোগে "
+"© চিহ্নটি নির্বাচন করুন ও  Alt+Down টিপে তা অনুবাদের মধ্যে যোগ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1924,6 +1935,9 @@ msgid ""
 "placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"স্বীকৃত সন্নিবেশযোগ্য বস্তুর তালিকায় রয়েছে কিছু বিশেষ চিহ্ন, সংখ্যা, পরিবর্তনশীল বস্তু, "
+"সংক্ষিপ্ত শব্দ ইত্যাদি আরো অনেক কিছু।  Alt+Right সহযোগে সেগুলির মধ্যে নির্বাচন করে "
+"Alt+Down টিপে সেগুলি অনুবাদে যোগ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1931,6 +1945,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"এই বার্তার শেষে ... চিহ্ন রয়েছে অর্থাৎ এর উপর ক্লিক করা হলে শুধুমাত্র কোনো কাজ করার "
+"পরিবর্তে একটি ডায়লগ বক্স প্রদর্শিত হবে। অনুবাদ করার সময় খেয়াল রাখবেন যাতে শেষে ... চিহ্ন "
+"থাকে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1938,6 +1955,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"এই বার্তার শেষে একটি বিশেষ অক্ষর রয়েছে যা তিনটি বিন্দুর মত দেখতে। Alt+Right সহযোগে "
+"এটি নির্বাচন করুন ও Alt+Down টিপে অনুবাদের মধ্যে যোগ করুন। এই চিহ্নটি লেখার জন্য তিনটি "
+"বিন্দু আলাদা করে টাইপ করবেন না।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1945,6 +1965,8 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"এই বার্তার মধ্যে দুটি বাক্য রয়েছে। আপনার ভাষায় প্রয়োজন থাকলে অনুবাদ করার সময় প্রতিটি বাক্যের "
+"আরম্ভে বড় হরফ ব্যবহার করুন ও সঠিকরূপে শেষ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1953,6 +1975,10 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"এই বার্তার মধ্যে \"now\" শব্দটির ক্ষেত্রে বোল্ড অর্থাৎ গাঢ় অক্ষরের ট্যাগ ব্যবহার করা হয়েছে। "
+"মূল ভাষার বার্তা থেকে Alt+Right ও Alt+Down টিপে <b> ও </b> ট্যাগগুলি অনুবাদের মধ্যে যোগ "
+"করে \"now\" শব্দের অনুবাদের যথাযত অংশের সাথে  ব্যবহার করা যাবে। XML মার্ক-আপ সম্পর্কে "
+"বিস্তারিত পড়তে দেখুন: http://en.wikipedia.org/wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1960,6 +1986,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"এই বার্তাটির সাথে পূর্রবর্তী বার্তার মিল রয়েছে।Ctrl+1 সহযোগে পূর্ববর্তী বার্তাটির অনুবাদ সমতে "
+"প্রদর্শিত প্রস্তাব প্রয়োগ করে নিন। উল্লেখ্য - বর্তমান বার্তাটির শেষ ট্যাগের পরে পূর্ণবিরাম "
+"চিহ্ন রয়েছে যা আগের বার্তায় নেই।"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1970,6 +1999,10 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"এই বার্তায় \"%d\" একটি সংখ্যা লেখার পরিবর্তনশীল স্থানক (ভেরিয়েবল) হিসেবে ব্যবহার করা "
+"হয়েছে। অনুবাদের মধ্যে কোনো স্থানে \"%d\" যোগ করার আবশ্যক। যদি এই বার্তাটির মধ্যে ফাইলের "
+"সংখ্যা লেখা হয় তাহলে এই বার্তাটি প্রয়োগ করার সময় \"%d\"-র পরিবর্তে ফাইলের সংখ্যা লেখা হবে। "
+"যেমন: 'কপি করা ফাইলের সংখ্যা: ৫'। \"%d\" দিয়ে শতাংশ বোঝানো হয় না।"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1982,6 +2015,12 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"এই বার্তায় ফাইলের সংখ্যার জন্য \"%d\" ব্যবহার করা হয়েছে, কিন্তু সাথে \"(s)\" লেখার উদ্দেশ্য "
+"যে কতগুলি ফাইল রয়েছে তা এখন জানা নেই। এই ধরনের বার্তা অনুবাদ করতে সমস্যা দেখা দেয়। যদি "
+"সফ্টওয়্যার অনুবাদের সময় এই সমস্যা হলে ডিভেলপরদের সাথে কথা বলে দেখতে পারেন কোনো ভাবে তা "
+"এড়ানো সম্ভব কি না।  এই সম্বন্ধে বিশদ জানতে ও আপনার ভাষায় ব্যবহার জন্য পড়ুন: : http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1991,6 +2030,10 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"এই বার্তায় বহুবচনের সঠিক অনুবাদ পদ্ধতি দেখানো হয়েছে। আপনার ভাষা অনুযায়ী সঠিক ব্যাকরণ প্রয়োগ "
+"করে অনুবাদ করার জন্য ১ থেকে ৬ অব্দি ভিন্ন ভিন্ন অনুবাদ যোগ করতে হবে। বিশদ জানতে পড়ুন: "
+"http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2000,6 +2043,10 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"এই বার্তায় \"%s\" একটি ফাইলের নাম লেখার পরিবর্তনশীল স্থানক (ভেরিয়েবল) হিসেবে ব্যবহার করা "
+"হয়েছে। অনুবাদের মধ্যে কোনো স্থানে \"%s\" যোগ করার আবশ্যক। যদি এই বার্তাটির মধ্যে ফাইলের "
+"নাম লেখা হয় তাহলে এই বার্তাটি প্রয়োগ করার সময় \"%s\"-র পরিবর্তে ফাইলের নামটি লেখা হবে। "
+"যেমন: 'ফাইলটি example.odt নামে সংরক্ষণ করা হবে'। \"%s\" দিয়ে শতাংশ বোঝানো হয় না।"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2010,6 +2057,11 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different quoting characters you can just type them around the variable."
 msgstr ""
+"এই বার্তার মধ্যে ভেরিয়েবলটি উদ্ধৃতিচিহ্নের মধ্যে রাখা হয়েছে। অনুবাদের সময় খেয়াল রাখা প্রয়োজন "
+"%s ভেরিয়েবলটি অন্তর্ভুক্ত করে আপনার ভাষা অনুযায়ী উদ্ধৃতি চিহ্ন সেটির পাশে ব্যবহার করা হয়। "
+"আপনার ভাষার যদি ইংরেজির মত উদ্ধৃতি চিহ্ন ব্যবহার হয়ে থাকে তাহলে ইংরেজির মত একইভাবে এটি "
+"লিখুন। যদি আপনার ভাষায় অন্য ধরনের উদ্ধৃতি চিহ্ন ব্যবহার হয় তাহলে ভেরিয়েবলের পাশে সেগুলি "
+"লিখে নিন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2018,6 +2070,10 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"এই বার্তায় মধ্যে \"%(name)s\" একটি সন্নিবেশযোগ্য বস্তু (ভেরিয়েবল)। উল্লেখ্য, 's' এই "
+"ভেরিয়েবলের একটি অংশ, ও '%' থেকে 's'অব্দি অনুবাদের মধ্যে সম্পূর্ণ অপরিবর্তিত রাখা আবশ্যক"
+"। এই ধরনের ভেরিয়েবলগুলি থেকে বোঝা যায় কী ধরনের তথ্য এর সাহায্যের লেখা হবে। এই ক্ষেত্রে "
+"একটি নাম লেখা হবে। "
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2025,6 +2081,8 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"এই বার্তায় সফ্টওয়্যার ব্যবহারকারীকে কিছু একটি কাজ করতে বলা হচ্ছে। আপনা ভাষার রুচী অনুযায়ী যথাযত "
+"মার্জিত স্বরে অনুবাদ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2032,12 +2090,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"এই বার্তায় \"Linux\"-র উল্লেখ রয়েছে যা একটি উৎপাদনের নাম। অনেক ভাষায় এর অনুবাদ না হলেও, "
+"আপনার ভাষায় লাতিন অক্ষরমালা ব্যবহার না হলে আপনি নামটি অনুবাদ না করে ভাষার অক্ষর ব্যবহার করে "
+"লিখতে পারেন যদি তা প্রচলিত রীতি হয়ে থাকে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"এই বার্তার মধ্যে প্রজেক্টের ওয়েবসাইটের URL অর্থাৎ ওয়েব ঠিকানা রয়েছে। এটি অনুবাদ না করে "
+"অপরিবর্তিত রেখে কপি করতে হবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2047,6 +2110,10 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"এই বার্তার মধ্যে অধিক বিবরণ জানার জন্য কোনো ওয়েবসাইটের উল্লেখ করা হয়েছে। অনেক সময় আপনার "
+"ভাষা অনুযায়ী ওয়েবসাইটের ঠিকানা পরিবর্তন করে বলা হয়ে থাকে। এই ক্ষেত্রে ঠিকানার প্রারম্ভে "
+"\"en\"-র পরিবর্তে আপনার ভাষার কোড ব্যবহার করে  XML সম্বন্ধে আপনার ভাষায় লেখা তথ্যের "
+"ওয়েবপেজের ঠিকানা লেখা যাবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2054,6 +2121,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"এই অনুবাদের মধ্যে একটি শব্দ ব্যবহার করা হয়েছে যার একাধিক মানে থাকতে পারে। প্রাসঙ্গিক তথ্য "
+"দেখে নির্ধারণ করুন যে এই তথ্যটি একটি ক্রিয়াপদ অর্থাৎ কোনো জাক যেমন 'এই স্থানে ক্লিক করে "
+"দেখুন)।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2063,6 +2133,10 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"এই অনুবাদের মধ্যে একটি শব্দ আছে যার দুটি সম্ভাব্য মানে হতে পারে। প্রাসঙ্গিক তথ্য দেখে "
+"নির্ধারণ করুন যে এই শব্দটি একটি বিশেষ্য যেমন \"ক্লিক করে সম্পূর্ণ স্ক্রিন জুড়ে প্রদর্শন "
+"করুন\"। যদি Virtaal-এ পূর্ববর্তী কোনো অনুবাদ থেকে প্রস্তাব দেওয়া হয় তাহলে শুধুমাত্র এই "
+"ক্ষেত্রে প্রযোজ্য হলেই তা ব্যবহার করা সমীচিন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2075,14 +2149,20 @@ msgid ""
 "before this letter and it means that this accelerator could be triggered by "
 "pressing Alt+F."
 msgstr ""
+"কোনো মেনু অথবা ফাংশান দ্রুত পেতে হলে কি-বোর্ডের যে কি টেপা যায় সেগুলিকে অ্যাকসেলেরেটর কি "
+"বলা হয়। এগুলিকে হট-কি, অ্যাকসেস-কি অথবা নেমোনিক ও বলা হয়ে থাকে। প্রোগ্রামের ইন্টারফেসের "
+"মধ্যে সেগুলি দেখানোর সময় অক্ষরের নীচে একটি রেখা থাকে যেমন এই ক্ষেত্রে আন্ডারস্কোর ব্যবহার "
+"করা হয়েছে, যদিও অনুবাদ করা লেখায় অনেক সময় অন্য অক্ষরও ব্যবহার হয়ে থাকে। এই ক্ষেত্রে মূল "
+"ইংরেজিতে  \"f\"-এ সামনে আন্ডারস্কোর লেখা রয়েছে অর্থাৎ এটি একটি অ্যাকসেলেটর কি ও Alt+F "
+"টিপে সহজে ব্যবহার করা যাবে।"
 
 #: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "এইখানে অন্যান্য অ্যাকসেলেরেটর কি দেখা যাবে।"
 
 #: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "ও আরো ভিন্ন রকমের অ্যাকসেলেরেটর"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2090,12 +2170,17 @@ msgid ""
 "consistently. To add a term, select a word (or words), press Ctrl+T and fill "
 "in the details for the new term. Select the text below and add a term for it."
 msgstr ""
+"অনুবাদের মধ্যে অসংগতি এড়াতে স্থানীয়ভাবে আপনি পরিভাষার ফাইল রাখতে পারেন। পরিভাষা যোগ করতে "
+"হলে এক বা একাধিক শব্দ নির্বাচন করে, Ctrl+T টিপুন ও নতুন পরিভাষা সম্বন্ধে তথ্য লিখুন। "
+"নীচের লেখা নির্বাচন করে একটি পরিভাষা যোগ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"পূর্বে আপনি \"filter\" শব্দটি ক্রিয়া রূপে ব্যবহারের পরিভাষা যোগ করেছেন। এবার বিশেষ্যরূপে "
+"\"filter\" শব্দটির জন্য একইভাবে যোগ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2109,6 +2194,12 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"পূর্বে কোনো পরিভাষা যদি তৈরি করে থাকেন তাহলে দেখবেন কয়েকটি শব্দ সবুজ রঙে উজ্জ্বল করা "
+"হয়েছে (থিম অনুযায়ী সবুজ ভিন্ন অন্য রঙ ব্যবহার হতে পারে)। এর অর্থ, এই শব্দগুলির জন্য "
+"Virtaal-এ পরিভাষার প্রস্তাব রয়েছে। Alt+Right সহযোগে উজ্জ্বলিত শব্দটি নির্বাচন করুন ও এর "
+"পরে Alt+Down টিপুন। শুধুমাত্র একটি প্রস্তাব থাকলে তা অনুবাদের মধ্যে কপি করা হবে। একাধিক "
+"প্রস্তাব থাকলে Alt+Down একটি তালিকা প্রদর্শন করবে। উপর ও নীচে চলাচলের কি ব্যবহার করে "
+"তালিকার মধ্যে উপস্থিত তথ্য দেখে নিয়ে এন্টার টিপে যতাযত প্রস্তাব অনুবাদে যোগ করুন।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2116,12 +2207,16 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
+"এই বার্তার মধ্যে দুটি বাক্য রয়েছে। অনুবাদের মধ্যেও দুটি আলাদা বাক্য থাকা আবশ্যক। Shift+Enter "
+"অথবা নতুন লাইনের সন্নিবেশযোগ্য মান (¶ দ্বারা নির্দেশিত) প্রয়োগ করে বাক্যগুলি আলাদা করা যাবে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"এই বার্তার মধ্যে কয়েকটি শিরোনাম আলাদা করার জন্য ট্যাব চিহ্ন ব্যবহার করা হয়েছে। অনুবাদের মধ্যেও "
+"একইভাবে বিভাজন রাখা আবশ্যক।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2132,6 +2227,10 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: this number is bigger than one thousand."
 msgstr ""
+"এই বার্তার মধ্যে একটি বড় সংখ্যা লেখা হয়েছে যা মার্কিন রীতি অনুযায়ী সাজানো হয়েছে। অনুবাদ করার "
+"সময় এই সংখ্যাটি আপনার ভাষার রীতি অনুযায়ী লিখবেন। হয় কমাচিহ্নের (,) বদলে পূর্ণবিরাম চিহ্ন "
+"(.) ব্যবহার করতে হবে, ও ভিন্ন সংখ্যার নিয়ম প্রয়োগ করতে হবে। মার্কিন রীতি জেনে নিন: "
+"এই সংখ্যাটি এক হাজারের বেশি সংখ্যা বোঝাচ্ছে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2141,6 +2240,10 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do so."
 msgstr ""
+"এই বার্তায় মাইল সম্বন্ধে লেখা আছে। প্রোগ্রামারদের আপত্তি না থাকলে অনুবাদের সময় তা কিলোমিটারে "
+"পরিবর্তন করা যাবে যদি কিলোমিটারের ব্যবহারই আপনার ভাষায় সাধারণত হয়ে থাকে। ১ মাইল আনুমানিক "
+"১.৬ মাইল হয়ে থাকে। উল্লেখ্য , সংখ্যা পরিবর্তন করা হলে \"সংখ্যা\" সম্বন্ধীয় স্বয়ংক্রিয়া "
+"পরীক্ষাগুলিতে কিছু ত্রুটিবার্তা দেখা গেলেও এই ক্ষেত্রে কোনো সমস্যা হবে না।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2149,6 +2252,10 @@ msgid ""
 "angle brackets (<...>). The double quotes (\") should never be changed in "
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
+"এই বার্তার মধ্যে একটি লিংক উপস্থিত রয়েছে যা ক্লিক করে সহায়তার পৃষ্ঠা দেখা যাবে। বন্ধনী "
+"চিহ্নের মধ্যে (<...>) উপস্থিত তথ্য সম্পূর্ণরূপে অপরিবর্তিত রাখা আবশ্যক। ট্যাগের মধ্যে "
+"উদ্ধৃতিচিহ্ন লেখা থাকে তা একই অবস্থায় রাখতে হবে। আপনার ভাষায় অন্য ধরনের উদ্ধৃতিচিহ্ন ব্যবহৃত "
+"হলেও মূল চিহ্নগুলি কোনোভাবে পরিবর্তন করা যাবে না। "
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2158,6 +2265,9 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tags of the previous translation."
 msgstr ""
+"এই বার্তার মধ্যে একই ধরনের একটি লিংক রয়েছে। যাতে অনুবাদের সময় কোনো পরিবর্তন না করা যায় "
+"তাই প্রোগ্রামাররা ট্যাগ সহযোগে এটি লিখেছেন। (%s) ভেরিয়েবলগুলি সঠিক ক্রমে লিখুন যাতে "
+"পূর্ববর্তী অনুবাদের আরম্ভের ও শেষের ট্যাগের সাথে তার সামঞ্জস্য থাকে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2165,6 +2275,9 @@ msgid ""
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
+"এই বার্তার মধ্যে একটি শব্দ বিশেষভাবে দেখানোর জন্য <b> ও </b> ট্যাগ ব্যবহার করা হয়েছে, এবং "
+"সম্পূর্ণ লেখাটি <p> ও </p> ট্যাগের মধ্যে রয়েছে। অনুবাদ করার সময় খেয়াল রাখবেন যাতে সম্পূর্ণ "
+"লেখাটি <p> ও </p> ট্যাগের মধ্যে থাকে।"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2176,6 +2289,11 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"এই বার্তার মধ্যে একই রকমের একটি লিংক রয়েছে যা <span> ও </span> ট্যাগের মধ্যে রাখা হয়েছে"
+"। সব কটি ট্যাগ (<...>) যাতে অপরিবর্তিত থাকে ও লিংটি সম্পূর্ণরূপে <span> ও </span> "
+"ট্যাগের মধ্যে থাকে তা বিশেষভাবে খেয়াল রাখা প্রয়োজন। বিশেষ নজর রাখবেন যাতে \"a\" ট্যাগের "
+"মধ্যের লেখা \"সহায়তা পৃষ্ঠা\" সাথে সংগত রাখা হয় ও দ্বিতীয় বাক্যের জন্য করা অনুবাদটি <span> "
+"ট্যাগের মধ্যে থাকে। পূর্ণবিরাম চিহ্নটিও  </span> ট্যাগের মধ্যেই রয়েছে।"
 
 #: virtaal/views/checksprojview.py
 msgid "Project Type"
@@ -2185,38 +2303,37 @@ msgstr ""
 #: virtaal/views/checksprojview.py
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr ""
+msgstr "যাচাই: %(checker_name)s"
 
 #: virtaal/views/checksunitview.py
 msgid "Quality Check"
-msgstr ""
+msgstr "গুণমান যাচই"
 
 #: virtaal/views/checksunitview.py
 msgid "Description"
-msgstr ""
+msgstr "বিবরণ"
 
 #: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
 msgid "Quality checks"
-msgstr ""
+msgstr "গুণমান যাচই"
 
 #: virtaal/views/langview.py
-#, fuzzy
 #| msgid "New Language Pair"
 msgid "_New Language Pair…"
-msgstr "ভাষার নতুন জুটি"
+msgstr "নতুন ভাার জুটি…(_N)"
 
 #: virtaal/views/mainview.py
 msgid "_Cancel"
-msgstr ""
+msgstr "বাতিল (_C)"
 
 #: virtaal/views/mainview.py
 msgid "_OK"
-msgstr ""
+msgstr "ঠিক আছে (_O)"
 
 #. l10n: macOS app menu item that opens the Preferences dialog
 #: virtaal/views/mainview.py
 msgid "Settings…"
-msgstr ""
+msgstr "বিবিধ বৈশিষ্ট্য…"
 
 #: virtaal/views/mainview.py
 msgid "Error"
@@ -2245,10 +2362,9 @@ msgstr ""
 "আপনার করার পরিবর্তনগুলি সংরক্ষণ করতে ইচ্ছুক কি?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#, fuzzy
 #| msgid "Save"
 msgid "_Save"
-msgstr "সংরক্ষণ করুন"
+msgstr "সংরক্ষণ করুন (_S)"
 
 #: virtaal/views/mainview.py
 msgid "_Discard"
@@ -2272,10 +2388,10 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
-#, fuzzy, python-format
+#, python-format
 #| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -2327,29 +2443,26 @@ msgstr ""
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Before:"
 msgid "Before"
-msgstr "পূর্বে:"
+msgstr "পূর্ববর্তী"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "After:"
 msgid "After"
-msgstr "পরে:"
+msgstr "পরবর্তী"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py
 msgid "Change"
-msgstr ""
+msgstr "পরিবর্তন"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#, fuzzy
 #| msgid "Total: %d"
 msgid "Total"
-msgstr "সর্বমোট:  %d"
+msgstr "সর্বমোট"
 
 #: virtaal/views/mainview.py
 msgid "Source and target language are the same."
@@ -2367,7 +2480,7 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 msgid "Save As…"
-msgstr ""
+msgstr "নতুন রূপে সংরক্ষণ..."
 
 #: virtaal/views/mainview.py
 msgid "Logs"
@@ -2386,30 +2499,29 @@ msgstr "পরিদর্শন: (_a)"
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
 msgid "None"
-msgstr ""
+msgstr "শূণ্য"
 
 #. l10n: How many units to show around the one being edited, when a
 #. navigation mode only goes to some units
 #: virtaal/views/modeview.py
 msgid "Conte_xt:"
-msgstr ""
+msgstr "প্রসঙ্গিক একক (_x)"
 
 #: virtaal/views/prefsview.py
-#, fuzzy
 #| msgid "Poedit settings"
 msgid "Settings"
-msgstr "Poedit সংক্রান্ত বৈশিষ্ট্য"
+msgstr "বিবিধ বৈশিষ্ট্য"
 
 #: virtaal/views/prefsview.py
 msgid "System default"
-msgstr ""
+msgstr "সিস্টেমের ডিফল্ট মান"
 
 #. l10n: A UI language: its name in your language, then in
 #. itself, e.g. "French - Français"
 #: virtaal/views/prefsview.py
 #, python-format
 msgid "%(language)s - %(endonym)s"
-msgstr ""
+msgstr "%(language)s - %(endonym)s"
 
 # 81%
 #: virtaal/views/propertiesview.py
@@ -2431,9 +2543,8 @@ msgstr ""
 
 # 78%
 #: virtaal/views/propertiesview.py
-#, fuzzy
 msgid "Translated:"
-msgstr "অনুবাদ করা হয়েছে : %d"
+msgstr "অনুবাদিত:"
 
 #: virtaal/views/propertiesview.py
 msgid "Reviewed:"
@@ -2443,23 +2554,23 @@ msgstr ""
 #: virtaal/views/propertiesview.py
 #, python-format
 msgid "(%s)"
-msgstr ""
+msgstr "(%s)"
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
+msgstr "ফাইলের মধ্যে অসংরক্ষিত পরিবর্তন উপস্থিত রয়েছে"
 
 #: virtaal/views/unitview.py
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr ""
+msgstr "কর্মপ্রক্রিয়ায় এক ধাপ পিছিয়ে যান (Ctrl+Shift+Enter)"
 
 #: virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
-msgstr ""
+msgstr "কর্মপ্রক্রিয়ার কোনো নির্দিষ্ট স্থানে যেতে ক্লিক করুন"
 
 #: virtaal/views/unitview.py
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr ""
+msgstr "কর্মপ্রক্রিয়ায় এক ধাপ এগিয়ে যান (Ctrl+Enter)"
 
 #: virtaal/views/unitview.py
 #, fuzzy
@@ -2472,10 +2583,9 @@ msgid "Next state"
 msgstr ""
 
 #: virtaal/views/widgets/aboutdialog.py
-#, fuzzy
 #| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
-msgstr "স্বত্বাধিকার © ২০০৭-২০১০ Zuza Software Foundation"
+msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -2564,193 +2674,180 @@ msgstr "কনফিগার করুন..."
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Global"
-msgstr ""
+msgstr "সার্বজনীন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Open a file"
-msgstr ""
+msgstr "ফাইল খুলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Save the current file"
-msgstr "বর্তমানে খোলা ফাইল"
+msgstr "বর্তমান ফাইলটি সংরক্ষণ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Save the current file under a new name"
-msgstr ""
+msgstr "নতুন নামে বর্তমান ফাইলটি সংরক্ষণ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Current File"
 msgid "Close the current file"
-msgstr "বর্তমানে খোলা ফাইল"
+msgstr "বর্তমান ফাইলটি বন্ধ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Virtaal"
 msgid "Quit Virtaal"
-msgstr "Virtaal"
+msgstr "Virtaal থেকে প্রস্থান করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show preferences dialog"
-msgstr ""
+msgstr "বিবিধ পছন্দের ডায়লগ প্রদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr ""
+msgstr "ফাইলের বৈশিষ্ট্য ও পরিসংখ্যান প্রদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "সম্পূর্ণ পর্দা জুড়ে প্রদর্শনের মোড অদল-বদল"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show this Keyboard Shortcuts window"
-msgstr ""
+msgstr "কিবোর্ড-শর্টকাটের এই উইন্ডো প্রদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Navigation"
 msgid "Navigation"
-msgstr "পরিদর্শন (_N)"
+msgstr "পরিদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine translation"
 msgid "Move to next translation"
-msgstr "সয়ংক্রিয় অনুবাদক"
+msgstr "পরিবর্তী অনুবাদে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous unit"
-msgstr ""
+msgstr "পূর্ববর্তী এককে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next unit"
-msgstr ""
+msgstr "পরবর্তী এককে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units up"
-msgstr ""
+msgstr "১০-টি একক এগিয়ে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
-msgstr ""
+msgstr "১০-টি একক পিছিয়ে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to first unit"
-msgstr ""
+msgstr "সর্বপ্রথম এককে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to last unit"
-msgstr ""
+msgstr "শেষ এককে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to next search match"
-msgstr ""
+msgstr "অনুসন্ধানের পরবর্তী মিলে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to previous search match"
-msgstr ""
+msgstr "অনুসন্ধানের পূর্ববর্তী মিলে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Units"
-msgstr ""
+msgstr "একক"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "P_revious Placeable"
 msgid "Select previous placeable"
-msgstr "পূর্ববর্তী সন্নিবেশযোগ্য লেখা (_r)"
+msgstr "পূর্ববর্তী স্থানাঙ্ক নির্বাচন করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "_Next Placeable"
 msgid "Select next placeable"
-msgstr "পরবর্তী সন্নিবেশযোগ্য বস্তু (_N)"
+msgstr "পরবর্তী সন্নিবেয় যোগ্য লেখা নির্বাচন করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Insert the selected placeable"
-msgstr ""
+msgstr "নির্বাচিত সন্নিবেশযোগ্য লেখা যোগ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
-msgstr "libtranslate সহযোগে মেশিনের মাধ্যমে অনুবাদ ব্যবস্থা"
+msgstr "অনুবাদের পরিবর্তে মূল লেখা ব্যবহার করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Copy the source, if nothing is selected"
-msgstr ""
+msgstr "কিছু নির্বাচন না করা হলে, মূল ভাষার লেখা কপি করা হবে"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Enter a new line"
-msgstr ""
+msgstr "নতুন লাইন যোগ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
-msgstr ""
+msgstr "সর্বশেষ পরিবর্তন বাতিল করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Redo the last undone change"
-msgstr ""
+msgstr "বাতিল করা সর্বশেষ পরিবর্তন পুনরায় করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
-msgstr "অনুবাদের প্রস্তাব (_S)"
+msgstr "অনুবাদের সর্বপ্রথম প্রস্তাব ব্যবহার করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show/Hide checks"
-msgstr ""
+msgstr "যাচাই প্রদর্শন/আড়াল"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
-msgstr "অনুবাদের প্রস্তাব (_S)"
+msgstr "এই এককের জন্য অনুবাদের প্রস্তাব প্রদর্শিত হবে "
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
-msgstr "অনুবাদের প্রস্তাব (_S)"
+msgstr "অনুবাদের প্রস্তাব প্রদর্শন চালু অথবা বন্ধ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
-msgstr "অনুবাদের প্রস্তাব (_S)"
+msgstr "অনুবাদের প্রস্তাব প্রদর্শিত হলে তা আড়াল করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#, fuzzy
 #| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
-msgstr "পরিভাষার স্থানীয় ফাইল যোগ করুন"
+msgstr "স্থানীয় পরিভাষা ফাইলের মধ্যে একটি পরিভাষা যোগ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Moving focus"
-msgstr ""
+msgstr "ফোকাস সরানো হচ্ছে"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the next target field"
-msgstr ""
+msgstr "পরবর্তী উদ্দিষ্ট স্থানে সরিয়ে নিন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move to the previous target field"
-msgstr ""
+msgstr "পূর্ববর্তী উদ্দিষ্ট স্থানে সরিয়ে নিন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the language-pair selector"
-msgstr ""
+msgstr "ভাষার জুটি নির্বাচনের স্থানে এগিয়ে চলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Jump to the \"Navigation:\" mode selector"
-msgstr ""
+msgstr "\"পরিদর্শন:\" মোড নির্বাচনের স্থানে এগিয়ে যান"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the search bar and return to normal editing"
-msgstr ""
+msgstr "অনুসন্ধানের বার বন্ধ করে স্বাভাবিক লেখার মোডে ফিরে যান"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"
@@ -2762,7 +2859,7 @@ msgstr "সয়ংক্রিয় অনুবাদক"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Highlighting and insertion of placeables"
-msgstr ""
+msgstr "সংযোজনযোগ্য বস্তু চিহ্নিত করা ও সন্নিবেশ করা"
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Many plugins and options for customization"

@@ -14,19 +14,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 
 msgid "About %s"
-msgstr ""
+msgstr "%s সম্বন্ধিত তথ্য"
 
 msgid "Hide %s"
-msgstr ""
+msgstr "%s আড়াল করা হবে"
 
 msgid "Hide Others"
-msgstr ""
+msgstr "অন্যান্য সব আড়াল করা হবে"
 
 msgid "Quit %s"
-msgstr ""
+msgstr "%s থেকে প্রস্থান করুন"
 
 msgid "Services"
-msgstr ""
+msgstr "পরিসেবা"
 
 msgid "Show All"
-msgstr ""
+msgstr "সব প্রদর্শন করা হবে"

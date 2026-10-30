@@ -52,7 +52,7 @@ msgstr "বাতিল (_C)"
 #. File dialog - Cancel button
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser
 msgid "_Cancel"
-msgstr ""
+msgstr "বাতিল (_C)"
 
 #. About Dialog - Close button
 #. Seen in: *quality-checks.po dialog; Properties dialog; Settings dialog; Terminology Files dialog; Virtaal Preferences dialog; main window; menus; quality-checks.po dialog
@@ -63,7 +63,7 @@ msgstr "বন্ধ করুন (_C)"
 #. About Dialog - Close button
 #. Seen in: *quality-checks.po dialog; Properties dialog; Settings dialog; Terminology Files dialog; Virtaal Preferences dialog; main window; menus; quality-checks.po dialog
 msgid "_Close"
-msgstr ""
+msgstr "বন্ধ করুন (_C)"
 
 #. Right Click (on empty) -> Copy
 #. Seen in: menus
@@ -74,7 +74,7 @@ msgstr "কপি করুন (_C)"
 #. Right Click (on empty) -> Copy
 #. Seen in: menus
 msgid "_Copy"
-msgstr ""
+msgstr "কপি করুন (_C)"
 
 #. Right Click (on empty) -> Delete
 #. Seen in: menus
@@ -85,7 +85,7 @@ msgstr "মুছে ফেলুন (_D)"
 #. Right Click (on empty) -> Delete
 #. Seen in: menus
 msgid "_Delete"
-msgstr ""
+msgstr "মুছে ফেলুন (_D)"
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
@@ -108,7 +108,7 @@ msgstr "না (_N)"
 #. Revert Confirmation Dialog -> No
 #. Seen in: message dialogs
 msgid "_No"
-msgstr ""
+msgstr "না (_N)"
 
 #. Error Dialog -> OK
 #. Seen in: Add Missing Language dialog
@@ -119,7 +119,7 @@ msgstr "ঠিক আছে (_O)"
 #. Error Dialog -> OK
 #. Seen in: Add Missing Language dialog
 msgid "_OK"
-msgstr ""
+msgstr "ঠিক আছে (_O)"
 
 #. File->Open
 #. Seen in: *quality-checks.po dialog; Terminology Files dialog; main window; menus; quality-checks.po dialog
@@ -130,7 +130,7 @@ msgstr "খুলুন (_O)"
 #. File->Open
 #. Seen in: *quality-checks.po dialog; Terminology Files dialog; main window; menus; quality-checks.po dialog
 msgid "_Open"
-msgstr ""
+msgstr "খুলুন(_O)"
 
 #. Right Click (on empty) -> Paste
 #. Seen in: menus
@@ -141,7 +141,7 @@ msgstr "পেস্ট করুন (_P)"
 #. Right Click (on empty) -> Paste
 #. Seen in: menus
 msgid "_Paste"
-msgstr ""
+msgstr "পেস্ট করুন (_P)"
 
 #. Edit->Preferences
 #. Seen in: menus
@@ -180,7 +180,7 @@ msgstr "সংরক্ষণ করুন (_S)"
 #. File->Save
 #. Seen in: menus
 msgid "_Save"
-msgstr ""
+msgstr "সংরক্ষণ করুন (_S)"
 
 #. Seen in: font chooser
 msgid "_Select"
@@ -212,7 +212,7 @@ msgstr "হ্যাঁ (_Y)"
 #. Revert Confirmation Dialog -> Yes
 #. Seen in: message dialogs
 msgid "_Yes"
-msgstr ""
+msgstr "হ্যাঁ (_Y)"
 
 #. About Dialog - Title
 #. Seen in: About dialog
@@ -262,7 +262,7 @@ msgstr "Ctrl"
 #. Right Click (on empty) -> Cut
 #. Seen in: menus
 msgid "Cu_t"
-msgstr ""
+msgstr "কাট করিুন (_t)"
 
 #. Right Click (on empty) -> Cut
 #. Seen in: menus
@@ -311,7 +311,7 @@ msgstr "ফন্ট সংকলন"
 
 #. Seen in: *quality-checks.po dialog; main window; menus; quality-checks.po dialog
 msgid "Home"
-msgstr ""
+msgstr "প্রথম পৃষ্ঠা"
 
 #. Seen in: *quality-checks.po dialog; main window; menus; quality-checks.po dialog
 msgctxt "keyboard label"
@@ -427,16 +427,16 @@ msgstr "ফন্টের নাম সন্ধান করুন"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Results"
-msgstr ""
+msgstr "অনুসন্ধানের ফলাফল"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Shortcuts"
-msgstr ""
+msgstr "শর্ট-কাটের মধ্যে অনুসন্ধান"
 
 #. Right Click (on empty) -> Select All
 #. Seen in: menus
 msgid "Select _All"
-msgstr ""
+msgstr "সমগ্র নির্বাচন (_A)"
 
 #. Right Click (on empty) -> Select All
 #. Seen in: menus
@@ -451,7 +451,7 @@ msgstr "Shift"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Shortcuts"
-msgstr ""
+msgstr "শর্ট-কাট"
 
 #. File dialog - Files - Grid label - Size
 #. Seen in: font chooser

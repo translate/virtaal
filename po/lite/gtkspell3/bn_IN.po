@@ -15,17 +15,17 @@ msgstr ""
 
 #. Seen in: menus
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(কোনো প্রস্তাব নেই)</i>"
 
 #. + Add to Dictionary
 #. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "অভিধানে %s যোগ করুন"
 
 #. - Ignore All
 #. Seen in: menus
 msgid "Ignore All"
-msgstr ""
+msgstr "সমস্ত উপেক্ষা করা হবে"
 
 msgid "More..."
 msgstr ""

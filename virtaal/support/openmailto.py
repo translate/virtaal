@@ -288,4 +288,4 @@ if __name__ == '__main__':
                 logging.debug('Unable to open "%s"', arg)
             else:
                 success = True
-        sys.exit(success)
+        sys.exit(0 if success else 1)

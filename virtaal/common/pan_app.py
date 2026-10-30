@@ -67,13 +67,43 @@ def config_int(value, default, minimum, maximum, name):
 
 def _write_ini(parser, filename):
     """Write parser to filename, or log why it can't be (a directory in
-    its place, a read-only file, #4340) rather than fail to quit."""
+    its place, a read-only file, #4340) rather than fail to quit.
+
+    It is written to a temporary file that then replaces filename, so a
+    write that fails part-way leaves the old file whole (#4202)."""
+    import tempfile
+    # Replace a symlink's target, not the link.
+    target = os.path.realpath(filename)
+    tmp = None
     try:
-        with open(filename, 'w', encoding='utf-8') as f:
+        mode = None
+        if os.path.lexists(target):
+            if not os.path.isfile(target):
+                raise OSError(f"{target!r} is not a file")
+            # os.replace() would replace a read-only file on POSIX.
+            if not os.access(target, os.W_OK):
+                raise PermissionError(f"{target!r} is read-only")
+            import stat
+            mode = stat.S_IMODE(os.stat(target).st_mode)
+        fd, tmp = tempfile.mkstemp(dir=os.path.dirname(target),
+                                   prefix=os.path.basename(target) + '.', suffix='.tmp')
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
             parser.write(f)
+            f.flush()
+            os.fsync(f.fileno())
+        if mode is not None:
+            os.chmod(tmp, mode)
+        os.replace(tmp, target)
+        tmp = None
     except OSError as e:
         import logging
         logging.warning("%r can't be saved: %s", filename, e)
+    finally:
+        if tmp is not None:
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
 
 def get_config_dir():
     if platform.is_windows:

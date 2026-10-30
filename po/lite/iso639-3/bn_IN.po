@@ -71,7 +71,7 @@ msgstr "ডেনিশ"
 
 #: nld
 msgid "Dutch"
-msgstr ""
+msgstr "ডাচ"
 
 #: eng
 msgid "English"
@@ -143,11 +143,11 @@ msgstr "লিথুয়েনিয়ান"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "আধুনিক গ্রিক (১৪৫৩-)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "নেপালী (সামষ্টিক ভাষা)"
 
 #: oci
 msgid "Occitan (post 1500)"
@@ -155,11 +155,11 @@ msgstr "অকসিটান (১৫০০ উত্তোর)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "পাঞ্জাবি"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "পেডি"
 
 #: pol
 msgid "Polish"
@@ -179,7 +179,7 @@ msgstr "সার্বিয়ান"
 
 #: sin
 msgid "Sinhala"
-msgstr ""
+msgstr "সিংহলা"
 
 #: slk
 msgid "Slovak"
@@ -191,15 +191,15 @@ msgstr "সোথো, দক্ষিণ"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "দক্ষিনীয় সোথো"
 
 #: spa
 msgid "Spanish"
-msgstr ""
+msgstr "স্প্যানিশ"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "সোয়াহিলি (সামষ্টিক ভাষা)"
 
 #: swe
 msgid "Swedish"

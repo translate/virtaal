@@ -27,8 +27,10 @@ gettext-tools/zh_CN
 gettext-tools/zh_TW
 glib20/ar
 gtk-mac-integration/ar
+gtk-mac-integration/bn_IN
 gtk30/ak
 gtk30/ar
+gtk30/bn_IN
 gtk30/cgg
 gtk30/ff
 gtk30/fo
@@ -41,11 +43,13 @@ gtk30/sw
 gtk30/zu
 gtkspell3/am
 gtkspell3/ar
+gtkspell3/bn_IN
 gtkspell3/cgg
 gtkspell3/ko
 gtkspell3/oc
 gtkspell3/st
 gtkspell3/te
+iso639-3/bn_IN
 iso639-3/ca
 iso639-3/eu
 iso639-3/he

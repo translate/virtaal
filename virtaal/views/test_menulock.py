@@ -37,14 +37,15 @@ def _sensitive(items):
     return {name: item.get_sensitive() for name, item in items.items()}
 
 
-def test_lock_greys_out_menu_items_but_the_kept_ones_and_the_menus():
+def test_lock_greys_out_menu_items_but_the_kept_ones_and_the_top_level_menus():
     # #4611: on macOS the menu bar stays live while a dialog has the focus.
     bar, items = _menus()
     lock = MenuLock(lambda: bar, keep=[items['Paste']])
 
     lock.lock()
 
-    assert _sensitive(items) == {'File': True, 'Open': False, 'Save': False, 'Recent': True,
+    # Recent Files is greyed with its items; File and Edit still open.
+    assert _sensitive(items) == {'File': True, 'Open': False, 'Save': False, 'Recent': False,
                                  'a.po': False, 'Edit': True, 'Paste': True}
     assert lock.locked
 

@@ -12,8 +12,8 @@ from gi.repository import Gtk
 
 
 class MenuLock:
-    """Greys out every menu item without a submenu, except C{keep}, and puts
-        each one back as it was, or as Virtaal set it while greyed."""
+    """Greys out every menu item below the top-level menus, except C{keep},
+        and puts each one back as it was, or as Virtaal set it while greyed."""
 
     def __init__(self, get_menu_shell, keep=()):
         self._get_menu_shell = get_menu_shell
@@ -42,13 +42,13 @@ class MenuLock:
             del item.set_sensitive
             item.set_sensitive(sensitive)
 
-    def _items(self, shell):
-        """Menu items without a submenu: a top-level menu stays openable."""
+    def _items(self, shell, top=True):
+        """Menu items below the top-level ones, which stay openable."""
         for item in shell.get_children():
             if not isinstance(item, Gtk.MenuItem) or isinstance(item, Gtk.SeparatorMenuItem):
                 continue
-            submenu = item.get_submenu()
-            if submenu is None:
+            if not top:
                 yield item
-            else:
-                yield from self._items(submenu)
+            submenu = item.get_submenu()
+            if submenu is not None:
+                yield from self._items(submenu, top=False)

@@ -313,6 +313,24 @@ class TestTextBox(TestScaffolding):
         assert self._foreground_at(textbox, first).equal(unselected)
         assert self._foreground_at(textbox, second).equal(selected)
 
+    def test_set_text_adds_widgets_after_tagging(self, textbox):
+        # #4347: with a pilcrow widget per newline in the view, each tag cost time per widget.
+        widgets_when_tagged = []
+        apply_all = textbox._apply_all_tags
+
+        def record():
+            widgets_when_tagged.append(len(textbox.get_children()))
+            apply_all()
+        textbox._apply_all_tags = record
+        try:
+            textbox.set_text('one\ntwo\nthree')
+        finally:
+            del textbox._apply_all_tags
+
+        assert widgets_when_tagged == [0]
+        assert len(textbox.get_children()) >= 2
+        assert textbox._deferred_children is None
+
     def test_move_elem_selection_selects_via_the_selector_textbox(self):
         textbox = self._target_for('%s files copied')
 

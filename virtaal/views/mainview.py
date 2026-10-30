@@ -389,6 +389,7 @@ class MainView(BaseView):
             osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
             osxapp.connect("NSApplicationBlockTermination", self._on_quit)
             self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
+            self._grey_menus_behind_dialogs()
         except (ImportError, ValueError):
             logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
@@ -724,6 +725,28 @@ class MainView(BaseView):
             # The resync skips app-menu items; reinserting rereads the key
             # equivalent of Preferences, whose accel group keeps changing.
             osxapp.insert_app_menu_item(self.gui.get_object("mnu_prefs"), 2)
+
+    def _grey_menus_behind_dialogs(self):
+        """The native menu bar stays live while a dialog has the focus: grey
+            out what can't act on the dialog (#4611)."""
+        from virtaal.views.menulock import MenuLock
+        keep = [self.gui.get_object(name) for name in ('mnu_cut', 'mnu_copy', 'mnu_paste')]
+        self._menu_lock = MenuLock(lambda: self.menu_structure, keep)
+        self.main_window.connect('notify::is-active', self._on_main_window_active)
+
+    def _on_main_window_active(self, window, pspec):
+        if window.is_active():
+            self._menu_lock.unlock()
+        else:
+            # A dialog becomes active only after the main window stops being.
+            from gi.repository import GLib
+            GLib.idle_add(self._lock_menus_for_dialog)
+
+    def _lock_menus_for_dialog(self):
+        from virtaal.views.unitview import dialog_active
+        if not self.main_window.is_active() and dialog_active(self.main_window):
+            self._menu_lock.lock()
+        return False
 
     def set_saveable(self, value):
         # Repeatedly doing all of this is unnecessary, and can make the window

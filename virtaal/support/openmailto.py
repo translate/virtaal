@@ -73,8 +73,8 @@ class Controller(BaseController):
             closefds = True
             startupinfo = None
 
-        if (os.environ.get('DISPLAY') or platform.is_windows or
-                                                    platform.is_mac):
+        if (os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY') or
+                platform.is_windows or platform.is_mac):
             inout = subprocess.DEVNULL
         else:
             # for TTY programs, we need stdin/out
@@ -140,74 +140,16 @@ elif platform.is_mac:
 # Platform support for Unix
 else:
 
-    import shutil
-    import subprocess
-
-    class KfmClient(Controller):
-        '''Controller for the KDE kfmclient program.'''
-
-        def __init__(self, kfmclient='kfmclient'):
-            super().__init__(kfmclient, 'exec')
-
-
-    def detect_desktop_environment():
-        '''Checks for known desktop environments
-
-        Return the desktop environments name, lowercase (kde, gnome, xfce)
-        or "generic"
-
-        '''
-
-        desktop_environment = 'generic'
-
-        if os.environ.get('KDE_FULL_SESSION') == 'true':
-            desktop_environment = 'kde'
-        elif os.environ.get('GNOME_DESKTOP_SESSION_ID'):
-            desktop_environment = 'gnome'
-        else:
-            try:
-                from virtaal.support import helperprocess
-                info = subprocess.check_output(['xprop','-root', '_DT_SAVE_MODE'], encoding="utf-8",
-                                               env=helperprocess.host_env())
-                if ' = "xfce4"' in info:
-                    desktop_environment = 'xfce'
-            except (OSError, RuntimeError):
-                pass
-
-        return desktop_environment
-
-
-    def register_X_controllers():
-        if shutil.which('kfmclient'):
-            _controllers['kde-open'] = KfmClient()
-
-        for command in ('gnome-open', 'exo-open', 'xdg-open'):
-            if shutil.which(command):
-                _controllers[command] = Controller(command)
-
     def get():
-        controllers_map = { \
-            'gnome': 'gnome-open',
-            'kde': 'kde-open',
-            'xfce': 'exo-open',
-        }
+        """xdg-open picks the desktop's own opener (gio, kde-open, exo-open,
+        the Flatpak portal)."""
+        import shutil
+        if shutil.which('xdg-open'):
+            _controllers['xdg-open'] = Controller('xdg-open')
+            return _controllers['xdg-open'].open
+        import webbrowser
+        return webbrowser.open
 
-        desktop_environment = detect_desktop_environment()
-
-        try:
-            controller_name = controllers_map[desktop_environment]
-            return _controllers[controller_name].open
-
-        except KeyError:
-            if 'xdg-open' in _controllers:
-                return _controllers['xdg-open'].open
-            else:
-                import webbrowser
-                return webbrowser.open
-
-
-    if os.environ.get("DISPLAY"):
-        register_X_controllers()
     _open = get()
 
 

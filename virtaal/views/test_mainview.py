@@ -2850,6 +2850,7 @@ def test_macos_integration_rebinds_its_catalog_before_building_the_app_menu(monk
                         mock.Mock(Application=FakeApplication), raising=False)
     monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: calls.append(('rebind', domain)))
     monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
+    monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
     view = mock.Mock()
 
     mainview.MainView._setup_macos_integration(view)
@@ -2998,6 +2999,7 @@ def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypat
                         mock.Mock(Application=FakeApplication), raising=False)
     monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: None)
     monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
+    monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
     view = mock.Mock()
     view.gui.get_object.side_effect = lambda name: mnu_prefs if name == 'mnu_prefs' else mock.Mock()
 
@@ -3114,3 +3116,26 @@ def test_menus_stay_when_another_application_takes_the_focus(monkeypatch):
     view._on_main_window_active(view.main_window, None)
 
     assert view._menu_lock.calls == []
+
+
+def test_window_tabbing_is_turned_off(monkeypatch):
+    # #4615: macOS adds Show Tab Bar and Show All Tabs to the View menu otherwise.
+    calls = []
+    monkeypatch.setattr(mainview, '_objc_class', lambda name: name)
+    monkeypatch.setattr(mainview, '_objc_send', lambda *args, **kwargs: calls.append((args, kwargs)))
+
+    mainview._disable_window_tabbing()
+
+    assert calls == [(('NSWindow', 'setAllowsAutomaticWindowTabbing:', False),
+                      {'argtypes': [mainview.ctypes.c_bool], 'restype': None})]
+
+
+@pytest.mark.skipif(not sys.platform.startswith('darwin'), reason="needs AppKit")
+def test_window_tabbing_off_takes_effect_on_macos():
+    ctypes = mainview.ctypes
+    ctypes.cdll.LoadLibrary('/System/Library/Frameworks/AppKit.framework/AppKit')
+    nswindow = mainview._objc_class('NSWindow')
+
+    mainview._disable_window_tabbing()
+
+    assert not mainview._objc_send(nswindow, 'allowsAutomaticWindowTabbing', restype=ctypes.c_bool)

@@ -10,6 +10,7 @@ from translate.storage.placeables import StringElem, general
 from translate.storage.placeables import parse as parse_placeables
 
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.support import placeables_compat  # noqa: F401 - applies its patch on import
 from virtaal.views import placeablesguiinfo
 
 from .basecontroller import BaseController

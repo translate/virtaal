@@ -33,19 +33,29 @@ def _get_focused_widget(widgets):
     return None
 
 
-def _active_dialog(widget):
-    """The active dialog over C{widget}'s window, if any: on macOS the main
-        window's menu shortcuts still fire while a dialog has the focus (#4609)."""
+def _dialogs_over(widget):
+    """Visible windows over C{widget}'s window, directly or through another."""
     toplevel = widget.get_toplevel()
     for window in Gtk.Window.list_toplevels():
-        if not (window.is_active() and window.get_visible()) or window is toplevel:
+        if not window.get_visible() or window is toplevel:
             continue
         parent = window.get_transient_for()
         while parent is not None:
             if parent is toplevel:
-                return window
+                yield window
+                break
             parent = parent.get_transient_for()
-    return None
+
+
+def _active_dialog(widget):
+    """The active dialog over C{widget}'s window, if any: on macOS the main
+        window's menu shortcuts still fire while a dialog has the focus (#4609)."""
+    return next((window for window in _dialogs_over(widget) if window.is_active()), None)
+
+
+def modal_dialog(widget):
+    """A modal dialog over C{widget}'s window, if any."""
+    return next((window for window in _dialogs_over(widget) if window.get_modal()), None)
 
 
 def dialog_active(widget):

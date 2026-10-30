@@ -21,6 +21,10 @@ class _FakeSettings:
             'targetlang': targetlang,
             'recentlangs': recentlangs,
         }
+        self.writes = []
+
+    def write(self):
+        self.writes.append(dict(self.language))
 
 
 class _FakeSignalSource:
@@ -178,6 +182,20 @@ def test_set_language_pair_truncates_to_num_recent(monkeypatch, tmp_path):
 
     assert len(controller.recent_pairs) == LanguageController.NUM_RECENT
     assert controller.recent_pairs[0][0].code == 'newsrc'
+
+
+def test_set_language_pair_saves_the_pair_and_recent_pairs(monkeypatch, tmp_path):
+    # #4202: a crash before quitting lost them.
+    controller, _ = _make_controller(monkeypatch, tmp_path)
+    controller.view = _view_stub()
+    controller.recent_pairs = []
+
+    controller.set_language_pair('fr', 'de')
+
+    written = langcontroller.pan_app.settings.writes[-1]
+    assert written['sourcelang'] == 'fr'
+    assert written['targetlang'] == 'de'
+    assert written['recentlangs'] == 'fr,de'
 
 
 def test_set_language_pair_notifies_same_langs_when_equal(monkeypatch, tmp_path):
@@ -415,6 +433,20 @@ def test_on_quit_merges_with_an_existing_langs_ini(monkeypatch, tmp_path):
         assert 'xx-new2' in saved
     finally:
         LanguageModel.languages.pop('xx-new2', None)
+
+
+def test_save_new_langs_writes_langs_ini_before_quit(monkeypatch, tmp_path):
+    # #4202: a crash before quitting lost an added language.
+    controller, _ = _make_controller(monkeypatch, tmp_path)
+    LanguageModel.languages['xx-new3'] = ('Xx Three', 2, 'n != 1')
+    controller.new_langs = ['xx-new3']
+    try:
+        controller.save_new_langs()
+
+        saved = langcontroller.pan_app.load_config(str(tmp_path / 'langs.ini'))
+        assert saved['xx-new3']['name'] == 'Xx Three'
+    finally:
+        LanguageModel.languages.pop('xx-new3', None)
 
 
 def test_on_quit_does_nothing_further_without_new_langs(monkeypatch, tmp_path):

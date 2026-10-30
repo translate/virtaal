@@ -114,6 +114,9 @@ class LanguageController(BaseController):
         if self.source_lang == self.target_lang:
             self.view.notify_same_langs()
 
+        self._store_language_pair()
+        pan_app.settings.write()
+
 
     # METHODS #
     def get_target_nplurals(self):
@@ -172,9 +175,15 @@ class LanguageController(BaseController):
             self.view.notify_diff_langs()
 
     def _on_quit(self, main_controller):
+        self._store_language_pair()
+        self.save_new_langs()
+
+    def _store_language_pair(self):
         pan_app.settings.language['sourcelang'] = self.source_lang.code
         pan_app.settings.language['targetlang'] = self.target_lang.code
 
+    def save_new_langs(self):
+        """Write languages added or edited in Virtaal to langs.ini."""
         if not self.new_langs:
             return
 

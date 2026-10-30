@@ -22,6 +22,7 @@ from virtaal.views.unitview import (
     _active_dialog,
     _NotesView,
     _programmer_notes,
+    modal_dialog,
 )
 
 
@@ -259,11 +260,14 @@ def dialog_entry(monkeypatch):
 
 
 class _FakeWindow:
-    def __init__(self, active=False, visible=True, over=None):
-        self._active, self._visible, self._over = active, visible, over
+    def __init__(self, active=False, visible=True, over=None, modal=False):
+        self._active, self._visible, self._over, self._modal = active, visible, over, modal
 
     def is_active(self):
         return self._active
+
+    def get_modal(self):
+        return self._modal
 
     def get_visible(self):
         return self._visible
@@ -287,6 +291,20 @@ def test_active_dialog_is_an_active_window_over_the_main_one(monkeypatch, window
     monkeypatch.setattr('virtaal.views.unitview.Gtk.Window.list_toplevels', lambda: toplevels)
 
     assert _active_dialog(main) is (None if expected is None else toplevels[expected])
+
+
+@pytest.mark.parametrize('windows, expected', [
+    (lambda main: [main, _FakeWindow(modal=True, over=main)], 1),
+    (lambda main: [main, _FakeWindow(over=main)], None),
+    (lambda main: [main, _FakeWindow(modal=True)], None),
+    (lambda main: [main, _FakeWindow(modal=True, visible=False, over=main)], None),
+], ids=['modal dialog', 'non-modal window', 'unrelated modal window', 'hidden modal dialog'])
+def test_modal_dialog_is_a_visible_modal_window_over_the_main_one(monkeypatch, windows, expected):
+    main = _FakeWindow()
+    toplevels = windows(main)
+    monkeypatch.setattr('virtaal.views.unitview.Gtk.Window.list_toplevels', lambda: toplevels)
+
+    assert modal_dialog(main) is (None if expected is None else toplevels[expected])
 
 
 @pytest.mark.parametrize('action, signal', [('_on_cut', 'cut-clipboard'), ('_on_copy', 'copy-clipboard'),

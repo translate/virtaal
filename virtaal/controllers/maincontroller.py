@@ -76,12 +76,12 @@ class MainController(BaseController):
 
     def get_translator_details(self):
         """The translator's name, e-mail address and team, asking for all
-            three in one dialog if any is missing. Each is one line: they
-            go into the PO header, where a newline starts a new header
-            field (#4339)."""
+            three in one dialog if the name or e-mail is missing; the team
+            is optional. Each is one line: they go into the PO header,
+            where a newline starts a new header field (#4339)."""
         translator = pan_app.settings.translator
         details = _one_line(translator["name"], translator["email"], translator["team"])
-        if all(details):
+        if all(details[:2]):
             return details
         answer = self.view.show_translator_dialog(*details)
         return _one_line(*answer) if answer else details

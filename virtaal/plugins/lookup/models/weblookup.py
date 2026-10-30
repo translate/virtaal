@@ -42,6 +42,7 @@ from gi.repository import GLib, Gtk, Pango
 from virtaal.common import pan_app
 from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
 from virtaal.views.baseview import BaseView
+from virtaal.views.widgets.util import entry_value, keep_one_line
 
 
 class LookupModel(BaseLookupModel):
@@ -376,6 +377,8 @@ class WebLookupAddDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
+        keep_one_line(self.ent_url_name)
+        keep_one_line(self.ent_url)
         self.ent_url_name.connect('changed', self._on_field_changed)
         self.ent_url.connect('changed', self._on_field_changed)
 
@@ -410,11 +413,11 @@ class WebLookupAddDialog:
         if response != Gtk.ResponseType.OK:
             return None
 
-        name = self.ent_url_name.get_text().strip()
+        name = entry_value(self.ent_url_name)
         self.url = {
             'id':             _slugify(name),
             'display_name':   name,
-            'url':            self.ent_url.get_text().strip(),
+            'url':            entry_value(self.ent_url),
             'quoted':         self.cbtn_url_quote.get_active(),
             'enabled':        True,
         }
@@ -426,11 +429,11 @@ class WebLookupAddDialog:
         self._update_ok_sensitivity()
 
     def _update_ok_sensitivity(self):
-        error = self._name_error(_slugify(self.ent_url_name.get_text()))
+        error = self._name_error(_slugify(entry_value(self.ent_url_name)))
         self.lbl_url_name_error.set_text(error)
         self.lbl_url_name_error.set_visible(bool(error))
         self.btn_url_ok.set_sensitive(
-            bool(self.ent_url_name.get_text().strip()) and bool(self.ent_url.get_text().strip()) and not error
+            bool(entry_value(self.ent_url_name)) and bool(entry_value(self.ent_url)) and not error
         )
 
     def _name_error(self, url_id):

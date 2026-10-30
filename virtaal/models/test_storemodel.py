@@ -334,6 +334,48 @@ def test_saving_adds_missing_plural_forms(tmp_path, monkeypatch):
     assert header["Plural-Forms"] == "nplurals=2; plural=(n > 1);"
 
 
+@pytest.fixture(params=[
+    (2, '('),                          # not an equation
+    (2, 'n'),                          # forms 2 and up: msgfmt rejects the file
+    (3, '(n != 1)'),                   # form 2 never used
+    (0, '0'),
+])
+def invalid_plural_language(request):
+    # #4351: Add Missing Language takes any plural equation.
+    from virtaal.models.langmodel import LanguageModel
+    LanguageModel.languages['xx'] = ('Xx',) + request.param
+    yield 'xx'
+    LanguageModel.languages.pop('xx', None)
+
+
+def test_every_shipped_plural_equation_is_usable():
+    from virtaal.models.langmodel import LanguageModel
+    from virtaal.models.storemodel import _usable_plural
+    LanguageModel('af')  # LanguageModel.languages populates on first use
+    rules = [(code, n, p) for code, (_name, n, p) in LanguageModel.languages.items() if p]
+
+    assert rules
+    assert [code for code, n, p in rules if not _usable_plural(n, p)] == []
+
+
+def test_saving_leaves_out_an_invalid_plural_equation(tmp_path, monkeypatch, invalid_plural_language):
+    header = _save_po(tmp_path, monkeypatch, b'', invalid_plural_language)
+
+    assert "Plural-Forms" not in header
+    assert header["Language"] == invalid_plural_language
+
+
+def test_changing_language_leaves_out_an_invalid_plural_equation(tmp_path, invalid_plural_language):
+    path = tmp_path / "de.po"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n"Language: de\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'
+                     b'\nmsgid "Hello"\nmsgstr "Hallo"\n')
+    model = StoreModel(str(path), _FakeController())
+
+    model.set_target_language(invalid_plural_language)
+
+    assert model._trans_store.getheaderplural() == ("2", "(n != 1)")
+
+
 def test_changing_language_writes_the_new_languages_plural_forms(tmp_path):
     path = tmp_path / "de.po"
     path.write_bytes(b'msgid ""\nmsgstr ""\n"Language: de\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'

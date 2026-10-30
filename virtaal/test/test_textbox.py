@@ -270,6 +270,49 @@ class TestTextBox(TestScaffolding):
 
         assert tagtable.get_size() == size
 
+    def _foreground_at(self, textbox, elem):
+        """The foreground of elem's first character, from its top tag."""
+        it = textbox.buffer.get_iter_at_offset(textbox.elem.gui_info.index(elem))
+        colour = None
+        for tag in sorted(it.get_tags(), key=lambda t: t.get_priority()):
+            if tag.props.foreground_set:
+                colour = tag.props.foreground_rgba
+        return colour
+
+    @pytest.fixture
+    def textbox(self):
+        """The shared target textbox, its text put back afterwards: loading
+            the same unit again doesn't re-render it."""
+        textbox = self._target_for('%s files copied')
+        yield textbox
+        textbox.set_text('%s files copied')
+
+    def test_selecting_keeps_every_placeables_own_tags(self, textbox):
+        # #4347: re-applying them all for each selection was slow with thousands of placeables.
+        textbox.set_text('%s and %d\nand %s')
+        textbox.select_elem(offset=0)
+        placeable_tags = list(textbox._placeable_tags)
+
+        textbox.select_elem(offset=1)
+        textbox.select_elem(offset=2)
+
+        assert textbox._placeable_tags == placeable_tags
+        assert textbox._selection_tags
+
+    def test_selection_colours_follow_the_selected_placeable(self, textbox):
+        textbox.set_text('%s and %d and %s')
+        first, second = textbox.selectable_elems()[:2]
+        textbox.select_elem(elem=second)
+        unselected = self._foreground_at(textbox, first)
+
+        textbox.select_elem(elem=first)
+        selected = self._foreground_at(textbox, first)
+        textbox.select_elem(elem=second)
+
+        assert not selected.equal(unselected)
+        assert self._foreground_at(textbox, first).equal(unselected)
+        assert self._foreground_at(textbox, second).equal(selected)
+
     def test_move_elem_selection_selects_via_the_selector_textbox(self):
         textbox = self._target_for('%s files copied')
 

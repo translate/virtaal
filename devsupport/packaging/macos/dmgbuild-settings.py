@@ -11,7 +11,7 @@ symlinks = {"Applications": "/Applications"}
 # which breaks its signature under codesign --strict (#4280). Finder hides
 # an application's .app anyway.
 
-volume_icon = "devsupport/mac-bundle/icons/VolumeIcon_virtaal.icns"
+icon = "devsupport/mac-bundle/icons/VolumeIcon_virtaal.icns"
 background = "devsupport/mac-bundle/virtaal_DMG_background.png"
 window_rect = ((200, 120), (600, 462))
 

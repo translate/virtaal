@@ -52,8 +52,6 @@ KNOWN_BUGS = [
          cases=['newline only']),
     dict(issue=4349, sweep=['source', 'plural-source'], kind='display-mismatch', match='',
          cases=['NUL']),
-    dict(issue=4351, sweep='addlang-plural', kind='file-invalid', match='Plural-Forms',
-         cases=ALL),
     dict(issue=4396, sweep=DIALOG_INI, kind='config-roundtrip', match='', cases=['CRLF', 'lone CR']),
     dict(issue=4397, sweep='addlang-name', kind='glib-warning', match='32767',
          cases=['4096 chars one word'], platforms=['linux']),

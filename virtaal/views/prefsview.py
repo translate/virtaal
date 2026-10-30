@@ -12,6 +12,7 @@ from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
 from virtaal.support.translate_compat import tr_lang
 from virtaal.views.widgets.selectview import SelectView
+from virtaal.views.widgets.util import entry_value, keep_one_line
 
 from .baseview import BaseView
 
@@ -44,6 +45,8 @@ class PreferencesView(BaseView, GObjectWrapper):
         )
         for name in widget_names:
             self._widgets[name] = self.gui.get_object(name)
+        for name in ('ent_translator', 'ent_email', 'ent_team'):
+            keep_one_line(self._widgets[name])
 
         self._widgets['dialog'] = self.gui.get_object('PreferencesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
@@ -210,9 +213,9 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _get_user_data(self):
         return {
-            'name':  self._widgets['ent_translator'].get_text(),
-            'email': self._widgets['ent_email'].get_text(),
-            'team':  self._widgets['ent_team'].get_text()
+            'name':  entry_value(self._widgets['ent_translator']),
+            'email': entry_value(self._widgets['ent_email']),
+            'team':  entry_value(self._widgets['ent_team'])
         }
     def _set_user_data(self, value):
         if not isinstance(value, dict):

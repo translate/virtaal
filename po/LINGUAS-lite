@@ -26,6 +26,7 @@ gettext-tools/vi
 gettext-tools/zh_CN
 gettext-tools/zh_TW
 glib20/ar
+glib20/vi
 gtk-mac-integration/ar
 gtk-mac-integration/bn_IN
 gtk30/ak
@@ -40,6 +41,7 @@ gtk30/nso
 gtk30/son
 gtk30/st
 gtk30/sw
+gtk30/vi
 gtk30/zu
 gtkspell3/am
 gtkspell3/ar

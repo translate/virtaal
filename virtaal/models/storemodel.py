@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import functools
 import os
 
 from virtaal.common import pan_app
@@ -53,6 +54,29 @@ def _update_contributor(store, name, email=None):
         store.updatecontributor(name, email)
     finally:
         del header.addnote
+
+
+# Every n%10 and n%100 case; Breton's fourth form needs a multiple of a million.
+_PLURAL_SAMPLES = (*range(200), *(m * 10**k for k in range(3, 10) for m in range(1, 10)))
+
+
+@functools.cache
+def _usable_plural(nplurals, plural):
+    """Whether gettext can read this plural equation and it gives exactly
+    the forms 0 to nplurals - 1. One entered in Add Missing Language or
+    Edit Translation Language isn't checked (#4351)."""
+    import gettext
+    try:
+        forms = {gettext.c2py(plural)(n) for n in _PLURAL_SAMPLES}
+        expected = set(range(int(nplurals)))
+    except (TypeError, ValueError, ZeroDivisionError):
+        forms, expected = None, set()
+    if forms != expected:
+        import logging
+        logging.warning("Not writing a plural equation that doesn't give %s forms into the header: %r",
+                        nplurals, plural)
+        return False
+    return True
 
 
 class StoreModel(BaseModel):
@@ -124,7 +148,7 @@ class StoreModel(BaseModel):
         lang = LanguageModel(langcode)
         # Plural forms declared without a language are taken to be this one's.
         if isinstance(self._trans_store, poheader) and lang.plural and (
-                old_langcode or self.get_declared_nplurals() is None):
+                old_langcode or self.get_declared_nplurals() is None) and _usable_plural(lang.nplurals, lang.plural):
             self._trans_store.updateheaderplural(lang.nplurals, lang.plural)
             self.nplurals = self._compute_nplurals(self._trans_store)
         return True
@@ -417,6 +441,7 @@ class StoreModel(BaseModel):
             self._trans_store.updateheader(add=True, **header_updates)
 
             # A file's own plural forms stay: its msgstr order follows them.
-            if target_lang.plural and self.get_declared_nplurals() is None:
+            if (target_lang.plural and self.get_declared_nplurals() is None
+                    and _usable_plural(target_lang.nplurals, target_lang.plural)):
                 self._trans_store.updateheaderplural(target_lang.nplurals, target_lang.plural)
                 self.nplurals = self._compute_nplurals(self._trans_store)

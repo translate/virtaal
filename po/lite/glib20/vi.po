@@ -1,46 +1,47 @@
+# IoeCmcomc <53734763+IoeCmcomc@users.noreply.github.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-06 18:10+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-10-30 21:38+0700\n"
+"Last-Translator: IoeCmcomc <53734763+IoeCmcomc@users.noreply.github.com>\n"
+"Language-Team: \\n\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Virtaal 1.0.0-rc2\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Seen in: Properties dialog
 msgctxt "format-size"
 msgid "%.1f %s"
-msgstr ""
+msgstr "%.1f %s"
 
 msgctxt "format-size"
 msgid "%u %s"
-msgstr ""
+msgstr "%u %s"
 
 msgid "byte"
 msgid_plural "bytes"
-msgstr[0] ""
+msgstr[0] "byte"
 
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #. Seen in: Properties dialog
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 msgid "TB"
-msgstr ""
+msgstr "TB"

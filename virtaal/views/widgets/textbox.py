@@ -316,7 +316,8 @@ class TextBox(Gtk.TextView):
 
     def _remove_placeable_tags(self):
         tagtable = self.buffer.get_tag_table()
-        for tag in self._placeable_tags:
+        # Newest first: GTK renumbers every tag above a removed one.
+        for tag in reversed(self._placeable_tags):
             tagtable.remove(tag)
         self._placeable_tags = []
 

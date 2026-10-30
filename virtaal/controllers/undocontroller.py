@@ -432,6 +432,13 @@ class UndoController(BaseController):
             self._flush_pending_refresh()
             checks_controller.check_unit(current_unit)
 
+        # Same reasoning as above, for anything listening for
+        # 'unit-done' rather than reading the unit's state directly
+        # (e.g. the nav ribbon) - undo/redo settles a unit's state
+        # without ever emitting it otherwise.
+        if current_unit is not None:
+            self.unit_controller.emit('unit-done', current_unit, True)
+
         self._update_sensitivity()
 
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):

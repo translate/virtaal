@@ -17,7 +17,7 @@ class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
         super().__init__()
         self._register_uri_handlers()
-        self.set_name("Virtaal")
+        self.set_program_name(_("Virtaal"))
         self.set_version(__version__.version_string())
         self.set_copyright(_("Copyright © 2007-2026 Zuza Software Foundation"))
         # l10n: Please retain the literal name "Virtaal", but feel free to

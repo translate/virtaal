@@ -795,6 +795,84 @@ def test_save_config_skips_a_config_file_that_is_a_directory(tmp_path, caplog):
     assert path.is_dir()
     assert "can't be saved" in caplog.text
 
+class _FailingParser:
+    """Writes one line, then fails like a full disk."""
+
+    def write(self, f):
+        f.write('[translator]\n')
+        raise OSError(28, 'No space left on device')
+
+
+def test_write_ini_failing_part_way_keeps_the_old_file(tmp_path, caplog):
+    # #4202: the file was emptied before the write, so a failed write lost every setting.
+    path = tmp_path / 'virtaal.ini'
+    path.write_text('[translator]\nname = Test Translator\n')
+
+    pan_app._write_ini(_FailingParser(), str(path))
+
+    assert path.read_text() == '[translator]\nname = Test Translator\n'
+    assert os.listdir(tmp_path) == ['virtaal.ini']  # no temporary file left
+    assert "can't be saved" in caplog.text
+
+
+def test_write_ini_tolerates_a_temporary_file_it_cannot_remove(tmp_path, monkeypatch, caplog):
+    path = tmp_path / 'virtaal.ini'
+    path.write_text('[translator]\nname = Test Translator\n')
+
+    def refuse(name):
+        raise OSError(13, 'Permission denied')
+
+    monkeypatch.setattr(pan_app.os, 'remove', refuse)
+
+    pan_app._write_ini(_FailingParser(), str(path))  # must not raise
+
+    assert path.read_text() == '[translator]\nname = Test Translator\n'
+    assert "can't be saved" in caplog.text
+
+
+def test_settings_survive_a_failed_write(tmp_path, monkeypatch):
+    path = tmp_path / 'virtaal.ini'
+    path.write_text('')
+    settings = pan_app.Settings(str(path))
+    settings.translator['name'] = 'Test Translator'
+    settings.write()
+
+    monkeypatch.setattr(settings.config, 'write', _FailingParser().write)
+    settings.write()
+
+    assert pan_app.Settings(str(path)).translator['name'] == 'Test Translator'
+
+
+@pytest.mark.skipif(os.name == 'nt' or os.geteuid() == 0, reason="root can write a read-only file")
+def test_write_ini_leaves_a_read_only_file_alone(tmp_path, caplog):
+    path = tmp_path / 'tm.ini'
+    path.write_text('[remotetm]\nurl = old\n')
+    path.chmod(0o444)
+    try:
+        pan_app.save_config(str(path), {'url': 'new'}, section='remotetm')
+
+        assert path.read_text() == '[remotetm]\nurl = old\n'
+        assert "can't be saved" in caplog.text
+    finally:
+        path.chmod(0o644)
+
+
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes and symlinks")
+def test_write_ini_keeps_the_files_mode_and_a_symlink(tmp_path):
+    real = tmp_path / 'dotfiles' / 'tm.ini'
+    real.parent.mkdir()
+    real.write_text('')
+    real.chmod(0o640)
+    link = tmp_path / 'tm.ini'
+    link.symlink_to(real)
+
+    pan_app.save_config(str(link), {'url': 'new'}, section='remotetm')
+
+    assert link.is_symlink()
+    assert pan_app.load_config(str(real), 'remotetm') == {'url': 'new'}
+    assert real.stat().st_mode & 0o777 == 0o640
+
+
 def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
     seed = tmp_path / 'seed.ini'
     seed.write_text('')

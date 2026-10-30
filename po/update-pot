@@ -13,12 +13,21 @@
 # plain text/XML by extension, so those get their own -L pass;
 # --join-existing accumulates every pass into one pot. The final pass
 # auto-detects the rest: .py files, the metainfo template via
-# gettext's bundled metainfo.its, and virtaal-mimetype.xml.in via
-# po/its/ (found through GETTEXTDATADIRS below).
+# AppStream's metainfo.its, and virtaal-mimetype.xml.in via po/its/
+# (both found through GETTEXTDATADIRS below).
 set -euo pipefail
 cd "$(dirname "$0")"
 
 gettextdatadirs="$PWD${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
+# AppStream's metainfo.its marks the developer name translatable;
+# gettext's own doesn't. Linux has it in /usr/share/gettext, which
+# xgettext searches anyway; Homebrew's appstream puts it here.
+for dir in /opt/homebrew/share/gettext /usr/local/share/gettext; do
+    if [ -f "$dir/its/metainfo.its" ]; then
+        gettextdatadirs="$gettextdatadirs:$dir"
+        break
+    fi
+done
 export GETTEXTDATADIRS="$gettextdatadirs"
 
 version=$(grep -E '^ver ' ../virtaal/__version__.py | sed 's/ver = //;s/"//g')

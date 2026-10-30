@@ -1488,7 +1488,14 @@ jobs:
       - name: Commit the progress if it changed
         env:
           PACKS: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          # An older commit's run can finish after a newer one's.
+          old=$(python3 -c 'import json; print(json.load(open("progress.json"))["commit"])' 2>/dev/null || true)
+          if [ -n "$old" ] && [ "$(gh api "repos/$GITHUB_REPOSITORY/compare/$old...$GITHUB_SHA" --jq .status)" = behind ]; then
+            echo "progress.json is already at ${old::8}, newer than ${GITHUB_SHA::8}"
+            exit 0
+          fi
           python3 - "$RUNNER_TEMP/progress/translation-progress.json" <<'EOF'
           # Rewritten when the standing changes, and weekly so the packs
           # link stays within the artifacts' 30 days.

@@ -10,6 +10,7 @@ from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
+from virtaal.views.unitview import dialog_active
 from virtaal.views.widgets.textbox import unlock_partly_covered_leaves
 
 from .basecontroller import BaseController
@@ -353,6 +354,8 @@ class UndoController(BaseController):
         return target_unit is not None and target_unit is not self.unit_controller.current_unit
 
     def _on_undo_activated(self, *args):
+        if dialog_active(self.main_controller.view.main_window):
+            return
         top = self.model.peek()
         if not top:
             return
@@ -378,6 +381,8 @@ class UndoController(BaseController):
         self._correct_state_after_undo_redo(self.model.entry_unit(undo_info))
 
     def _on_redo_activated(self, *args):
+        if dialog_active(self.main_controller.view.main_window):
+            return
         top = self.model.peek_redo()
         if not top:
             return

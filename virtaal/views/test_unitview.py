@@ -376,6 +376,24 @@ def test_paste_pastes_into_the_focused_target():
     assert focused.buffer.paste_calls == [True]
 
 
+def test_placeable_actions_do_nothing_while_a_dialog_has_the_focus(dialog_entry):
+    # #4609: the main window's shortcuts still fire on macOS while a dialog has the focus.
+    view = UnitView.__new__(UnitView)
+    target = _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [target], 'sources': []}
+    view._focused_target_n = 0
+    changed = []
+    view.copy_original = view.insert_placeable = lambda textbox: changed.append(textbox)
+
+    view._on_next_placeable()
+    view._on_prev_placeable()
+    view._on_transfer()
+    view._on_insert_placeable()
+
+    assert target.move_calls == []
+    assert changed == []
+
+
 def test_next_placeable_moves_selection_forward_on_the_focused_target():
     view = UnitView.__new__(UnitView)
     other, current = _FakeEditableTextbox(), _FakeEditableTextbox()
@@ -397,6 +415,18 @@ def test_prev_placeable_moves_selection_backward_on_the_focused_target():
     view._on_prev_placeable()
 
     assert current.move_calls == [-1]
+
+
+def test_insert_placeable_acts_on_the_focused_target():
+    view = UnitView.__new__(UnitView)
+    focused = _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [_FakeEditableTextbox(), focused], 'sources': []}
+    inserted = []
+    view.insert_placeable = lambda textbox: inserted.append(textbox)
+
+    view._on_insert_placeable()
+
+    assert inserted == [focused]
 
 
 def test_transfer_copies_the_source_into_the_focused_target():

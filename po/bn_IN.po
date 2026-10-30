@@ -792,8 +792,6 @@ msgstr "পরিভাষায় দ্বন্দ্ব"
 #: virtaal/controllers/checkscontroller.py
 msgid "Translator credits"
 msgstr ""
-"রুণা ভট্টাচার্য্য (runab@fedoraproject.org)\n"
-"সঙ্কর্ষণ মুখোপাধ্যায় (sankarshan@fedoraproject.org)"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Double quotes"

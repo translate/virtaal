@@ -1548,11 +1548,39 @@ class MainView(BaseView):
 
     def _on_help_about(self, _widget=None):
         from .widgets.aboutdialog import AboutDialog
-        AboutDialog(self.main_window)
+        self._over_modal_dialog(AboutDialog(self.main_window))
 
     def _on_shortcuts(self, _widget=None):
         from .widgets.shortcutswindow import ShortcutsWindow
-        ShortcutsWindow(self.main_window)
+        self._over_modal_dialog(ShortcutsWindow(self.main_window))
+
+    def _over_modal_dialog(self, window):
+        """Put C{window} over a modal dialog such as Preferences, if one is
+            open: it takes the input otherwise, so C{window} couldn't be used
+            or closed. Only the macOS menu bar reaches these then (#4617)."""
+        from virtaal.views.unitview import modal_dialog
+        dialog = modal_dialog(self.main_window)
+        if dialog is None:
+            return
+        window.set_transient_for(dialog)
+        window.set_modal(True)
+
+        # A click on the dialog makes it active though it takes no input
+        # now: give the focus back, as for the main window.
+        def keep_on_top(dialog, pspec):
+            if dialog.is_active() and window.get_visible():
+                window.present()
+
+        # Closing it doesn't give the dialog back the focus on macOS.
+        def stop(*args):
+            if dialog.handler_is_connected(handler):
+                dialog.disconnect(handler)
+                if dialog.get_visible():
+                    dialog.present()
+        handler = dialog.connect('notify::is-active', keep_on_top)
+        window.connect('hide', stop)
+        window.connect('destroy', stop)
+        window.present()
 
     def _on_quit(self, *args):
         self.controller.quit()

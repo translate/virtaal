@@ -1180,7 +1180,8 @@ class MainView(BaseView):
         infobar = Gtk.InfoBar()
         infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.set_show_close_button(True)
-        label = Gtk.Label(label=_('Virtaal %s is available (you have %s)') % (tag_name, ver))
+        # The tag is v1.0.0; ver has no v.
+        label = Gtk.Label(label=_('Virtaal %s is available (you have %s)') % (tag_name.removeprefix('v'), ver))
         infobar.get_content_area().pack_start(label, True, True, 0)
         if asset_url:
             infobar.add_button(_('Release Notes'), Gtk.ResponseType.HELP)

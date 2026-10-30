@@ -1667,6 +1667,19 @@ def test_show_update_notice_with_asset_url_release_notes_button_opens_the_releas
     assert opened == ['https://github.com/translate/virtaal/releases/tag/v1.0.0']
 
 
+def test_show_update_notice_names_both_versions_without_a_v(monkeypatch):
+    from virtaal import __version__
+    monkeypatch.setattr(__version__, 'ver', '1.0.0-rc1')
+    view = _real_view_for_update_notice()
+
+    MainView.show_update_notice(view, 'v1.0.0-rc2', 'https://github.com/translate/virtaal/releases/tag/v1.0.0-rc2')
+
+    (infobar,) = _update_bars(view)
+    labels = [w.get_text() for w in infobar.get_content_area().get_children() if isinstance(w, Gtk.Label)]
+    infobar.destroy()
+    assert labels == ['Virtaal 1.0.0-rc2 is available (you have 1.0.0-rc1)']
+
+
 def _update_bars(view):
     vbox_main = view.gui.get_object('vbox_main')
     return [c for c in vbox_main.get_children() if isinstance(c, Gtk.InfoBar)]

@@ -38,6 +38,23 @@ def fix_indexes(stats, valid_units=None):
     return new_stats
 
 
+def _update_contributor(store, name, email=None):
+    """store.updatecontributor() for a file with any line endings:
+    translate-toolkit joins the comments it rebuilds with LF but splits
+    them on the file's own line ending (#4594)."""
+    header = store.header()
+    newline = getattr(header, 'newline', '\n')
+    if header is None or newline == '\n':
+        store.updatecontributor(name, email)
+        return
+    addnote = header.addnote
+    header.addnote = lambda text, *args, **kwargs: addnote(text.replace('\n', newline), *args, **kwargs)
+    try:
+        store.updatecontributor(name, email)
+    finally:
+        del header.addnote
+
+
 class StoreModel(BaseModel):
     """
     This model represents a translation store/file. It is basically a wrapper
@@ -385,10 +402,10 @@ class StoreModel(BaseModel):
             header_updates["X_Generator"] = pan_app.x_generator
             if name and email:
                 header_updates["Last_Translator"] = "%s <%s>" % (name, email)
-                self._trans_store.updatecontributor(name, email)
+                _update_contributor(self._trans_store, name, email)
             elif name:
                 header_updates["Last_Translator"] = name
-                self._trans_store.updatecontributor(name)
+                _update_contributor(self._trans_store, name)
             if team:
                 header_updates["Language-Team"] = team
             target_lang = self.controller.main_controller.lang_controller.target_lang

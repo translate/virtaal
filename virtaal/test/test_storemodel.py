@@ -142,6 +142,40 @@ def test_last_translator_is_name_and_email_when_both_are_given(tmp_path):
     assert 'Last-Translator: Jan Alleman <me@example.com>\\n' in path.read_text()
 
 
+_CRLF_PO = (
+    '# Afrikaans translation of Virtaal.\n'
+    '# Copyright (C) 2026 Virtaal contributors\n'
+    '# This file is distributed under the same license as the Virtaal package.\n'
+    '#\n'
+    '# Ann Vertaler <ann@example.org>, 2025.\n'
+    '# Ben Vertaler <ben@example.org>, 2025.\n'
+    'msgid ""\n'
+    'msgstr ""\n'
+    '"Content-Type: text/plain; charset=UTF-8\\n"\n'
+    '\n'
+    'msgid "Hello"\n'
+    'msgstr "Hallo"\n'
+).replace('\n', '\r\n')
+
+
+def test_save_keeps_header_comments_of_a_crlf_file(tmp_path):
+    # #4594: every header comment line but the first of each block lost its #.
+    model, path = _model_with_translator_info(tmp_path, name="Jan Alleman", email="jan@example.org")
+    path.write_bytes(_CRLF_PO.encode('utf-8'))
+    model.load_file(str(path))
+
+    model.save_file()
+
+    saved = path.read_bytes().decode('utf-8')
+    lines = saved.split('\r\n')
+    assert '\n' not in saved.replace('\r\n', '')  # line endings kept
+    comments = lines[:lines.index('msgid ""')]
+    assert all(line.startswith('#') for line in comments)
+    assert '# This file is distributed under the same license as the Virtaal package.' in comments
+    assert '# Ben Vertaler <ben@example.org>, 2025.' in comments
+    assert any(line.startswith('# Jan Alleman <jan@example.org>, ') for line in comments)
+
+
 def test_vanished_ts_translation_is_excluded_but_does_not_crash(tmp_path):
     # #3263: a Qt .ts <translation type="vanished"> unit used to crash
     # StoreModel.load_file() outright - it should load cleanly and be

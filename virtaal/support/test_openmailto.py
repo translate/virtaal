@@ -6,8 +6,10 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import importlib
+import os
 import shutil
 import subprocess
+import sys
 
 import pytest
 
@@ -291,3 +293,19 @@ def test_unix_branch_falls_back_to_webbrowser_without_xdg_open(reloaded_as, monk
     import webbrowser
     assert module._controllers == {}
     assert module._open is webbrowser.open
+
+
+@pytest.mark.skipif(platform.is_windows, reason="Windows opens with os.startfile, not a command on PATH")
+@pytest.mark.parametrize('opener_status, expected', [(0, 0), (1, 1)])
+def test_command_line_exit_status_reports_whether_it_opened(tmp_path, opener_status, expected):
+    # #4442: success exited with status 1 and failure with 0.
+    for opener in ('xdg-open', 'open'):
+        script = tmp_path / opener
+        script.write_text('#!/bin/sh\nexit %d\n' % opener_status)
+        script.chmod(0o755)
+    env = dict(os.environ, PATH=str(tmp_path) + os.pathsep + os.environ['PATH'])
+
+    result = subprocess.run([sys.executable, '-m', 'virtaal.support.openmailto', 'https://example.org/'],
+                            env=env, capture_output=True, timeout=60)
+
+    assert result.returncode == expected

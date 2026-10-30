@@ -95,9 +95,10 @@ def test_invoke_returns_false_on_a_failing_command():
 
 
 def test_invoke_leaves_stdio_untouched_for_a_tty_program(monkeypatch):
-    # Only reachable when nothing (DISPLAY, macOS, Windows) implies a
-    # graphical program - a real X11-less Linux console session.
+    # Only reachable when nothing (DISPLAY, WAYLAND_DISPLAY, macOS,
+    # Windows) implies a graphical program - a Linux console session.
     monkeypatch.delenv('DISPLAY', raising=False)
+    monkeypatch.delenv('WAYLAND_DISPLAY', raising=False)
     monkeypatch.setattr(platform, 'is_windows', False)
     monkeypatch.setattr(platform, 'is_mac', False)
     controller = openmailto.Controller('true')
@@ -258,90 +259,35 @@ def test_windows_start_controller_returns_false_when_nothing_handles_the_file(re
 
 # Unix branch (module-level KfmClient/detect_desktop_environment/get) #
 
-def test_unix_branch_registers_desktop_controllers_when_display_is_set(reloaded_as, monkeypatch):
-    monkeypatch.setenv('DISPLAY', ':0')
-    present = {'kfmclient', 'gnome-open'}
-    monkeypatch.setattr(shutil, 'which', lambda cmd: ('/usr/bin/' + cmd) if cmd in present else None)
+def test_unix_branch_opens_with_xdg_open(reloaded_as, monkeypatch):
+    monkeypatch.setattr(shutil, 'which', lambda cmd: '/usr/bin/xdg-open' if cmd == 'xdg-open' else None)
 
     module = reloaded_as(is_windows=False, is_mac=False)
 
-    assert 'kde-open' in module._controllers
-    assert 'gnome-open' in module._controllers
-    assert 'exo-open' not in module._controllers
-    assert 'xdg-open' not in module._controllers
+    assert list(module._controllers) == ['xdg-open']
+    assert module._open == module._controllers['xdg-open'].open
 
 
-def test_unix_branch_registers_nothing_without_a_display(reloaded_as, monkeypatch):
+def test_unix_branch_opens_with_xdg_open_without_an_x_display(reloaded_as, monkeypatch):
+    # #4338: on Wayland without XWayland, desktop detection ran xprop,
+    # which can't reach an X display.
     monkeypatch.delenv('DISPLAY', raising=False)
+    monkeypatch.setattr(shutil, 'which', lambda cmd: '/usr/bin/xdg-open' if cmd == 'xdg-open' else None)
+
+    commands = []
+    monkeypatch.setattr(subprocess, 'check_output', lambda cmd, *a, **kw: commands.append(cmd))
 
     module = reloaded_as(is_windows=False, is_mac=False)
 
-    assert module._controllers == {}
+    assert commands == []
+    assert list(module._controllers) == ['xdg-open']
 
 
-def test_detect_desktop_environment_prefers_kde_env_var(reloaded_as, monkeypatch):
-    monkeypatch.delenv('DISPLAY', raising=False)
-    monkeypatch.setenv('KDE_FULL_SESSION', 'true')
+def test_unix_branch_falls_back_to_webbrowser_without_xdg_open(reloaded_as, monkeypatch):
+    monkeypatch.setattr(shutil, 'which', lambda cmd: None)
+
     module = reloaded_as(is_windows=False, is_mac=False)
-
-    assert module.detect_desktop_environment() == 'kde'
-
-
-def test_detect_desktop_environment_falls_back_to_gnome_env_var(reloaded_as, monkeypatch):
-    monkeypatch.delenv('DISPLAY', raising=False)
-    monkeypatch.delenv('KDE_FULL_SESSION', raising=False)
-    monkeypatch.setenv('GNOME_DESKTOP_SESSION_ID', '1')
-    module = reloaded_as(is_windows=False, is_mac=False)
-
-    assert module.detect_desktop_environment() == 'gnome'
-
-
-def test_detect_desktop_environment_checks_xprop_for_xfce(reloaded_as, monkeypatch):
-    monkeypatch.delenv('DISPLAY', raising=False)
-    monkeypatch.delenv('KDE_FULL_SESSION', raising=False)
-    monkeypatch.delenv('GNOME_DESKTOP_SESSION_ID', raising=False)
-    module = reloaded_as(is_windows=False, is_mac=False)
-    monkeypatch.setattr(module.subprocess, 'check_output', lambda *a, **kw: ' = "xfce4"')
-
-    assert module.detect_desktop_environment() == 'xfce'
-
-
-def test_detect_desktop_environment_defaults_to_generic_when_xprop_fails(reloaded_as, monkeypatch):
-    monkeypatch.delenv('DISPLAY', raising=False)
-    monkeypatch.delenv('KDE_FULL_SESSION', raising=False)
-    monkeypatch.delenv('GNOME_DESKTOP_SESSION_ID', raising=False)
-    module = reloaded_as(is_windows=False, is_mac=False)
-
-    def raise_missing(*a, **kw):
-        raise OSError('no xprop')
-    monkeypatch.setattr(module.subprocess, 'check_output', raise_missing)
-
-    assert module.detect_desktop_environment() == 'generic'
-
-
-def test_get_returns_the_desktop_specific_controller(reloaded_as, monkeypatch):
-    module = reloaded_as(is_windows=False, is_mac=False)
-    monkeypatch.setattr(module, 'detect_desktop_environment', lambda: 'gnome')
-    sentinel = object()
-    module._controllers['gnome-open'] = type('FakeController', (), {'open': sentinel})()
-
-    assert module.get() is sentinel
-
-
-def test_get_falls_back_to_xdg_open_when_the_desktop_specific_controller_is_missing(reloaded_as, monkeypatch):
-    module = reloaded_as(is_windows=False, is_mac=False)
-    monkeypatch.setattr(module, 'detect_desktop_environment', lambda: 'generic')
-    sentinel = object()
-    module._controllers.clear()
-    module._controllers['xdg-open'] = type('FakeController', (), {'open': sentinel})()
-
-    assert module.get() is sentinel
-
-
-def test_get_falls_back_to_webbrowser_open_as_a_last_resort(reloaded_as, monkeypatch):
-    module = reloaded_as(is_windows=False, is_mac=False)
-    monkeypatch.setattr(module, 'detect_desktop_environment', lambda: 'generic')
-    module._controllers.clear()
 
     import webbrowser
-    assert module.get() is webbrowser.open
+    assert module._controllers == {}
+    assert module._open is webbrowser.open

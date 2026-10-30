@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-30T08:47:49Z",
- "commit": "eba19818a33d89b9cedac1ec27ea9840884c5a5b",
+ "generated": "2026-10-30T08:49:47Z",
+ "commit": "daccfb4db6d6bedf28238f2166cba352c32b9158",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -93,12 +93,12 @@
    "code": "bn_IN",
    "name": "Bangla (India)",
    "endonym": "বাংলা (ভারত)",
-   "core_missing": 44,
-   "rest_missing": 59,
-   "needed": 100,
-   "level2_missing": 138,
+   "core_missing": 0,
+   "rest_missing": 1,
+   "needed": 0,
+   "level2_missing": 0,
    "level3_missing": 73,
-   "ships": null
+   "ships": "level 1"
   },
   {
    "code": "ca",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/41027333373"
+ "packs": "https://github.com/translate/virtaal/actions/runs/41028769423"
 }

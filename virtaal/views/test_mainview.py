@@ -3068,3 +3068,49 @@ def test_restore_window_geometry_ignores_bad_values(monkeypatch, width, height, 
 
     defaults = pan_app.Settings.general
     assert calls == [('resize', defaults['windowwidth'], defaults['windowheight'])]
+
+
+# Menus behind a dialog (#4611) #
+
+class _FakeMenuLock:
+    def __init__(self):
+        self.calls = []
+
+    def lock(self):
+        self.calls.append('lock')
+
+    def unlock(self):
+        self.calls.append('unlock')
+
+
+def _menu_lock_view(monkeypatch, main_active, dialog):
+    view = mainview.MainView.__new__(mainview.MainView)
+    view._menu_lock = _FakeMenuLock()
+    view.main_window = SimpleNamespace(is_active=lambda: main_active)
+    monkeypatch.setattr('virtaal.views.unitview.dialog_active', lambda window: dialog)
+    monkeypatch.setattr('gi.repository.GLib.idle_add', lambda function: function())
+    return view
+
+
+def test_menus_unlock_when_the_main_window_is_active_again(monkeypatch):
+    view = _menu_lock_view(monkeypatch, main_active=True, dialog=False)
+
+    view._on_main_window_active(view.main_window, None)
+
+    assert view._menu_lock.calls == ['unlock']
+
+
+def test_menus_lock_when_a_dialog_over_the_main_window_takes_the_focus(monkeypatch):
+    view = _menu_lock_view(monkeypatch, main_active=False, dialog=True)
+
+    view._on_main_window_active(view.main_window, None)
+
+    assert view._menu_lock.calls == ['lock']
+
+
+def test_menus_stay_when_another_application_takes_the_focus(monkeypatch):
+    view = _menu_lock_view(monkeypatch, main_active=False, dialog=False)
+
+    view._on_main_window_active(view.main_window, None)
+
+    assert view._menu_lock.calls == []

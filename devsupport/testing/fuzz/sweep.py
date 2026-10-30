@@ -522,6 +522,7 @@ class Sweep:
 
     def lookup(self):
         from virtaal.plugins.lookup.models.weblookup import WebLookupAddDialog, _slugify
+        from virtaal.views.widgets.util import entry_value
         yield from self.open_file(self.write_file('lookup.po', TARGET_PO))
         lookup = self.mc.plugin_controller.plugins['lookup'].controller
         model = lookup.plugin_controller.plugins['weblookup']
@@ -539,7 +540,8 @@ class Sweep:
                     self.fill(dialog.ent_url_name, value if field == 'name' else 'Fuzz site %d' % i)
                     self.fill(dialog.ent_url, value if field == 'url' else 'https://example.org/?q=%(query)s')
                     yield from self.settle(3)
-                    name, url = dialog.ent_url_name.get_text(), dialog.ent_url.get_text()
+                    # As the dialog's OK does.
+                    name, url = entry_value(dialog.ent_url_name), entry_value(dialog.ent_url)
                     dialog._update_ok_sensitivity()
                     if not dialog.btn_url_ok.get_sensitive():
                         continue
@@ -562,9 +564,11 @@ class Sweep:
         from translate.storage import factory
 
         from virtaal.common import pan_app
+        from virtaal.views.widgets.util import entry_value, keep_one_line
         yield from self.open_file(self.write_file('translator.po', TARGET_PO))
         window = Gtk.Window()
         entry = Gtk.Entry()
+        keep_one_line(entry)  # as Preferences' translator fields
         window.add(entry)
         window.show_all()
         expected_fields = {'Project-Id-Version', 'Report-Msgid-Bugs-To', 'POT-Creation-Date', 'PO-Revision-Date',
@@ -578,7 +582,7 @@ class Sweep:
                     self.fill(entry, value)
                     yield from self.settle(2)
                     details = {'name': 'Fuzz Tester', 'email': 'fuzz@example.org', 'team': 'Team'}
-                    details[field] = entry.get_text()
+                    details[field] = entry_value(entry)
                     for key, text in details.items():
                         pan_app.settings.translator[key] = text
                     pan_app.settings.write()

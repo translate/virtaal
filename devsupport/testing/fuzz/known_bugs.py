@@ -19,20 +19,10 @@ and for what only the random part hits.
 from results import ALL
 from sweep import SECTIONS
 
-BLANK = ['empty', 'one space', 'spaces only', 'tab', 'newline only', 'NBSP only']
 SOURCES = ['source', 'source-xliff', 'source-ts', 'source-tbx', 'source-tmx', 'plural-source']
-# What configparser loses (#4346): surrounding whitespace and lines starting ; or #.
-STRIPPED = ['leading/trailing space', 'trailing newline', '10k chars words', '2000 lines', 'ini syntax']
-DIALOG_INI = ['addlang-name', 'addlang-plural', 'lookup-name', 'lookup-url', 'translator-name', 'translator-email',
-              'translator-team']
 EVERY_SWEEP = [sweep for sweeps in SECTIONS.values() for sweep in sweeps] + ['random']
 
 KNOWN_BUGS = [
-    # Fields whose dialog refuses a blank value.
-    dict(issue=4346, sweep=['addlang-name', 'lookup-name', 'lookup-url'], kind='config-roundtrip', match='',
-         cases=STRIPPED),
-    dict(issue=4346, sweep=['addlang-plural', 'translator-name', 'translator-email', 'translator-team'],
-         kind='config-roundtrip', match='', cases=STRIPPED + BLANK[1:]),
     # 5-15 s depending on the runner, so not required.
     dict(issue=4606, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
                             'glossary'] + SOURCES,
@@ -44,7 +34,6 @@ KNOWN_BUGS = [
          cases=['newline only']),
     dict(issue=4349, sweep=['source', 'plural-source'], kind='display-mismatch', match='',
          cases=['NUL']),
-    dict(issue=4396, sweep=DIALOG_INI, kind='config-roundtrip', match='', cases=['CRLF', 'lone CR']),
     dict(issue=4397, sweep='addlang-name', kind='glib-warning', match='32767',
          cases=['4096 chars one word'], platforms=['linux']),
     # Depends on the window and pane sizes as well as the text.

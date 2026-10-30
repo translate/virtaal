@@ -3085,11 +3085,12 @@ class _FakeMenuLock:
         self.calls.append('unlock')
 
 
-def _menu_lock_view(monkeypatch, main_active, dialog):
+def _menu_lock_view(monkeypatch, main_active, dialog, modal=None):
     view = mainview.MainView.__new__(mainview.MainView)
     view._menu_lock = _FakeMenuLock()
     view.main_window = SimpleNamespace(is_active=lambda: main_active)
     monkeypatch.setattr('virtaal.views.unitview.dialog_active', lambda window: dialog)
+    monkeypatch.setattr('virtaal.views.unitview.modal_dialog', lambda window: modal)
     monkeypatch.setattr('gi.repository.GLib.idle_add', lambda function: function())
     return view
 
@@ -3108,6 +3109,18 @@ def test_menus_lock_when_a_dialog_over_the_main_window_takes_the_focus(monkeypat
     view._on_main_window_active(view.main_window, None)
 
     assert view._menu_lock.calls == ['lock']
+
+
+def test_a_modal_dialog_takes_the_focus_back_from_the_main_window(monkeypatch):
+    # #4617: on macOS a click makes the main window active behind Preferences.
+    presented = []
+    dialog = SimpleNamespace(present=lambda: presented.append(True))
+    view = _menu_lock_view(monkeypatch, main_active=True, dialog=False, modal=dialog)
+
+    view._on_main_window_active(view.main_window, None)
+
+    assert presented == [True]
+    assert view._menu_lock.calls == []
 
 
 def test_menus_stay_when_another_application_takes_the_focus(monkeypatch):

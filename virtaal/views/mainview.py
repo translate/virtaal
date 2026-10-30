@@ -749,6 +749,13 @@ class MainView(BaseView):
 
     def _on_main_window_active(self, window, pspec):
         if window.is_active():
+            from virtaal.views.unitview import modal_dialog
+            dialog = modal_dialog(window)
+            if dialog is not None:
+                # macOS lets a click make the window active behind a modal
+                # dialog, though it takes no input (#4617).
+                dialog.present()
+                return
             self._menu_lock.unlock()
         else:
             # A dialog becomes active only after the main window stops being.

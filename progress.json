@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-30T08:49:47Z",
- "commit": "daccfb4db6d6bedf28238f2166cba352c32b9158",
+ "generated": "2026-10-30T13:05:35Z",
+ "commit": "1807e8fd5362c4a648f0893b3856144bb0259d08",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -566,12 +566,12 @@
    "code": "vi",
    "name": "Vietnamese",
    "endonym": "Tiếng Việt",
-   "core_missing": 31,
-   "rest_missing": 51,
-   "needed": 79,
-   "level2_missing": 138,
-   "level3_missing": 73,
-   "ships": null
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "zh_CN",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/41028769423"
+ "packs": "https://github.com/translate/virtaal/actions/runs/41059998783"
 }

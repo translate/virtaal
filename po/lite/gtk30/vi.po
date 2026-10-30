@@ -1,15 +1,16 @@
+# IoeCmcomc <53734763+IoeCmcomc@users.noreply.github.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-14 07:25+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-10-30 21:27+0700\n"
+"Last-Translator: IoeCmcomc <53734763+IoeCmcomc@users.noreply.github.com>\n"
+"Language-Team: \\n\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Virtaal 1.0.0-rc2\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -188,7 +189,7 @@ msgstr "_Chọn"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "_Show All"
-msgstr ""
+msgstr "_Hiện tất cả"
 
 #. Edit->Undo
 #. Seen in: menus
@@ -242,7 +243,7 @@ msgstr "Công t_rạng"
 
 #. Seen in: font chooser
 msgid "Character Variants"
-msgstr ""
+msgstr "Biến thể ký tự"
 
 #. Seen in: About dialog
 msgid "Created by"
@@ -320,7 +321,7 @@ msgstr "Home"
 
 #. Seen in: menus
 msgid "Insert _Emoji"
-msgstr ""
+msgstr "Chèn _Emoji"
 
 #. Seen in: menus
 msgctxt "keyboard label"
@@ -329,11 +330,11 @@ msgstr "←"
 
 #. Seen in: font chooser
 msgid "Letter Case"
-msgstr ""
+msgstr "Viết chữ hoa/thường"
 
 #. Seen in: font chooser
 msgid "Ligatures"
-msgstr ""
+msgstr "Chữ ghép"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
@@ -355,15 +356,15 @@ msgstr "Không tìm thấy kết quả nào"
 
 #. Seen in: font chooser
 msgid "Number Case"
-msgstr ""
+msgstr "Viết số hoa/thường"
 
 #. Seen in: font chooser
 msgid "Number Formatting"
-msgstr ""
+msgstr "Định dạng số"
 
 #. Seen in: font chooser
 msgid "Number Spacing"
-msgstr ""
+msgstr "Khoảng cách các số"
 
 #. File->Recent Files->tooltip
 #. Seen in: menus
@@ -427,11 +428,11 @@ msgstr "Tìm tên phông"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Results"
-msgstr ""
+msgstr "Kết quả tìm kiếm"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Shortcuts"
-msgstr ""
+msgstr "Phím tắt tìm kiếm"
 
 #. Right Click (on empty) -> Select All
 #. Seen in: menus
@@ -451,7 +452,7 @@ msgstr "Shift"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Shortcuts"
-msgstr ""
+msgstr "Phím tắt"
 
 #. File dialog - Files - Grid label - Size
 #. Seen in: font chooser

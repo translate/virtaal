@@ -9,6 +9,9 @@ make pot
 make po/xy.po
 ```
 
+The developer name in the metainfo file is only extracted with AppStream's
+gettext rules: on macOS, `brew install appstream`.
+
 ## Generating the .xml and .desktop files
 
 Ensure that you have gettext installed.

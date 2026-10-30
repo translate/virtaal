@@ -17,7 +17,12 @@ from gi.repository import Gdk, Gtk
 from translate.misc.multistring import multistring
 from translate.storage.placeables.strelem import StringElem
 
-from virtaal.views.unitview import UnitView, _NotesView, _programmer_notes
+from virtaal.views.unitview import (
+    UnitView,
+    _active_dialog,
+    _NotesView,
+    _programmer_notes,
+)
 
 
 class _FakeParent:
@@ -234,6 +239,81 @@ class _FakeEditableTextbox:
 
     def move_elem_selection(self, direction):
         self.move_calls.append(direction)
+
+
+@pytest.fixture(autouse=True)
+def no_active_dialog(monkeypatch):
+    """No dialog has the focus unless a test says so."""
+    monkeypatch.setattr('virtaal.views.unitview._active_dialog', lambda widget: None)
+
+
+@pytest.fixture
+def dialog_entry(monkeypatch):
+    """A text field in a dialog that has the focus."""
+    entry = Gtk.Entry()
+    dialog = SimpleNamespace(get_focus=lambda: entry)
+    monkeypatch.setattr('virtaal.views.unitview._active_dialog', lambda widget: dialog)
+    emitted = []
+    monkeypatch.setattr(entry, 'emit', lambda signal: emitted.append(signal))
+    return entry, emitted
+
+
+class _FakeWindow:
+    def __init__(self, active=False, visible=True, over=None):
+        self._active, self._visible, self._over = active, visible, over
+
+    def is_active(self):
+        return self._active
+
+    def get_visible(self):
+        return self._visible
+
+    def get_transient_for(self):
+        return self._over
+
+    def get_toplevel(self):
+        return self
+
+
+@pytest.mark.parametrize('windows, expected', [
+    (lambda main: [main, _FakeWindow(active=True, over=main)], 1),
+    (lambda main: [main, _FakeWindow(over=main), _FakeWindow(active=True, over=_FakeWindow(over=main))], 2),
+    (lambda main: [main, _FakeWindow(active=True)], None),
+    (lambda main: [main, _FakeWindow(active=True, visible=False, over=main)], None),
+], ids=['dialog', 'dialog over a dialog', 'unrelated window', 'hidden dialog'])
+def test_active_dialog_is_an_active_window_over_the_main_one(monkeypatch, windows, expected):
+    main = _FakeWindow()
+    toplevels = windows(main)
+    monkeypatch.setattr('virtaal.views.unitview.Gtk.Window.list_toplevels', lambda: toplevels)
+
+    assert _active_dialog(main) is (None if expected is None else toplevels[expected])
+
+
+@pytest.mark.parametrize('action, signal', [('_on_cut', 'cut-clipboard'), ('_on_copy', 'copy-clipboard'),
+                                            ('_on_paste', 'paste-clipboard')])
+def test_clipboard_actions_go_to_a_focused_dialog_field(dialog_entry, action, signal):
+    # #4609: on macOS, Cmd+V in Preferences pasted into the translation.
+    entry, emitted = dialog_entry
+    target = _FakeEditableTextbox(focused=True)
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'targets': [target], 'sources': []}
+
+    getattr(view, action)(None)
+
+    assert emitted == [signal]
+    assert (target.buffer.cut_calls, target.buffer.copy_calls, target.buffer.paste_calls) == ([], [], [])
+
+
+def test_paste_does_nothing_when_the_dialog_has_no_text_field_focused(monkeypatch):
+    dialog = SimpleNamespace(get_focus=lambda: Gtk.Button())
+    monkeypatch.setattr('virtaal.views.unitview._active_dialog', lambda widget: dialog)
+    target = _FakeEditableTextbox(focused=True)
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'targets': [target], 'sources': []}
+
+    view._on_paste(None)
+
+    assert target.buffer.paste_calls == []
 
 
 def test_cut_cuts_from_the_focused_target_only():

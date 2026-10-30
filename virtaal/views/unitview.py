@@ -33,6 +33,33 @@ def _get_focused_widget(widgets):
     return None
 
 
+def _active_dialog(widget):
+    """The active dialog over C{widget}'s window, if any: on macOS the main
+        window's menu shortcuts still fire while a dialog has the focus (#4609)."""
+    toplevel = widget.get_toplevel()
+    for window in Gtk.Window.list_toplevels():
+        if not (window.is_active() and window.get_visible()) or window is toplevel:
+            continue
+        parent = window.get_transient_for()
+        while parent is not None:
+            if parent is toplevel:
+                return window
+            parent = parent.get_transient_for()
+    return None
+
+
+def _clipboard_widgets(widgets):
+    """(one of C{widgets}, a dialog's text field) for the Edit menu's Cut,
+        Copy and Paste."""
+    dialog = _active_dialog(widgets[0]) if widgets else None
+    if dialog is None:
+        return _get_focused_widget(widgets), None
+    focus = dialog.get_focus()
+    if isinstance(focus, (Gtk.Editable, Gtk.TextView)):
+        return None, focus
+    return None, None
+
+
 def _programmer_notes(unit):
     """Every note but the translator's, so that notes with no or another
         origin (XLIFF's from="description") show above the source too."""
@@ -219,14 +246,18 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.controller.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
     def _on_cut(self, menuitem):
-        focused = _get_focused_widget(self.targets)
-        if focused is not None:
+        focused, other = _clipboard_widgets(self.targets)
+        if other is not None:
+            other.emit('cut-clipboard')
+        elif focused is not None:
             clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
             focused.get_buffer().cut_clipboard(clipboard, True)
 
     def _on_copy(self, menuitem):
-        focused = _get_focused_widget(self.targets + self.sources)
-        if focused is not None:
+        focused, other = _clipboard_widgets(self.targets + self.sources)
+        if other is not None:
+            other.emit('copy-clipboard')
+        elif focused is not None:
             clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
             if focused.get_buffer().get_has_selection():
                 focused.get_buffer().copy_clipboard(clipboard)
@@ -235,8 +266,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 clipboard.set_text(focused.selector_textbox.get_text(), -1)
 
     def _on_paste(self, menuitem):
-        focused = _get_focused_widget(self.targets)
-        if focused is not None:
+        focused, other = _clipboard_widgets(self.targets)
+        if other is not None:
+            other.emit('paste-clipboard')
+        elif focused is not None:
             clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
             focused.get_buffer().paste_clipboard(clipboard, None, True)
 

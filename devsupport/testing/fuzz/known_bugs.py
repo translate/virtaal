@@ -28,13 +28,6 @@ DIALOG_INI = ['addlang-name', 'addlang-plural', 'lookup-name', 'lookup-url', 'tr
 EVERY_SWEEP = [sweep for sweeps in SECTIONS.values() for sweep in sweeps] + ['random']
 
 KNOWN_BUGS = [
-    dict(issue=4335, sweep=SOURCES, kind='timeout', match='',
-         cases=['4096 chars one word']),
-    # A long word typed into the target is parsed the same way.
-    dict(issue=4335, sweep='random', kind='timeout', match='placeables', cases=ALL, strict=False),
-    # Finding the word shows its unit; close to the slow limit on some runners.
-    dict(issue=4335, sweep=['search', 'search-regex'], kind='slow', match='',
-         cases=['4096 chars one word'], strict=False),
     # Fields whose dialog refuses a blank value.
     dict(issue=4346, sweep=['addlang-name', 'lookup-name', 'lookup-url'], kind='config-roundtrip', match='',
          cases=STRIPPED),
@@ -100,7 +93,6 @@ KNOWN_BUGS = [
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     dict(issue=4443, sweep='spelling', kind='slow', match='', cases=['10k chars words', '2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
-    dict(issue=4335, sweep='glossary', kind='slow', match='', cases=['4096 chars one word'], strict=False),
     # Preferences loads every plug-in's class to list it.
     dict(issue=4433, sweep=[s for s in EVERY_SWEEP if s.startswith('ui-')], kind='log-error', match='IPython',
          cases=['preferences'], platforms=['linux']),

@@ -54,8 +54,11 @@ def _active_dialog(widget):
 
 
 def modal_dialog(widget):
-    """A modal dialog over C{widget}'s window, if any."""
-    return next((window for window in _dialogs_over(widget) if window.get_modal()), None)
+    """The top modal dialog over C{widget}'s window, if any: the one no other
+        is over."""
+    dialogs = [window for window in _dialogs_over(widget) if window.get_modal()]
+    return next((dialog for dialog in dialogs
+                 if not any(other.get_transient_for() is dialog for other in dialogs)), None)
 
 
 def dialog_active(widget):

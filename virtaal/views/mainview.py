@@ -730,7 +730,12 @@ class MainView(BaseView):
         """The native menu bar stays live while a dialog has the focus: grey
             out what can't act on the dialog (#4611)."""
         from virtaal.views.menulock import MenuLock
-        keep = [self.gui.get_object(name) for name in ('mnu_cut', 'mnu_copy', 'mnu_paste')]
+        # Cut, Copy and Paste act on the dialog's field (#4609); the Help
+        # items open something of their own. The tutorial opens in the main
+        # window, so it doesn't stay.
+        keep = [self.gui.get_object(name) for name in (
+            'mnu_cut', 'mnu_copy', 'mnu_paste', 'mnu_documentation', 'mnu_localization_guide',
+            'mnu_report_bug', 'mnu_show_logs', 'mnu_shortcuts', 'mnu_about')]
         self._menu_lock = MenuLock(lambda: self.menu_structure, keep)
         self.main_window.connect('notify::is-active', self._on_main_window_active)
 

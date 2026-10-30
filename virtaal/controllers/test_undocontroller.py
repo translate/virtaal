@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from translate.storage.placeables import StringElem
 
 from virtaal.controllers import undocontroller as undocontroller_module
@@ -99,6 +100,7 @@ class _FakeStoreController:
 class _FakeMainController:
     def __init__(self):
         self.store_controller = _FakeStoreController()
+        self.view = SimpleNamespace(main_window=object())
 
     def select_unit(self, unit, force=False):
         pass
@@ -150,6 +152,26 @@ def _make_controller(textbox, unit):
     controller.mnu_undo = _FakeMenuItem()
     controller.mnu_redo = _FakeMenuItem()
     return controller
+
+
+@pytest.fixture(autouse=True)
+def no_active_dialog(monkeypatch):
+    """No dialog has the focus unless a test says so."""
+    monkeypatch.setattr(undocontroller_module, 'dialog_active', lambda widget: False)
+
+
+def test_undo_and_redo_do_nothing_while_a_dialog_has_the_focus(monkeypatch):
+    # #4609: on macOS, Cmd+Z in Preferences undid the last edit of the translation.
+    textbox = _FakeTextbox('hello')
+    controller = _make_controller(textbox, _FakeUnit())
+    controller.push_current_text(textbox)
+    textbox.elem.sub = StringElem('hello world').sub
+    monkeypatch.setattr(undocontroller_module, 'dialog_active', lambda widget: True)
+
+    controller._on_undo_activated()
+    controller._on_redo_activated()
+
+    assert str(textbox.elem) == 'hello world'
 
 
 def test_undo_then_redo_round_trips_a_textboxs_text():

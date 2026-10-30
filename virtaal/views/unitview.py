@@ -48,6 +48,11 @@ def _active_dialog(widget):
     return None
 
 
+def dialog_active(widget):
+    """Whether a dialog over C{widget}'s window has the focus."""
+    return _active_dialog(widget) is not None
+
+
 def _clipboard_widgets(widgets):
     """(one of C{widgets}, a dialog's text field) for the Edit menu's Cut,
         Copy and Paste."""
@@ -274,18 +279,20 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             focused.get_buffer().paste_clipboard(clipboard, None, True)
 
     def _on_next_placeable(self, *args):
-        self.targets[self.focused_target_n].move_elem_selection(1)
+        if not dialog_active(self.targets[self.focused_target_n]):
+            self.targets[self.focused_target_n].move_elem_selection(1)
 
     def _on_prev_placeable(self, *args):
-        self.targets[self.focused_target_n].move_elem_selection(-1)
+        if not dialog_active(self.targets[self.focused_target_n]):
+            self.targets[self.focused_target_n].move_elem_selection(-1)
 
     def _on_transfer(self, *args):
-        focused = _get_focused_widget(self.targets)
+        focused, _other = _clipboard_widgets(self.targets)
         if focused is not None:
             self.copy_original(focused)
 
     def _on_insert_placeable(self, *args):
-        focused = _get_focused_widget(self.targets)
+        focused, _other = _clipboard_widgets(self.targets)
         if focused is not None:
             self.insert_placeable(focused)
 

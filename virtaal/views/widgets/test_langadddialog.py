@@ -59,6 +59,16 @@ def _dialog_with_langcode(code, name='Mmoqish'):
     return dialog
 
 
+def test_name_and_plural_equation_are_kept_on_one_line_and_trimmed():
+    # #4346, #4396: langs.ini kept neither surrounding space nor CR.
+    dialog = LanguageAddDialog()
+    dialog.ent_langname.insert_text(' Mmoqish\r\nSouth ', 0)
+    dialog.ent_plural.insert_text('n != 1\n', 0)
+
+    assert dialog.langname == 'Mmoqish South'
+    assert dialog.plural == 'n != 1'
+
+
 def test_check_input_sanity_rejects_a_non_ascii_langcode():
     """check_input_sanity() used str(code, 'ascii') to validate the code
     - a Python 2 idiom for decoding bytes that raises TypeError on a

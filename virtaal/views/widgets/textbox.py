@@ -145,6 +145,8 @@ class TextBox(Gtk.TextView):
         # selecting doesn't redo every placeable's tag (#4347).
         self._selection_tags = []
         self._selected_in_base = None
+        # Widgets rendered while this is a list wait to be attached.
+        self._deferred_children = None
         self._last_cursor_offset = 0
         self.undo_controller = main_controller.undo_controller
 
@@ -635,14 +637,28 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
         self.buffer.handler_block_by_func(self._on_insert_text_after)
-        self.elem.gui_info.render()
-        self.show_suggestion()
-        self.buffer.handler_unblock_by_func(self._on_delete_range)
-        self.buffer.handler_unblock_by_func(self._on_insert_text)
-        self.buffer.handler_unblock_by_func(self._on_insert_text_after)
+        # Tags applied with thousands of widgets (a pilcrow per newline)
+        # in the view cost time per widget, so the widgets go in after.
+        self._deferred_children = []
+        try:
+            self.elem.gui_info.render()
+            self.show_suggestion()
+            # At this point we have a tree of string elements with GUI info.
+            self._apply_all_tags()
+        finally:
+            children, self._deferred_children = self._deferred_children, None
+            for child, anchor in children:
+                self.add_child_at_anchor(child, anchor)
+            self.buffer.handler_unblock_by_func(self._on_delete_range)
+            self.buffer.handler_unblock_by_func(self._on_insert_text)
+            self.buffer.handler_unblock_by_func(self._on_insert_text_after)
 
-        # At this point we have a tree of string elements with GUI info.
-        self._apply_all_tags()
+
+    def add_child_at_anchor(self, child, anchor):
+        if self._deferred_children is not None:
+            self._deferred_children.append((child, anchor))
+        else:
+            super().add_child_at_anchor(child, anchor)
 
 
     # EVENT HANDLERS #

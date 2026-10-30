@@ -47,8 +47,10 @@ def _make_view(**controller_kwargs):
         NUM_RECENT=5,
         recent_pairs=[],
         new_langs=[],
+        saved_langs=[],
         **controller_kwargs,
     )
+    controller.save_new_langs = lambda: controller.saved_langs.append(list(controller.new_langs))
     view.controller = controller
     view.popupbutton = PopupMenuButton()  # update_recent_pairs()'s _init_menu() needs its real set_menu()
     view.menu = None
@@ -270,6 +272,7 @@ def test_on_addlang_clicked_registers_a_new_language():
 
         assert LanguageModel.languages['tlh'] == ('Klingon', 2, 'n != 1')
         assert view.controller.new_langs == ['tlh']
+        assert view.controller.saved_langs == [['tlh']]  # #4202: not only at quit
         assert view.select_dialog.selected_target == ['tlh']
     finally:
         LanguageModel.languages.clear()
@@ -338,6 +341,7 @@ def test_on_editlang_clicked_overrides_the_languages_plural_information(restore_
     assert LanguageModel('uk').nplurals == 4
     assert LanguageModel('uk').plural == _UK_PLURAL
     assert view.controller.new_langs == ['uk']
+    assert view.controller.saved_langs == [['uk']]  # #4202: not only at quit
     assert not _reloaded(view)  # not the target language
 
 
@@ -357,6 +361,7 @@ def test_on_editlang_clicked_keeps_the_language_when_cancelled(restore_languages
 
     assert LanguageModel.languages['uk'] == before
     assert view.controller.new_langs == []
+    assert view.controller.saved_langs == []
     assert not _reloaded(view)
 
 

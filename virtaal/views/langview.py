@@ -149,6 +149,7 @@ class LanguageView(BaseView):
 
         LanguageModel.languages[code] = (name, nplurals, plural)
         self.controller.new_langs.append(code)
+        self.controller.save_new_langs()
 
         # Reload the language data in the selection dialog.
         self.select_dialog.clear_langs()
@@ -170,6 +171,7 @@ class LanguageView(BaseView):
         LanguageModel.languages[code] = (name, self.add_dialog.nplurals, self.add_dialog.plural)
         if code not in self.controller.new_langs:
             self.controller.new_langs.append(code)
+        self.controller.save_new_langs()
         if code == self.controller.target_lang.code:
             self.controller.target_lang = code
 

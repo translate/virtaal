@@ -15,6 +15,10 @@ class _FakeSettings:
         self.translator = {'name': '', 'email': '', 'team': ''}
         self.placeable_state = {}
         self.plugin_state = {}
+        self.writes = []
+
+    def write(self):
+        self.writes.append((dict(self.language), dict(self.translator)))
 
 
 class _FakeUnitControllerView:
@@ -56,6 +60,19 @@ def test_prefs_done_saves_a_changed_ui_language(monkeypatch):
     controller._on_prefs_done(_FakeView(ui_language='af'))
 
     assert pan_app.settings.language['uilang'] == 'af'
+
+
+def test_prefs_done_writes_the_settings_file(monkeypatch):
+    # #4202: changes were only written at quit, so a crash lost them.
+    controller = _make_controller(monkeypatch, saved_uilang='')
+    view = _FakeView(ui_language='af')
+    view.user_data = {'name': 'Jane', 'email': 'jane@example.com', 'team': 'af'}
+
+    controller._on_prefs_done(view)
+
+    language, translator = pan_app.settings.writes[-1]
+    assert language['uilang'] == 'af'
+    assert translator['name'] == 'Jane'
 
 
 def test_prefs_done_shows_a_restart_notice_when_the_language_changed(monkeypatch):

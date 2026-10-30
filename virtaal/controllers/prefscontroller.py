@@ -150,3 +150,5 @@ class PreferencesController(BaseController):
         if new_ui_language != pan_app.settings.language['uilang']:
             pan_app.settings.language['uilang'] = new_ui_language
             self.main_controller.view.show_language_change_notice()
+
+        pan_app.settings.write()

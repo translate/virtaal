@@ -1667,6 +1667,32 @@ def test_show_update_notice_with_asset_url_release_notes_button_opens_the_releas
     assert opened == ['https://github.com/translate/virtaal/releases/tag/v1.0.0']
 
 
+def _update_bars(view):
+    vbox_main = view.gui.get_object('vbox_main')
+    return [c for c in vbox_main.get_children() if isinstance(c, Gtk.InfoBar)]
+
+
+@pytest.mark.parametrize('response_id, stays', [
+    (Gtk.ResponseType.HELP, True),
+    (Gtk.ResponseType.OK, False),
+    (Gtk.ResponseType.CLOSE, False),
+], ids=['release-notes', 'download', 'close'])
+def test_show_update_notice_closes_only_on_download_or_close(monkeypatch, response_id, stays):
+    from virtaal.support import openmailto
+    monkeypatch.setattr(openmailto, 'open', lambda url: None)
+    view = _real_view_for_update_notice()
+    MainView.show_update_notice(
+        view, 'v1.0.0', 'https://github.com/translate/virtaal/releases/tag/v1.0.0',
+        asset_url='https://github.com/translate/virtaal/releases/download/v1.0.0/virtaal-1.0.0-setup.exe')
+    (infobar,) = _update_bars(view)
+
+    infobar.emit('response', response_id)
+
+    assert bool(_update_bars(view)) == stays
+    for bar in _update_bars(view):
+        bar.destroy()
+
+
 # _open_recent_item() / _on_recent_file_activated() #
 
 class _FakeRecentInfo:

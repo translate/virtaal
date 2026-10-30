@@ -1188,10 +1188,12 @@ class MainView(BaseView):
 
         def on_response(infobar, response_id):
             from virtaal.support import openmailto
+            if response_id == Gtk.ResponseType.HELP:
+                # Stays, so Download is still there after reading the notes.
+                openmailto.open(html_url)
+                return
             if response_id == Gtk.ResponseType.OK:
                 openmailto.open(asset_url or html_url)
-            elif response_id == Gtk.ResponseType.HELP:
-                openmailto.open(html_url)
             infobar.destroy()
         infobar.connect('response', on_response)
 

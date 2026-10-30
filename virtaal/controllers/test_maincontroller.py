@@ -665,7 +665,16 @@ def test_get_translator_details_returns_the_configured_details(monkeypatch):
     assert controller.get_translator_details() == ('Dwayne', 'd@example.com', 'af')
 
 
-def test_get_translator_details_asks_once_for_all_three_when_any_is_missing(monkeypatch):
+def test_get_translator_details_accepts_an_empty_team(monkeypatch):
+    # #4595: many translators have no team; the dialog came back on every save.
+    monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne', 'email': 'd@example.com', 'team': ''})
+    controller = MainController.__new__(MainController)
+    controller.view = SimpleNamespace(show_translator_dialog=lambda *args: pytest.fail('must not ask'))
+
+    assert controller.get_translator_details() == ('Dwayne', 'd@example.com', '')
+
+
+def test_get_translator_details_asks_once_for_all_three_when_the_email_is_missing(monkeypatch):
     monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne', 'email': '', 'team': ''})
     controller = MainController.__new__(MainController)
     asked = []

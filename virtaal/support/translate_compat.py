@@ -92,6 +92,12 @@ def tr_lang(langcode=None):
     """
     langfunc = gettext_lang(langcode)
     countryfunc = gettext_country(langcode)
+    scriptfunc = gettext_script(langcode)
+
+    def translate_qualifier(qualifier):
+        # A country ("Brazil"), else a script ("Latin" in "Serbian (Latin)").
+        translated = countryfunc(qualifier)
+        return scriptfunc(qualifier) if translated == qualifier else translated
 
     def translate_language(language):
         translated = langfunc(language)
@@ -107,7 +113,7 @@ def tr_lang(langcode=None):
             language, country = match.groups()
             if country != "macrolanguage":
                 return "%s (%s)" % (_name_by_code(code, langcode) or translate_language(language),
-                                    countryfunc(country))
+                                    translate_qualifier(country))
         return _name_by_code(code, langcode) or translate_language(name)
 
     return handlelanguage
@@ -234,6 +240,16 @@ def gettext_country(langcode=None):
     if pycountry is None:
         return gettext_domain(langcode, 'iso_3166')
     return gettext_domain(langcode, 'iso3166-1', pycountry.LOCALES_DIR)
+
+
+def gettext_script(langcode=None):
+    """Returns a gettext function to translate script names ("Latin",
+    "Cyrillic") into the given language, or the system language if no
+    language is specified.
+    """
+    if pycountry is None:
+        return gettext_domain(langcode, 'iso_15924')
+    return gettext_domain(langcode, 'iso15924', pycountry.LOCALES_DIR)
 
 
 def forceunicode(string):

@@ -143,6 +143,49 @@ def test_query_sends_a_translate_request_for_an_uncached_pair():
     assert 'target=af' in added[0].url
 
 
+# A query made before the language list arrives waits for it (#4677).
+
+def _model_fetching_languages(monkeypatch):
+    monkeypatch.setattr(google_translate, 'HTTPClient', _FakeHTTPClient)
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {'api_key': 'test-key'}))
+    return TMModel('google_translate', _fake_controller())
+
+
+def _languages_reply(*codes):
+    return json.dumps({'data': {'languages': [{'language': c} for c in codes]}})
+
+
+def test_query_before_the_languages_arrive_runs_once_they_do(monkeypatch):
+    model = _model_fetching_languages(monkeypatch)
+    langreq = model.client.added[0]
+
+    model.query(None, SimpleNamespace(source='hello'))
+    assert model.client.added == [langreq]
+
+    langreq.emit('http-success', _languages_reply('en', 'af'))
+
+    assert len(model.client.added) == 2
+    assert 'q=hello' in model.client.added[1].url
+
+
+def test_a_failed_languages_request_stops_holding_queries(monkeypatch):
+    model = _model_fetching_languages(monkeypatch)
+
+    model.query(None, SimpleNamespace(source='hello'))
+    model.client.added[0].emit('http-client-error', 403)
+
+    assert model.languages_known
+    assert len(model.client.added) == 1
+
+
+def test_disable_all_without_an_api_key_leaves_nothing_held(monkeypatch):
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {'api_key': ''}))
+
+    model = TMModel('google_translate', _fake_controller())
+
+    assert model.languages_known
+
+
 # got_translation()
 
 def test_got_translation_emits_a_match_on_success():

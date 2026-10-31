@@ -63,7 +63,6 @@ KNOWN_BUGS = [
     # Windows' runner is slower still; the stall also outlasts the case into the next few.
     dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
          strict=False),
-    dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     dict(issue=4606, sweep='spelling', kind='slow', match='', cases=['2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
     dict(issue=4348, sweep='random', kind='critical', match='pango_layout_get_cursor_pos', cases=['edit_target'],

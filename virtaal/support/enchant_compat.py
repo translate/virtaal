@@ -22,6 +22,18 @@ def import_enchant():
     return enchant
 
 
+def enchant_tag(code):
+    """The tag enchant finds a dictionary by for a Virtaal language code.
+        Enchant matches only "language_PART" (language lowercased, the
+        part uppercased) and ignores file names containing "-" or "@", so
+        ca@valencia is ca_VALENCIA and sr_Latn_RS is sr_LATNRS. A
+        downloaded dictionary is saved under this name (#4665)."""
+    lang, _, variant = code.replace('-', '_').partition('@')
+    language, _, rest = lang.partition('_')
+    rest = rest.replace('_', '') + variant
+    return language.lower() + ('_' + rest.upper() if rest else '')
+
+
 def self_check(lang):
     """Report which enchant library and providers this build uses, and
     whether lang's dictionary works with GtkSpell - for packaging smoke

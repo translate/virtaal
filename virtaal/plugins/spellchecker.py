@@ -15,7 +15,7 @@ from gi.repository import GLib
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
-from virtaal.support.enchant_compat import import_enchant
+from virtaal.support.enchant_compat import enchant_tag, import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
 
@@ -173,6 +173,7 @@ class Plugin(BasePlugin):
             language = 'pt_PT'
         elif language == 'de':
             language = 'de_DE'
+        language = enchant_tag(language)
 
         if not language in self._seen_languages and not self.enchant.dict_exists(language):
             # Sometimes enchants *wants* a country code, other times it does not.

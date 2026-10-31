@@ -23,6 +23,7 @@ discovery when the manifest itself was never fetched successfully.
 """
 
 import logging
+import os
 
 from virtaal.common import pan_app
 from virtaal.support import asset_manifest as asset_manifest_module
@@ -32,7 +33,8 @@ from virtaal.support.asset_manifest import (
     installed_asset_key,
 )
 from virtaal.support.dictionary_downloader import DictionaryDownloader
-from virtaal.support.enchant_compat import import_enchant
+from virtaal.support.dictionary_source import dictionary_write_dir
+from virtaal.support.enchant_compat import enchant_tag, import_enchant
 
 _UNSET = object()
 
@@ -57,12 +59,13 @@ class DictionaryDownloadWatcher:
                 self._on_target_lang_changed(lang_controller, lang_controller.target_lang.code)
 
     def _has_dictionary(self, language):
-        if self._enchant.dict_exists(language):
+        tag = enchant_tag(language)
+        if self._enchant.dict_exists(tag):
             return True
         # A bare language code ("de") counts as covered if a country
         # variant ("de_DE") is already installed - same match
         # spellchecker.py's own Plugin already does.
-        return any(code == language or code.startswith(language + '_')
+        return any(code == tag or code.startswith(tag + '_')
                    for code in self._enchant.list_languages())
 
     def _get_asset_manifest(self):
@@ -87,7 +90,10 @@ class DictionaryDownloadWatcher:
                 return self._start_live_discovery(language)
             return  # manifest is authoritative - genuinely nothing for this locale
         key = installed_asset_key('dictionary', language)
-        if pan_app.settings.installed_assets.get(key) == entry_shas(entry):
+        # Files saved before #4665 kept LibreOffice's names, which enchant
+        # may not find: download those again under the locale's tag.
+        if (pan_app.settings.installed_assets.get(key) == entry_shas(entry)
+                and os.path.exists(os.path.join(dictionary_write_dir(), enchant_tag(language) + '.dic'))):
             return  # already installed and unchanged
         self._schedule_after_idle_lull(lambda: self._download_known(language, entry))
 

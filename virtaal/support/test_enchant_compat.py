@@ -12,7 +12,7 @@ import types
 
 import pytest
 
-from virtaal.support.enchant_compat import import_enchant, self_check
+from virtaal.support.enchant_compat import enchant_tag, import_enchant, self_check
 
 needs_enchant = pytest.mark.skipif(import_enchant() is None, reason="pyenchant is not available")
 
@@ -101,3 +101,18 @@ def test_run_module_prints_the_report(monkeypatch, capsys):
     runpy.run_module('virtaal.support.enchant_compat', run_name='__main__')
 
     assert capsys.readouterr().out == 'enchant: none\n'
+
+
+@pytest.mark.parametrize('code, tag', [
+    ('af', 'af'),
+    ('nl_BE', 'nl_BE'),
+    ('en-GB', 'en_GB'),
+    ('ca@valencia', 'ca_VALENCIA'),
+    ('sr@latin', 'sr_LATIN'),
+    ('sr_Latn', 'sr_LATN'),
+    ('sr_Latn_RS', 'sr_LATNRS'),
+    ('ca_ES_valencia', 'ca_ESVALENCIA'),
+])
+def test_enchant_tag(code, tag):
+    # Enchant finds only "language_PART" names (#4665).
+    assert enchant_tag(code) == tag

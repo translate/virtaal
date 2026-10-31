@@ -302,6 +302,8 @@ def test_get_leaves_a_bare_language_without_a_default_region_alone(tmp_path):
     ('zh_HK', ['zh_CN', 'zh_TW'], 'zh_TW'),
     ('en', ['en_GB', 'en_US', 'en_ZA'], 'en_US'),
     ('sr', ['sr_CS', 'sr_Latn_RS', 'sr_RS'], 'sr_RS'),
+    # Serbian (Latin) gets the Latin-script files, not Cyrillic sr (#4681).
+    ('sr@latin', ['sr_CS', 'sr_Latn_RS', 'sr_RS'], 'sr_Latn_RS'),
     ('de', ['de_AT', 'de_CH', 'de_DE'], 'de_DE'),
 ])
 def test_get_tries_the_default_regions_in_order(tmp_path, code, entries, folder):

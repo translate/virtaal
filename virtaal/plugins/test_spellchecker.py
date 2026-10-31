@@ -47,6 +47,13 @@ class _FakeEnchant:
         return language in self.known_dicts
 
 
+def _text_view(text='', **attrs):
+    """A stand-in text view holding text in a real buffer."""
+    buffer = Gtk.TextBuffer()
+    buffer.set_text(text)
+    return SimpleNamespace(get_buffer=lambda: buffer, **attrs)
+
+
 class _FakeChecker:
     """Stands in for a real gtkspell.Checker instance."""
 
@@ -259,7 +266,7 @@ def test_activate_checker_reuses_an_existing_checker():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=existing)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace(spell_pending='en_US')
+    text_view = _text_view(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -274,7 +281,7 @@ def test_activate_checker_creates_and_attaches_a_new_checker_when_none_exists():
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(existing=None)
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace(spell_pending='en_US')
+    text_view = _text_view(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')
 
@@ -295,7 +302,7 @@ def test_activate_checker_rebinds_gtkspells_domain_after_creating_a_checker(monk
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell, _created = _fake_gtkspell(existing=None)
 
-    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
+    plugin._activate_checker(_text_view(spell_pending='en_US'), 'en_US')
 
     assert rebound == [b'gtkspell3']
 
@@ -304,7 +311,7 @@ def test_activate_checker_ignores_a_systemerror_from_get_from_text_view(caplog):
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(get_from_text_view_raises=SystemError('mandriva'))
     plugin.gtkspell = gtkspell
-    text_view = SimpleNamespace(spell_pending='en_US')
+    text_view = _text_view(spell_pending='en_US')
 
     with caplog.at_level('DEBUG'):
         plugin._activate_checker(text_view, 'en_US')  # must not raise
@@ -323,7 +330,7 @@ def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
 
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_BrokenChecker)
-    text_view = SimpleNamespace(spell_pending='en_US')
+    text_view = _text_view(spell_pending='en_US')
 
     plugin._activate_checker(text_view, 'en_US')  # must not raise
 
@@ -359,7 +366,7 @@ def test_a_pending_activation_is_dropped_when_the_language_loses_its_dictionary(
 
 def test_only_the_latest_pending_language_is_activated(monkeypatch):
     plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US', 'af_ZA'})
-    text_view = SimpleNamespace()
+    text_view = _text_view()
 
     plugin._on_unit_lang_changed(None, text_view, 'en')
     plugin._on_unit_lang_changed(None, text_view, 'af')
@@ -368,6 +375,105 @@ def test_only_the_latest_pending_language_is_activated(monkeypatch):
 
     assert [c.language for c in created] == ['af_ZA']
     assert text_view.spell_lang == 'af_ZA'
+
+
+def _run(scheduled):
+    while scheduled:
+        func, args = scheduled.pop(0)
+        func(*args)
+
+
+def test_a_large_insert_is_checked_after_it_goes_in(monkeypatch):
+    # #4443: GtkSpell checks a long paste word by word against the whole line.
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view()
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    plugin._on_insert_text(text_view.get_buffer(), None, 'x' * spellchecker.LARGE_INSERT, -1, text_view)
+
+    assert text_view.spell_lang is None
+    assert [func for func, _ in scheduled] == [plugin._activate_checker]
+
+
+def test_a_small_insert_is_left_to_gtkspell(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view()
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    plugin._on_insert_text(text_view.get_buffer(), None, 'word', -1, text_view)
+
+    assert text_view.spell_lang == 'en_US'
+    assert scheduled == []
+
+
+def test_text_with_a_very_long_line_is_not_checked(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view('short\n' + 'x' * (spellchecker.LONGEST_CHECKED_LINE + 1))
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    assert created == []
+    assert text_view.spell_lang is None
+
+
+def test_many_lines_of_a_long_text_are_checked(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view('word\n' * spellchecker.LONGEST_CHECKED_LINE)
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    assert text_view.spell_lang == 'en_US'
+
+
+@pytest.mark.parametrize('edit', ['insert', 'delete'])
+def test_checking_resumes_once_the_long_line_is_gone(monkeypatch, edit):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view('x' * (spellchecker.LONGEST_CHECKED_LINE + 1))
+    buffer = text_view.get_buffer()
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    buffer.set_text('short')
+    if edit == 'insert':
+        plugin._on_insert_text(buffer, None, 'a', -1, text_view)
+    else:
+        plugin._on_delete_range(buffer, None, None, text_view)
+    _run(scheduled)
+
+    assert text_view.spell_lang == 'en_US'
+
+
+def test_an_insert_doesnt_turn_checking_back_on_once_disabled(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view()
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+    plugin._disable_checking(text_view)
+
+    plugin._on_insert_text(text_view.get_buffer(), None, 'x' * spellchecker.LARGE_INSERT, -1, text_view)
+
+    assert scheduled == []
+    assert text_view.spell_lang is None
+
+
+@pytest.mark.parametrize('text,expected', [
+    ('', 0),
+    ('ab\ncde', 3),
+    ('ab\r\ncde', 3),
+    ('ab\rcde', 3),
+    ('ab\u2029cde', 3),
+    # Not a line end in a GtkTextBuffer.
+    ('ab\u2028cde', 6),
+])
+def test_longest_line_splits_where_a_text_buffer_does(text, expected):
+    buffer = Gtk.TextBuffer()
+    buffer.set_text(text)
+
+    assert spellchecker._longest_line(buffer) == expected
 
 
 def test_activate_checker_sets_the_language_before_attaching():
@@ -389,7 +495,7 @@ def test_activate_checker_sets_the_language_before_attaching():
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_Checker)
 
-    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
+    plugin._activate_checker(_text_view(spell_pending='en_US'), 'en_US')
 
     assert order == ['set_language', 'attach']
 
@@ -407,7 +513,7 @@ def test_activate_checker_leaves_nothing_attached_when_set_language_fails():
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_Checker)
 
-    plugin._activate_checker(SimpleNamespace(spell_pending='en_US'), 'en_US')
+    plugin._activate_checker(_text_view(spell_pending='en_US'), 'en_US')
 
     assert attached == []
 

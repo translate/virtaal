@@ -18,6 +18,15 @@ from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
 from virtaal.support.enchant_compat import import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
+# GtkSpell checks each word of an insert against the whole line it's on,
+# so a long paste takes time growing with the square of its length
+# (#4443). A large insert is checked in one go after it instead, and text
+# with a line too long for even that isn't checked at all.
+LARGE_INSERT = 1000
+LONGEST_CHECKED_LINE = 10000
+# GtkTextBuffer's line ends.
+_LINE_END_RE = re.compile('\r\n|[\r\n\u2029]')
+
 
 def _gtkspell_text(msgid):
     """gtkspell's own translation of msgid, kept out of virtaal.pot."""
@@ -30,6 +39,11 @@ def _is_dictionary_entry(label):
         return True
     add = re.escape(_gtkspell_text('Add "%s" to Dictionary')).replace('%s', '.*')
     return re.fullmatch(add, label) is not None
+
+
+def _longest_line(buffer):
+    text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
+    return max(len(line) for line in _LINE_END_RE.split(text))
 
 
 def _in_placeable(textbox, start, end):
@@ -135,6 +149,8 @@ class Plugin(BasePlugin):
             # an already-visible popup (which GTK doesn't support cleanly).
             self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup, after=True)
             self._signal_tracker.connect(textbox.get_buffer(), 'apply-tag', self._on_apply_tag, textbox)
+            self._signal_tracker.connect(textbox.get_buffer(), 'insert-text', self._on_insert_text, textbox)
+            self._signal_tracker.connect(textbox.get_buffer(), 'delete-range', self._on_delete_range, textbox)
 
 
     # METHODS #
@@ -143,6 +159,11 @@ class Plugin(BasePlugin):
         """Disable checking on the given text_view."""
         # Drop any activation still waiting to run (#4441).
         text_view.spell_pending = None
+        text_view.spell_wanted = None
+        self._detach(text_view)
+
+    def _detach(self, text_view):
+        """Take the checker off text_view, still wanting its language."""
         if getattr(text_view, 'spell_lang', 'xxxx') is None:
             # No change necessary - already disabled
             return
@@ -201,6 +222,7 @@ class Plugin(BasePlugin):
             return
 
         # Activation runs on idle; only the latest language may run (#4441).
+        text_view.spell_wanted = language
         text_view.spell_pending = language
         if getattr(text_view, 'spell_lang', None) == language:
             # No change necessary - already enabled
@@ -211,6 +233,10 @@ class Plugin(BasePlugin):
         # All the expensive stuff in here called on idle.
         if getattr(text_view, 'spell_pending', None) != language:
             # The language changed again before this ran.
+            return
+        text_view.spell_too_long = _longest_line(text_view.get_buffer()) > LONGEST_CHECKED_LINE
+        if text_view.spell_too_long:
+            self._detach(text_view)
             return
         try:
             spell = None
@@ -237,6 +263,24 @@ class Plugin(BasePlugin):
             logging.exception("Could not initialize spell checking: %s", e)
             self.gtkspell = None
             #TODO: unload plugin
+
+    def _on_insert_text(self, buffer, iter, text, length, text_view):
+        """Check a large insert after it, not word by word as it goes in."""
+        if len(text) >= LARGE_INSERT or getattr(text_view, 'spell_too_long', False):
+            self._check_again(text_view)
+
+    def _on_delete_range(self, buffer, start, end, text_view):
+        if getattr(text_view, 'spell_too_long', False):
+            self._check_again(text_view)
+
+    def _check_again(self, text_view):
+        """Check text_view's text on idle, from scratch."""
+        language = getattr(text_view, 'spell_wanted', None)
+        if language is None:
+            return
+        self._detach(text_view)
+        text_view.spell_pending = language
+        GLib.idle_add(self._activate_checker, text_view, language, priority=GLib.PRIORITY_LOW)
 
     def _on_apply_tag(self, buffer, tag, start, end, textbox):
         """Don't mark words in placeables (variables, tags) as misspelled."""

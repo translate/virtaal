@@ -22,11 +22,11 @@ ENTITLEMENTS=devsupport/packaging/macos/entitlements.plist
 }
 
 # Apple's timestamp server occasionally fails a request ("A timestamp
-# was expected but was not found").
+# was expected but was not found"), sometimes for minutes (#4456).
 sign() {
-  for attempt in 1 2 3; do
+  for wait in 30 60 90 120 0; do
     codesign --sign "$IDENTITY" --force --timestamp --options runtime "$@" && return
-    [ "$attempt" = 3 ] || sleep 10
+    sleep "$wait"
   done
   return 1
 }

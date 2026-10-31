@@ -345,6 +345,24 @@ class TextBox(Gtk.TextView):
         # Its tag has the selected colours until the next full apply.
         self._selected_in_base = self.selected_elem
 
+    def _dim_nul_symbols(self):
+        """A NUL shows as a symbol (#4349), dimmed like a pilcrow: it
+            isn't text anyone can see."""
+        text = str(self.elem)
+        if '\0' not in text:
+            return
+        table = self.buffer.get_tag_table()
+        tag = table.lookup('nul_symbol') or self.buffer.create_tag('nul_symbol')
+        tag.props.foreground = current_theme['subtle_fg']
+        tag.set_priority(table.get_size() - 1)
+        gui_info = self.elem.gui_info
+        for index, char in enumerate(text):
+            if char == '\0':
+                start = gui_info.treeindex_to_iter(index)
+                end = start.copy()
+                end.forward_char()
+                self.buffer.apply_tag(tag, start, end)
+
     def _show_selection(self, elem):
         """Show C{elem} as selected over the placeables' own tags."""
         self._remove_selection_tags()
@@ -645,6 +663,7 @@ class TextBox(Gtk.TextView):
             self.show_suggestion()
             # At this point we have a tree of string elements with GUI info.
             self._apply_all_tags()
+            self._dim_nul_symbols()
         finally:
             children, self._deferred_children = self._deferred_children, None
             for child, anchor in children:

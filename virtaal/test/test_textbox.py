@@ -195,6 +195,23 @@ class TestTextBox(TestScaffolding):
         textbox = self._target_for('%s files copied')
         assert textbox.get_text() == '%s files copied'
 
+    def test_a_nul_shows_as_a_symbol_and_keeps_the_text_after_it(self):
+        # #4349: GTK cut the text short at a NUL.
+        textbox = self._target_for('%s files copied')
+        try:
+            textbox.set_text('a\0b %s')
+
+            assert textbox.get_text() == 'a\u2400b %s'
+            assert str(textbox.elem) == 'a\0b %s'
+            tag = textbox.buffer.get_tag_table().lookup('nul_symbol')
+            assert _tagged_offsets(textbox, 'nul_symbol') == [1]
+            dim = Gdk.RGBA()
+            dim.parse(current_theme['subtle_fg'])
+            assert tag.props.foreground_rgba.equal(dim)
+        finally:
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
     def test_get_stringelem_reparses_the_current_text(self):
         textbox = self._target_for('%s files copied')
         reparsed = textbox.get_stringelem()

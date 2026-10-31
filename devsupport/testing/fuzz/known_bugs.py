@@ -59,8 +59,6 @@ KNOWN_BUGS = [
     # Config start-ups (fuzz_config.py, #4360).
     dict(issue=4397, sweep='config-virtaal.ini', kind='glib-warning', platforms=['linux'], strict=False, match='Gdk: Native Windows wider or taller than 32767 pixels are not supported',
          cases=['language.sourcelang: long']),
-    dict(issue=4432, sweep='config-virtaal.ini', kind='critical', match=": enchant_broker_dict_exists: assertion 'tag && strlen(tag)' failed",
-         cases=['language.targetlang: blank', 'language.targetlang: space']),
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='ModuleNotFoundError <module>',
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='root _get_plugin_class',

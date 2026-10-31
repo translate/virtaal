@@ -288,8 +288,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if other is not None:
             other.emit('paste-clipboard')
         elif focused is not None:
-            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
-            focused.get_buffer().paste_clipboard(clipboard, None, True)
+            focused.emit('paste-clipboard')
 
     def _on_next_placeable(self, *args):
         if not dialog_active(self.targets[self.focused_target_n]):

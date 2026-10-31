@@ -118,6 +118,7 @@ DEFAULT_REGIONS = {
     'es': ['es_ES'],
     'pt': ['pt_PT'],
     'sr': ['sr_RS'],
+    'sr@latin': ['sr_Latn_RS'],
     'zh_HK': ['zh_TW'],
 }
 

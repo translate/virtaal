@@ -81,10 +81,10 @@ def configure(section, conf):
         store.savefile(os.path.join(conf, 'terminology.po'))
 
 
-def _file(sweep, name, sources, targets=None):
+def _file(sweep, name, sources, targets=None, language='af'):
     from translate.storage import po
     store = po.pofile()
-    store.updateheader(add=True, Language='af')
+    store.updateheader(add=True, Language=language)
     store.updateheaderplural(2, '(n != 1)')
     for i, source in enumerate(sources):
         unit = store.addsourceunit(source)
@@ -194,7 +194,9 @@ def _autocorrect(sweep):
 
 def _spelling(sweep):
     from gi.repository import Gtk
-    yield from sweep.open_file(_file(sweep, 'spelling.po', ['Maak die lêer %d oop' % i for i in range(4)]))
+    # The file's language is the one checked: English, as configure() sets.
+    yield from sweep.open_file(_file(sweep, 'spelling.po', ['Maak die lêer %d oop' % i for i in range(4)],
+                                     language='en'))
     sc = sweep.mc.store_controller
     for i, (case, value) in enumerate(sweep.cases('spelling')):
         try:

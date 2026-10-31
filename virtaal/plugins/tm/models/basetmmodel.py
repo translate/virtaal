@@ -50,6 +50,9 @@ class BaseTMModel(BaseModel, Configurable):
     configure_func = None
     """A function that starts the configuration, if available."""
 
+    languages_known = True
+    """False while a model is still fetching the languages it supports."""
+
     # INITIALIZERS #
     def __init__(self, controller):
         """Initialise the model and connects it to the appropriate events.
@@ -90,6 +93,21 @@ class BaseTMModel(BaseModel, Configurable):
         All TM backends must implement this method, check for
         suggested translations for unit, emit "match-found" on success."""
         pass
+
+    def hold_until_languages_known(self, tmcontroller, unit):
+        """True if the model knows its languages. Otherwise keep this query
+            to run once they are known, and return False (#4677)."""
+        if self.languages_known:
+            return True
+        self._held_query = (tmcontroller, unit)
+        return False
+
+    def set_languages_known(self):
+        """Mark the languages as known and run the query held until then."""
+        self.languages_known = True
+        held, self._held_query = getattr(self, '_held_query', None), None
+        if held is not None:
+            self.query(*held)
 
     def set_source_lang(self, language):
         """models override this to implement their own

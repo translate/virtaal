@@ -52,15 +52,21 @@ class TMModel(BaseTMModel):
             return
         self.client = HTTPClient()
         self._languages = set()
+        self.languages_known = False
         langreq = RESTRequest(self.languages_url % {'key': self.config['api_key']}, '')
         self.client.add(langreq)
         langreq.connect(
             'http-success',
             lambda langreq, response: self.got_languages(response)
         )
+        for signal in ('http-client-error', 'http-server-error'):
+            langreq.connect(signal, lambda langreq, status: self.got_error(status, None))
 
     # METHODS #
     def query(self, tmcontroller, unit):
+        if not self.hold_until_languages_known(tmcontroller, unit):
+            return
+
         query_str = unit.source
         # Google's Terms of Service says the whole URL must be less than "2K"
         # characters.
@@ -137,6 +143,7 @@ class TMModel(BaseTMModel):
             self._disable_all("Error with json response: %s" % e)
             return
         self._languages = set([l['language'] for l in languages])
+        self.set_languages_known()
 
     def got_error(self, val, query_str):
         self._disable_all("Got an error response: %s" % val)
@@ -144,3 +151,4 @@ class TMModel(BaseTMModel):
     def _disable_all(self, reason):
         self._languages = set()
         logging.debug("Stopping all queries for Google Translate. %s" % reason)
+        self.set_languages_known()

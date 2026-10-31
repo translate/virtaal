@@ -212,6 +212,21 @@ class TestTextBox(TestScaffolding):
             # The text box is shared with the other tests.
             textbox.set_text('%s files copied')
 
+    @pytest.mark.parametrize('text', ['a\r\nb', 'a\nb'])
+    def test_selecting_a_newline_puts_the_cursor_after_it(self, text):
+        # #4348: the cursor went between the CR and LF of a CRLF.
+        textbox = self._target_for('%s files copied')
+        try:
+            textbox.set_text(text)
+            textbox.selected_elem = None
+            textbox.select_first_elem()
+
+            cursor = textbox.buffer.get_iter_at_mark(textbox.buffer.get_insert())
+            assert cursor.get_char() == 'b'
+        finally:
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
     def test_get_stringelem_reparses_the_current_text(self):
         textbox = self._target_for('%s files copied')
         reparsed = textbox.get_stringelem()

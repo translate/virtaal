@@ -19,6 +19,8 @@ import json
 import logging
 from urllib.parse import urlencode
 
+import pycountry
+
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 from .basetmmodel import BaseTMModel, unescape_html_entities
@@ -58,7 +60,13 @@ class TMModel(BaseTMModel):
         of a call-back because it happens asynchronously."""
         pair = (self.source_lang, self.target_lang)
         if pair not in self.language_pairs:
-            return
+            def apy_code(code):
+                language = pycountry.languages.get(alpha_2=code)
+                return language.alpha_3 if language is not None else code
+
+            pair = (apy_code(self.source_lang), apy_code(self.target_lang))
+            if pair not in self.language_pairs:
+                return
 
         query_str = unit.source
         if query_str in self.cache:
@@ -66,7 +74,7 @@ class TMModel(BaseTMModel):
         else:
             values = {
                 'q': query_str,
-                'langpair': "%s|%s" % (self.source_lang, self.target_lang),
+                'langpair': "%s|%s" % pair,
                 'markUnknown': "no",
                 'format': 'html',
             }

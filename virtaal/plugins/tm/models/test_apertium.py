@@ -127,6 +127,20 @@ def test_query_emits_a_cached_match():
     assert emitted == [('hello', [{'target': 'Hallo'}])]
 
 
+def test_query_uses_apy_language_codes_for_a_supported_pair():
+    model = _model()
+    model.source_lang = 'en'
+    model.target_lang = 'ca'
+    model.language_pairs = [('eng', 'cat')]
+    added = []
+    model.client = SimpleNamespace(add=lambda req: added.append(req))
+
+    model.query(None, SimpleNamespace(source='The house is big.'))
+
+    assert len(added) == 1
+    assert 'langpair=eng%7Ccat' in added[0].url
+
+
 def test_query_sends_a_translate_request_for_an_uncached_pair():
     added = []
     model = _model()

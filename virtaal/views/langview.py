@@ -8,13 +8,21 @@
 import locale
 import logging
 
-from gi.repository import GLib, Gtk
+from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common.platform import platform
 from virtaal.models.langmodel import LanguageModel
 
 from .baseview import BaseView
 from .widgets.popupmenubutton import PopupMenuButton
+
+# A long language name mustn't make the window wider than GTK allows (#4397).
+PAIR_WIDTH_CHARS = 60
+
+
+def _limit_width(label):
+    label.set_ellipsize(Pango.EllipsizeMode.END)
+    label.set_max_width_chars(PAIR_WIDTH_CHARS)
 
 
 class LanguageView(BaseView):
@@ -46,6 +54,7 @@ class LanguageView(BaseView):
 
         if self.controller.recent_pairs:
             self.popupbutton.text = self._get_display_string(*self.controller.recent_pairs[0])
+            _limit_width(self.popupbutton.get_child())
 
     def _init_menu(self):
         self.menu = Gtk.Menu()
@@ -54,6 +63,7 @@ class LanguageView(BaseView):
         self.recent_items = []
         for i in range(self.controller.NUM_RECENT):
             item = Gtk.MenuItem(label='')
+            _limit_width(item.get_child())
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
         separator = Gtk.SeparatorMenuItem()
@@ -130,6 +140,7 @@ class LanguageView(BaseView):
 
         self.menu.show_all()
         self.popupbutton.text = self.recent_items[0].get_child().get_text()[3:]
+        _limit_width(self.popupbutton.get_child())
 
 
     # EVENT HANDLERS #

@@ -34,12 +34,6 @@ KNOWN_BUGS = [
          cases=['newline only']),
     dict(issue=4349, sweep=['source', 'plural-source'], kind='display-mismatch', match='',
          cases=['NUL']),
-    dict(issue=4397, sweep='addlang-name', kind='glib-warning', match='32767',
-         cases=['4096 chars one word'], platforms=['linux']),
-    # Depends on the window and pane sizes as well as the text.
-    dict(issue=4397, sweep=['context', 'notes', 'addlang-name'], kind='glib-warning', match='32767',
-         cases=['4096 chars one word', '10k chars words', '100k chars', '2000 lines'], platforms=['linux'],
-         strict=False),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GTK_IS_WIDGET', cases=ALL,
          strict=False),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GDK_IS_WINDOW', cases=ALL,
@@ -57,8 +51,6 @@ KNOWN_BUGS = [
          match='XMLSyntaxError', cases=['external entity', 'entity expansion']),
     dict(issue=4410, sweep=EVERY_SWEEP, kind='critical', match='width >= -1', cases=ALL, strict=False),
     # Config start-ups (fuzz_config.py, #4360).
-    dict(issue=4397, sweep='config-virtaal.ini', kind='glib-warning', platforms=['linux'], strict=False, match='Gdk: Native Windows wider or taller than 32767 pixels are not supported',
-         cases=['language.sourcelang: long']),
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='ModuleNotFoundError <module>',
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
     dict(issue=4433, sweep='config-virtaal.ini', kind='log-error', match='root _get_plugin_class',

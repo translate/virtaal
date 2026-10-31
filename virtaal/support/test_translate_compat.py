@@ -225,6 +225,21 @@ def test_tr_lang_falls_back_to_the_name_when_the_code_isnt_translated():
     assert tr_lang('af')('Pedi; Sepedi; Northern Sotho', 'nso') == 'Northern Sotho'
 
 
+def test_tr_lang_by_code_finds_a_catalogs_inverted_name():
+    # Galician only translates "Frisian, Western", not "Western Frisian".
+    assert tr_lang('gl')('Frisian', 'fy') == 'Frisón do oeste'
+
+
+def test_tr_lang_by_code_keeps_an_inverted_names_alternatives():
+    # The semicolon stands for "Gaelic, Scottish"'s comma.
+    assert tr_lang('lt')('Gaelic; Scottish Gaelic', 'gd') == 'Gėlų; škotų'
+
+
+def test_tr_lang_by_code_skips_an_inverted_name_copied_unchanged():
+    # Asturian's catalog has "Sami, Northern" as its own translation.
+    assert tr_lang('ast')('Northern Sami', 'se') == 'Northern Sami'
+
+
 def test_tr_lang_by_code_keeps_a_dialects_country():
     assert tr_lang('de')('Portuguese (Brazil)', 'pt_BR') == 'Portugiesisch (Brasilien)'
 

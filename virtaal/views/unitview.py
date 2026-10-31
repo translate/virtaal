@@ -268,19 +268,18 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if other is not None:
             other.emit('cut-clipboard')
         elif focused is not None:
-            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
-            focused.get_buffer().cut_clipboard(clipboard, True)
+            focused.emit('cut-clipboard')
 
     def _on_copy(self, menuitem):
         focused, other = _clipboard_widgets(self.targets + self.sources)
         if other is not None:
             other.emit('copy-clipboard')
         elif focused is not None:
-            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
             if focused.get_buffer().get_has_selection():
-                focused.get_buffer().copy_clipboard(clipboard)
+                focused.emit('copy-clipboard')
             else:
                 # Nothing selected: copy the source.
+                clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
                 clipboard.set_text(focused.selector_textbox.get_text(), -1)
 
     def _on_paste(self, menuitem):
@@ -288,8 +287,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if other is not None:
             other.emit('paste-clipboard')
         elif focused is not None:
-            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
-            focused.get_buffer().paste_clipboard(clipboard, None, True)
+            focused.emit('paste-clipboard')
 
     def _on_next_placeable(self, *args):
         if not dialog_active(self.targets[self.focused_target_n]):

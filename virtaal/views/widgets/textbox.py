@@ -12,6 +12,7 @@ from gi.repository.GObject import SignalFlags
 from translate.storage.placeables import StringElem
 from translate.storage.placeables import parse as elem_parse
 
+from virtaal.common.platform import platform
 from virtaal.support.translate_compat import forceunicode
 from virtaal.views import placeablesguiinfo, theme
 from virtaal.views.theme import current_theme
@@ -89,6 +90,40 @@ class TextBox(Gtk.TextView):
         'text-inserted': (SignalFlags.RUN_LAST, bool, (object, int, object)),
         'changed': (SignalFlags.RUN_LAST, None, ()),
     }
+
+    # On macOS GTK logs a gdk_atom_intern critical for every clipboard
+    # format without a MIME type whenever the clipboard's formats are listed
+    # (a paste, the context menu), and GtkTextBuffer's copy offers four
+    # (#4647). So copy and paste plain text there: it's all a translation takes.
+
+    def do_copy_clipboard(self):
+        if not platform.is_mac:
+            Gtk.TextView.do_copy_clipboard(self)
+            return
+        bounds = self.get_buffer().get_selection_bounds()
+        if bounds:
+            Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text(self.get_buffer().get_text(*bounds, False), -1)
+
+    def do_cut_clipboard(self):
+        if not platform.is_mac:
+            Gtk.TextView.do_cut_clipboard(self)
+            return
+        self.do_copy_clipboard()
+        self.get_buffer().delete_selection(True, self.get_editable())
+
+    def do_paste_clipboard(self):
+        if not platform.is_mac:
+            Gtk.TextView.do_paste_clipboard(self)
+            return
+        text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
+        if text is None or not self.get_editable():
+            return
+        buffer = self.get_buffer()
+        buffer.begin_user_action()
+        buffer.delete_selection(True, True)
+        buffer.insert_interactive_at_cursor(text, -1, True)
+        buffer.end_user_action()
+        self.scroll_mark_onscreen(buffer.get_insert())
 
     SPECIAL_KEYS = {
         'alt-down': [(Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)],

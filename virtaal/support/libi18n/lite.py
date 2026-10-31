@@ -166,10 +166,10 @@ def mismatched_catalogs(datas, mo_files):
 # Catalogs a frozen build never reads: atk10 (GTK3 has no accessibility
 # bridge on Windows or macOS), gdk-pixbuf (image loader errors),
 # gtkspell3 (GtkSpell isn't bundled), and every pycountry domain except
-# the language, language family and country names translate_compat
+# the language, language family, country and script names translate_compat
 # translates.
 UNUSED_DOMAINS = ("atk10", "gdk-pixbuf", "gtkspell3")
-PYCOUNTRY_DOMAINS = ("iso639-3", "iso639-5", "iso3166-1")
+PYCOUNTRY_DOMAINS = ("iso639-3", "iso639-5", "iso3166-1", "iso15924")
 
 
 def is_unused_catalog(dest):

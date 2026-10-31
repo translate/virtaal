@@ -12,6 +12,7 @@ import pytest
 from gi.repository import Gdk, Gtk
 from translate.storage import pypo, xliff
 
+from virtaal.modes import searchmode
 from virtaal.modes.searchmode import SearchMode
 from virtaal.support.pogrep_compat import GrepFilter
 from virtaal.views.theme import current_theme, rgba_to_str
@@ -982,6 +983,25 @@ def test_highlight_textbox_matches_merges_touching_matches_and_skips_empty_ones(
     assert applied == [(1, 3), (5, 6)]
     start, end = textbox.buffer.get_selection_bounds()
     assert (start.get_offset(), end.get_offset()) == (1, 2)
+
+
+
+def test_highlight_textbox_matches_highlights_at_most_max_highlighted(monkeypatch):
+    # #4452: every space in a long target, highlighted, froze Virtaal.
+    monkeypatch.setattr(searchmode, 'MAX_HIGHLIGHTED', 3)
+    mode = SearchMode.__new__(SearchMode)
+    mode.select_first_match = True
+    unit = object()
+    textbox = _FakeTextbox('target', 'a b c d e f')
+    mode.unitview = SimpleNamespace(unit=unit, sources=[], targets=[textbox])
+    mode.matches = [SimpleNamespace(unit=unit, part='target', part_n=0, start=i, end=i + 1) for i in (1, 3, 5, 7, 9)]
+    applied = []
+    apply_tag = textbox.buffer.apply_tag_by_name
+    textbox.buffer.apply_tag_by_name = lambda name, a, b: (applied.append(a.get_offset()), apply_tag(name, a, b))
+
+    mode._highlight_textbox_matches(textbox)
+
+    assert applied == [1, 3, 5]
 
 
 # update_search() #

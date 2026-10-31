@@ -30,6 +30,7 @@ from virtaal.support.dictionary_source import (
     RAW_BASE,
     TREE_URL,
     candidate_folders,
+    dictionary_file_url_candidates,
     dictionary_write_dir,
     list_dictionary_folders,
     locale_covers,
@@ -102,13 +103,20 @@ class DictionaryDownloader:
         if not self._files:
             return self._on_success()
         filename = self._files.pop(0)
-        url = RAW_BASE + self._folder + '/' + filename
+        self._fetch_file(filename, dictionary_file_url_candidates(self._folder, filename))
+
+    def _fetch_file(self, filename, urls):
         self._client.get(
-            url,
+            urls[0],
             lambda request, result, fn=filename: self._on_file(fn, result),
-            error_callback=lambda request, status, fn=filename: self._on_file_error(fn, status),
+            error_callback=lambda request, status, fn=filename, rest=urls[1:]: self._on_file_missing(fn, status, rest),
             download=True,
         )
+
+    def _on_file_missing(self, filename, status, rest):
+        if status == 404 and rest:
+            return self._fetch_file(filename, rest)
+        self._on_file_error(filename, status)
 
     def _on_file(self, filename, result):
         try:

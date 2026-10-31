@@ -131,3 +131,22 @@ def test_default_target_dir_uses_the_shared_thesaurus_cache_layout(tmp_path, mon
     dat_cb(None, b'dat content')
 
     assert (tmp_path / 'thesaurus' / 'pl_PL' / 'th_pl_PL_v2.dat').read_bytes() == b'dat content'
+
+
+def test_a_404_tries_the_dictionaries_subfolder(tmp_path):
+    # Some packages keep their files in <folder>/dictionaries/ while the
+    # manifest lists only the file name (#4656).
+    client = _FakeClient()
+    done = []
+    downloader = ThesaurusDownloader('ca_ES', on_done=done.append,
+                                      client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('ca', ['th_ca_ES_v3.dat'])
+    _, _dat_cb, dat_err = client.calls[-1]
+    dat_err(None, 404)
+    assert client.last_url().endswith('/ca/dictionaries/th_ca_ES_v3.dat')
+    _, dat_cb, _ = client.calls[-1]
+    dat_cb(None, b'dat content')
+
+    assert done == [True]
+    assert (tmp_path / 'th_ca_ES_v3.dat').read_bytes() == b'dat content'

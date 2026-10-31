@@ -249,3 +249,44 @@ def test_default_target_dir_is_dictionary_write_dir(monkeypatch):
     aff_cb(None, b'aff content')
 
     assert written == [os.path.join('/fake/dir', 'de_DE_frami.aff')]
+
+
+def test_a_404_tries_the_dictionaries_subfolder(tmp_path):
+    # ca, ckb, fr_FR and sv_SE keep their files in <folder>/dictionaries/
+    # while the manifest lists only the file name (#4656).
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('ca_ES', on_done=lambda success: done.append(success),
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('ca', ['ca.aff', 'ca.dic'])
+    assert client.last_url().endswith('/ca/ca.aff')
+    _, _aff_cb, aff_err = client.calls[-1]
+    aff_err(None, 404)
+    assert client.last_url().endswith('/ca/dictionaries/ca.aff')
+    _, aff_cb, _ = client.calls[-1]
+    aff_cb(None, b'aff content')
+
+    assert client.last_url().endswith('/ca/ca.dic')
+    _, _dic_cb, dic_err = client.calls[-1]
+    dic_err(None, 404)
+    _, dic_cb, _ = client.calls[-1]
+    dic_cb(None, b'dic content')
+
+    assert done == [True]
+    assert (tmp_path / 'ca.aff').read_bytes() == b'aff content'
+    assert (tmp_path / 'ca.dic').read_bytes() == b'dic content'
+
+
+def test_a_404_in_both_places_gives_up(tmp_path):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('ca_ES', on_done=lambda success: done.append(success),
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('ca', ['ca.aff'])
+    client.calls[-1][2](None, 404)
+    client.calls[-1][2](None, 404)
+
+    assert done == [False]
+    assert len(client.calls) == 2

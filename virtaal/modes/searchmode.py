@@ -16,6 +16,9 @@ from virtaal.views.theme import current_theme, rgba_to_str
 
 from .basemode import BaseMode
 
+# The search still finds and moves to every match.
+MAX_HIGHLIGHTED = 500
+
 
 class SearchMode(BaseMode):
     """Search mode - Includes only units matching the given search string."""
@@ -466,6 +469,10 @@ class SearchMode(BaseMode):
                 ranges[-1][1] = max(ranges[-1][1], match.end)
             else:
                 ranges.append([match.start, match.end])
+
+        # Each tag on a long line costs time growing with the line, so
+        # thousands of matches (every space in a long text) froze it (#4452).
+        ranges = ranges[:MAX_HIGHLIGHTED]
 
         gui_info = getattr(textbox.elem, 'gui_info', None)
         elem_len = len(textbox.elem) if gui_info else None

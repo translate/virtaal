@@ -63,7 +63,6 @@ KNOWN_BUGS = [
     # Windows' runner is slower still; the stall also outlasts the case into the next few.
     dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
          strict=False),
-    dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     # A nested-repetition expression left in Search runs again on the next visit.
     dict(issue=4692, sweep='random', kind='timeout', match='getmatches', cases=['search'], strict=False),
     dict(issue=4606, sweep='spelling', kind='slow', match='', cases=['2000 lines'], strict=False),

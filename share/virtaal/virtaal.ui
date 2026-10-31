@@ -828,7 +828,7 @@ If you are translating from English to French then French would be your translat
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="mnu_placprev">
-                        <property name="label" translatable="yes" comments="l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables">P_revious Placeable</property>
+                        <property name="label" translatable="yes" comments="l10n: More information about placeables: https://docs.translatehouse.org/projects/virtaal/en/latest/placeables.html">P_revious Placeable</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>

@@ -4,17 +4,8 @@
 # handles the mo-compile prerequisite - see that script's header for why
 # this exists alongside a plain pip install rather than replacing it.)
 #
-# Modeled on gaphor/gaphor's real, current, shipping PyInstaller spec.
-# collect_submodules across the whole virtaal package is needed for two
-# dynamic-import points PyInstaller's static analysis can't see on its
-# own: virtaal's own directory-scanning plugin loader in
-# plugincontroller.py, and virtaal/support/tmserver.py, only ever
-# reached via bin/virtaal's own runpy-based "--run-module" dispatch -
-# see localtm.py.
-#
-# Same reasoning covers translate.storage: factory.getobject() imports
-# a format's backend module by a runtime-computed string, invisible to
-# PyInstaller unless collected explicitly too.
+# The parts shared with the macOS spec are in
+# devsupport/packaging/pyinstaller_common.py.
 #
 # --onedir (not --onefile): translate.misc.file_discovery's frozen-mode
 # data lookup (os.path.dirname(sys.executable), confirmed by reading the
@@ -28,7 +19,6 @@ import re
 import sys
 from pathlib import Path
 
-from PyInstaller.utils.hooks import collect_submodules
 from PyInstaller.utils.win32.versioninfo import (
     FixedFileInfo, StringFileInfo, StringStruct, StringTable, VarFileInfo,
     VarStruct, VSVersionInfo,
@@ -38,31 +28,10 @@ ROOT = Path(os.getcwd())
 
 sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
-from virtaal.support.libi18n.lite import (  # noqa: E402
-    bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
-)
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
-import babel_data  # noqa: E402
 import enchant_data  # noqa: E402
-
-# translate-toolkit ships its own small data directory (translate/share/ -
-# langmodels/, the ngram language-model files translate.lang.identify.
-# LanguageIdentifier needs for auto-detection, plus stoplist-en) that
-# translate.misc.file_discovery's frozen-mode lookup expects to find at
-# <exe_dir>/share/<name>, same flat layout as virtaal's own share/virtaal
-# and share/icons below - it's a third-party package's data, not
-# virtaal's own, so it was never in this datas list at all. Confirmed
-# live, 2026-08-24: clicking the language-pair selector (which triggers
-# get_detected_langs(), langcontroller.py) crashed with
-# ValueError: Could not find "langmodels" - the only UI path that reaches
-# this particular translate-toolkit feature, so it went unnoticed until
-# a Windows UI-testing battery specifically exercised that click. Located
-# dynamically (not a hardcoded venv path) via the actually-imported
-# translate module, same style as everything else in this file.
-import translate  # noqa: E402
-TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
+import pyinstaller_common as common  # noqa: E402
 
 # pyenchant's Windows wheel is self-contained (libenchant + backends +
 # English dictionaries under enchant/data/); _enchant.py finds it via
@@ -73,8 +42,6 @@ try:
     ENCHANT_DATA = Path(enchant.__file__).parent / "data"
 except ImportError:
     ENCHANT_DATA = None
-
-COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
 
 
 def _version_tuple(ver):
@@ -104,7 +71,7 @@ version_info = VSVersionInfo(
                 StringStruct('FileDescription', 'Virtaal'),
                 StringStruct('FileVersion', virtaal_version),
                 StringStruct('InternalName', 'virtaal'),
-                StringStruct('LegalCopyright', COPYRIGHT),
+                StringStruct('LegalCopyright', common.COPYRIGHT),
                 StringStruct('OriginalFilename', 'virtaal.exe'),
                 StringStruct('ProductName', 'Virtaal'),
                 StringStruct('ProductVersion', virtaal_version),
@@ -118,15 +85,8 @@ version_info = VSVersionInfo(
     ],
 )
 
-# The UI languages this build ships; the gi hooks bundle GTK's and GLib's
-# own catalogs for these (and the languages gettext falls back to for
-# them) only, not for every language the libraries translate.
-LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
-
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
+LANGUAGES = common.languages(ROOT)
+mo_files = common.mo_files(ROOT)
 
 # gvsbuild's own GTK3 install, from ci.yml's "Download prebuilt GTK3
 # (gvsbuild)" step (always C:\gtk - same convention the env vars there
@@ -153,15 +113,7 @@ if not GETTEXTPO.is_file():
     raise SystemExit("libgettextpo not found: %s" % GETTEXTPO)
 binaries.append((str(GETTEXTPO), "."))
 
-datas = [
-    (str(ROOT / "share" / "virtaal"), "share/virtaal"),
-    (str(ROOT / "share" / "icons"), "share/icons"),
-    (str(TRANSLATE_SHARE), "share"),
-    # virtaal/support/authors.py reads this at the bundle root - it
-    # stays a real top-level file (not under share/) so it's still
-    # recognised by GitHub/the AUTHORS convention in a checkout too.
-    (str(ROOT / "AUTHORS.md"), "."),
-] + mo_files
+datas = common.datas(ROOT) + mo_files
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
     # Only en_US (the traditional software source language) and en_GB
     # (checks.po's own target language, exercised by ci.yml's bundle-
@@ -175,26 +127,6 @@ if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
             continue
         datas.append((str(p), str(Path("enchant/data") / p.relative_to(ENCHANT_DATA).parent)))
 
-
-# lxml modules nothing imports; PyInstaller's lxml hook collects them all.
-UNUSED_LXML = [
-    "lxml.objectify", "lxml.sax", "lxml.builder", "lxml.html.builder", "lxml.html.diff",
-    "lxml.html._difflib", "lxml.html._diffcommand", "lxml.isoschematron",
-]
-
-
-def _not_test(name):
-    leaf = name.rpartition(".")[2]
-    return not (leaf.startswith("test_") or leaf == "conftest")
-
-
-def _not_enchant_dialog(name):
-    return name not in (
-        "enchant.checker.CmdLineChecker",
-        "enchant.checker.GtkSpellCheckerDialog",
-        "enchant.checker.wxSpellCheckerDialog",
-    )
-
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
@@ -204,71 +136,30 @@ a = Analysis(  # noqa: F821
     # bundles every dictionary in the wheel regardless of the en_GB
     # filtering above - see that file's own docstring.
     hookspath=[str(ROOT / "devsupport" / "packaging" / "windows" / "pyinstaller-hooks")],
-    hiddenimports=(
-        collect_submodules("virtaal", filter=_not_test)
-        + collect_submodules("translate.storage")
-        + collect_submodules("enchant", filter=_not_enchant_dialog)
-    ),
+    hiddenimports=common.hiddenimports(),
     # Keep enchant's .py files loose on disk, not archived - its
     # __file__-relative data lookup above needs a real path.
     module_collection_mode={"enchant": "py"},
-    hooksconfig={
-        "gi": {
-            "module-versions": {
-                "Gtk": "3.0",
-            },
-            "languages": bundle_languages(LANGUAGES),
-        },
-    },
-    # devsupport isn't needed at runtime in a frozen build (its one
-    # consumer, profiling support, is already `if not packaged:`-gated
-    # off in virtaal/cli.py). Excluding it also avoids a real bug
-    # found during frozen-build testing: a vendored Python-2-era
-    # "Optik" optparse.py inside devsupport/ was shadowing the real
-    # stdlib module for bin/virtaal's bare `import optparse` (since
-    # deleted from the repo entirely, but excluding the whole directory
-    # is belt-and-suspenders regardless, and costs nothing since it's
-    # dead weight here either way).
-    excludes=[
-        "FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport",
-    ] + UNUSED_LXML,
+    hooksconfig=common.hooksconfig(LANGUAGES),
+    excludes=common.EXCLUDES,
     noarchive=False,
 )
-a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
+a.datas = common.trim(a.datas, ROOT)
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
     a.binaries = enchant_data.trim(a.binaries, ENCHANT_DATA / "mingw64")
     a.datas = enchant_data.trim(a.datas, ENCHANT_DATA / "mingw64")
-
-a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 
 # The Toolkit's spelling check imports enchant.checker.
 if not any(Path(entry[0]) == Path("enchant", "checker", "__init__.py") for entry in a.datas):
     raise SystemExit("enchant.checker isn't bundled")
 
-# PyInstaller keeps the first datas entry for a destination: our merged
-# lite catalogs, listed in datas above, must beat the copies GTK's and
-# GLib's own hooks collect at the same path.
-_mismatched = mismatched_catalogs(a.datas, mo_files)
-if _mismatched:
-    raise SystemExit("Bundled another copy instead of Virtaal's catalog: %r" % _mismatched)
-# Every shipped language has its virtaal.mo, and GTK's and GLib's
-# catalogs wherever this host's libraries or a lite catalog provide one.
-_missing = missing_catalogs(a.datas, expected_catalogs(LANGUAGES, mo_files))
-if _missing:
-    raise SystemExit("Shipped languages missing catalogs: %r" % _missing)
+common.check_catalogs(a.datas, mo_files, LANGUAGES)
 
 pyz = PYZ(a.pure, a.zipped_data)  # noqa: F821
 
 exe = EXE(  # noqa: F821
     pyz,
     a.scripts,
-    exclude_binaries=True,
-    name="virtaal",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
-    console=False,
     icon=str(ROOT / "share" / "icons" / "virtaal.ico"),
     version=version_info,
     # PyInstaller 6.0 changed --onedir's default layout to collect
@@ -283,8 +174,7 @@ exe = EXE(  # noqa: F821
     # level off from where it looked. contents_directory="." is
     # PyInstaller's own documented way to opt back into the flat layout.
     contents_directory=".",
+    **common.EXE_OPTIONS,
 )
 
-coll = COLLECT(  # noqa: F821
-    exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=False, name="virtaal"
-)
+coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, **common.COLLECT_OPTIONS)  # noqa: F821

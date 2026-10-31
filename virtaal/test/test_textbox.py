@@ -227,6 +227,67 @@ class TestTextBox(TestScaffolding):
             # The text box is shared with the other tests.
             textbox.set_text('%s files copied')
 
+    def test_paste_on_macos_takes_only_the_text(self, monkeypatch):
+        # #4647: GtkTextBuffer's paste logs gdk_atom_intern criticals on macOS.
+        monkeypatch.setattr(textbox_module.platform, 'is_mac', True)
+        textbox = self._target_for('%s files copied')
+        try:
+            # GTK's own paste would take this, not the plain text below.
+            Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text('rich', -1)
+            plain = SimpleNamespace(wait_for_text=lambda: 'pasted')
+            monkeypatch.setattr(textbox_module.Gtk.Clipboard, 'get', lambda selection: plain)
+            buffer = textbox.buffer
+            buffer.select_range(buffer.get_iter_at_offset(3), buffer.get_iter_at_offset(8))
+
+            textbox.emit('paste-clipboard')
+
+            assert textbox.get_text() == '%s pasted copied'
+        finally:
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
+    @pytest.mark.parametrize('signal,left', [('copy-clipboard', '%s files copied'), ('cut-clipboard', '%s  copied')])
+    def test_copy_and_cut_on_macos_put_only_text_on_the_clipboard(self, monkeypatch, signal, left):
+        # #4647: GtkTextBuffer's copy offers formats GTK can't name on macOS.
+        monkeypatch.setattr(textbox_module.platform, 'is_mac', True)
+        copied = []
+        clipboard = SimpleNamespace(set_text=lambda text, length: copied.append(text))
+        monkeypatch.setattr(textbox_module.Gtk.Clipboard, 'get', lambda selection: clipboard)
+        textbox = self._target_for('%s files copied')
+        try:
+            buffer = textbox.buffer
+            buffer.select_range(buffer.get_iter_at_offset(3), buffer.get_iter_at_offset(8))
+
+            textbox.emit(signal)
+
+            assert copied == ['files']
+            assert textbox.get_text() == left
+        finally:
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
+    @pytest.mark.parametrize('signal,vfunc', [('copy-clipboard', 'do_copy_clipboard'),
+                                              ('cut-clipboard', 'do_cut_clipboard')])
+    def test_copy_and_cut_elsewhere_are_gtks_own(self, monkeypatch, signal, vfunc):
+        monkeypatch.setattr(textbox_module.platform, 'is_mac', False)
+        calls = []
+        monkeypatch.setattr(Gtk.TextView, vfunc, lambda view: calls.append(view))
+        textbox = self._target_for('%s files copied')
+
+        textbox.emit(signal)
+
+        assert calls == [textbox]
+
+    def test_paste_elsewhere_is_gtks_own(self, monkeypatch):
+        monkeypatch.setattr(textbox_module.platform, 'is_mac', False)
+        calls = []
+        monkeypatch.setattr(Gtk.TextView, 'do_paste_clipboard', lambda view: calls.append(view))
+        textbox = self._target_for('%s files copied')
+
+        textbox.emit('paste-clipboard')
+
+        assert calls == [textbox]
+
     def test_get_stringelem_reparses_the_current_text(self):
         textbox = self._target_for('%s files copied')
         reparsed = textbox.get_stringelem()

@@ -609,6 +609,9 @@ class TextBox(Gtk.TextView):
             elem.gui_info.bg = current_theme['selected_placeable_bg']
         self._show_selection(elem)
         cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
+        if getattr(self.elem, 'gui_info', None):
+            # A buffer offset: widgets, like a newline's pilcrow, add to it (#4348).
+            cursor_offset = self.elem.gui_info.treeindex_to_iter(cursor_offset).get_offset()
         self.place_cursor(cursor_offset)
         self.emit('element-selected', self.selected_elem)
 

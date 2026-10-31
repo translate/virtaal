@@ -27,11 +27,6 @@ KNOWN_BUGS = [
     dict(issue=4606, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
                             'glossary'] + SOURCES,
          kind='slow', match='', cases=['2000 lines'], strict=False),
-    dict(issue=4348, sweep=SOURCES, kind='critical',
-         match='pango_layout_get_cursor_pos', cases=['CRLF']),
-    # A match between the CR and LF of a CRLF unit.
-    dict(issue=4348, sweep=['search', 'search-regex'], kind='critical', match='pango_layout_get_cursor_pos',
-         cases=['newline only']),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GTK_IS_WIDGET', cases=ALL,
          strict=False),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GDK_IS_WINDOW', cases=ALL,
@@ -62,7 +57,6 @@ KNOWN_BUGS = [
     dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
          strict=False),
     dict(issue=4606, sweep='spelling', kind='slow', match='', cases=['2000 lines'], strict=False),
-    dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
     # Preferences loads every plug-in's class to list it.
     dict(issue=4433, sweep=[s for s in EVERY_SWEEP if s.startswith('ui-')], kind='log-error', match='IPython',
          cases=['preferences'], platforms=['linux']),

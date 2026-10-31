@@ -32,6 +32,7 @@ KNOWN_BUGS = [
          cases=['4096 chars one word']),
     # A long word typed into the target is parsed the same way.
     dict(issue=4335, sweep='random', kind='timeout', match='placeables', cases=ALL, strict=False),
+    dict(issue=4335, sweep='random', kind='timeout', match='_set_index', cases=ALL, platforms=['macos'], strict=False),
     # Finding the word shows its unit; close to the slow limit on some runners.
     dict(issue=4335, sweep=['search', 'search-regex'], kind='slow', match='',
          cases=['4096 chars one word'], strict=False),
@@ -64,9 +65,9 @@ KNOWN_BUGS = [
          strict=False),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GDK_IS_WINDOW', cases=ALL,
          strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match="'handler_id > 0'",
+    dict(issue=4398, sweep=['random', 'target', 'target-xliff', 'autocorrect'], kind='critical', match="'handler_id > 0'",
          cases=ALL, strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='updating_count > 0',
+    dict(issue=4398, sweep=['random', 'target', 'target-xliff', 'autocorrect'], kind='critical', match='updating_count > 0',
          cases=ALL, strict=False),
     dict(issue=4400, sweep=EVERY_SWEEP, kind='critical', match='gtk_box_gadget_distribute', cases=ALL, strict=False),
     # Malformed files (#4388).
@@ -98,10 +99,14 @@ KNOWN_BUGS = [
          strict=False),
     dict(issue=4347, sweep='autocorrect', kind='slow', match='',
          cases=['2000 lines', 'printf', 'python named', 'percent alone', 'url-escape'], strict=False),
-    dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=['printf'], strict=False),
+    # A long target left in the TM is laid out on every focus change after it.
+    dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=ALL, strict=False),
+    dict(issue=4453, sweep='autocorrect', kind='slow', match='', cases=ALL, strict=False),
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     dict(issue=4443, sweep='spelling', kind='slow', match='', cases=['10k chars words', '2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
+    dict(issue=4348, sweep='random', kind='critical', match='pango_layout_get_cursor_pos', cases=['edit_target'],
+         strict=False),
     dict(issue=4335, sweep='glossary', kind='slow', match='', cases=['4096 chars one word'], strict=False),
     # Preferences loads every plug-in's class to list it.
     dict(issue=4433, sweep=[s for s in EVERY_SWEEP if s.startswith('ui-')], kind='log-error', match='IPython',

@@ -82,6 +82,9 @@ class WelcomeScreenView(BaseView):
 
             if width > maxwidth:
                 width = int(maxwidth)
+            elif width < 0:
+                # Not allocated yet: leave the width to GTK (#4410).
+                width = -1
 
             txt.set_size_request(width, -1)
         GLib.idle_add(calculate_width)

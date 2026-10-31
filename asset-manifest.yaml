@@ -1060,9 +1060,9 @@ dictionary:
   sv:
     files: &id022
     - name: sv_SE.aff
-      sha: f767007dbbe6bd53ade64900258bbdbc5a2b2075
+      sha: e92dc32f272a6dda7adec0e06e1457e11e7ee9a3
     - name: sv_SE.dic
-      sha: 1ef5b05b2e52064455804403964e5bc28409a45a
+      sha: 5dc894a20218a96c12ba64e6a3ee3c007efac1d3
     folder: sv_SE
   sv_FI:
     files:

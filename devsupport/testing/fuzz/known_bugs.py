@@ -32,8 +32,6 @@ KNOWN_BUGS = [
     # A match between the CR and LF of a CRLF unit.
     dict(issue=4348, sweep=['search', 'search-regex'], kind='critical', match='pango_layout_get_cursor_pos',
          cases=['newline only']),
-    dict(issue=4349, sweep=['source', 'plural-source'], kind='display-mismatch', match='',
-         cases=['NUL']),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GTK_IS_WIDGET', cases=ALL,
          strict=False),
     dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GDK_IS_WINDOW', cases=ALL,

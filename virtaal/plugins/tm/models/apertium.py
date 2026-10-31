@@ -25,6 +25,31 @@ from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 from .basetmmodel import BaseTMModel, unescape_html_entities
 
+# APY codes that pycountry's ISO 639-3 code doesn't give.
+APY_LANGUAGES = {
+    'bs': 'hbs_BS',
+    'hr': 'hbs_HR',
+    'ms': 'zlm',
+    'sr': 'hbs_SR',
+}
+
+
+def apy_codes(code):
+    """APY's possible codes for a Virtaal language code, most specific
+        first: ca@valencia gives cat_valencia then cat, pt_BR gives
+        por_BR then por. APY lists ISO 639-3 codes (#4664)."""
+    base, _, variant = code.replace('@', '_').partition('_')
+    language = APY_LANGUAGES.get(base)
+    if language is None:
+        found = pycountry.languages.get(alpha_2=base) if len(base) == 2 else None
+        language = found.alpha_3 if found else base
+    codes = [code]
+    if variant:
+        codes.append(language + '_' + variant)
+    codes.append(language)
+    codes.append(language.split('_')[0])
+    return list(dict.fromkeys(codes))
+
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
@@ -58,15 +83,9 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
-        pair = (self.source_lang, self.target_lang)
-        if pair not in self.language_pairs:
-            def apy_code(code):
-                language = pycountry.languages.get(alpha_2=code)
-                return language.alpha_3 if language is not None else code
-
-            pair = (apy_code(self.source_lang), apy_code(self.target_lang))
-            if pair not in self.language_pairs:
-                return
+        pair = self._apy_pair()
+        if pair is None:
+            return
 
         query_str = unit.source
         if query_str in self.cache:
@@ -84,6 +103,15 @@ class TMModel(BaseTMModel):
                 'http-success',
                 lambda req, response: self.got_translation(response, query_str)
             )
+
+    def _apy_pair(self):
+        """The most specific listed APY pair for the current languages, or
+            None."""
+        for source in apy_codes(self.source_lang or ''):
+            for target in apy_codes(self.target_lang or ''):
+                if (source, target) in self.language_pairs:
+                    return (source, target)
+        return None
 
     def got_language_pairs(self, val):
         """Handle the response from the web service to set up language pairs."""

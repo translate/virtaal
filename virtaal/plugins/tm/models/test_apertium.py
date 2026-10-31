@@ -232,3 +232,48 @@ def test_got_language_pairs_ignores_a_reply_it_cannot_read(reply):
     model.got_language_pairs(reply)
 
     assert model.language_pairs == []
+
+
+# apy_codes() / _apy_pair(): APY lists ISO 639-3 codes, Virtaal uses
+# two-letter codes where they exist (#4664).
+
+@pytest.mark.parametrize('code, expected', [
+    ('ca', ['ca', 'cat']),
+    ('ca@valencia', ['ca@valencia', 'cat_valencia', 'cat']),
+    ('pt_BR', ['pt_BR', 'por_BR', 'por']),
+    ('en_GB', ['en_GB', 'eng_GB', 'eng']),
+    ('sr', ['sr', 'hbs_SR', 'hbs']),
+    ('ms', ['ms', 'zlm']),
+    ('sc', ['sc', 'srd']),
+    ('crh', ['crh']),
+])
+def test_apy_codes_most_specific_first(code, expected):
+    assert apertium.apy_codes(code) == expected
+
+
+@pytest.mark.parametrize('source, target, pairs, langpair', [
+    ('en', 'ca@valencia', [('eng', 'cat'), ('eng', 'cat_valencia')], 'eng|cat_valencia'),
+    ('en_GB', 'ca@valencia', [('eng', 'cat')], 'eng|cat'),
+    ('es', 'pt_BR', [('spa', 'por'), ('spa', 'por_BR')], 'spa|por_BR'),
+])
+def test_query_sends_the_most_specific_listed_apy_pair(source, target, pairs, langpair):
+    model = _model()
+    model.source_lang, model.target_lang = source, target
+    model.language_pairs = pairs
+    model.client = _FakeHTTPClient()
+
+    model.query(None, SimpleNamespace(source='The house is big.'))
+
+    assert len(model.client.added) == 1
+    assert 'langpair=' + langpair.replace('|', '%7C') in model.client.added[0].url
+
+
+def test_query_sends_nothing_when_no_apy_pair_matches():
+    model = _model()
+    model.source_lang, model.target_lang = 'en', 'zu'
+    model.language_pairs = [('eng', 'cat')]
+    model.client = _FakeHTTPClient()
+
+    model.query(None, SimpleNamespace(source='The house is big.'))
+
+    assert model.client.added == []

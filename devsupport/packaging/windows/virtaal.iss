@@ -63,6 +63,10 @@ ChangesAssociations=yes
 Name: "fileassoc"; Description: "{cm:FileAssocTask}"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+; 0.7's Python 2 plug-in source, left by an install over 0.7 (#4645).
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\virtaal_plugins"
+
 [Files]
 Source: "{#DistDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 

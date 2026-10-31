@@ -183,6 +183,18 @@ def test_update_recent_pairs_stops_at_num_recent():
     assert view.recent_items[view.controller.NUM_RECENT - 1].get_child().get_text()
 
 
+
+def test_a_long_language_name_keeps_the_pair_button_narrow():
+    # #4397: a window wider than 32767 pixels isn't supported.
+    view = _make_view()
+    view.controller.recent_pairs = [(_fake_lang('English'), _fake_lang('x' * 4096, 'xx'))]
+
+    view.update_recent_pairs()
+
+    for widget in (view.popupbutton, view.recent_items[0]):
+        assert widget.get_preferred_width().natural_width < 2000
+
+
 # _create_dialogs() #
 
 def test_create_dialogs_builds_both_dialogs():

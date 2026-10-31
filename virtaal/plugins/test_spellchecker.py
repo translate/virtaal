@@ -793,3 +793,24 @@ def test_spellchecker_dependencies_importable():
         "enchant imported but reports no available dictionaries/providers "
         "- check the enchant backend (hunspell/aspell) is installed"
     )
+
+
+def test_gtkspells_iso_codes_warnings_are_dropped(monkeypatch):
+    # #4448: GtkSpell warns that it can't find iso-codes on macOS.
+    passed = []
+    monkeypatch.setattr(GLib, 'log_default_handler', lambda *args: passed.append(args[2]))
+    for message in ('iso_639.xml: Failed to open file', 'iso_3166.xml: Failed to open file', 'Something else'):
+        spellchecker._NoIsoCodesWarnings._log('', GLib.LogLevelFlags.LEVEL_WARNING, message)
+
+    assert passed == ['Something else']
+
+
+def test_the_iso_codes_filter_is_removed_afterwards(monkeypatch):
+    calls = []
+    monkeypatch.setattr(GLib, 'log_set_handler', lambda *args: calls.append(('set', args[0])) or 7)
+    monkeypatch.setattr(GLib, 'log_remove_handler', lambda *args: calls.append(('remove',) + args))
+
+    with spellchecker._NoIsoCodesWarnings():
+        pass
+
+    assert calls == [('set', ''), ('remove', '', 7)]

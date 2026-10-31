@@ -10,6 +10,7 @@ import types
 
 from virtaal.common import pan_app
 from virtaal.support import asset_manifest as am
+from virtaal.support import dictionary_download_watcher
 from virtaal.support.asset_manifest import entry_shas, installed_asset_key
 from virtaal.support.dictionary_download_watcher import DictionaryDownloadWatcher
 
@@ -218,12 +219,38 @@ def test_downloads_via_known_files_after_a_lull_when_manifest_has_an_entry():
     assert not downloader.started
 
 
-def test_skips_download_when_installed_sha_already_matches_the_manifest():
+def test_skips_download_when_installed_sha_already_matches_the_manifest(tmp_path, monkeypatch):
     _reset_installed_assets()
+    monkeypatch.setattr(dictionary_download_watcher, 'dictionary_write_dir', lambda: str(tmp_path))
+    (tmp_path / 'af_ZA.dic').write_text('')
     pan_app.settings.installed_assets[installed_asset_key('dictionary', 'af_ZA')] = entry_shas(_AF_ZA_ENTRY)
+    lull_calls = []
     main_controller, _watcher = _make_watcher(
-        known_dicts=set(), manifest_entries={('dictionary', 'af_ZA'): _AF_ZA_ENTRY})
+        known_dicts=set(), manifest_entries={('dictionary', 'af_ZA'): _AF_ZA_ENTRY}, lull_calls=lull_calls)
     main_controller.lang_controller.emit_target_lang_changed('af_ZA')
+    assert lull_calls == []
+
+
+def test_downloads_again_when_an_older_download_kept_libreoffices_name(tmp_path, monkeypatch):
+    # Before #4665 af_NA's dictionary was saved as af_ZA.aff/.dic, which
+    # enchant never finds for af_NA; the recorded sha matched, so it was
+    # never fetched again.
+    _reset_installed_assets()
+    monkeypatch.setattr(dictionary_download_watcher, 'dictionary_write_dir', lambda: str(tmp_path))
+    (tmp_path / 'af_ZA.dic').write_text('')
+    pan_app.settings.installed_assets[installed_asset_key('dictionary', 'af_NA')] = entry_shas(_AF_ZA_ENTRY)
+    lull_calls = []
+    main_controller, _watcher = _make_watcher(
+        known_dicts=set(), manifest_entries={('dictionary', 'af_NA'): _AF_ZA_ENTRY}, lull_calls=lull_calls)
+    main_controller.lang_controller.emit_target_lang_changed('af_NA')
+    assert len(lull_calls) == 1
+
+
+def test_asks_enchant_for_the_locales_tag():
+    # Enchant ignores "@" names: ca@valencia's dictionary is ca_VALENCIA.
+    main_controller, watcher = _make_watcher(known_dicts={'ca_VALENCIA'})
+    main_controller.lang_controller.emit_target_lang_changed('ca@valencia')
+    assert watcher._enchant.checked == ['ca_VALENCIA']
     assert _FakeDownloader.instances == []
 
 

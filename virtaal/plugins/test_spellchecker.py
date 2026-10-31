@@ -149,6 +149,23 @@ def test_on_unit_lang_changed_finds_a_country_variant_enchant_supports():
     assert calls == [((plugin._activate_checker, text_view, 'xx_YY'), {'priority': GLib.PRIORITY_LOW})]
 
 
+def test_on_unit_lang_changed_asks_enchant_for_the_locales_tag():
+    # Enchant ignores "@" names: ca@valencia's dictionary is ca_VALENCIA (#4665).
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = object()
+    plugin.enchant = _FakeEnchant(known_dicts={'ca_VALENCIA'})
+    plugin._seen_languages = {}
+    plugin._enchant_languages = ['ca_VALENCIA']
+    text_view = SimpleNamespace()
+
+    with pytest.MonkeyPatch.context() as mp:
+        calls = []
+        mp.setattr(GLib, 'idle_add', lambda *a, **k: calls.append((a, k)))
+        Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=text_view, language='ca@valencia')
+
+    assert calls == [((plugin._activate_checker, text_view, 'ca_VALENCIA'), {'priority': GLib.PRIORITY_LOW})]
+
+
 def test_on_unit_lang_changed_disables_and_caches_a_language_with_no_dictionary(monkeypatch):
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = object()

@@ -14,6 +14,7 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -197,3 +198,25 @@ def test_every_autocorrect_list(manifest, tmp_path):
             failures[locale] = 'unreadable' if corrector.unreadable else 'no corrections loaded'
     assert not failures, '%d of %d autocorrect lists:\n%s' % (
         len(failures), len(entries), _report(failures))
+
+
+@pytest.mark.timeout(300)
+def test_every_offered_language_resolves(manifest, tmp_path):
+    """Every language Virtaal offers whose language has assets in the
+    manifest gets one - #4675: ca, de, es, pt, sr and en got none."""
+    from translate.lang import data
+
+    from virtaal.support.asset_manifest import AssetManifest
+
+    linguas = (Path(__file__).resolve().parents[2] / 'po' / 'LINGUAS').read_text(encoding='utf-8').split()
+    codes = sorted(set(data.languages) | set(linguas))
+    lookup = AssetManifest(config_dir=str(tmp_path))
+    lookup._data = manifest
+    missing = []
+    for kind in ('dictionary', 'thesaurus', 'autocorrect'):
+        keys = manifest[kind]
+        for code in codes:
+            base = code.replace('-', '_').split('@')[0].split('_')[0]
+            if any(k == base or k.startswith(base + '_') for k in keys) and lookup.get(kind, code) is None:
+                missing.append('%s %s' % (kind, code))
+    assert not missing, 'offered languages with assets that resolve to none:\n' + '\n'.join(missing)

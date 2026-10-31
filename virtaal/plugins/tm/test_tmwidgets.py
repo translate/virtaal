@@ -190,6 +190,25 @@ def test_update_geometry_pops_down_when_there_is_room_below():
     window.destroy()
 
 
+def test_update_geometry_keeps_the_last_size_when_there_are_no_matches():
+    # #4400: sized for no rows, the window was later shown with rows at
+    # 2 pixels high, too little for its scrollbar.
+    window, _source, target = _make_source_and_target('top')
+    tmwindow = _make_tmwindow_with_matches()
+    tmwindow.update_geometry(target)
+    _process_events()
+    before = tmwindow.scrolled_window.get_size_request()
+
+    tmwindow.liststore.clear()
+    tmwindow.update_geometry(target)
+
+    assert tmwindow.scrolled_window.get_size_request() == before
+    assert before.height > 20
+
+    tmwindow.destroy()
+    window.destroy()
+
+
 def test_update_geometry_pops_down_below_the_translator_comment():
     window, _source, target = _make_source_and_target('top', comment='A translator comment')
     tmwindow = _make_tmwindow_with_matches()

@@ -69,9 +69,6 @@ KNOWN_BUGS = [
          cases=['whole file: 5 MB', 'whole file: binary garbage', 'whole file: byte order mark', 'whole file: directory', 'whole file: duplicate key', 'whole file: duplicate section', 'whole file: empty file', 'whole file: invalid UTF-8', 'whole file: no section header', 'whole file: only comments']),
     # Translation services (services.py, #4389).
     # Editing paths and interface languages (editing.py, #4411).
-    # Windows' GtkSpell finishes in time; on Linux too since the spelling
-    # language is set before the checker is attached (18f3ffdf).
-    dict(issue=4443, sweep='spelling', kind='timeout', match='', cases=['100k chars'], platforms=['macos']),
     dict(issue=4448, sweep='spelling', kind='glib-warning', match='iso-codes', cases=ALL, platforms=['macos']),
     # Windows' runner is slower still; the stall also outlasts the case into the next few.
     dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
@@ -84,7 +81,7 @@ KNOWN_BUGS = [
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     # A nested-repetition expression left in Search runs again on the next visit.
     dict(issue=4692, sweep='random', kind='timeout', match='getmatches', cases=['search'], strict=False),
-    dict(issue=4443, sweep='spelling', kind='slow', match='', cases=['10k chars words', '2000 lines'], strict=False),
+    dict(issue=4606, sweep='spelling', kind='slow', match='', cases=['2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
     dict(issue=4348, sweep='random', kind='critical', match='pango_layout_get_cursor_pos', cases=['edit_target'],
          strict=False),

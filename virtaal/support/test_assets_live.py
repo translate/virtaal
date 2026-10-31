@@ -204,12 +204,16 @@ def test_every_autocorrect_list(manifest, tmp_path):
 def test_every_offered_language_resolves(manifest, tmp_path):
     """Every language Virtaal offers whose language has assets in the
     manifest gets one - #4675: ca, de, es, pt, sr and en got none."""
-    from translate.lang import data
-
+    from virtaal.models.langmodel import LanguageModel
     from virtaal.support.asset_manifest import AssetManifest
+    from virtaal.support.dictionary_source import DEFAULT_REGIONS
 
+    LanguageModel()
     linguas = (Path(__file__).resolve().parents[2] / 'po' / 'LINGUAS').read_text(encoding='utf-8').split()
-    codes = sorted(set(data.languages) | set(linguas))
+    # A script variant (be@latin) only counts once DEFAULT_REGIONS names
+    # its own files: the base language's are in the other script.
+    codes = sorted(c for c in set(LanguageModel.languages) | set(linguas)
+                   if '@' not in c or c in DEFAULT_REGIONS)
     lookup = AssetManifest(config_dir=str(tmp_path))
     lookup._data = manifest
     missing = []

@@ -1,30 +1,20 @@
 # -*- mode: python ; coding: utf-8 -*-
 # PyInstaller spec for the Linux AppImage. Run via build_appimage.sh.
+# The parts shared with the other specs are in
+# devsupport/packaging/pyinstaller_common.py.
 import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-from PyInstaller.utils.hooks import collect_submodules
-
 ROOT = Path(os.getcwd())
 
 sys.path.insert(0, str(ROOT))
-from virtaal.support.libi18n.lite import (  # noqa: E402
-    bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
-)
-
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
-import babel_data  # noqa: E402
+import pyinstaller_common as common  # noqa: E402
 
-# translate-toolkit's own data (langmodels/, stoplist-en), which
-# translate.misc.file_discovery looks for under share/ when frozen.
-import translate  # noqa: E402
-TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
-
-LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
+LANGUAGES = common.languages(ROOT)
 
 ARCH_LIBDIR = Path("/usr/lib") / subprocess.run(
     ["gcc", "-print-multiarch"], capture_output=True, text=True, check=True,
@@ -37,10 +27,7 @@ def _required(path):
     return path
 
 
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
+mo_files = common.mo_files(ROOT)
 
 # libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py).
 # Loaded with ctypes, so nothing else pulls it in.
@@ -77,39 +64,12 @@ ADWAITA_PARTS = ["index.theme", "scalable", "scalable-up-to-32", "16x16"]
 for _part in ADWAITA_PARTS:
     _required(ADWAITA / _part)
 
-datas = [
-    (str(ROOT / "share" / "virtaal"), "share/virtaal"),
-    (str(ROOT / "share" / "icons"), "share/icons"),
-    (str(TRANSLATE_SHARE), "share"),
-    # virtaal/support/authors.py reads this at the bundle root.
-    (str(ROOT / "AUTHORS.md"), "."),
-    (str(IMMODULES_CACHE), "lib/gtk-3.0/3.0.0"),
-]
+datas = common.datas(ROOT) + [(str(IMMODULES_CACHE), "lib/gtk-3.0/3.0.0")]
 datas += [
     (str(ADWAITA / part), "share/icons/Adwaita" if part == "index.theme" else "share/icons/Adwaita/" + part)
     for part in ADWAITA_PARTS
 ]
 datas += mo_files
-
-
-# lxml modules nothing imports; PyInstaller's lxml hook collects them all.
-UNUSED_LXML = [
-    "lxml.objectify", "lxml.sax", "lxml.builder", "lxml.html.builder", "lxml.html.diff",
-    "lxml.html._difflib", "lxml.html._diffcommand", "lxml.isoschematron",
-]
-
-
-def _not_test(name):
-    leaf = name.rpartition(".")[2]
-    return not (leaf.startswith("test_") or leaf == "conftest")
-
-
-def _not_enchant_dialog(name):
-    return name not in (
-        "enchant.checker.CmdLineChecker",
-        "enchant.checker.GtkSpellCheckerDialog",
-        "enchant.checker.wxSpellCheckerDialog",
-    )
 
 
 a = Analysis(  # noqa: F821
@@ -120,34 +80,19 @@ a = Analysis(  # noqa: F821
         + [(str(path), IMMODULES_DEST) for path in IMMODULES]
     ),
     datas=datas,
-    hiddenimports=(
-        collect_submodules("virtaal", filter=_not_test)
-        + collect_submodules("translate.storage")
-        + collect_submodules("enchant", filter=_not_enchant_dialog)
-    ),
-    hooksconfig={
-        "gi": {
-            "module-versions": {
-                "Gtk": "3.0",
-                "GtkSpell": "3.0",
-            },
-            "languages": bundle_languages(LANGUAGES),
-            # Adwaita is bundled above.
-            "icons": ["hicolor"],
-            "themes": ["Adwaita"],
-        },
-    },
+    hiddenimports=common.hiddenimports(),
+    # Adwaita is bundled above.
+    hooksconfig=common.hooksconfig(LANGUAGES, {"GtkSpell": "3.0"}, icons=["hicolor"], themes=["Adwaita"]),
     hookspath=[str(ROOT / "devsupport" / "packaging" / "linux" / "pyinstaller-hooks")],
     runtime_hooks=[str(ROOT / "devsupport" / "packaging" / "linux" / "pyi_rth_appimage.py")],
-    excludes=["FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport"] + UNUSED_LXML,
+    excludes=common.EXCLUDES,
     noarchive=False,
 )
-a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
+a.datas = common.trim(a.datas, ROOT)
 # The host's: they read the host's own font configuration, which can be
 # newer than this build's (AppImage's own exclude list leaves them out too).
 HOST_LIBRARIES = ("libfontconfig.so.1", "libfreetype.so.6")
 a.binaries = [entry for entry in a.binaries if os.path.basename(entry[0]) not in HOST_LIBRARIES]
-a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 
 # GTK's own schemas only. PyInstaller compiles every schema on the build
 # machine, and the bundle's share/ comes first in XDG_DATA_DIRS: its
@@ -176,35 +121,21 @@ if "enchant.checker" not in {entry[0] for entry in a.pure}:
 if not any(dest.endswith("GtkSpell-3.0.typelib") for dest, _src, _kind in a.datas + a.binaries):
     raise SystemExit("GtkSpell-3.0.typelib isn't bundled")
 
-# PyInstaller keeps the first datas entry for a destination: our merged
-# lite catalogs, listed in datas above, must beat the copies GTK's and
-# GLib's own hooks collect at the same path.
-_mismatched = mismatched_catalogs(a.datas, mo_files)
-if _mismatched:
-    raise SystemExit("Bundled another copy instead of Virtaal's catalog: %r" % _mismatched)
-_missing = missing_catalogs(a.datas, expected_catalogs(LANGUAGES, mo_files))
-if _missing:
-    raise SystemExit("Shipped languages missing catalogs: %r" % _missing)
+common.check_catalogs(a.datas, mo_files, LANGUAGES)
 
 pyz = PYZ(a.pure, a.zipped_data)  # noqa: F821
+
+# Not "virtaal": in the flat layout, an executable of that name next to
+# the bundled modules stops "import virtaal.cli" finding the package.
+EXE_OPTIONS = {**common.EXE_OPTIONS, "name": "Virtaal", "console": True}
 
 exe = EXE(  # noqa: F821
     pyz,
     a.scripts,
-    exclude_binaries=True,
-    # Not "virtaal": in the flat layout, an executable of that name next
-    # to the bundled modules stops "import virtaal.cli" finding the package.
-    name="Virtaal",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
-    console=True,
+    **EXE_OPTIONS,
     # The flat layout: translate-toolkit's frozen data lookup expects
     # share/ next to the executable (see the Windows spec).
     contents_directory=".",
 )
 
-coll = COLLECT(  # noqa: F821
-    exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=False, name="virtaal"
-)
+coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, **common.COLLECT_OPTIONS)  # noqa: F821

@@ -192,6 +192,19 @@ def test_settings_replaces_a_language_that_isnt_a_code(tmp_path, value, caplog):
     assert "isn't a language code" in caplog.text
 
 
+@pytest.mark.parametrize('value', ['', '   '])
+def test_settings_takes_a_blank_language_as_not_set(tmp_path, value, caplog):
+    # #4432: a blank targetlang reached enchant as an empty language code.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("[language]\nsourcelang = %s\ntargetlang = %s\n" % (value, value))
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.language['sourcelang'] == 'en'
+    assert settings.language['targetlang'] == pan_app.data.simplify_to_common(pan_app.get_locale_lang())
+    assert "isn't a language code" not in caplog.text
+
+
 @pytest.mark.parametrize('value', ['af', 'nso', 'sr@latin', 'ca@valencia', 'zh_CN', 'zh_Hant', 'pt-BR'])
 def test_settings_keeps_a_language_code(tmp_path, value):
     path = tmp_path / "virtaal.ini"

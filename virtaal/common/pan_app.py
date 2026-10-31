@@ -219,6 +219,9 @@ def get_locale_lang():
     # guess default target lang based on locale, simplify to commonly used form
     try:
         lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
+        # The C/POSIX locale names no language (#4671).
+        if lang and lang.split('.')[0] in ('C', 'POSIX'):
+            lang = None
         if not lang and platform.is_mac:
            lang = osx_lang()
         if lang:

@@ -187,7 +187,8 @@ def _translated(translation, msgid):
 def _name_by_code(code, langcode):
     """The language with iso code code named in langcode's language, from
     the catalog's own name for it ("Pedi", "Swahili (macrolanguage)",
-    or for a language family "Songhai languages"), without a qualifier
+    or for a language family "Songhai languages") or else for its
+    inverted form ("Sami, Northern"), without a qualifier
     like "(macrolanguage)" - or None if the catalog doesn't translate it."""
     if pycountry is None or not code:
         return None
@@ -198,11 +199,22 @@ def _name_by_code(code, langcode):
         language, domain = pycountry.language_families.get(alpha_3=base), 'iso639-5'
     if language is None:
         return None
-    translated = _translated(_translation(langcode, domain, pycountry.LOCALES_DIR), language.name)
+    translation = _translation(langcode, domain, pycountry.LOCALES_DIR)
+    english = language.name
+    translated = _translated(translation, english)
+    inverted_name = getattr(language, 'inverted_name', None)
+    if not translated and inverted_name:
+        # Some catalogs only translate the inverted form ("Frisian, Western").
+        # One that copies it unchanged doesn't count.
+        translated = _translated(translation, inverted_name)
+        if translated == inverted_name:
+            translated = None
+        else:
+            english = inverted_name
     if translated and language.name.endswith(')') and translated.endswith(')') and ' (' in translated:
         translated = translated[:translated.rindex(' (')]
     if translated:
-        translated = _first_alternative(language.name, translated)
+        translated = _first_alternative(english, translated)
     return translated
 
 

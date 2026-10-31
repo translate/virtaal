@@ -51,7 +51,14 @@ retry() {
   return 1
 }
 
-retry xcrun stapler staple "$target"
+if [ -d "$target" ]; then
+  retry xcrun stapler staple "$target"
+elif ! retry xcrun stapler staple "$target"; then
+  # The app inside is stapled, and Gatekeeper checks a notarized .dmg
+  # online (#4456).
+  echo "::warning::stapler couldn't reach Apple; $target is notarized but not stapled."
+  exit 0
+fi
 # The ticket is already stapled; validate only re-checks it with Apple.
 retry xcrun stapler validate "$target" ||
   echo "::warning::stapler validate couldn't reach Apple; $target is stapled."

@@ -27,14 +27,6 @@ KNOWN_BUGS = [
     dict(issue=4606, sweep=['target', 'target-xliff', 'search', 'search-regex', 'replace', 'replace-all', 'keys',
                             'glossary'] + SOURCES,
          kind='slow', match='', cases=['2000 lines'], strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GTK_IS_WIDGET', cases=ALL,
-         strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff'], kind='critical', match='GDK_IS_WINDOW', cases=ALL,
-         strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff', 'autocorrect'], kind='critical', match="'handler_id > 0'",
-         cases=ALL, strict=False),
-    dict(issue=4398, sweep=['random', 'target', 'target-xliff', 'autocorrect'], kind='critical', match='updating_count > 0',
-         cases=ALL, strict=False),
     dict(issue=4400, sweep=EVERY_SWEEP, kind='critical', match='gtk_box_gadget_distribute', cases=ALL, strict=False),
     # Malformed files (#4388).
     # Not filed in Virtaal: to report to translate-toolkit after 1.0.0.

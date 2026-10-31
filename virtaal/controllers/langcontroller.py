@@ -25,6 +25,7 @@ class LanguageController(BaseController):
     __gsignals__ = {
         'source-lang-changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
         'target-lang-changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
+        'dictionary-installed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
     }
 
     NUM_RECENT = 5

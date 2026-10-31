@@ -30,6 +30,9 @@ class _FakeLangController:
     def emit_target_lang_changed(self, language):
         self.handlers['target-lang-changed'](self, language)
 
+    def emit(self, signal, *args):
+        self.emitted = getattr(self, 'emitted', []) + [(signal,) + args]
+
 
 class _FakeMainController:
     def __init__(self, target_lang=None):
@@ -241,3 +244,22 @@ def test_records_installed_sha_only_on_a_successful_known_download():
 
     _FakeDownloader.instances[0].on_done(True)
     assert pan_app.settings.installed_assets[key] == entry_shas(_AF_ZA_ENTRY)
+
+
+def test_a_downloaded_dictionary_is_announced_and_the_checks_forget_its_absence(monkeypatch):
+    # #4585: the download wasn't used until a restart.
+    from translate.filters import spelling
+    _reset_installed_assets()
+    monkeypatch.setattr(spelling, 'checkers', {'af': None, 'af_ZA': None, 'de': 'kept'}, raising=False)
+    lull_calls = []
+    main_controller, _watcher = _make_watcher(
+        known_dicts=set(), manifest_entries={('dictionary', 'af_ZA'): _AF_ZA_ENTRY}, lull_calls=lull_calls)
+    main_controller.lang_controller.emit_target_lang_changed('af_ZA')
+    lull_calls[0]()
+
+    _FakeDownloader.instances[0].on_done(False)
+    assert getattr(main_controller.lang_controller, 'emitted', []) == []
+
+    _FakeDownloader.instances[0].on_done(True)
+    assert main_controller.lang_controller.emitted == [('dictionary-installed', 'af_ZA')]
+    assert spelling.checkers == {'de': 'kept'}

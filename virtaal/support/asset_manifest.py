@@ -27,7 +27,7 @@ from datetime import date
 import yaml
 from gi.repository import Gdk, GLib, Gtk
 
-from virtaal.support.dictionary_source import candidate_folders
+from virtaal.support.dictionary_source import DEFAULT_REGIONS, candidate_folders
 
 MANIFEST_URL = 'https://raw.githubusercontent.com/translate/virtaal/asset-manifest/asset-manifest.yaml'
 _CACHE_FILENAME = 'asset-manifest.yaml'
@@ -222,4 +222,11 @@ class AssetManifest:
         candidates = candidate_folders(locale_code, entries)
         if candidates:
             return entries[candidates[0]]
-        return _shared_region_entry(locale_code, entries)
+        shared = _shared_region_entry(locale_code, entries)
+        if shared is not None:
+            return shared
+        for region in DEFAULT_REGIONS.get(locale_code.replace('-', '_'), []):
+            candidates = candidate_folders(region, entries)
+            if candidates:
+                return entries[candidates[0]]
+        return None

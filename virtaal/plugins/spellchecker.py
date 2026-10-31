@@ -15,6 +15,7 @@ from gi.repository import GLib
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
+from virtaal.support.dictionary_source import DEFAULT_REGIONS
 from virtaal.support.enchant_compat import enchant_tag, import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
@@ -167,13 +168,12 @@ class Plugin(BasePlugin):
         # enchant doesn't like anything except plain strings (bug 1852)
         language = str(language)
 
-        if language == 'en':
-            language = 'en_US'
-        elif language == 'pt':
-            language = 'pt_PT'
-        elif language == 'de':
-            language = 'de_DE'
+        # A bare code tries its default region first (en: en_US, #4675),
+        # then the search below for any of its regions.
+        regions = DEFAULT_REGIONS.get(language, []) if '_' not in language and '@' not in language else []
         language = enchant_tag(language)
+        if regions and language not in self._seen_languages and self.enchant.dict_exists(regions[0]):
+            self._seen_languages[language] = regions[0]
 
         if not language in self._seen_languages and not self.enchant.dict_exists(language):
             # Sometimes enchants *wants* a country code, other times it does not.

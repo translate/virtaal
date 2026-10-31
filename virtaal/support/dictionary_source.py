@@ -106,6 +106,22 @@ def parse_dictionaries_xcu(xml_bytes, dict_format='DICT_SPELL'):
     return result
 
 
+# Where a code's regions have different dictionaries, the region to use
+# (#4675). Virtaal's pt is European Portuguese, so not CLDR's likely
+# region (BR). Tried in order, each also as its bare language;
+# ca@valencia falls back to Catalan, zh_HK to Traditional Chinese.
+DEFAULT_REGIONS = {
+    'ca': ['ca_ES'],
+    'ca@valencia': ['ca_ES_valencia', 'ca_ES'],
+    'de': ['de_DE'],
+    'en': ['en_US'],
+    'es': ['es_ES'],
+    'pt': ['pt_PT'],
+    'sr': ['sr_RS'],
+    'zh_HK': ['zh_TW'],
+}
+
+
 def candidate_folders(locale_code, known_folders):
     """Folder names worth trying first for locale_code (e.g. 'de_DE'),
     cheapest/most-specific first, given the set of real folder names

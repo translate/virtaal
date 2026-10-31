@@ -136,6 +136,8 @@ class Plugin(BasePlugin):
         self.unit_view = unit_view
         self._signal_tracker = SignalTracker()
         self._signal_tracker.connect(self.unit_view, 'textview-language-changed', self._on_unit_lang_changed)
+        self.lang_controller = main_controller.lang_controller
+        self._signal_tracker.connect(self.lang_controller, 'dictionary-installed', self._on_dictionary_installed)
 
         # For some reason the i18n of gtkspell doesn't work on Windows, so we
         # intervene. We also don't want the Languages submenu, so we remove it.
@@ -303,6 +305,17 @@ class Plugin(BasePlugin):
         self._detach(text_view)
         text_view.spell_pending = language
         GLib.idle_add(self._activate_checker, text_view, language, priority=GLib.PRIORITY_LOW)
+
+    def _on_dictionary_installed(self, lang_controller, language):
+        """Check spelling with a dictionary downloaded since start-up (#4585)."""
+        base = language.split('_')[0]
+        for seen in [seen for seen in self._seen_languages if seen.split('_')[0] == base]:
+            del self._seen_languages[seen]
+        self._enchant_languages = self.enchant.list_languages()
+        for text_view in self.unit_view.sources:
+            self._on_unit_lang_changed(self.unit_view, text_view, lang_controller.source_lang.code)
+        for text_view in self.unit_view.targets:
+            self._on_unit_lang_changed(self.unit_view, text_view, lang_controller.target_lang.code)
 
     def _on_apply_tag(self, buffer, tag, start, end, textbox):
         """Don't mark words in placeables (variables, tags) as misspelled."""

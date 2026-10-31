@@ -1,8 +1,8 @@
 name: Live services
 
-# Not a pass/fail gate on every push. Pull request CI leaves amaGama off
-# (#4560); this checks, through Virtaal's own client, that a lookup on the
-# live amaGama server still works. Run it by hand before a release.
+# Not a pass/fail gate on every push. Checks, through Virtaal's own code,
+# that the online services it uses still work (pull request CI leaves
+# amaGama off, #4560). Run it by hand before a release.
 
 on:
   schedule:
@@ -18,9 +18,9 @@ env:
   GIT_HTTP_LOW_SPEED_TIME: 60
 
 jobs:
-  amagama:
+  services:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -57,6 +57,14 @@ jobs:
       - name: Look up a unit on amaGama
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
-            python -m pytest -p no:cacheprovider virtaal/plugins/tm/models/test_amagama_live.py
+            python -m pytest -p no:cacheprovider -rf -s virtaal/plugins/tm/models/test_amagama_live.py
+        env:
+          VIRTAAL_LIVE_SERVICES: "1"
+
+      - name: Download Pontoon terminology
+        if: ${{ !cancelled() }}
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python -m pytest -p no:cacheprovider -rf -s virtaal/plugins/terminology/models/test_pontoon_live.py
         env:
           VIRTAAL_LIVE_SERVICES: "1"

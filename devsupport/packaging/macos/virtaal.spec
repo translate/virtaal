@@ -4,106 +4,29 @@
 # handles the mo-compile prerequisite - see that script's header for why
 # this exists alongside build.sh rather than replacing it.)
 #
-# Adapted for this codebase's GTK3 (not GTK4) and its two dynamic-import
-# points PyInstaller's static analysis can't see on its own: virtaal's own
-# directory-scanning plugin loader (virtaal/controllers/plugincontroller.py
-# __import__()s plugins by name at runtime, not via a static import
-# anywhere), and virtaal/support/tmserver.py (only ever reached via bin/
-# virtaal's own runpy-based "--run-module" dispatch, itself only reached at
-# runtime from a subprocess argv check - see localtm.py). collect_submodules
-# across the whole virtaal package (not just .plugins) is the simplest way
-# to not have to enumerate either by hand, at negligible cost for a
-# pure-Python package this size.
-#
-# Same reasoning covers translate.storage: factory.getobject() imports
-# a format's backend module by a runtime-computed string, invisible to
-# PyInstaller unless collected explicitly too.
+# The parts shared with the Windows spec are in
+# devsupport/packaging/pyinstaller_common.py.
 import os
 import subprocess
 import sys
 from pathlib import Path
-
-from PyInstaller.utils.hooks import collect_submodules
 
 ROOT = Path(os.getcwd())
 PACKAGING = ROOT / "devsupport" / "packaging" / "macos"
 
 sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
-from virtaal.support.libi18n.lite import (  # noqa: E402
-    bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
-)
+from virtaal.support.libi18n.lite import bundle_languages  # noqa: E402
 
 sys.path.insert(0, str(PACKAGING))
 from generate_info_plist import bundle_localizations, document_types  # noqa: E402
 from minimum_macos import minimum_macos  # noqa: E402
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
-import babel_data  # noqa: E402
+import pyinstaller_common as common  # noqa: E402
 
-COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
-
-# translate-toolkit ships its own small data directory (translate/share/ -
-# langmodels/, the ngram language-model files translate.lang.identify.
-# LanguageIdentifier needs for auto-detection, plus stoplist-en) that
-# translate.misc.file_discovery's frozen-mode lookup expects to find
-# alongside virtaal's own share/virtaal and share/icons below - it's a
-# third-party package's data, not virtaal's own, so it was never in this
-# datas list at all. Without it, the language-pair selector (which
-# triggers get_detected_langs(), langcontroller.py) crashes with
-# ValueError: Could not find "langmodels". Lands under the same "share"
-# destination as everything else below, so build_standalone.sh's existing
-# Contents/MacOS/share -> ../Resources/share symlink already covers it,
-# no extra workaround needed here. Located dynamically (not a hardcoded
-# venv path) via the actually-imported translate module, same style as
-# everything else in this file.
-import translate  # noqa: E402
-TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
-
-# The UI languages this build ships; the gi hooks bundle GTK's and GLib's
-# own catalogs for these (and the languages gettext falls back to for
-# them) only, not for every language the libraries translate.
-LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
-
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
-
-# gtkosx_application_init() (gtk-mac-integration's own C code) rebinds
-# its gettext domain to <bundle>/Contents/Resources/share/locale
-# whenever it detects real bundle identity - true for every frozen
-# build - so without its own locale files landing there too, the
-# "Hide"/"Quit"/"Services"/"Show All"/"About %s" strings it builds
-# itself always fall back to English, regardless of UI language.
-try:
-    _gtkmac_prefix = subprocess.run(
-        ["brew", "--prefix", "gtk-mac-integration"],
-        capture_output=True, text=True, check=True,
-    ).stdout.strip()
-    _gtkmac_locale_dir = Path(_gtkmac_prefix) / "share" / "locale"
-except (OSError, subprocess.CalledProcessError):
-    _gtkmac_locale_dir = None
-# libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py). Loaded
-# with ctypes, so nothing else pulls it in.
-try:
-    _gettext_prefix = subprocess.run(
-        ["brew", "--prefix", "gettext"], capture_output=True, text=True, check=True,
-    ).stdout.strip()
-except (OSError, subprocess.CalledProcessError):
-    _gettext_prefix = ""
-GETTEXTPO = Path(_gettext_prefix) / "lib" / "libgettextpo.0.dylib"
-if not GETTEXTPO.is_file():
-    raise SystemExit("libgettextpo not found: %s" % GETTEXTPO)
-# And the Homebrew libraries it links, which it looks for at the top of
-# Frameworks/. On Intel nothing else puts these there: pycurl's own
-# libunistring goes in its .dylibs/, and the libintl there is an older one
-# (without gl_get_setlocale_null_lock) unless it's this one.
-GETTEXTPO_DEPS = [Path(line.split()[0]) for line in subprocess.run(
-    ["otool", "-L", str(GETTEXTPO)], capture_output=True, text=True, check=True,
-).stdout.splitlines()[2:] if line.split()[0].startswith(("/opt/homebrew/", "/usr/local/"))]
-
+LANGUAGES = common.languages(ROOT)
+mo_files = common.mo_files(ROOT)
 
 
 def _brew_prefix(formula):
@@ -114,6 +37,26 @@ def _brew_prefix(formula):
     except (OSError, subprocess.CalledProcessError):
         return Path("/nonexistent")
 
+
+# gtkosx_application_init() (gtk-mac-integration's own C code) rebinds
+# its gettext domain to <bundle>/Contents/Resources/share/locale
+# whenever it detects real bundle identity - true for every frozen
+# build - so without its own locale files landing there too, the
+# "Hide"/"Quit"/"Services"/"Show All"/"About %s" strings it builds
+# itself always fall back to English, regardless of UI language.
+_gtkmac_locale_dir = _brew_prefix("gtk-mac-integration") / "share" / "locale"
+# libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py). Loaded
+# with ctypes, so nothing else pulls it in.
+GETTEXTPO = _brew_prefix("gettext") / "lib" / "libgettextpo.0.dylib"
+if not GETTEXTPO.is_file():
+    raise SystemExit("libgettextpo not found: %s" % GETTEXTPO)
+# And the Homebrew libraries it links, which it looks for at the top of
+# Frameworks/. On Intel nothing else puts these there: pycurl's own
+# libunistring goes in its .dylibs/, and the libintl there is an older one
+# (without gl_get_setlocale_null_lock) unless it's this one.
+GETTEXTPO_DEPS = [Path(line.split()[0]) for line in subprocess.run(
+    ["otool", "-L", str(GETTEXTPO)], capture_output=True, text=True, check=True,
+).stdout.splitlines()[2:] if line.split()[0].startswith(("/opt/homebrew/", "/usr/local/"))]
 
 # Adwaita, as a run from source has (not its cursors: GTK uses macOS's).
 # Its icons are SVG, so they need librsvg's GdkPixbuf loader too.
@@ -127,7 +70,7 @@ for _required in [ADWAITA / part for part in ADWAITA_PARTS] + [SVG_LOADER]:
 
 gtkmac_mo_files = [
     (str(p), str(Path("share", "locale") / p.relative_to(_gtkmac_locale_dir).parent))
-    for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir and _gtkmac_locale_dir.is_dir() else [])
+    for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir.is_dir() else [])
     if p.relative_to(_gtkmac_locale_dir).parts[0] in bundle_languages(LANGUAGES)
 ]
 
@@ -138,20 +81,13 @@ gtkmac_mo_files = [
 ENCHANT_INTEL_DIR = ROOT / "build" / "enchant_intel" / "enchant"
 _bundle_enchant = ENCHANT_INTEL_DIR.is_dir()
 
-datas = [
-    (str(ROOT / "share" / "virtaal"), "share/virtaal"),
-    (str(ROOT / "share" / "icons"), "share/icons"),
-    (str(TRANSLATE_SHARE), "share"),
+datas = common.datas(ROOT) + [
     # CFBundleTypeIconFile below (via document_types()) names this
     # file directly, but PyInstaller's BUNDLE step only auto-copies
     # the icon passed to EXE/BUNDLE's own icon= argument - anything
     # referenced solely from info_plist needs its own datas entry to
     # actually land in Contents/Resources.
     (str(ROOT / "devsupport" / "mac-bundle" / "VirtaalDocument.icns"), "."),
-    # virtaal/support/authors.py reads this at the bundle root - it
-    # stays a real top-level file (not under share/) so it's still
-    # recognised by GitHub/the AUTHORS convention in a checkout too.
-    (str(ROOT / "AUTHORS.md"), "."),
 ]
 datas += [
     (str(ADWAITA / part), "share/icons/Adwaita" if part == "index.theme" else "share/icons/Adwaita/" + part)
@@ -161,26 +97,6 @@ datas += mo_files + gtkmac_mo_files
 if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
 
-
-# lxml modules nothing imports; PyInstaller's lxml hook collects them all.
-UNUSED_LXML = [
-    "lxml.objectify", "lxml.sax", "lxml.builder", "lxml.html.builder", "lxml.html.diff",
-    "lxml.html._difflib", "lxml.html._diffcommand", "lxml.isoschematron",
-]
-
-
-def _not_test(name):
-    leaf = name.rpartition(".")[2]
-    return not (leaf.startswith("test_") or leaf == "conftest")
-
-
-def _not_enchant_dialog(name):
-    return name not in (
-        "enchant.checker.CmdLineChecker",
-        "enchant.checker.GtkSpellCheckerDialog",
-        "enchant.checker.wxSpellCheckerDialog",
-    )
-
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
@@ -189,35 +105,20 @@ a = Analysis(  # noqa: F821
         + [(str(SVG_LOADER), "lib/gdk-pixbuf/loaders")]
     ),
     datas=datas,
-    hiddenimports=(
-        collect_submodules("virtaal", filter=_not_test)
-        + collect_submodules("translate.storage")
-        + (collect_submodules("enchant", filter=_not_enchant_dialog) if _bundle_enchant else [])
+    hiddenimports=common.hiddenimports(enchant=_bundle_enchant),
+    hooksconfig=common.hooksconfig(
+        LANGUAGES,
+        # Optional native macOS menu-bar integration (mainview.py's
+        # try/except-gated GtkosxApplication block) - statically imported,
+        # so the gi hook would bundle it regardless; declared to match the
+        # gi.require_version() call rather than whatever the hook guesses.
+        module_versions={"GtkosxApplication": "1.0"},
+        # Not every theme in Homebrew's share/icons: Adwaita is
+        # bundled above, without its cursors.
+        icons=["hicolor"],
     ),
-    hooksconfig={
-        "gi": {
-            "module-versions": {
-                "Gtk": "3.0",
-                # Optional native macOS menu-bar integration
-                # (mainview.py's try/except-gated GtkosxApplication block) -
-                # statically imported, so PyInstaller's gi hook would try
-                # to bundle it regardless; declared explicitly to match the
-                # actual gi.require_version() call rather than relying on
-                # whatever the hook guesses.
-                "GtkosxApplication": "1.0",
-            },
-            "languages": bundle_languages(LANGUAGES),
-            # Not every theme in Homebrew's share/icons: Adwaita is
-            # bundled above, without its cursors.
-            "icons": ["hicolor"],
-        },
-    },
-    # devsupport isn't needed at runtime in a frozen build - its one
-    # consumer (profiling support) is already `if not packaged:`-gated
-    # off in virtaal/cli.py.
     excludes=(
-        ["FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport"]
-        + UNUSED_LXML
+        common.EXCLUDES
         # No bundled dylib for this build (arm64, or staging failed) -
         # exclude enchant rather than let it fall through to Homebrew's
         # own copy (this CI job installs it) and crash: two separate
@@ -227,7 +128,7 @@ a = Analysis(  # noqa: F821
     ),
     noarchive=False,
 )
-a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
+a.datas = common.trim(a.datas, ROOT)
 
 # The GdkPixbuf hook's loader cache lists gdk-pixbuf's own loaders only;
 # add the SVG one, at the path the hook uses for the rest.
@@ -238,42 +139,23 @@ _svg_entry = subprocess.run(
 with open(_LOADER_CACHE, "a", encoding="utf-8") as _cache:
     _cache.write("\n" + "\n".join(line for line in _svg_entry.splitlines() if not line.startswith("#")) + "\n")
 
-a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
-
 # The Toolkit's spelling check imports enchant.checker.
 if _bundle_enchant and "enchant.checker" not in {entry[0] for entry in a.pure}:
     raise SystemExit("enchant.checker isn't bundled")
 
-# PyInstaller keeps the first datas entry for a destination: our merged
-# lite catalogs, listed in datas above, must beat the copies GTK's and
-# GLib's own hooks (and gtkmac_mo_files) collect at the same path.
-_mismatched = mismatched_catalogs(a.datas, mo_files)
-if _mismatched:
-    raise SystemExit("Bundled another copy instead of Virtaal's catalog: %r" % _mismatched)
-# Every shipped language has its virtaal.mo, and GTK's and GLib's
-# catalogs wherever this host's libraries or a lite catalog provide one.
-_missing = missing_catalogs(a.datas, expected_catalogs(LANGUAGES, mo_files))
-if _missing:
-    raise SystemExit("Shipped languages missing catalogs: %r" % _missing)
+# gtkmac_mo_files are among the copies Virtaal's own catalogs must beat.
+common.check_catalogs(a.datas, mo_files, LANGUAGES)
 
 pyz = PYZ(a.pure, a.zipped_data)  # noqa: F821
 
 exe = EXE(  # noqa: F821
     pyz,
     a.scripts,
-    exclude_binaries=True,
-    name="virtaal",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
-    console=False,
     icon=str(ROOT / "devsupport" / "virtaal.icns"),
+    **common.EXE_OPTIONS,
 )
 
-coll = COLLECT(  # noqa: F821
-    exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=False, name="virtaal"
-)
+coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, **common.COLLECT_OPTIONS)  # noqa: F821
 
 app = BUNDLE(  # noqa: F821
     coll,
@@ -286,7 +168,7 @@ app = BUNDLE(  # noqa: F821
         "CFBundleName": "Virtaal",
         "CFBundleShortVersionString": virtaal_version,
         "CFBundleVersion": virtaal_version,
-        "NSHumanReadableCopyright": COPYRIGHT,
+        "NSHumanReadableCopyright": common.COPYRIGHT,
         # Homebrew's bottles target the build machine's macOS (#4369).
         "LSMinimumSystemVersion": minimum_macos(src for _dest, src, _kind in a.binaries),
         "LSApplicationCategoryType": "public.app-category.productivity",

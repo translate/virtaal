@@ -27,6 +27,26 @@ LARGE_INSERT = 1000
 LONGEST_CHECKED_LINE = 10000
 # GtkTextBuffer's line ends.
 _LINE_END_RE = re.compile('\r\n|[\r\n\u2029]')
+# GtkSpell reads iso-codes for its Languages submenu, which Virtaal removes,
+# and warns where they aren't installed, as on macOS (#4448).
+_ISO_CODES_WARNING_RE = re.compile(r'iso_(639|3166)\.xml: ')
+
+
+class _NoIsoCodesWarnings:
+    """Drops GtkSpell's iso-codes warnings while in use; GLib's default
+        handler gets the rest."""
+
+    def __enter__(self):
+        self._handler_id = GLib.log_set_handler('', GLib.LogLevelFlags.LEVEL_WARNING, self._log, None)
+        return self
+
+    def __exit__(self, *exc_info):
+        GLib.log_remove_handler('', self._handler_id)
+
+    @staticmethod
+    def _log(domain, level, message, *data):
+        if not _ISO_CODES_WARNING_RE.match(message):
+            GLib.log_default_handler(domain, level, message, None)
 
 
 def _gtkspell_text(msgid):
@@ -148,6 +168,7 @@ class Plugin(BasePlugin):
             # same emission - running after them means "Languages" can be
             # removed before the menu is ever shown, instead of shrinking
             # an already-visible popup (which GTK doesn't support cleanly).
+            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup_start)
             self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup, after=True)
             self._signal_tracker.connect(textbox.get_buffer(), 'apply-tag', self._on_apply_tag, textbox)
             self._signal_tracker.connect(textbox.get_buffer(), 'insert-text', self._on_insert_text, textbox)
@@ -249,7 +270,8 @@ class Plugin(BasePlugin):
                 # anyway, so let's ignore it and hope for the best.
                 logging.debug("gtkspell.Checker.get_from_text_view() raised: %s", e)
             if spell is None:
-                spell = self.gtkspell.Checker()
+                with _NoIsoCodesWarnings():
+                    spell = self.gtkspell.Checker()
                 # Creating a checker binds gtkspell3 to its own catalogs.
                 rebind_library_domain(b"gtkspell3")
                 # Attaching checks the text, so it needs a language
@@ -288,7 +310,14 @@ class Plugin(BasePlugin):
         if tag.props.name == 'gtkspell-misspelled' and _in_placeable(textbox, start, end):
             buffer.stop_emission_by_name('apply-tag')
 
+    def _on_populate_popup_start(self, textbox, menu):
+        # Runs before gtkspell's own handler builds its items.
+        self._popup_filter = _NoIsoCodesWarnings().__enter__()
+
     def _on_populate_popup(self, textbox, menu):
+        popup_filter, self._popup_filter = getattr(self, '_popup_filter', None), None
+        if popup_filter is not None:
+            popup_filter.__exit__(None, None, None)
         editable = textbox.get_editable()
         _entries_above_separator = False
         for item in menu:

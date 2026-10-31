@@ -241,6 +241,9 @@ class _FakeEditableTextbox:
     def move_elem_selection(self, direction):
         self.move_calls.append(direction)
 
+    def emit(self, signal, *args):
+        self.emitted = getattr(self, 'emitted', []) + [signal]
+
 
 @pytest.fixture(autouse=True)
 def no_active_dialog(monkeypatch):
@@ -343,8 +346,8 @@ def test_cut_cuts_from_the_focused_target_only():
 
     view._on_cut(None)
 
-    assert focused.buffer.cut_calls == [True]
-    assert unfocused.buffer.cut_calls == []
+    assert focused.emitted == ['cut-clipboard']
+    assert not hasattr(unfocused, 'emitted')
 
 
 def test_cut_does_nothing_when_no_target_is_focused():
@@ -361,7 +364,7 @@ def test_copy_copies_from_a_focused_source_as_well_as_a_focused_target():
 
     view._on_copy(None)
 
-    assert len(focused_source.buffer.copy_calls) == 1
+    assert focused_source.emitted == ['copy-clipboard']
 
 
 class _FakeClipboard:
@@ -393,7 +396,8 @@ def test_paste_pastes_into_the_focused_target():
 
     view._on_paste(None)
 
-    assert focused.buffer.paste_calls == [True]
+    # The text box's own paste, as its key binding and context menu use.
+    assert focused.emitted == ['paste-clipboard']
 
 
 def test_placeable_actions_do_nothing_while_a_dialog_has_the_focus(dialog_entry):

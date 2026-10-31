@@ -241,6 +241,9 @@ class _FakeEditableTextbox:
     def move_elem_selection(self, direction):
         self.move_calls.append(direction)
 
+    def emit(self, signal, *args):
+        self.emitted = getattr(self, 'emitted', []) + [signal]
+
 
 @pytest.fixture(autouse=True)
 def no_active_dialog(monkeypatch):
@@ -393,7 +396,8 @@ def test_paste_pastes_into_the_focused_target():
 
     view._on_paste(None)
 
-    assert focused.buffer.paste_calls == [True]
+    # The text box's own paste, as its key binding and context menu use.
+    assert focused.emitted == ['paste-clipboard']
 
 
 def test_placeable_actions_do_nothing_while_a_dialog_has_the_focus(dialog_entry):

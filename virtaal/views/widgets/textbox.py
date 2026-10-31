@@ -12,6 +12,7 @@ from gi.repository.GObject import SignalFlags
 from translate.storage.placeables import StringElem
 from translate.storage.placeables import parse as elem_parse
 
+from virtaal.common.platform import platform
 from virtaal.support.translate_compat import forceunicode
 from virtaal.views import placeablesguiinfo, theme
 from virtaal.views.theme import current_theme
@@ -89,6 +90,23 @@ class TextBox(Gtk.TextView):
         'text-inserted': (SignalFlags.RUN_LAST, bool, (object, int, object)),
         'changed': (SignalFlags.RUN_LAST, None, ()),
     }
+
+    def do_paste_clipboard(self):
+        if not platform.is_mac:
+            Gtk.TextView.do_paste_clipboard(self)
+            return
+        # GtkTextBuffer's paste also lists the clipboard's other formats, and
+        # GTK logs a gdk_atom_intern critical on macOS for each one without
+        # a MIME type (#4647). Plain text is all a translation takes.
+        text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
+        if text is None or not self.get_editable():
+            return
+        buffer = self.get_buffer()
+        buffer.begin_user_action()
+        buffer.delete_selection(True, True)
+        buffer.insert_interactive_at_cursor(text, -1, True)
+        buffer.end_user_action()
+        self.scroll_mark_onscreen(buffer.get_insert())
 
     SPECIAL_KEYS = {
         'alt-down': [(Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)],

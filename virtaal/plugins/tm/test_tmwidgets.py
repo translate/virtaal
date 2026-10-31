@@ -12,6 +12,7 @@ import pytest
 from gi.repository import Gdk, GObject, Gtk, Pango
 
 from virtaal.common import pan_app
+from virtaal.plugins.tm import tmwidgets
 from virtaal.plugins.tm.tmwidgets import TMMatchRenderer, TMSourceColRenderer, TMWindow
 
 
@@ -480,3 +481,28 @@ def test_match_text_is_right_aligned_in_a_right_to_left_view():
 
     assert renderer.target_layout.get_alignment() == Pango.Alignment.RIGHT
     assert renderer.source_layout.get_alignment() == Pango.Alignment.RIGHT
+
+
+@pytest.mark.parametrize('text,expected', [
+    ('', ('', False)),
+    ('short', ('short', False)),
+    ('line\n' * 5 + 'line', ('line\n' * 5 + 'line', False)),
+    ('line\n' * 2000, ('line\n' * 5 + 'line', True)),
+    ('x' * 5000, ('x' * tmwidgets.SHOWN_CHARS, True)),
+])
+def test_shown_cuts_a_suggestion_to_what_a_row_can_show(text, expected):
+    assert tmwidgets._shown(text) == expected
+
+
+@pytest.mark.parametrize('target', ['line\n' * 2000, 'word ' * 2000])
+def test_a_long_suggestion_fits_in_the_tm_window(target):
+    # #4453: a 2,000-line target was laid out in full on every focus change,
+    # and a long one hid its percentage below the window's edge.
+    tmwindow = _make_tmwindow_with_matches(n=0, show=False)
+    match = {'quality': 90, 'tmsource': 'Current file', 'query_str': 'query',
+             'source': 'source', 'target': target}
+    tmwindow.liststore.append([match, 'match'])
+
+    assert tmwindow.rows_height() < tmwindow.MAX_HEIGHT
+    renderer = tmwindow.tvc_match.get_cells()[0]
+    assert renderer.target_layout.get_text().count('\n') < tmwidgets.SHOWN_LINES

@@ -10,6 +10,22 @@ from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 
 from virtaal.support.libi18n.numbers import format_percent
 from virtaal.views import markup, rendering
+from virtaal.views.theme import current_theme
+
+# A long suggestion's source and target each show at most SHOWN_HEIGHT
+# pixels, so the row fits in the TM window (MAX_HEIGHT) with its percentage
+# and the cut-off mark in sight; only their start is laid out at all.
+SHOWN_HEIGHT = 120
+SHOWN_LINES = 6
+SHOWN_CHARS = 1000
+
+
+def _shown(text):
+    """The start of text that fits in a row, and whether it's cut."""
+    if not text:
+        return text, False
+    shown = '\n'.join(text.split('\n')[:SHOWN_LINES])[:SHOWN_CHARS]
+    return shown, shown != text
 
 
 class TMWindow(Gtk.Window):
@@ -377,8 +393,15 @@ class TMMatchRenderer(Gtk.CellRenderer):
         layout.set_font_description(font_description)
         layout.set_wrap(Pango.WrapMode.WORD_CHAR)
         layout.set_width(width * Pango.SCALE)
+        layout.set_height(SHOWN_HEIGHT * Pango.SCALE)
+        layout.set_ellipsize(Pango.EllipsizeMode.END)
         #XXX - plurals?
-        layout.set_markup(markup.markuptext(text, diff_text=diff_text))
+        shown, cut = _shown(text)
+        text_markup = markup.markuptext(shown, diff_text=_shown(diff_text)[0])
+        if cut:
+            # Dimmed like a pilcrow: it isn't part of the text.
+            text_markup += '<span foreground="%s">…</span>' % current_theme['subtle_fg']
+        layout.set_markup(text_markup)
         # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
         if widget.get_direction() == Gtk.TextDirection.RTL:

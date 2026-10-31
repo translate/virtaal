@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""The parts of the macOS and Windows PyInstaller specs they share."""
+"""The parts the Linux, macOS and Windows PyInstaller specs share."""
 
 from pathlib import Path
 

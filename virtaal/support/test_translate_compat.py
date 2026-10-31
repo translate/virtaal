@@ -20,6 +20,7 @@ from virtaal.support.translate_compat import (
     gettext_country,
     gettext_domain,
     gettext_lang,
+    gettext_script,
     tr_lang,
 )
 
@@ -110,6 +111,27 @@ def test_tr_lang_translates_a_semicolon_joined_name_by_its_cleaned_up_form():
 
 def test_tr_lang_translates_the_country_too():
     assert tr_lang('de')('Portuguese (Brazil)') == 'Portugiesisch (Brasilien)'
+
+
+def test_tr_lang_translates_a_script_qualifier():
+    # "Latin" is no country: the script names catalog translates it (#4681).
+    assert tr_lang('de')('Serbian (Latin)', 'sr@latin') == 'Serbisch (Lateinisch)'
+    assert tr_lang('sr@latin')('Serbian (Latin)', 'sr@latin') == 'srpski (latinski)'
+    assert tr_lang('be')('Uzbek (Cyrillic)', 'uz@cyrillic').endswith('(кірыліца)')
+
+
+def test_tr_lang_keeps_a_qualifier_neither_catalog_has():
+    assert tr_lang('de')('Catalan; Valencian (Valencia)', 'ca@valencia').endswith('(Valencia)')
+
+
+def test_gettext_script_uses_pycountrys_locale_dir_when_available():
+    assert gettext_script('de')('Cyrillic') == 'Kyrillisch'
+
+
+def test_gettext_script_falls_back_to_iso_15924_without_pycountry(monkeypatch):
+    monkeypatch.setattr(translate_compat, 'pycountry', None)
+
+    assert gettext_script('en')('Latin') == 'Latin'
 
 
 def test_tr_lang_names_a_language_family_by_its_code():

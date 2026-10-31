@@ -68,3 +68,11 @@ jobs:
             python -m pytest -p no:cacheprovider -rf -s virtaal/plugins/terminology/models/test_pontoon_live.py
         env:
           VIRTAAL_LIVE_SERVICES: "1"
+
+      - name: Open the default web look-ups
+        if: ${{ !cancelled() }}
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python -m pytest -p no:cacheprovider -rf -s virtaal/plugins/lookup/models/test_weblookup_live.py
+        env:
+          VIRTAAL_LIVE_SERVICES: "1"

@@ -814,3 +814,20 @@ def test_the_iso_codes_filter_is_removed_afterwards(monkeypatch):
         pass
 
     assert calls == [('set', ''), ('remove', '', 7)]
+
+
+def test_a_downloaded_dictionary_is_checked_without_a_restart(monkeypatch):
+    # #4585: a language remembered as having no dictionary stayed unchecked.
+    plugin, created, scheduled = _lang_plugin(monkeypatch, set())
+    target = _text_view()
+    plugin.unit_view = SimpleNamespace(sources=[], targets=[target])
+    plugin._on_unit_lang_changed(None, target, 'af')
+    assert plugin._seen_languages == {'af': None}
+
+    plugin.enchant.known_dicts.add('af_ZA')
+    plugin.enchant.list_languages = lambda: ['af_ZA']
+    lang_controller = SimpleNamespace(source_lang=SimpleNamespace(code='en'), target_lang=SimpleNamespace(code='af'))
+    plugin._on_dictionary_installed(lang_controller, 'af_ZA')
+    _run(scheduled)
+
+    assert target.spell_lang == 'af_ZA'

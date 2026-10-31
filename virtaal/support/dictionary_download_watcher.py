@@ -37,6 +37,20 @@ from virtaal.support.enchant_compat import import_enchant
 _UNSET = object()
 
 
+
+def _forget_missing_dictionary(language):
+    """The quality checks remember a language with no dictionary; a
+        downloaded one is used without a restart (#4585)."""
+    try:
+        from translate.filters import spelling
+    except ImportError:
+        return
+    base = language.split('_')[0]
+    for lang in [lang for lang in getattr(spelling, 'checkers', {}) if lang.split('_')[0] == base]:
+        del spelling.checkers[lang]
+    if hasattr(spelling.simple_check, 'cache_clear'):
+        spelling.simple_check.cache_clear()
+
 class DictionaryDownloadWatcher:
     """No-ops entirely if enchant isn't importable - same graceful
     degradation as everywhere else spell checking touches this."""
@@ -47,6 +61,7 @@ class DictionaryDownloadWatcher:
             enchant_module = import_enchant()
         self._enchant = enchant_module
         self._downloader_factory = downloader_factory or DictionaryDownloader
+        self._lang_controller = main_controller.lang_controller
         self._asset_manifest = asset_manifest
         self._schedule_after_idle_lull = schedule_after_idle_lull or asset_manifest_module.schedule_after_idle_lull
         self._tried = set()
@@ -105,3 +120,6 @@ class DictionaryDownloadWatcher:
         if success and entry is not None:
             pan_app.settings.installed_assets[installed_asset_key('dictionary', language)] = entry_shas(entry)
         logging.debug('Dictionary download attempt finished for %s', language)
+        if success:
+            _forget_missing_dictionary(language)
+            self._lang_controller.emit('dictionary-installed', language)

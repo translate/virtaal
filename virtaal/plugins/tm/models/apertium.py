@@ -37,6 +37,7 @@ class TMModel(BaseTMModel):
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.language_pairs = []
+        self.languages_known = False
         self.load_config()
 
         self.client = HTTPClient()
@@ -48,6 +49,8 @@ class TMModel(BaseTMModel):
             'http-success',
             lambda langreq, response: self.got_language_pairs(response)
         )
+        for signal in ('http-client-error', 'http-server-error'):
+            langreq.connect(signal, lambda langreq, status: self.set_languages_known())
 
         super().__init__(controller)
 
@@ -56,6 +59,9 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
+        if not self.hold_until_languages_known(tmcontroller, unit):
+            return
+
         pair = (self.source_lang, self.target_lang)
         if pair not in self.language_pairs:
             return
@@ -88,6 +94,8 @@ class TMModel(BaseTMModel):
         except (ValueError, KeyError, TypeError) as exc:
             # Not JSON, or of another shape (#4438).
             logging.warning("Ignoring an Apertium language list it can't read: %s", exc)
+        finally:
+            self.set_languages_known()
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""

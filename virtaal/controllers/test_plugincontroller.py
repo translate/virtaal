@@ -9,6 +9,9 @@
 import builtins
 import logging
 import os
+import subprocess
+import sys
+import textwrap
 from types import SimpleNamespace
 
 import pytest
@@ -16,27 +19,6 @@ import pytest
 from virtaal.controllers import plugincontroller
 from virtaal.controllers.baseplugin import PluginUnsupported
 from virtaal.controllers.plugincontroller import PluginController
-
-
-def test_resourcepath_plugin_dir_construction(monkeypatch):
-    """__init__() called .decode(sys.getfilesystemencoding()) on
-    os.environ['RESOURCEPATH'] - a Python 2 idiom (os.environ values
-    were bytes there) that raises AttributeError on Python 3, where
-    they're already str. RESOURCEPATH is set on every macOS frozen
-    launch (translate.misc.file_discovery checks the same var), so
-    this crashed PluginController.__init__() there every time."""
-    monkeypatch.setenv('RESOURCEPATH', '/tmp/fake_resources')
-
-    # PLUGIN_DIRS is a class attribute that __init__() mutates in
-    # place (self.PLUGIN_DIRS.insert(...), no reassignment) - restore
-    # it so this test doesn't leave every later PluginController
-    # instantiation with a stale extra entry.
-    original_dirs = list(PluginController.PLUGIN_DIRS)
-    try:
-        pc = PluginController(controller=object(), classname='TestPlugin')
-        assert pc.PLUGIN_DIRS[0] == os.path.join('/tmp/fake_resources', 'virtaal_plugins')
-    finally:
-        PluginController.PLUGIN_DIRS[:] = original_dirs
 
 
 def _make_controller():
@@ -96,15 +78,48 @@ def test_init_registers_itself_on_the_owning_controller_by_default():
     assert controller.plugin_controller is pc
 
 
-def test_init_prepends_the_windows_plugin_dir(monkeypatch):
-    monkeypatch.setattr(plugincontroller.platform, 'is_windows', True)
-    monkeypatch.setattr(plugincontroller.pan_app, 'main_dir', '/fake/main/dir')
-    original_dirs = list(PluginController.PLUGIN_DIRS)
-    try:
-        pc = PluginController(controller=object(), classname='TestPlugin')
-        assert pc.PLUGIN_DIRS[0] == os.path.join('/fake/main/dir', 'virtaal_plugins')
-    finally:
-        PluginController.PLUGIN_DIRS[:] = original_dirs
+def test_a_0_7_install_folders_plugins_are_not_loaded(tmp_path):
+    """0.7 installed its plug-ins as source in <install>\\virtaal_plugins.
+    Installing 1.0 into the same folder left them there, and they
+    overrode the bundled plug-ins (#4645). The frozen Windows build has
+    its install folder on sys.path (contents_directory=".")."""
+    install = tmp_path / 'install'
+    stale = install / 'virtaal_plugins'
+    stale.mkdir(parents=True)
+    (stale / '__init__.py').write_text('raise SystemExit("0.7 plug-ins imported")\n')
+    (stale / 'autocorrector.py').write_text('raise SystemExit("0.7 plug-in loaded")\n')
+    script = textwrap.dedent(f"""
+        import sys
+        from types import SimpleNamespace
+        from virtaal.common import pan_app
+        from virtaal.common.platform import platform
+        platform.is_windows = True
+        pan_app.main_dir = {str(install)!r}
+        sys.path.append({str(install)!r})
+        from virtaal.controllers.plugincontroller import PluginController
+        pc = PluginController(SimpleNamespace())
+        assert 'autocorrector' in pc._find_plugin_names()
+        assert pc._get_plugin_class('autocorrector').__module__ == 'virtaal.plugins.autocorrector'
+        assert 'virtaal_plugins' not in sys.modules
+    """)
+    env = dict(os.environ, HOME=str(tmp_path), APPDATA=str(tmp_path))
+    result = subprocess.run([sys.executable, '-c', script], env=env,
+                            capture_output=True, text=True, timeout=120)
+    assert result.returncode == 0, result.stderr
+
+
+def test_user_plugins_found_only_in_the_config_folder(tmp_path, monkeypatch):
+    for folder in ('config', 'install'):
+        (tmp_path / folder / 'virtaal_plugins').mkdir(parents=True)
+        (tmp_path / folder / 'virtaal_plugins' / '__init__.py').write_text('')
+    monkeypatch.delitem(sys.modules, 'virtaal_plugins', raising=False)
+    monkeypatch.setattr(plugincontroller.pan_app, 'get_config_dir', lambda: str(tmp_path / 'config'))
+
+    monkeypatch.syspath_prepend(str(tmp_path / 'install'))
+    assert not plugincontroller._user_plugins_found()
+
+    monkeypatch.syspath_prepend(str(tmp_path / 'config'))
+    assert plugincontroller._user_plugins_found()
 
 
 def test_for_backend_builds_a_specialized_controller():

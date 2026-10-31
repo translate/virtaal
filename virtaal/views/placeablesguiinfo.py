@@ -235,7 +235,8 @@ class StringElemGUI:
                 child.gui_info.render(offset)
                 offset += child.gui_info.length()
             else:
-                buffer.insert(buffer.get_iter_at_offset(offset), child)
+                # GTK stops a string at NUL; show it as one character (#4349).
+                buffer.insert(buffer.get_iter_at_offset(offset), child.replace('\0', '\u2400'))
                 offset += len(child)
 
         if self.has_end_widget():

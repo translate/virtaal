@@ -130,7 +130,12 @@ class TMWindow(Gtk.Window):
             tm_source_width = self.tvc_perc.get_width()
         width = widget_alloc.width + self.tvc_perc.get_width() + tm_source_width + scrollbar_width
         shadow_border = self.scrolled_window.get_style_context().get_border(Gtk.StateFlags.NORMAL)
-        height = min(self.rows_height(), self.MAX_HEIGHT) + shadow_border.top + shadow_border.bottom
+        rows_height = self.rows_height()
+        if not rows_height:
+            # Sized for no rows (2 pixels), the window was later shown with
+            # rows at that size, and its scrollbar had less than no room (#4400).
+            return
+        height = min(rows_height, self.MAX_HEIGHT) + shadow_border.top + shadow_border.bottom
 
         # Anchor below by default; flip above the source text (not just
         # the target, which sits right below it) when below doesn't fit.

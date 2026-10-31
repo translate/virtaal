@@ -678,6 +678,7 @@ def test_connect_to_textboxes_wires_populate_popup():
     plugin = Plugin.__new__(Plugin)
     plugin._signal_tracker = SignalTracker()
     fix_menu_calls = []
+    plugin._on_populate_popup_start = lambda textbox, menu: None
     plugin._on_populate_popup = lambda textbox, menu: fix_menu_calls.append((textbox, menu))
     textbox = Gtk.TextView()
 
@@ -697,6 +698,7 @@ def test_connect_to_textboxes_runs_after_other_populate_popup_handlers():
     plugin = Plugin.__new__(Plugin)
     plugin._signal_tracker = SignalTracker()
     order = []
+    plugin._on_populate_popup_start = lambda textbox, menu: None
     plugin._on_populate_popup = lambda textbox, menu: order.append('spellchecker')
     textbox = Gtk.TextView()
     textbox.connect('populate-popup', lambda *a: order.append('other-plugin'))
@@ -828,3 +830,52 @@ def test_spellchecker_dependencies_importable():
         "enchant imported but reports no available dictionaries/providers "
         "- check the enchant backend (hunspell/aspell) is installed"
     )
+
+
+def _recording_glib(monkeypatch):
+    """Records the log handlers spellchecker sets and removes. Patches its
+        GLib name, not GLib's own functions: undoing that deletes them
+        (pytest 9.2), which frees PyGObject's wrapper and the callback
+        data of every handler it set that is still installed (a crash
+        at the next warning)."""
+    glib = SimpleNamespace(
+        LogLevelFlags=GLib.LogLevelFlags, calls=[], passed=[],
+        log_set_handler=lambda *args: glib.calls.append(('set', args[0])) or 7,
+        log_remove_handler=lambda *args: glib.calls.append(('remove',) + args),
+        log_default_handler=lambda *args: glib.passed.append(args[2]))
+    monkeypatch.setattr(spellchecker, 'GLib', glib)
+    return glib
+
+
+def test_gtkspells_iso_codes_warnings_are_dropped(monkeypatch):
+    # #4448: GtkSpell warns that it can't find iso-codes on macOS.
+    glib = _recording_glib(monkeypatch)
+    for message in ('iso_639.xml: Failed to open file', 'iso_3166.xml: Failed to open file', 'Something else'):
+        spellchecker._NoIsoCodesWarnings._log('', GLib.LogLevelFlags.LEVEL_WARNING, message)
+
+    assert glib.passed == ['Something else']
+
+
+def test_the_iso_codes_filter_is_removed_afterwards(monkeypatch):
+    glib = _recording_glib(monkeypatch)
+
+    with spellchecker._NoIsoCodesWarnings():
+        pass
+
+    assert glib.calls == [('set', ''), ('remove', '', 7)]
+
+
+def test_a_popup_that_never_ends_leaves_no_filter_after_destroy(monkeypatch):
+    # A populate-popup emission stopped before the after-handlers ran
+    # left the iso-codes filter installed for good.
+    glib = _recording_glib(monkeypatch)
+    plugin = Plugin.__new__(Plugin)
+    plugin._signal_tracker = SignalTracker()
+    plugin.unit_view = SimpleNamespace(sources=[], targets=[])
+
+    plugin._on_populate_popup_start(Gtk.TextView(), Gtk.Menu())
+    plugin._on_populate_popup_start(Gtk.TextView(), Gtk.Menu())
+    plugin.destroy()
+
+    assert glib.calls == [('set', ''), ('remove', '', 7)]
+

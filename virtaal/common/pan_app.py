@@ -438,7 +438,10 @@ class Settings:
         # A code that isn't one broke every TM request (#4340): "af",
         # "zh_CN", "pt-BR", "sr@latin".
         for lang in ('sourcelang', 'targetlang'):
-            if self.language[lang] and not re.fullmatch(r'[a-z]{2,3}(?:[_-][A-Za-z0-9]+)*(?:@[A-Za-z0-9]+)?', self.language[lang]):
+            if not self.language[lang]:
+                # Blank is the same as not set (#4432).
+                self.language[lang] = language_defaults[lang]
+            elif not re.fullmatch(r'[a-z]{2,3}(?:[_-][A-Za-z0-9]+)*(?:@[A-Za-z0-9]+)?', self.language[lang]):
                 import logging
                 logging.warning("Using %s for %s: %r isn't a language code", language_defaults[lang], lang, self.language[lang])
                 self.language[lang] = language_defaults[lang]

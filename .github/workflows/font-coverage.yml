@@ -18,6 +18,11 @@ permissions:
   # Downloads the packages of the latest successful CI run on main.
   actions: read
 
+env:
+  # Abort a stalled git fetch so actions/checkout retries it (#4476).
+  GIT_HTTP_LOW_SPEED_LIMIT: 1000
+  GIT_HTTP_LOW_SPEED_TIME: 60
+
 jobs:
   font-coverage-macos:
     strategy:

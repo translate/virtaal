@@ -180,6 +180,25 @@ def test_width_calculation_skips_a_welcome_screen_hidden_before_it_runs(monkeypa
     assert all(w >= -1 for w in widths)
 
 
+
+def test_width_calculation_leaves_a_narrow_welcome_screen_to_gtk(monkeypatch):
+    # #4410: shown but not yet allocated its width, 100 - 60 - 50 is -10.
+    view = _make_view()
+    calls = []
+    monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda func, *a, **k: calls.append((func, a)))
+    view.show()
+    col1 = view.widget.widgets['buttons']['open'].get_parent()
+    monkeypatch.setattr(view.widget, 'get_mapped', lambda: True)
+    monkeypatch.setattr(view.widget, 'get_allocation', lambda: SimpleNamespace(width=100))
+    monkeypatch.setattr(col1, 'get_allocation', lambda: SimpleNamespace(width=60))
+    widths = []
+    view.widget.widgets['txt_features'].set_size_request = lambda w, h: widths.append(w)
+
+    func, args = calls[0]
+    func(*args)
+
+    assert widths == [-1]
+
 def test_show_focuses_open(monkeypatch):
     monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda *a, **k: None)
     view = _make_view()

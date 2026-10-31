@@ -288,6 +288,14 @@ class TestTextBox(TestScaffolding):
 
         assert calls == [textbox]
 
+    def test_text_boxes_scroll_without_an_overlay_indicator(self):
+        # #4398: GTK leaves the indicator's handler on the adjustment after
+        # unrealize, and moving units then logged criticals.
+        self._target_for('%s files copied')
+        boxes = self.unit_controller.view.sources + self.unit_controller.view.targets
+
+        assert boxes and not any(box.get_parent().get_overlay_scrolling() for box in boxes)
+
     def test_get_stringelem_reparses_the_current_text(self):
         textbox = self._target_for('%s files copied')
         reparsed = textbox.get_stringelem()

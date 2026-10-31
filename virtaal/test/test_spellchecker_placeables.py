@@ -142,7 +142,7 @@ class TestSpellCheckerPlaceables(TestScaffolding):
         view = self.unit_controller.load_unit(factory.getobject("devsupport/testfiles/placeables.po").getunits()[6])
         textbox = view.targets[0]
         unit_view = _UnitView()
-        main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view))
+        main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view), lang_controller=self.lang_controller)
         self.plugin = self._start(monkeypatch, main_controller)
 
         unit_view.emit('targets-created', [textbox])

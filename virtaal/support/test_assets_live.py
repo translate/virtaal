@@ -94,17 +94,19 @@ def _report(failures):
     return '\n'.join('%s: %s' % item for item in sorted(failures.items()))
 
 
-# The spellchecker plugin's lookup: the locale itself, else the first
-# installed language that starts with "<locale>_".
+# The spellchecker plugin's lookup: the locale's enchant tag, else the
+# first installed language that starts with "<tag>_".
 _SPELL_CHECK = r'''
 import json, sys
 import enchant
+from virtaal.support.enchant_compat import enchant_tag
 results = {}
 for locale in json.loads(sys.argv[1]):
-    code = locale if enchant.dict_exists(locale) else next(
-        (c for c in enchant.list_languages() if c.startswith(locale + '_')), None)
+    tag = enchant_tag(locale)
+    code = tag if enchant.dict_exists(tag) else next(
+        (c for c in enchant.list_languages() if c.startswith(tag + '_')), None)
     if code is None:
-        results[locale] = 'enchant finds no dictionary for it'
+        results[locale] = 'enchant finds no dictionary for %s' % tag
         continue
     try:
         d = enchant.Dict(code)
@@ -120,30 +122,26 @@ print(json.dumps(results))
 def test_every_spelling_dictionary(manifest, tmp_path):
     from virtaal.support.dictionary_downloader import DictionaryDownloader
 
-    groups = _groups(manifest['dictionary'])
-    jobs = []
-    for i, ((folder, files), locales) in enumerate(groups.items()):
-        target = tmp_path / str(i) / 'enchant' / 'hunspell'
-        jobs.append(((folder, files), lambda done, l=locales[0], f=folder, fs=files, t=target:
-                     DictionaryDownloader(l, on_done=done, target_dir=str(t)).start_with_known_files(f, list(fs))))
+    # Each locale's files are saved under its own tag (#4665), so every
+    # locale downloads, into one folder.
+    target = tmp_path / 'enchant' / 'hunspell'
+    entries = manifest['dictionary']
+    jobs = [(locale, lambda done, l=locale, e=entry: DictionaryDownloader(
+                 l, on_done=done, target_dir=str(target)).start_with_known_files(
+                 e['folder'], [f['name'] for f in e['files']]))
+            for locale, entry in sorted(entries.items())]
     downloaded = _download_all(jobs)
 
-    failures = {}
-    for i, (key, locales) in enumerate(groups.items()):
-        if downloaded.get(key) is not True:
-            for locale in locales:
-                failures[locale] = 'download %s' % ('timed out' if downloaded.get(key) is None else 'failed')
-            continue
-        env = dict(os.environ, XDG_CONFIG_HOME=str(tmp_path / str(i)))
-        run = subprocess.run([sys.executable, '-c', _SPELL_CHECK, json.dumps(locales)],
-                             env=env, capture_output=True, text=True, timeout=300)
-        if run.returncode:
-            for locale in locales:
-                failures[locale] = 'check crashed: %s' % run.stderr.strip().splitlines()[-1:]
-            continue
-        failures.update(json.loads(run.stdout))
+    failures = {locale: 'download %s' % ('timed out' if downloaded.get(locale) is None else 'failed')
+                for locale in entries if downloaded.get(locale) is not True}
+    checked = sorted(locale for locale in entries if locale not in failures)
+    env = dict(os.environ, XDG_CONFIG_HOME=str(tmp_path))
+    run = subprocess.run([sys.executable, '-c', _SPELL_CHECK, json.dumps(checked)],
+                         env=env, capture_output=True, text=True, timeout=900)
+    assert not run.returncode, run.stderr[-2000:]
+    failures.update(json.loads(run.stdout))
     assert not failures, '%d of %d dictionaries:\n%s' % (
-        len(failures), len(manifest['dictionary']), _report(failures))
+        len(failures), len(entries), _report(failures))
 
 
 @pytest.mark.timeout(3600)

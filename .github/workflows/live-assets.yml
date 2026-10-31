@@ -1,0 +1,64 @@
+name: Live assets
+
+# Downloads every spelling dictionary, thesaurus and autocorrect list in
+# the published asset manifest through Virtaal's own downloaders and
+# checks Virtaal can use each one (#4657). update-asset-manifest.yml only
+# checks the files exist. Run it by hand twice before a release: a couple
+# of weeks ahead, and just before the tag.
+
+on:
+  schedule:
+    - cron: "0 5 2 * *" # 05:00 UTC on the 2nd of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Abort a stalled git fetch so actions/checkout retries it (#4476).
+  GIT_HTTP_LOW_SPEED_LIMIT: 1000
+  GIT_HTTP_LOW_SPEED_TIME: 60
+
+jobs:
+  assets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            iso-codes
+            libcairo2-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            librsvg2-common
+            pkg-config
+            python3-dev
+            xvfb
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pygobject
+
+      - name: Install virtaal
+        run: pip install .[spellcheck] pytest pytest-timeout
+
+      - name: Download and load every asset
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            python -m pytest -p no:cacheprovider -rf virtaal/support/test_assets_live.py
+        env:
+          VIRTAAL_LIVE_ASSETS: "1"

@@ -33,6 +33,8 @@ _("XLIFF Translation File")
 _("SDL XLIFF Translation File")
 _("Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)")
 _("Edit with Virtaal")
+#l10n: Windows installer option, shown only when Virtaal 0.7 is installed
+_("Uninstall the older Virtaal 0.7 first")
 
 # Argparse strings
 _("usage: ")

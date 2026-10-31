@@ -60,6 +60,7 @@ ChangesAssociations=yes
 #include "installer-strings.iss"
 
 [Tasks]
+Name: "uninstallold"; Description: "{cm:UninstallOldVirtaalTask}"; Check: OldVirtaalInstalled
 Name: "fileassoc"; Description: "{cm:FileAssocTask}"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
@@ -154,3 +155,47 @@ Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}"; ValueType: 
 Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\DefaultIcon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: ".ts"; ValueData: ""; Tasks: fileassoc
+
+[Code]
+const
+  { 0.7 had no AppId, so Inno Setup keyed it by AppName. }
+  OldVirtaalKey = 'Software\Microsoft\Windows\CurrentVersion\Uninstall\Virtaal_is1';
+
+function OldVirtaalUninstaller(var Path: String): Boolean;
+begin
+  Result := RegQueryStringValue(HKLM32, OldVirtaalKey, 'UninstallString', Path);
+  if Result then
+    Path := RemoveQuotes(Path);
+end;
+
+function OldVirtaalInstalled: Boolean;
+var
+  Path: String;
+begin
+  Result := OldVirtaalUninstaller(Path) and FileExists(Path);
+end;
+
+{ 0.7 installed to the folder an all-users 1.0 install uses, and its
+  uninstaller deletes files 1.0 has since replaced, so it runs before
+  1.0's files are copied (#4653). }
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  Path: String;
+  ResultCode, I: Integer;
+begin
+  Result := '';
+  if WizardIsTaskSelected('uninstallold') and OldVirtaalUninstaller(Path) then
+  begin
+    { ShellExec, so a per-user install gets the elevation prompt. }
+    if not ShellExec('', Path, '/SILENT /SUPPRESSMSGBOXES /NORESTART', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
+      Log('Could not run ' + Path + ': ' + SysErrorMessage(ResultCode))
+    else
+      { The uninstaller hands over to a copy of itself and exits. }
+      for I := 1 to 120 do
+      begin
+        if not RegKeyExists(HKLM32, OldVirtaalKey) then
+          Break;
+        Sleep(500);
+      end;
+  end;
+end;

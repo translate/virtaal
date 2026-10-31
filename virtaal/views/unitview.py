@@ -676,6 +676,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         scrollwnd = Gtk.ScrolledWindow()
         scrollwnd.set_policy(Gtk.PolicyType.NEVER, scroll_policy)
+        # It never shows a scrollbar. GTK keeps an overlay indicator's
+        # handler on the adjustment after unrealize, and a text view
+        # still validating then logs criticals for it (#4398).
+        scrollwnd.set_overlay_scrolling(False)
         scrollwnd.set_shadow_type(Gtk.ShadowType.IN)
         scrollwnd.add(textbox)
 

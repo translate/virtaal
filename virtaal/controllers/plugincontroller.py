@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import importlib
+import importlib.util
 import logging
 import os
 import sys
@@ -18,14 +20,24 @@ from virtaal.common.platform import platform
 from .basecontroller import BaseController
 from .baseplugin import BasePlugin, PluginUnsupported
 
-if platform.is_windows:
-    sys.path.insert(0, pan_app.main_dir)
-if 'RESOURCEPATH' in os.environ:
-    sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
-
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
 sys.path.insert(0, pan_app.get_config_dir())
+
+
+def _user_plugins_found():
+    """Whether virtaal_plugins is the user's own plug-in folder. A frozen
+        Windows build has its install folder on sys.path too, and an install
+        over 0.7 still has 0.7's plug-ins there (#4645)."""
+    try:
+        spec = importlib.util.find_spec('virtaal_plugins')
+    except (ImportError, ValueError):
+        return False
+    if spec is None or not spec.submodule_search_locations:
+        return False
+    user_dir = os.path.normcase(os.path.realpath(os.path.join(pan_app.get_config_dir(), 'virtaal_plugins')))
+    return all(os.path.normcase(os.path.realpath(p)) == user_dir for p in spec.submodule_search_locations)
+
 
 class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""
@@ -68,11 +80,6 @@ class PluginController(BaseController):
             controller.plugin_controller = self
         self.plugins       = {}
         self.pluginmodules = {}
-
-        if platform.is_windows:
-            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
-        if 'RESOURCEPATH' in os.environ:
-            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'], 'virtaal_plugins'))
 
     @classmethod
     def for_backend(cls, owner, classname, category, interface, get_disabled,
@@ -153,6 +160,10 @@ class PluginController(BaseController):
         for name in list(self.plugins.keys()):
             self.disable_plugin(name)
 
+    def _plugin_modules(self):
+        user = _user_plugins_found()
+        return [m for m in self.PLUGIN_MODULES if user or m.split('.')[0] != 'virtaal_plugins']
+
     def get_disabled_plugins(self):
         """Returns a list of names of plug-ins that are disabled in the
             configuration.
@@ -166,7 +177,7 @@ class PluginController(BaseController):
             return self.plugins[name].__class__
 
         module = None
-        for plugin_module in self.PLUGIN_MODULES:
+        for plugin_module in self._plugin_modules():
             # The following line makes sure that we have a valid module name to import from
             modulename = '.'.join([part for part in [plugin_module, name] if part])
             try:
@@ -218,12 +229,11 @@ class PluginController(BaseController):
             @note: If a plug-in is in a directory, it's C{self.PLUGIN_CLASSNAME}
                 class should be exposed in the plug-in's __init__.py file.
             @returns: A list of module names, assumed to be plug-ins."""
-        import importlib
         import pkgutil
 
         plugin_names = []
 
-        for plugin_module in self.PLUGIN_MODULES:
+        for plugin_module in self._plugin_modules():
             try:
                 package = importlib.import_module(plugin_module)
             except ImportError:

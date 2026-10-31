@@ -89,7 +89,7 @@ def _fake_gtkspell(existing=None, get_from_text_view_raises=None):
     return SimpleNamespace(Checker=_Checker), created
 
 
-@pytest.mark.parametrize("language,expected", [("pt", "pt_PT"), ("de", "de_DE")])
+@pytest.mark.parametrize("language,expected", [("pt", "pt_PT"), ("de", "de_DE"), ("ca", "ca_ES"), ("sr", "sr_RS")])
 def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
     """Regression: a `==` vs `=` typo made these branches no-ops, so 'pt'
     and 'de' were probed against enchant as themselves instead of the
@@ -103,6 +103,24 @@ def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
     Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=SimpleNamespace(), language=language)
 
     assert plugin.enchant.checked == [expected]
+
+
+def test_on_unit_lang_changed_falls_back_to_any_region_without_the_default_one():
+    # es tries es_ES first (#4675), but a system with only es_MX still gets it.
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = object()
+    plugin.enchant = _FakeEnchant(known_dicts=set())
+    plugin._seen_languages = {}
+    plugin._enchant_languages = ['es_MX']
+    text_view = SimpleNamespace()
+
+    with pytest.MonkeyPatch.context() as mp:
+        calls = []
+        mp.setattr(GLib, 'idle_add', lambda *a, **k: calls.append((a, k)))
+        Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=text_view, language='es')
+
+    assert plugin.enchant.checked == ['es_ES', 'es']
+    assert calls == [((plugin._activate_checker, text_view, 'es_MX'), {'priority': GLib.PRIORITY_LOW})]
 
 
 def test_on_unit_lang_changed_does_nothing_once_gtkspell_is_gone():

@@ -92,6 +92,7 @@ NO_INNO_LANGUAGE = {
 MESSAGE_KEY_TO_MSGID = {
     "FileAssocTask": "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)",
     "EditWithVirtaal": "Edit with Virtaal",
+    "UninstallOldVirtaalTask": "Uninstall the older Virtaal 0.7 first",
     "PoFileType": "Gettext PO file",
     "MoFileType": "Gettext MO file",
     "XliffFileType": "XLIFF Translation File",

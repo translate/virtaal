@@ -183,6 +183,7 @@ msgids = [
     "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)",
     "Edit with Virtaal",
     "SDL XLIFF Translation File",
+    "Uninstall the older Virtaal 0.7 first",
     "options",
     "positional arguments",
     "show program's version number and exit",

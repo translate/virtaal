@@ -304,7 +304,8 @@ class Sweep:
                     yield from self.settle(25)
                     strings = getattr(units[index].source, 'strings', [str(units[index].source)])
                     for textbox, expected in zip(self.mc.unit_controller.view.sources, strings):
-                        if textbox.get_text() != str(expected):
+                        # NUL shows as a symbol (#4349).
+                        if textbox.get_text() != str(expected).replace('\0', '\u2400'):
                             self.rec.problem('display-mismatch', '', 'source shows %s' % short(textbox.get_text()))
                 except Exception:
                     self.failed()

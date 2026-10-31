@@ -152,6 +152,79 @@ def test_query_sends_a_translate_request_for_an_uncached_pair():
     assert 'langpair=en%7Caf' in added[0].url
 
 
+# A query made before the pair list arrives waits for it (#4677).
+
+def _model_fetching_pairs(monkeypatch):
+    monkeypatch.setattr(apertium, 'HTTPClient', _FakeHTTPClient)
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {}))
+    return TMModel('apertium', _fake_controller())
+
+
+def _pairs_reply(*pairs):
+    return json.dumps({
+        'responseStatus': 200,
+        'responseData': [{'sourceLanguage': s, 'targetLanguage': t} for s, t in pairs],
+    })
+
+
+def test_query_before_the_pairs_arrive_runs_once_they_do(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+    langreq = model.client.added[0]
+
+    model.query(None, SimpleNamespace(source='hello'))
+    assert model.client.added == [langreq]
+
+    langreq.emit('http-success', _pairs_reply(('en', 'af')))
+
+    assert len(model.client.added) == 2
+    assert 'q=hello' in model.client.added[1].url
+
+
+def test_only_the_last_query_before_the_pairs_arrive_runs(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+
+    model.query(None, SimpleNamespace(source='first'))
+    model.query(None, SimpleNamespace(source='second'))
+    model.client.added[0].emit('http-success', _pairs_reply(('en', 'af')))
+
+    assert [r.url for r in model.client.added[1:]] == [
+        model.url_translate + '?q=second&langpair=en%7Caf&markUnknown=no&format=html']
+
+
+def test_query_held_for_an_unlisted_pair_sends_nothing(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+
+    model.query(None, SimpleNamespace(source='hello'))
+    model.client.added[0].emit('http-success', _pairs_reply(('fr', 'de')))
+
+    assert len(model.client.added) == 1
+
+
+def test_queries_after_the_pairs_arrive_are_not_held(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+    model.client.added[0].emit('http-success', _pairs_reply(('en', 'af')))
+
+    model.query(None, SimpleNamespace(source='hello'))
+
+    assert len(model.client.added) == 2
+
+
+def test_an_unreadable_pair_list_stops_holding_queries(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+
+    model.client.added[0].emit('http-success', 'not json')
+
+    assert model.languages_known
+
+
+def test_a_failed_pair_list_request_stops_holding_queries(monkeypatch):
+    model = _model_fetching_pairs(monkeypatch)
+
+    model.client.added[0].emit('http-server-error', 503)
+
+    assert model.languages_known
+
+
 # got_translation()
 
 def test_got_translation_emits_a_match_on_success():

@@ -63,11 +63,6 @@ KNOWN_BUGS = [
     # Windows' runner is slower still; the stall also outlasts the case into the next few.
     dict(issue=4606, sweep='keys', kind='timeout', match='', cases=['2000 lines'], platforms=['windows'],
          strict=False),
-    dict(issue=4606, sweep='autocorrect', kind='slow', match='',
-         cases=['2000 lines', 'printf', 'python named', 'percent alone', 'url-escape'], strict=False),
-    # A long target left in the TM is laid out on every focus change after it.
-    dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=ALL, strict=False),
-    dict(issue=4453, sweep='autocorrect', kind='slow', match='', cases=ALL, strict=False),
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
     dict(issue=4606, sweep='spelling', kind='slow', match='', cases=['2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),

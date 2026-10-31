@@ -657,6 +657,16 @@ def test_osx_lang_returns_none_without_preferred_languages(monkeypatch):
     assert pan_app.osx_lang() is None
 
 
+@pytest.mark.parametrize('lang', ['C', 'POSIX', 'C.UTF-8'])
+def test_get_locale_lang_treats_the_c_locale_as_unset(monkeypatch, lang):
+    # CI runners and containers run with LANG=C.UTF-8; "C" became the
+    # default target language, which isn't a language code (#4671).
+    monkeypatch.setattr(pan_app.locale, 'getdefaultlocale', lambda *a: (lang, 'UTF-8'))
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+
+    assert pan_app.get_locale_lang() == 'en'
+
+
 def test_get_locale_lang_falls_back_to_en_on_error(monkeypatch, caplog):
     def _raise(*a):
         raise RuntimeError('no locale')

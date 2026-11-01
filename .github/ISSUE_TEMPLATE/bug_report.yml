@@ -26,7 +26,7 @@ body:
     attributes:
       label: Virtaal version
       description: Help → About, or run `virtaal --version`. Not sure? Leave it blank.
-      placeholder: 1.0.0-rc2 (5e7cca9)
+      placeholder: 1.0.0-rc3 (5e7cca9)
     validations:
       required: false
 

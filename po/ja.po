@@ -20,6 +20,7 @@ msgstr ""
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -550,6 +551,11 @@ msgstr "翻訳ファイルの種類 (.po、.xlf、.tmx など) を Virtaal に�
 #: devsupport/tmp_strings.py
 msgid "Edit with Virtaal"
 msgstr "Virtaal で編集"
+
+#. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
+#: devsupport/tmp_strings.py
+msgid "Uninstall the older Virtaal 0.7 first"
+msgstr ""
 
 #: devsupport/tmp_strings.py
 msgid "usage: "

@@ -19,6 +19,7 @@ msgstr ""
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -29,9 +30,6 @@ msgstr "অনুবাদের সরঞ্জাম"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "A translation tool to help a human translator translate files into other "
-#| "languages"
 msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
@@ -104,7 +102,6 @@ msgid "<b>Translation</b>"
 msgstr "<b>অনুবাদের ভাষা</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
 msgstr "অনুপস্থিত ভাষা যোগ করুন…(_A)"
 
@@ -121,7 +118,6 @@ msgid "Re_vert to Saved"
 msgstr "সংরক্ষিত অবস্থায় পুনঃস্থাপন (_v)"
 
 #: share/virtaal/virtaal.ui
-#| msgid "_Update to Template"
 msgid "_Update from Template"
 msgstr "টেমপ্লেট থেকে নবীকরণ (_U)"
 
@@ -160,7 +156,6 @@ msgstr "উৎস থেকে অনুকরণ"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#| msgid "_Next Placeable"
 msgid "_Insert Placeable"
 msgstr "সন্নিবেশযোগ্য লেখা স্থাপন (_I)"
 
@@ -299,12 +294,10 @@ msgid "<b>Fonts</b>"
 msgstr "<b>ফন্ট</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Language"
 msgid "Language:"
 msgstr "ভাষা:"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
 msgstr "<b>ভাষা</b>"
 
@@ -424,7 +417,6 @@ msgid ""
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
 msgstr "<u>অতিরিক্ত…</u>"
 
@@ -470,12 +462,10 @@ msgid "<u>Feedback</u>"
 msgstr "<u>ফিড-ব্যাক</u>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
 msgstr "GitHub-এ বাগ দায়ের করুন"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
 msgstr "<u>বাগের তথ্য দায়ের করুন</u>"
 
@@ -484,7 +474,6 @@ msgid "<b><big>Support</big></b>"
 msgstr "<b><big>সহায়তা</big></b>"
 
 #: devsupport/tmp_strings.py
-#| msgid "Machine translation"
 msgid "Base translation store"
 msgstr "অনুবাদিত তথ্যের মূল সংগ্রহ"
 
@@ -493,7 +482,6 @@ msgid "Comma Separated Value"
 msgstr "কমা বিভাজিত মান"
 
 #: devsupport/tmp_strings.py
-#| msgid "Current File"
 msgid "Fluent file"
 msgstr "Fluent ফাইল"
 
@@ -510,7 +498,6 @@ msgid "Haiku catkeys file"
 msgstr "Haiku catkeys ফাইল"
 
 #: devsupport/tmp_strings.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla .lang"
 msgstr "Mozilla .lang"
 
@@ -539,7 +526,6 @@ msgid "TMX Translation Memory"
 msgstr "TMX অনুবাদ সংকলন"
 
 #: devsupport/tmp_strings.py
-#| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
 msgstr "TMX অনুবাদ সংকলন"
 
@@ -548,7 +534,6 @@ msgid "UTX Dictionary"
 msgstr "UTX অভিধান"
 
 #: devsupport/tmp_strings.py
-#| msgid "_Localization Guide"
 msgid "WiX Localization File"
 msgstr "WiX স্থানীয়করণ ফাইল"
 
@@ -572,6 +557,11 @@ msgstr ""
 
 #: devsupport/tmp_strings.py
 msgid "Edit with Virtaal"
+msgstr ""
+
+#. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
+#: devsupport/tmp_strings.py
+msgid "Uninstall the older Virtaal 0.7 first"
 msgstr ""
 
 #: devsupport/tmp_strings.py
@@ -602,7 +592,6 @@ msgstr "show program's version number and exit"
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
 msgstr "Virtaal অনুবাদ সরঞ্জাম"
 
@@ -620,10 +609,6 @@ msgstr ""
 "দিকেও নজর দেওয়া হয়।   "
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "The initial focus is on software translation (localization or l10n), but "
-#| "we definitely intend it to be useful as a general purpose tool for "
-#| "Computer Aided Translation (CAT)."
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
@@ -639,7 +624,6 @@ msgstr "কয়েকটি বৈশিষ্ট্য:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
 msgstr "অনুবাদ পুনঃব্যবহার (অনুবাদ সংকলন)"
 
@@ -666,7 +650,6 @@ msgid "Recognized elements don't need to be typed"
 msgstr "পরিচিত সামগ্রী টাইপ করার প্রয়োজন নেই"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
 msgstr "টাইপ করার সময় একবারে গুণমান পরীক্ষা করা হবে"
 
@@ -1556,18 +1539,15 @@ msgid "Local terminology files"
 msgstr "পরিভাষার স্থানীয় ফাইল যোগ করুন"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Terminology Files"
 msgid "Terminology _Files…"
 msgstr "পরিভাষার ফাইল… (_F)"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Add Term"
 msgid "Add _Term…"
 msgstr "পরিভাষা যোগ করুন (_T)"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
-#| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
 msgstr "\"%(selection)s\" পরিভাষা যোগ করুন …"
 
@@ -1915,9 +1895,6 @@ msgstr ""
 "Ctrl+Shift+V প্রয়োগ করুন ও প্রয়োজনে শুধরে নেবেন।"
 
 #: virtaal/support/tutorial.py
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
@@ -2316,7 +2293,6 @@ msgid "Quality checks"
 msgstr "গুণমান যাচই"
 
 #: virtaal/views/langview.py
-#| msgid "New Language Pair"
 msgid "_New Language Pair…"
 msgstr "নতুন ভাার জুটি…(_N)"
 
@@ -2360,7 +2336,6 @@ msgstr ""
 "আপনার করার পরিবর্তনগুলি সংরক্ষণ করতে ইচ্ছুক কি?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#| msgid "Save"
 msgid "_Save"
 msgstr "সংরক্ষণ করুন (_S)"
 
@@ -2387,7 +2362,6 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
 msgstr "%(modified_marker)s%(current_file)s"
 
@@ -2441,13 +2415,11 @@ msgstr ""
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "Before:"
 msgid "Before"
 msgstr "পূর্ববর্তী"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "After:"
 msgid "After"
 msgstr "পরবর্তী"
 
@@ -2458,7 +2430,6 @@ msgstr "পরিবর্তন"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#| msgid "Total: %d"
 msgid "Total"
 msgstr "সর্বমোট"
 
@@ -2506,7 +2477,6 @@ msgid "Conte_xt:"
 msgstr "প্রসঙ্গিক একক (_x)"
 
 #: virtaal/views/prefsview.py
-#| msgid "Poedit settings"
 msgid "Settings"
 msgstr "বিবিধ বৈশিষ্ট্য"
 
@@ -2581,7 +2551,6 @@ msgid "Next state"
 msgstr ""
 
 #: virtaal/views/widgets/aboutdialog.py
-#| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Copyright © 2007-2026 Zuza Software Foundation"
 
@@ -2679,7 +2648,6 @@ msgid "Open a file"
 msgstr "ফাইল খুলুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Current File"
 msgid "Save the current file"
 msgstr "বর্তমান ফাইলটি সংরক্ষণ করুন"
 
@@ -2688,12 +2656,10 @@ msgid "Save the current file under a new name"
 msgstr "নতুন নামে বর্তমান ফাইলটি সংরক্ষণ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Current File"
 msgid "Close the current file"
 msgstr "বর্তমান ফাইলটি বন্ধ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Virtaal"
 msgid "Quit Virtaal"
 msgstr "Virtaal থেকে প্রস্থান করুন"
 
@@ -2714,12 +2680,10 @@ msgid "Show this Keyboard Shortcuts window"
 msgstr "কিবোর্ড-শর্টকাটের এই উইন্ডো প্রদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Navigation"
 msgid "Navigation"
 msgstr "পরিদর্শন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine translation"
 msgid "Move to next translation"
 msgstr "পরিবর্তী অনুবাদে চলুন"
 
@@ -2760,12 +2724,10 @@ msgid "Units"
 msgstr "একক"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "P_revious Placeable"
 msgid "Select previous placeable"
 msgstr "পূর্ববর্তী স্থানাঙ্ক নির্বাচন করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Next Placeable"
 msgid "Select next placeable"
 msgstr "পরবর্তী সন্নিবেয় যোগ্য লেখা নির্বাচন করুন"
 
@@ -2774,7 +2736,6 @@ msgid "Insert the selected placeable"
 msgstr "নির্বাচিত সন্নিবেশযোগ্য লেখা যোগ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
 msgstr "অনুবাদের পরিবর্তে মূল লেখা ব্যবহার করুন"
 
@@ -2795,7 +2756,6 @@ msgid "Redo the last undone change"
 msgstr "বাতিল করা সর্বশেষ পরিবর্তন পুনরায় করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
 msgstr "অনুবাদের সর্বপ্রথম প্রস্তাব ব্যবহার করুন"
 
@@ -2804,22 +2764,18 @@ msgid "Show/Hide checks"
 msgstr "যাচাই প্রদর্শন/আড়াল"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
 msgstr "এই এককের জন্য অনুবাদের প্রস্তাব প্রদর্শিত হবে "
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
 msgstr "অনুবাদের প্রস্তাব প্রদর্শন চালু অথবা বন্ধ করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
 msgstr "অনুবাদের প্রস্তাব প্রদর্শিত হলে তা আড়াল করুন"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
 msgstr "স্থানীয় পরিভাষা ফাইলের মধ্যে একটি পরিভাষা যোগ করুন"
 

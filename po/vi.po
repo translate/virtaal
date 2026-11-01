@@ -21,6 +21,7 @@ msgstr ""
 # Tên: đừng dịch
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
+#: virtaal/views/widgets/aboutdialog.py
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -31,9 +32,6 @@ msgstr "Công cụ dịch"
 #. l10n: The summary should be less than 100 characters
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "A translation tool to help a human translator translate files into other "
-#| "languages"
 msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
@@ -107,7 +105,6 @@ msgid "<b>Translation</b>"
 msgstr "<b>Bản dịch</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Add Missing Language"
 msgid "_Add Missing Language…"
 msgstr "_Thêm ngôn ngữ còn thiếu…"
 
@@ -124,7 +121,6 @@ msgid "Re_vert to Saved"
 msgstr "_Quay lại về hồi đã lưu"
 
 #: share/virtaal/virtaal.ui
-#| msgid "_Update to Template"
 msgid "_Update from Template"
 msgstr "Cậ_p nhật từ bản mẫu"
 
@@ -163,7 +159,6 @@ msgstr "Chuyển từ nguồn"
 
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
-#| msgid "_Next Placeable"
 msgid "_Insert Placeable"
 msgstr "_Chèn đoạn chèn"
 
@@ -302,12 +297,10 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Phông</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Language"
 msgid "Language:"
 msgstr "Ngôn ngữ:"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
 msgstr "<b>Ngôn ngữ</b>"
 
@@ -421,14 +414,12 @@ msgstr "<u>Bảng hỗ trợ nhanh</u>"
 # Địa chỉ URL: nên dịch trang gốc trước khi điều chỉnh địa chỉ này
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 msgstr ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<u>More...</u>"
 msgid "<u>More…</u>"
 msgstr "<u>Xem thêm…</u>"
 
@@ -442,7 +433,6 @@ msgstr "<b><big>Bắt đầu dùng</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
-#| msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid ""
 "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
 msgstr ""
@@ -474,12 +464,10 @@ msgid "<u>Feedback</u>"
 msgstr "<u>Phản hồi</u>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "Report a bug on GitHub"
 msgstr "Báo lỗi lên GitHub"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Report a _Bug"
 msgid "<u>Report a Bug</u>"
 msgstr "<u>Thông báo _lỗi</u>"
 
@@ -488,7 +476,6 @@ msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Hỗ trợ</big></b>"
 
 #: devsupport/tmp_strings.py
-#| msgid "Machine translation"
 msgid "Base translation store"
 msgstr "Kho dịch cơ sở"
 
@@ -497,7 +484,6 @@ msgid "Comma Separated Value"
 msgstr "Giá trị phân tách bằng dấu phẩy"
 
 #: devsupport/tmp_strings.py
-#| msgid "Current File"
 msgid "Fluent file"
 msgstr "Tệp Fluent"
 
@@ -514,7 +500,6 @@ msgid "Haiku catkeys file"
 msgstr "Tệp catkeys cho Haiku"
 
 #: devsupport/tmp_strings.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla .lang"
 msgstr ".lang Mozilla"
 
@@ -543,7 +528,6 @@ msgid "TMX Translation Memory"
 msgstr "Bộ nhớ dịch TMX"
 
 #: devsupport/tmp_strings.py
-#| msgid "TMX Translation Memory"
 msgid "Trados Translation Memory"
 msgstr "Bộ nhớ dịch Trados"
 
@@ -552,7 +536,6 @@ msgid "UTX Dictionary"
 msgstr "Từ điển UTX"
 
 #: devsupport/tmp_strings.py
-#| msgid "_Localization Guide"
 msgid "WiX Localization File"
 msgstr "Tệp địa phương hoá WiX"
 
@@ -565,7 +548,6 @@ msgid "XLIFF Translation File"
 msgstr "Tệp bản dịch XLIFF"
 
 #: devsupport/tmp_strings.py
-#| msgid "XLIFF Translation File"
 msgid "SDL XLIFF Translation File"
 msgstr "Tệp bản dịch XLIFF SDL"
 
@@ -577,18 +559,20 @@ msgstr "Liên kết Virtaal với phần mở rộng tệp dịch thuật (.po, 
 msgid "Edit with Virtaal"
 msgstr "Sửa bằng Virtaal"
 
+#. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
 #: devsupport/tmp_strings.py
-#| msgid "Usage: %s\n"
+msgid "Uninstall the older Virtaal 0.7 first"
+msgstr ""
+
+#: devsupport/tmp_strings.py
 msgid "usage: "
 msgstr "sử dụng: "
 
 #: devsupport/tmp_strings.py
-#| msgid "%s option requires an argument"
 msgid "positional arguments"
 msgstr "đối số vị trí"
 
 #: devsupport/tmp_strings.py
-#| msgid "Options"
 msgid "options"
 msgstr "tuỳ chọn"
 
@@ -602,7 +586,6 @@ msgstr "hiển thị số thứ tự phiên bản của chương trình, sau đ�
 
 #. l10n: The name should be less than 30 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Translation Tool"
 msgid "Virtaal Translation Tool"
 msgstr "Công cụ dịch thuật Virtaal"
 
@@ -620,10 +603,6 @@ msgstr ""
 "góp phần nâng cao chất lượng bản dịch."
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid ""
-#| "The initial focus is on software translation (localization or l10n), but "
-#| "we definitely intend it to be useful as a general purpose tool for "
-#| "Computer Aided Translation (CAT)."
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
@@ -639,7 +618,6 @@ msgstr "Một số tính năng:"
 
 #. l10n: These list items should be less than 100 characters
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
 msgstr "Dùng lại bản dịch (bộ nhớ dịch)"
 
@@ -666,7 +644,6 @@ msgid "Recognized elements don't need to be typed"
 msgstr "Các yếu tố được nhận diện mà không cần phải gõ vào"
 
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
-#| msgid "Automatically correct text while you type"
 msgid "Quality checks while you type"
 msgstr "Kiểm tra chất lượng trong khi bạn gõ"
 
@@ -1007,12 +984,6 @@ msgstr "Lưu"
 
 #: virtaal/controllers/maincontroller.py
 #, python-format
-#| msgid ""
-#| "Could not save file.\n"
-#| "\n"
-#| "%(error_message)s\n"
-#| "\n"
-#| "Try saving to a different location."
 msgid ""
 "%(filename)s is read-only.\n"
 "\n"
@@ -1089,7 +1060,6 @@ msgid "Revert to Saved"
 msgstr "Quay lại bản đã lưu"
 
 #: virtaal/controllers/maincontroller.py
-#| msgid "Reload file from last saved copy and lose all changes?"
 msgid "Revert to the last saved copy and lose all changes?"
 msgstr ""
 "Nạp lại tệp từ bản sao đã lưu cuối và mất tất cả các thay đổi mới làm không?"
@@ -1553,18 +1523,15 @@ msgid "Local terminology files"
 msgstr "Các tệp thuật ngữ nằm trên máy tính này"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Terminology Files"
 msgid "Terminology _Files…"
 msgstr "_Tệp thuật ngữ…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
-#| msgid "Add Term"
 msgid "Add _Term…"
 msgstr "_Thêm thuật ngữ…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
-#| msgid "Look-up \"%(selection)s\""
 msgid "Add Term \"%(selection)s\"…"
 msgstr "Thêm thuật ngữ \"%(selection)s\"…"
 
@@ -1631,7 +1598,6 @@ msgid "Existing translations: %(translations)s"
 msgstr "Chuỗi dịch đã có: %(translations)s"
 
 #: virtaal/plugins/terminology/models/pontoon.py
-#| msgid "Mozilla Corporation"
 msgid "Mozilla Pontoon"
 msgstr "Mozilla Pontoon"
 
@@ -1797,7 +1763,6 @@ msgid "Close"
 msgstr "Đóng"
 
 #: virtaal/support/crash_dialog.py
-#| msgid "Report a _Bug"
 msgid "Report This Bug…"
 msgstr "Báo lỗi này…"
 
@@ -1926,9 +1891,6 @@ msgstr ""
 "nên chỉ cần ấn Ctrl+Shift+V và sửa lỗi nếu cần."
 
 #: virtaal/support/tutorial.py
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
@@ -2344,7 +2306,6 @@ msgid "Quality checks"
 msgstr "Kiểm tra chất lượng"
 
 #: virtaal/views/langview.py
-#| msgid "New Language Pair"
 msgid "_New Language Pair…"
 msgstr "_Cặp ngôn ngữ mới…"
 
@@ -2370,7 +2331,6 @@ msgid "Choose a Translation File"
 msgstr "Chọn một tệp bản dịch"
 
 #: virtaal/views/mainview.py
-#| msgid "Choose a Translation File"
 msgid "Choose a PO Template File"
 msgstr "Chọn một tệp bản mẫu PO"
 
@@ -2387,7 +2347,6 @@ msgstr ""
 "Bạn có muốn lưu các thay đổi không?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
-#| msgid "Save"
 msgid "_Save"
 msgstr "_Lưu"
 
@@ -2416,7 +2375,6 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
 msgstr "%(modified_marker)s%(current_file)s"
 
@@ -2456,13 +2414,11 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s': %(reason)s"
 msgstr "Không thể mở tệp '%(file)s': %(reason)s"
 
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "Could not open log file '%(filename)s'"
 msgid "Couldn't open '%(file)s'."
 msgstr "Không thể mở tệp '%(file)s'."
 
@@ -2472,13 +2428,11 @@ msgstr "Khởi động lại Virtaal để ngôn ngữ mới có hiệu lực."
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "Before:"
 msgid "Before"
 msgstr "Trước"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "After:"
 msgid "After"
 msgstr "Sau"
 
@@ -2489,7 +2443,6 @@ msgstr "Thay đổi"
 
 #. l10n: Row heading: total number of units in the file
 #: virtaal/views/mainview.py
-#| msgid "Total: %d"
 msgid "Total"
 msgstr "Tổng cộng"
 
@@ -2498,7 +2451,6 @@ msgid "Source and target language are the same."
 msgstr "Ngôn ngữ nguồn và đích đang giống nhau."
 
 #: virtaal/views/mainview.py
-#| msgid "New Language Pair"
 msgid "Change Language Pair"
 msgstr "Thay đổi cặp ngôn ngữ"
 
@@ -2536,7 +2488,6 @@ msgid "Conte_xt:"
 msgstr "_Ngữ cảnh:"
 
 #: virtaal/views/prefsview.py
-#| msgid "Poedit settings"
 msgid "Settings"
 msgstr "Thiết đặt"
 
@@ -2600,7 +2551,6 @@ msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Chuyển tới trước một bước trong luồng công việc (Ctrl+Enter)"
 
 #: virtaal/views/unitview.py
-#| msgid "P_revious Placeable"
 msgid "Previous state"
 msgstr "Trạng thái t_rước đó"
 
@@ -2609,7 +2559,6 @@ msgid "Next state"
 msgstr "Trạng thái tiếp theo"
 
 #: virtaal/views/widgets/aboutdialog.py
-#| msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgid "Copyright © 2007-2026 Zuza Software Foundation"
 msgstr "Bản quyền © năm 2007-2026 của Tổ chức Phần mềm Zuza"
 
@@ -2653,12 +2602,10 @@ msgstr ""
 "doku.php?id=projects:l10n>"
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language"
 msgid "Edit Language"
 msgstr "Sửa ngôn ngữ"
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language name:"
 msgid "Enter a language name."
 msgstr "Tên ngôn ngữ :"
 
@@ -2671,7 +2618,6 @@ msgid "Language code must be at least 2 characters long."
 msgstr "Mã ngôn ngữ phải dài ít nhất 2 ký tự."
 
 #: virtaal/views/widgets/langadddialog.py
-#| msgid "Language code must be an ASCII string."
 msgid "Language code must not contain spaces."
 msgstr "Mã ngôn ngữ không được chứa dấu cách."
 
@@ -2690,7 +2636,6 @@ msgid "Code"
 msgstr "Mã"
 
 #: virtaal/views/widgets/selectview.py
-#| msgid "Configure..."
 msgid "Configure…"
 msgstr "Cấu hình…"
 
@@ -2703,7 +2648,6 @@ msgid "Open a file"
 msgstr "Mở một tệp"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Current File"
 msgid "Save the current file"
 msgstr "Lưu tệp hiện thời"
 
@@ -2712,13 +2656,11 @@ msgid "Save the current file under a new name"
 msgstr "Lưu tệp hiện thời với tên mới"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Current File"
 msgid "Close the current file"
 msgstr "Đóng tệp hiện thời"
 
 # Tên: đừng dịch
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Virtaal"
 msgid "Quit Virtaal"
 msgstr "Thoát Virtaal"
 
@@ -2739,12 +2681,10 @@ msgid "Show this Keyboard Shortcuts window"
 msgstr "Hiển thị cửa sổ Phím tắt này"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Navigation"
 msgid "Navigation"
 msgstr "Điều _hướng"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine translation"
 msgid "Move to next translation"
 msgstr "Chuyển sang bản dịch tiếp theo"
 
@@ -2785,12 +2725,10 @@ msgid "Units"
 msgstr "Đơn vị"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "P_revious Placeable"
 msgid "Select previous placeable"
 msgstr "Chọn đoạn chèn trước đó"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "_Next Placeable"
 msgid "Select next placeable"
 msgstr "Chọn đoạn chèn kế tiếp"
 
@@ -2799,7 +2737,6 @@ msgid "Insert the selected placeable"
 msgstr "Chèn đoạn chèn đã chọn"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Machine Translation with libtranslate"
 msgid "Replace the translation with the source"
 msgstr "Thay bản dịch bằng nguồn"
 
@@ -2820,7 +2757,6 @@ msgid "Redo the last undone change"
 msgstr "Làm lại thay đổi vừa hoàn tác"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Use the first translation suggestion"
 msgstr "Dùng bản dịch đầu tiên được gợi ý"
 
@@ -2829,22 +2765,18 @@ msgid "Show/Hide checks"
 msgstr "Hiện/Ẩn các kiểm tra"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Show translation suggestions for this unit"
 msgstr "Hiện gợi ý dịch cho đơn vị này"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Turn translation suggestions on or off"
 msgstr "Bật hoặc tắt gợi ý bản dịch"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Translation _Suggestions"
 msgid "Hide translation suggestions, if shown"
 msgstr "Ẩn gợi ý bản dịch, nếu hiện ra"
 
 #: virtaal/views/widgets/shortcutswindow.py
-#| msgid "Local terminology files"
 msgid "Add a term to the local terminology file"
 msgstr "Thêm một thuật ngữ vào tệp thuật ngữ trên máy"
 

@@ -105,8 +105,8 @@ def _is_testscaffolding_subclass(cls):
     )
 
 
-# Leaked real toplevels crash an xdist worker natively on macOS (no
-# Python traceback); a fresh process per file avoids it.
+# Leaked real toplevels crash an xdist worker natively on macOS and
+# Linux (no Python traceback); a fresh process per file avoids it.
 _ISOLATED_FILES = {"test_popupwidgetbutton.py"}
 
 _CHILD_ENV = "_VIRTAAL_TESTSCAFFOLDING_ISOLATED"
@@ -125,7 +125,7 @@ _isolated_reports = {}
 
 
 def _isolation_group(item):
-    """The tests that share one fresh subprocess on macOS: a whole
+    """The tests that share one fresh subprocess: a whole
     TestScaffolding class (setup_class builds its one MainController),
     or a whole _ISOLATED_FILES file. None if the test runs in-process."""
     path = item.nodeid.split("::", 1)[0]
@@ -143,7 +143,7 @@ def _child_nodeid(item, group):
 
 
 def _isolating():
-    return sys.platform == "darwin" and not os.environ.get(_CHILD_ENV)
+    return sys.platform in ("darwin", "linux") and not os.environ.get(_CHILD_ENV)
 
 
 def pytest_configure(config):
@@ -240,7 +240,7 @@ def _make_report(item, when, passed, output=""):
     else:
         def _raise():
             raise AssertionError(
-                "macOS subprocess-isolated run failed (issue #3738):\n" + output
+                "subprocess-isolated run failed (issue #3738):\n" + output
             )
         call = runner.CallInfo.from_call(_raise, when)
     return runner.pytest_runtest_makereport(item, call)
@@ -359,12 +359,14 @@ def pytest_runtest_protocol(item, nextitem):
     construction fights the singleton); running them via
     pytest-xdist's normal in-process model or via fork-based isolation
     (pytest-forked) both hit real, unfixable native crashes/hangs.
+    On Linux the MainController's leaked window can crash a later
+    GTK test on the same xdist worker.
     A genuinely fresh subprocess (re-exec, not fork) has no such
-    inherited state, so on macOS each TestScaffolding class - one
-    MainController, as setup_class builds it - runs as its own
+    inherited state, so on macOS and Linux each TestScaffolding class
+    - one MainController, as setup_class builds it - runs as its own
     `pytest` child process, as does each _ISOLATED_FILES file. The
     first test of a group runs the whole group; the rest replay its
-    stored reports. Other platforms are unaffected."""
+    stored reports. Windows is unaffected."""
     if not _isolating():
         return None
     group = _isolation_group(item)

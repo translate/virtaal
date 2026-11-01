@@ -142,6 +142,11 @@ priority = "1"
 msgids = ["Default", "<b><big>Recent Files</big></b>"]
 
 [[override]]
+# Help > Show Logs: Windows builds only, so the harvest never sees it.
+priority = "1"
+msgids = ["Show Lo_gs"]
+
+[[override]]
 # The welcome screen's feature list.
 priority = "1~"
 msgids = [

@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-10-30T13:05:35Z",
- "commit": "1807e8fd5362c4a648f0893b3856144bb0259d08",
+ "generated": "2026-11-01T10:03:31Z",
+ "commit": "a8972917a689ef3db230e5d8d3a4023d8da62afa",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -9,7 +9,7 @@
   "core": 105,
   "rest": 87,
   "level2": 243,
-  "level3": 145
+  "level3": 146
  },
  "languages": [
   {
@@ -20,7 +20,7 @@
    "rest_missing": 7,
    "needed": 32,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -31,7 +31,7 @@
    "rest_missing": 33,
    "needed": 69,
    "level2_missing": 133,
-   "level3_missing": 73,
+   "level3_missing": 74,
    "ships": null
   },
   {
@@ -42,7 +42,7 @@
    "rest_missing": 58,
    "needed": 126,
    "level2_missing": 135,
-   "level3_missing": 83,
+   "level3_missing": 84,
    "ships": null
   },
   {
@@ -53,7 +53,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 42,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -64,7 +64,7 @@
    "rest_missing": 11,
    "needed": 43,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -75,7 +75,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 126,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -86,7 +86,7 @@
    "rest_missing": 54,
    "needed": 88,
    "level2_missing": 138,
-   "level3_missing": 73,
+   "level3_missing": 74,
    "ships": null
   },
   {
@@ -97,7 +97,7 @@
    "rest_missing": 1,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 73,
+   "level3_missing": 74,
    "ships": "level 1"
   },
   {
@@ -108,7 +108,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -119,7 +119,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -130,7 +130,7 @@
    "rest_missing": 44,
    "needed": 80,
    "level2_missing": 133,
-   "level3_missing": 76,
+   "level3_missing": 77,
    "ships": null
   },
   {
@@ -141,7 +141,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -152,7 +152,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 87,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -163,7 +163,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -174,7 +174,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -185,7 +185,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 90,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -196,7 +196,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -207,7 +207,7 @@
    "rest_missing": 6,
    "needed": 36,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -218,7 +218,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -229,7 +229,7 @@
    "rest_missing": 9,
    "needed": 42,
    "level2_missing": 123,
-   "level3_missing": 56,
+   "level3_missing": 57,
    "ships": "50%"
   },
   {
@@ -240,7 +240,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -251,7 +251,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -262,7 +262,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -273,7 +273,7 @@
    "rest_missing": 64,
    "needed": 96,
    "level2_missing": 201,
-   "level3_missing": 135,
+   "level3_missing": 136,
    "ships": null
   },
   {
@@ -284,7 +284,7 @@
    "rest_missing": 7,
    "needed": 32,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -295,7 +295,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -306,7 +306,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -317,7 +317,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -328,7 +328,7 @@
    "rest_missing": 43,
    "needed": 77,
    "level2_missing": 133,
-   "level3_missing": 73,
+   "level3_missing": 74,
    "ships": null
   },
   {
@@ -339,7 +339,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -350,7 +350,7 @@
    "rest_missing": 66,
    "needed": 117,
    "level2_missing": 201,
-   "level3_missing": 122,
+   "level3_missing": 123,
    "ships": null
   },
   {
@@ -361,7 +361,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "level 1"
   },
   {
@@ -372,7 +372,7 @@
    "rest_missing": 7,
    "needed": 36,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -383,7 +383,7 @@
    "rest_missing": 6,
    "needed": 31,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -394,7 +394,7 @@
    "rest_missing": 56,
    "needed": 92,
    "level2_missing": 150,
-   "level3_missing": 88,
+   "level3_missing": 89,
    "ships": null
   },
   {
@@ -405,7 +405,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -416,7 +416,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -427,7 +427,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -438,7 +438,7 @@
    "rest_missing": 7,
    "needed": 26,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -449,7 +449,7 @@
    "rest_missing": 67,
    "needed": 146,
    "level2_missing": 140,
-   "level3_missing": 75,
+   "level3_missing": 76,
    "ships": null
   },
   {
@@ -460,7 +460,7 @@
    "rest_missing": 6,
    "needed": 26,
    "level2_missing": 126,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -471,7 +471,7 @@
    "rest_missing": 6,
    "needed": 36,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -482,7 +482,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -493,7 +493,7 @@
    "rest_missing": 56,
    "needed": 107,
    "level2_missing": 139,
-   "level3_missing": 75,
+   "level3_missing": 76,
    "ships": null
   },
   {
@@ -504,7 +504,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -515,7 +515,7 @@
    "rest_missing": 70,
    "needed": 139,
    "level2_missing": 149,
-   "level3_missing": 100,
+   "level3_missing": 101,
    "ships": null
   },
   {
@@ -526,7 +526,7 @@
    "rest_missing": 50,
    "needed": 82,
    "level2_missing": 182,
-   "level3_missing": 100,
+   "level3_missing": 101,
    "ships": null
   },
   {
@@ -537,7 +537,7 @@
    "rest_missing": 49,
    "needed": 82,
    "level2_missing": 137,
-   "level3_missing": 77,
+   "level3_missing": 78,
    "ships": null
   },
   {
@@ -548,7 +548,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 43,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -559,7 +559,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -570,7 +570,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -581,7 +581,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 0,
+   "level3_missing": 1,
    "ships": "level 1"
   },
   {
@@ -592,7 +592,7 @@
    "rest_missing": 6,
    "needed": 25,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   },
   {
@@ -603,9 +603,9 @@
    "rest_missing": 7,
    "needed": 36,
    "level2_missing": 123,
-   "level3_missing": 55,
+   "level3_missing": 56,
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/41059998783"
+ "packs": "https://github.com/translate/virtaal/actions/runs/41295478828"
 }

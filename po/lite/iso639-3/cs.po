@@ -1,17 +1,18 @@
+# khagaroth <khagaroth@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-20 12:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-10-29 19:43+0200\n"
+"Last-Translator: khagaroth <khagaroth@gmail.com>\n"
+"Language-Team: \n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
-"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Virtaal 1.0.0-rc3\n"
 
 #: afr
 msgid "Afrikaans"
@@ -23,7 +24,7 @@ msgstr "akanština"
 
 #: amh
 msgid "Amharic"
-msgstr "Amharština"
+msgstr "amharština"
 
 #: ara
 msgid "Arabic"
@@ -31,7 +32,7 @@ msgstr "arabština"
 
 #: ast
 msgid "Asturian"
-msgstr ""
+msgstr "asturština"
 
 #: eus
 msgid "Basque"
@@ -55,7 +56,7 @@ msgstr "katalánština"
 
 #: cgg
 msgid "Chiga"
-msgstr ""
+msgstr "kiga"
 
 #: zho
 msgid "Chinese"
@@ -91,15 +92,15 @@ msgstr "francouzština"
 
 #: ful
 msgid "Fulah"
-msgstr "fulahština"
+msgstr "fulbština"
 
 #: glg
 msgid "Galician"
-msgstr ""
+msgstr "galicijština"
 
 #: lug
 msgid "Ganda"
-msgstr "ganda"
+msgstr "gandština"
 
 #: deu
 msgid "German"
@@ -143,23 +144,23 @@ msgstr "litevština"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "moderní řečtina (1453-)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "nepálština (makrojazyk)"
 
 #: oci
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "okcitánština (po 1500)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "paňdžábština"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "severosotština"
 
 #: pol
 msgid "Polish"
@@ -179,7 +180,7 @@ msgstr "srbština"
 
 #: sin
 msgid "Sinhala"
-msgstr ""
+msgstr "sinhálština"
 
 #: slk
 msgid "Slovak"
@@ -187,11 +188,11 @@ msgstr "slovenština"
 
 #: sot
 msgid "Sotho, Southern"
-msgstr "Sesotho"
+msgstr "sesothština"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "sesothština"
 
 #: spa
 msgid "Spanish"
@@ -199,7 +200,7 @@ msgstr "španělština"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "svahilština (makrojazyk)"
 
 #: swe
 msgid "Swedish"
@@ -207,7 +208,7 @@ msgstr "švédština"
 
 #: tel
 msgid "Telugu"
-msgstr "Telugština"
+msgstr "telugština"
 
 #: tha
 msgid "Thai"
@@ -227,4 +228,4 @@ msgstr "vietnamština"
 
 #: zul
 msgid "Zulu"
-msgstr "Zulu"
+msgstr "zuluština"

@@ -101,6 +101,8 @@ KNOWN_BUGS = [
     dict(issue=4453, sweep='autocorrect', kind='autocorrect-mismatch', match='', cases=ALL, strict=False),
     dict(issue=4453, sweep='autocorrect', kind='slow', match='', cases=ALL, strict=False),
     dict(issue=4452, sweep='random', kind='timeout', match='', cases=['search'], platforms=['windows'], strict=False),
+    # A nested-repetition expression left in Search runs again on the next visit.
+    dict(issue=4692, sweep='random', kind='timeout', match='getmatches', cases=['search'], strict=False),
     dict(issue=4443, sweep='spelling', kind='slow', match='', cases=['10k chars words', '2000 lines'], strict=False),
     dict(issue=4348, sweep='glossary', kind='critical', match='pango_layout_get_cursor_pos', cases=['CRLF']),
     dict(issue=4348, sweep='random', kind='critical', match='pango_layout_get_cursor_pos', cases=['edit_target'],

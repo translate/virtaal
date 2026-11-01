@@ -505,9 +505,9 @@ jobs:
         # just be redundant, not N times the information.
         run: |
           if [ "${{ matrix.python-version }}" = "3.13" ]; then
-            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto --dist loadgroup --cov=virtaal --cov-report=xml virtaal
           else
-            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto --dist loadgroup virtaal
           fi
 
       - name: Upload coverage to Codecov
@@ -566,7 +566,7 @@ jobs:
 
       - name: Run tests
         if: steps.queue.outputs.tested != 'true'
-        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
+        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto --dist loadgroup virtaal
 
   test-windows:
     runs-on: windows-latest
@@ -1715,7 +1715,7 @@ jobs:
           read -ra deps <<< "$(python3 -c 'import tomllib; print(" ".join(d for d in tomllib.load(open("pyproject.toml", "rb"))["project"]["optional-dependencies"]["test"] if not d.startswith("pytest-cov")))')"
           xvfb-run -a --server-args="-screen 0 1024x768x24" dbus-run-session -- \
             flatpak run --devel --filesystem="$GITHUB_WORKSPACE" --command=sh io.github.translate.Virtaal \
-            -euxc 'cd "$1"; shift; python3 -m pip install --target /tmp/testdeps "$@"; PYTHONPATH=/tmp/testdeps env -u FLATPAK_ID python3 -m pytest -rvxs -n auto virtaal' \
+            -euxc 'cd "$1"; shift; python3 -m pip install --target /tmp/testdeps "$@"; PYTHONPATH=/tmp/testdeps env -u FLATPAK_ID python3 -m pytest -rvxs -n auto --dist loadgroup virtaal' \
             sh "$GITHUB_WORKSPACE" "${deps[@]}"
           flatpak uninstall --user -y --noninteractive io.github.translate.Virtaal
 

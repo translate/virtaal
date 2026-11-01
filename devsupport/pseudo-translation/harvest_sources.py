@@ -284,7 +284,9 @@ def run(output):
         unit = main_controller.unit_controller.current_unit
         if tm and tm.controller.plugin_controller.plugins and unit is not None:
             backends = tm.controller.plugin_controller
-            off = tm.default_config["disabled_models"].split(",") + ["basetmmodel"]
+            # The class's defaults, as users get them: under CI the
+            # instance also turns amaGama off (#4560).
+            off = type(tm).default_config["disabled_models"].split(",") + ["basetmmodel"]
             # Named as a real match is: a model's short name ("Local TM"),
             # else its display name.
             models = [backends._get_plugin_class(name) for name in backends._find_plugin_names() if name not in off]

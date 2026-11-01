@@ -220,6 +220,7 @@ domains:
     - Report a _Bug
     - Search
     - Settings…
+    - Show Lo_gs
     - Suggestions for This _Unit
     - Terminology _Files…
     - Transfer From Source
@@ -715,7 +716,6 @@ domains:
     - Select the sources of terminology suggestions
     - Select the sources that should be queried for translation memory
     - Selected localization terminology
-    - Show Lo_gs
     - Source and target language are the same.
     - Spaces
     - Synonyms

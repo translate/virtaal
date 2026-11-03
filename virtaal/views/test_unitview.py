@@ -1306,6 +1306,7 @@ def test_on_textbox_paste_clipboard_emits_paste_start_with_offsets():
 
 def test_on_textbox_focused_recomputes_edit_menu_sensitivity():
     view = UnitView.__new__(UnitView)
+    view._widgets = {'targets': [], 'sources': []}
     calls = []
     view._update_edit_menu_sensitivity = lambda: calls.append('focused')
 
@@ -1379,3 +1380,67 @@ def test_the_targets_end_level_with_the_state_buttons_on_a_one_line_unit():
     assert bottom('vbox_sources') == builder.get_object('vbox_targets').get_allocation().y
 
     window.destroy()
+
+
+# Which plural form has the focus #
+
+
+class _FocusingTextbox:
+    """grab_focus() fires focus-in, as GTK does for an unfocused widget."""
+
+    def __init__(self, view):
+        self.view = view
+
+        class _Buffer:
+            def place_cursor(self, it):
+                pass
+
+            def get_iter_at_offset(self, offset):
+                return offset
+
+        self.buffer = _Buffer()
+
+    def get_text(self):
+        return ''
+
+    def grab_focus(self):
+        self.view._on_textbox_focused(self, None)
+
+
+def _focus_view(monkeypatch):
+    view = UnitView.__new__(UnitView)
+    targets = [_FocusingTextbox(view) for _ in range(3)]
+    view._widgets = {'targets': targets, 'sources': []}
+    view._focused_target_n = 0
+    emitted = []
+    monkeypatch.setattr(view, 'emit', lambda *args: emitted.append(args), raising=False)
+    monkeypatch.setattr(view, '_update_edit_menu_sensitivity', lambda: None, raising=False)
+    monkeypatch.setattr(view, '_get_editing_start_pos', lambda textbox: 0, raising=False)
+    return view, targets, emitted
+
+
+def test_clicking_another_plural_form_makes_it_the_focused_one(monkeypatch):
+    # A click only gives the textbox focus-in; Enter goes through focus_text_view().
+    view, targets, emitted = _focus_view(monkeypatch)
+
+    view._on_textbox_focused(targets[2], None)
+
+    assert view.focused_target_n == 2
+    assert emitted == [('target-focused', 2)]
+
+
+def test_focus_returning_to_the_focused_form_emits_nothing(monkeypatch):
+    view, targets, emitted = _focus_view(monkeypatch)
+
+    view._on_textbox_focused(targets[0], None)
+
+    assert emitted == []
+
+
+def test_focus_text_view_emits_once(monkeypatch):
+    view, targets, emitted = _focus_view(monkeypatch)
+
+    view.focus_text_view(targets[1])
+
+    assert view.focused_target_n == 1
+    assert emitted == [('target-focused', 1)]

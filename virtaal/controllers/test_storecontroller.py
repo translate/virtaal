@@ -515,6 +515,48 @@ def test_save_file_plain_saves_and_marks_clean():
 
 # save_file() - project path #
 
+def test_save_file_project_writes_the_edit_into_the_bundle(tmp_path):
+    """A real bundle with only a translatable file: translate-toolkit
+    has no converter to regenerate a target document from it."""
+    from virtaal.support.project import Project
+
+    po = tmp_path / 'x.po'
+    po.write_bytes(
+        b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n'
+        b'\nmsgid "Hello"\nmsgstr "Hallo"\n'
+    )
+    bundle = tmp_path / 'b.zip'
+    store = BundleProjectStore(str(bundle))
+    with open(po, 'rb') as f:
+        store.append_file(f, 'x.po', ftype='trans')
+    store.save()
+    store.cleanup()
+
+    controller = _controller()
+    controller.project = Project(BundleProjectStore(str(bundle)))
+    real_filename = controller.project.get_real_filename('trans/x.po')
+    with open(real_filename, 'rb') as f:
+        edited = f.read().replace(b'Hallo', b'Goeiedag')
+    with open(real_filename, 'wb') as f:
+        f.write(edited)
+    controller.real_filename = real_filename
+    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
+    controller.store = SimpleNamespace(save_file=lambda: None)
+    controller.main_controller = SimpleNamespace(
+        undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
+        set_saveable=lambda v: None,
+        view=SimpleNamespace(hide_read_only_notice=lambda: None),
+    )
+
+    controller.save_file()
+    controller.project.store.cleanup()
+
+    import zipfile
+
+    with zipfile.ZipFile(bundle) as z:
+        assert b'Goeiedag' in z.read('trans/x.po')
+
+
 def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     real_file = tmp_path / 'source.po'
     real_file.write_bytes((

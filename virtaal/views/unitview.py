@@ -408,7 +408,12 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         pass
 
     def focus_text_view(self, textbox):
-        textbox.grab_focus()
+        # The focus-in this causes is reported below, once.
+        self._focusing_text_view = True
+        try:
+            textbox.grab_focus()
+        finally:
+            self._focusing_text_view = False
 
         text = textbox.get_text()
         translation_start = self._get_editing_start_pos(textbox)
@@ -976,6 +981,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def _on_textbox_focused(self, textbox, event):
         self._update_edit_menu_sensitivity()
+        # A click on another plural form makes it the one TM suggestions
+        # and other actions use.
+        if getattr(self, '_focusing_text_view', False) or textbox not in self.targets:
+            return
+        target_n = self.targets.index(textbox)
+        if target_n != self._focused_target_n:
+            self._focused_target_n = target_n
+            self.emit('target-focused', target_n)
 
     def _on_textbox_unfocused(self, textbox, event):
         self._update_edit_menu_sensitivity()

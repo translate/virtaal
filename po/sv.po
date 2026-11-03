@@ -569,7 +569,7 @@ msgstr "Redigera med Virtaal"
 #. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
 #: devsupport/tmp_strings.py
 msgid "Uninstall the older Virtaal 0.7 first"
-msgstr ""
+msgstr "Avinstallera först den äldre Virtaal 0.7"
 
 #: devsupport/tmp_strings.py
 msgid "usage: "

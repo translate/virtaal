@@ -915,6 +915,20 @@ def test_gtk_cursor_moves_while_rows_change_dont_move_the_store_cursor():
     assert view.view.cursor.index == 0
 
 
+def test_a_new_model_doesnt_move_the_previous_files_cursor():
+    view = _real_storetreeview()
+    view.set_model(['unit%d' % i for i in range(10)])
+    view.view.cursor = SimpleNamespace(index=5)
+    view.set_cursor(Gtk.TreePath((5,)), view.get_columns()[0], False)
+
+    # GTK resets its own cursor here; moving the old file's cursor
+    # started an edit inside set_model(), which crashed GTK 3.24.33.
+    view.set_model(['other%d' % i for i in range(3)])
+
+    assert view.view.cursor.index == 5
+    assert not view._updating_rows
+
+
 def test_select_index_with_force_restarts_editing_an_already_selected_row():
     view = _real_storetreeview()
     view.set_model(['a', 'b'])

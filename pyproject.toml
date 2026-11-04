@@ -46,7 +46,7 @@ dependencies = [
     # supported-formats list (and Virtaal's Open dialog offers it),
     # but actually opening one raises ModuleNotFoundError.
     "fluent.syntax==0.19.0",
-    "pycurl==7.48.0",
+    "pycurl==7.49.0",
     # pycurl's own wheel bundles no CA bundle to verify against - see
     # httpclient.py's own _configure_ca_bundle().
     "certifi==2026.10.23",
@@ -77,11 +77,11 @@ dependencies = [
 
 [project.optional-dependencies]
 spellcheck = ["pyenchant==3.3.0"]
-test = ["pytest==9.1.1", "pytest-cov==7.1.0", "pytest-xdist==3.8.0", "pytest-timeout==2.4.0"]
+test = ["pytest==9.2.0", "pytest-cov==7.1.0", "pytest-xdist==3.8.0", "pytest-timeout==2.4.0"]
 docs = ["Sphinx==9.1.0; python_version >= '3.12'"]
 # Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
 # enough yet for a repo-wide rollout.
-type-check = ["ty==0.0.91"]
+type-check = ["ty==0.0.95"]
 
 [project.urls]
 Homepage = "https://virtaal.translatehouse.org"

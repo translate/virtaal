@@ -114,7 +114,7 @@ class UnitController(BaseController):
             self.current_unit._state_sticky = True
             self.current_unit._auto_partial = False
         else:
-            self.view.update_state(self._unit_state_names[newstate])
+            self.view.update_state(self._state_name(self.current_unit, newstate))
         self.view.update_state_style(newstate)
 
     def restore_state(self, state, sticky):
@@ -125,7 +125,7 @@ class UnitController(BaseController):
         self.current_unit._state_sticky = sticky
         # Leaving the unit only commits its state when it's modified.
         self.current_unit._modified = True
-        self.view.update_state(self._unit_state_names[state])
+        self.view.update_state(self._state_name(self.current_unit, state))
         self.view.update_state_style(state)
 
     def load_unit(self, unit):
@@ -180,7 +180,7 @@ class UnitController(BaseController):
 
     def _unit_done(self, widget, unit):
         if unit._modified and unit.STATE:
-            if _filled_forms(unit)[0] and unit._current_state == workflow.StateEnum.EMPTY and not unit._state_sticky:
+            if _filled_forms(unit)[0] and unit.get_state_id(unit._current_state) == workflow.StateEnum.EMPTY and not unit._state_sticky:
                 # Oops! The user entered a translation, but the timer didn't
                 # expire yet, so let's mark it fuzzy to be safe. We don't know
                 # exactly what kind of fuzzy the format supports, so let's use
@@ -190,7 +190,7 @@ class UnitController(BaseController):
                 unit.set_state_n(workflow.StateEnum.NEEDS_REVIEW)
             else:
                 # Now really advance the workflow that we ended at
-                unit._workflow.set_current_state(self._unit_state_names[unit._current_state])
+                self._commit_state(unit)
 
         self.emit('unit-done', unit, unit._modified)
         # let's just clean up a bit:
@@ -212,7 +212,8 @@ class UnitController(BaseController):
         deliberate user pick (see set_current_state()'s own
         from_user/_state_sticky)."""
         some, every = _filled_forms(unit)
-        state = unit._current_state
+        # Its StateEnum step: XLIFF's state="new" is 1, still untranslated.
+        state = unit.get_state_id(unit._current_state)
         partial_state = _partial_state(unit)
         # Only a partial state set here is cleared again; a fuzzy from the
         # file stays.
@@ -256,7 +257,23 @@ class UnitController(BaseController):
         """Finalise outstanding changes to the toolkit store for saving."""
         unit = self.current_unit
         if unit._modified and unit.STATE:
-            unit._workflow.set_current_state(self._unit_state_names[unit._current_state])
+            self._commit_state(unit)
+
+    def _state_name(self, unit, state_n):
+        """The state list's name for state number state_n. A format may
+        number states between the StateEnum steps the list is made of:
+        XLIFF's needs-review-l10n is 82, in the Needs review step."""
+        return self._unit_state_names[unit.get_state_id(state_n)]
+
+    def _commit_state(self, unit):
+        """Write the unit's current state to it. The workflow can only
+        write a step's own number, so a state number between steps that
+        the unit still has (XLIFF's needs-review-l10n or final, or one
+        an undo restored) is left as it is."""
+        state_n = unit._current_state
+        if state_n not in unit.STATE and state_n == unit.get_state_n():
+            return
+        unit._workflow.set_current_state(self._state_name(unit, state_n))
 
     # EVENT HANDLERS #
     def _on_controller_registered(self, main_controller, controller):

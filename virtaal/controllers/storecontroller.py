@@ -8,6 +8,7 @@
 import os
 
 from gi.repository import GObject
+from translate.convert.factory import UnsupportedConversionError
 
 from virtaal.common import GObjectWrapper
 
@@ -276,7 +277,10 @@ class StoreController(BaseController):
             proj_fname = self.project.get_proj_filename(self.real_filename)
             with open(self.real_filename, 'rb') as infile:
                 self.project.update_file(proj_fname, infile)
-            self.project.convert_forward(proj_fname, overwrite_output=True)
+            try:
+                self.project.convert_forward(proj_fname, overwrite_output=True)
+            except UnsupportedConversionError:
+                pass
             self.project.save()
         self.set_modified(False)
         # reaching here means the write succeeded, so any stale notice goes

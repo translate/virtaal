@@ -5,10 +5,13 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
+from lxml import etree
+from translate.misc import xml_helpers
 from translate.storage import tmx, xliff
 from translate.storage.placeables import StringElem
 
-from virtaal.support import lisa_compat  # noqa: F401 - applies its patch on import
+from virtaal.support import lisa_compat
 
 TMX = b"""<?xml version="1.0" encoding="utf-8"?>
 <tmx version="1.4"><header creationtool="x" creationtoolversion="1"
@@ -86,3 +89,33 @@ def test_a_plain_xliff_target_replaces_its_inline_elements():
     unit.target = "Neu"
 
     assert unit.target == "Neu"
+
+
+PI_XLIFF = b"""<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file original="x.txt" source-language="en" target-language="af" datatype="plaintext">
+<body><trans-unit id="1"><?my-tool keep?><source>Hello</source><target>Hallo</target>
+</trans-unit></body></file></xliff>"""
+
+
+def test_translate_toolkit_still_fails_to_reindent_a_processing_instruction(monkeypatch):
+    # Once this fails translate-toolkit skips processing instructions
+    # itself, and the reindent() patch can go.
+    store = xliff.xlifffile.parsestring(PI_XLIFF)
+    monkeypatch.setattr(xml_helpers, "reindent", lisa_compat.reindent.ttk_reindent)
+
+    with pytest.raises(AttributeError):
+        xml_helpers.reindent(store.document.getroot(), **store.XMLindent)
+
+
+def test_an_xliff_with_a_processing_instruction_in_a_unit_saves():
+    store = xliff.xlifffile.parsestring(PI_XLIFF)
+    store.units[0].target = "Goeiedag"
+
+    saved = bytes(store)
+
+    reopened = xliff.xlifffile.parsestring(saved)
+    assert reopened.units[0].target == "Goeiedag"
+    trans_unit = reopened.units[0].xmlelement
+    assert trans_unit[0].tag is etree.PI
+    assert (trans_unit[0].target, trans_unit[0].text) == ("my-tool", "keep")

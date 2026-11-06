@@ -21,7 +21,11 @@ so a file declared as UTF-16 was saved with a second byte order mark
 after the declaration, and lxml takes a UTF-16 file without an encoding
 declaration (Trados Workbench) for UTF-8 (#4728). Here a UTF-16 file is
 saved as UTF-16 with one byte order mark, in the byte order it was
-read in."""
+read in.
+
+translate-toolkit can't save text its file's declared encoding can't
+hold, such as a TMX declared as us-ascii holding &#233; (#4729). Here
+such characters are written as character references, as lxml does."""
 
 import codecs
 
@@ -84,6 +88,7 @@ xml_helpers.reindent = lisa.reindent = reindent
 _UTF16_BOMS = {codecs.BOM_UTF16_LE: "utf-16-le", codecs.BOM_UTF16_BE: "utf-16-be"}
 _parse = lisa.LISAfile.parse
 _serialize = lisa.LISAfile.serialize
+_serialize_hook = lisa.LISAfile.serialize_hook
 
 
 def _is_utf16(encoding):
@@ -110,7 +115,7 @@ def serialize(self, out):
 
 def serialize_hook(self, treestring):
     if not _is_utf16(self.encoding):
-        return treestring.encode(self.encoding)
+        return treestring.encode(self.encoding, "xmlcharrefreplace")
     bom = getattr(self, "_utf16_bom", None) or "".encode("utf-16")
     data = treestring.encode(_UTF16_BOMS[bom])
     if not getattr(self, "_bom_written", False):

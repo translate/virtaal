@@ -47,6 +47,13 @@ def test_desktop_proxy_leaves_a_failed_lookup_to_the_environment(linux, monkeypa
     assert proxy.desktop_proxy(URL) is None
 
 
+def test_a_failed_lookup_logs_no_api_key(linux, monkeypatch, caplog):
+    _resolve_to(monkeypatch, error=GLib.Error('no portal'))
+    proxy.desktop_proxy('https://www.googleapis.com/language/translate/v2?key=SECRET&q=cat')
+    assert 'www.googleapis.com' in caplog.text
+    assert 'SECRET' not in caplog.text
+
+
 def test_desktop_proxy_leaves_it_to_the_environment_without_pygobject(linux, monkeypatch):
     # #4486: the asset manifest job runs the download helpers without it.
     monkeypatch.setitem(sys.modules, 'gi.repository', None)

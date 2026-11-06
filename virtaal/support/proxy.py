@@ -38,7 +38,8 @@ def desktop_proxy(url):
     try:
         proxies = Gio.ProxyResolver.get_default().lookup(url, None)
     except GLib.Error as error:
-        logging.warning('Proxy lookup for %s failed: %s', url, error.message)
+        # The URL can carry an API key (Google Translate's ?key=).
+        logging.warning('Proxy lookup for %s failed: %s', parse.urlsplit(url).netloc, error.message)
         return None
     proxy = proxies[0] if proxies else 'direct://'
     return '' if proxy == 'direct://' else proxy

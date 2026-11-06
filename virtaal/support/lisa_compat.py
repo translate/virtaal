@@ -14,7 +14,16 @@ this once translate-toolkit clears the children in settarget().
 
 translate-toolkit's reindent() fails on a processing instruction inside
 an element, so an XLIFF holding one couldn't be saved (#4727). Here it
-leaves the instruction as it is, like a comment."""
+leaves the instruction as it is, like a comment.
+
+translate-toolkit encodes the XML declaration and the body separately,
+so a file declared as UTF-16 was saved with a second byte order mark
+after the declaration, and lxml takes a UTF-16 file without an encoding
+declaration (Trados Workbench) for UTF-8 (#4728). Here a UTF-16 file is
+saved as UTF-16 with one byte order mark, in the byte order it was
+read in."""
+
+import codecs
 
 from lxml import etree
 from translate.misc import xml_helpers
@@ -70,3 +79,46 @@ def reindent(elem, *args, **kwargs):
 reindent.ttk_reindent = _reindent
 # reindent() recurses through xml_helpers' global; lisa imports it by name.
 xml_helpers.reindent = lisa.reindent = reindent
+
+
+_UTF16_BOMS = {codecs.BOM_UTF16_LE: "utf-16-le", codecs.BOM_UTF16_BE: "utf-16-be"}
+_parse = lisa.LISAfile.parse
+_serialize = lisa.LISAfile.serialize
+
+
+def _is_utf16(encoding):
+    return codecs.lookup(encoding).name == "utf-16"
+
+
+def parse(self, xml):
+    head = xml
+    if hasattr(xml, "read"):
+        xml.seek(0)
+        head = xml.read(2)
+        xml.seek(0)
+    _parse(self, xml)
+    bom = head[:2] if isinstance(head, bytes) else b""
+    self._utf16_bom = bom if bom in _UTF16_BOMS else None
+    if self._utf16_bom and not _is_utf16(self.encoding):
+        self.encoding = "UTF-16"
+
+
+def serialize(self, out):
+    self._bom_written = False
+    _serialize(self, out)
+
+
+def serialize_hook(self, treestring):
+    if not _is_utf16(self.encoding):
+        return treestring.encode(self.encoding)
+    bom = getattr(self, "_utf16_bom", None) or "".encode("utf-16")
+    data = treestring.encode(_UTF16_BOMS[bom])
+    if not getattr(self, "_bom_written", False):
+        self._bom_written = True
+        data = bom + data
+    return data
+
+
+lisa.LISAfile.parse = parse
+lisa.LISAfile.serialize = serialize
+lisa.LISAfile.serialize_hook = serialize_hook

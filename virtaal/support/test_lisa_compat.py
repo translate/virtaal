@@ -5,6 +5,9 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import codecs
+import io
+
 import pytest
 from lxml import etree
 from translate.misc import xml_helpers
@@ -119,3 +122,88 @@ def test_an_xliff_with_a_processing_instruction_in_a_unit_saves():
     trans_unit = reopened.units[0].xmlelement
     assert trans_unit[0].tag is etree.PI
     assert (trans_unit[0].target, trans_unit[0].text) == ("my-tool", "keep")
+
+
+UTF16_TMX = """<?xml version="1.0" encoding="UTF-16"?>
+<tmx version="1.4"><header creationtool="x" creationtoolversion="1"
+  segtype="sentence" o-tmf="x" adminlang="en-US" srclang="en-US"
+  datatype="plaintext"/><body>
+<tu><tuv xml:lang="en-US"><seg>Hello</seg></tuv>
+<tuv xml:lang="de-DE"><seg>Hallo</seg></tuv></tu>
+</body></tmx>"""
+
+
+def _utf16(text, bom, codec):
+    return bom + text.encode(codec)
+
+
+def test_translate_toolkit_still_writes_a_second_byte_order_mark(monkeypatch):
+    # Once this fails translate-toolkit writes one BOM itself, and the
+    # serialize() patch can go.
+    store = tmx.tmxfile.parsestring(_utf16(UTF16_TMX, codecs.BOM_UTF16_LE, "utf-16-le"))
+    monkeypatch.setattr(store, "serialize_hook", lambda text: text.encode(store.encoding))
+    out = io.BytesIO()
+
+    lisa_compat._serialize(store, out)
+
+    assert out.getvalue().count("".encode("utf-16")) == 2
+
+
+@pytest.mark.parametrize(
+    ("bom", "codec"),
+    [(codecs.BOM_UTF16_LE, "utf-16-le"), (codecs.BOM_UTF16_BE, "utf-16-be")],
+)
+def test_a_tmx_declared_as_utf16_saves_with_one_byte_order_mark(bom, codec):
+    store = tmx.tmxfile.parsestring(_utf16(UTF16_TMX, bom, codec))
+    store.units[0].target = "Grüß Gott"
+
+    saved = bytes(store)
+
+    assert saved.startswith(bom + '<?xml version="1.0" encoding="UTF-16"?>'.encode(codec))
+    assert saved[len(bom) :].decode(codec).count("﻿") == 0
+    assert tmx.tmxfile.parsestring(saved).units[0].target == "Grüß Gott"
+
+
+def test_an_xliff_declared_as_utf16_saves_with_one_byte_order_mark():
+    text = PI_XLIFF.decode().replace('encoding="UTF-8"', 'encoding="UTF-16"')
+    store = xliff.xlifffile.parsestring(_utf16(text, codecs.BOM_UTF16_LE, "utf-16-le"))
+    store.units[0].target = "Goeiedag"
+
+    saved = bytes(store)
+
+    assert saved[2:].decode("utf-16-le").count("﻿") == 0
+    assert xliff.xlifffile.parsestring(saved).units[0].target == "Goeiedag"
+
+
+def test_a_utf16_tmx_without_an_encoding_declaration_stays_utf16():
+    # Trados Workbench exports have a BOM and no encoding declaration.
+    text = UTF16_TMX.replace(' encoding="UTF-16"', "")
+    store = tmx.tmxfile.parsestring(_utf16(text, codecs.BOM_UTF16_LE, "utf-16-le"))
+    store.units[0].target = "Grüß Gott"
+
+    saved = bytes(store)
+
+    assert saved.startswith(codecs.BOM_UTF16_LE + b"<\x00?\x00x\x00m\x00l\x00")
+    assert 'encoding="utf-16"' in saved[2:].decode("utf-16-le").lower()
+    assert tmx.tmxfile.parsestring(saved).units[0].target == "Grüß Gott"
+
+
+def test_a_utf8_tmx_stays_utf8():
+    store = tmx.tmxfile.parsestring(TMX)
+
+    assert bytes(store).startswith(b'<?xml version="1.0" encoding="UTF-8"?>\n<tmx')
+
+
+def test_a_utf16_file_opened_from_disk_stays_utf16(tmp_path):
+    path = tmp_path / "workbench.tmx"
+    path.write_bytes(
+        _utf16(UTF16_TMX.replace(' encoding="UTF-16"', ""), codecs.BOM_UTF16_LE, "utf-16-le")
+    )
+    store = tmx.tmxfile.parsefile(str(path))
+    store.units[0].target = "Servus"
+
+    store.save()
+
+    data = path.read_bytes()
+    assert data.startswith(codecs.BOM_UTF16_LE)
+    assert tmx.tmxfile.parsestring(data).units[0].target == "Servus"

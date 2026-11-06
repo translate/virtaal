@@ -34,9 +34,12 @@
 # translate/virtaal#3609. update_file() adds a project file missing from
 # the archive instead of failing - see translate/virtaal#4533.
 # save(filename) saves to and keeps using filename instead of moving the
-# new archive over the opened one.
+# new archive over the opened one. A bundle that can't be written to opens
+# read-only, keeps changes in temporary files and can only be saved under
+# another name - see translate/virtaal#4713.
 
 import contextlib
+import errno
 import os
 from shutil import copyfileobj, move
 from tempfile import mkstemp
@@ -106,7 +109,8 @@ class BundleProjectStore(ProjectStore):
                 del self._tempfiles[tmpf]
 
     def close(self) -> None:
-        super().close()
+        if not self.read_only:
+            super().close()  # saves
         self.cleanup()
         self.zip.close()
 
@@ -162,7 +166,7 @@ class BundleProjectStore(ProjectStore):
 
     def load(self, zipname) -> None:
         """Load the bundle project from the zip file of the given name."""
-        self.zip = ZipFile(zipname, mode="a")
+        self.zip = ZipFile(zipname, mode="a" if os.access(zipname, os.W_OK) else "r")
         self._load_settings()
 
         append_section = {
@@ -178,10 +182,13 @@ class BundleProjectStore(ProjectStore):
 
     def save(self, filename=None) -> None:  # ty:ignore[invalid-method-override]
         """Save all project files to the bundle zip file."""
-        self._update_from_tempfiles()
-
         if filename and os.path.abspath(filename) == os.path.abspath(self.zip.filename):
             filename = None
+        if self.read_only:
+            if not filename:
+                raise PermissionError(errno.EACCES, os.strerror(errno.EACCES), self.zip.filename)
+        else:
+            self._update_from_tempfiles()
         newzip = ZipFile(filename, "w") if filename else self._create_temp_zipfile()
 
         # Write project file for the new zip bundle
@@ -213,9 +220,14 @@ class BundleProjectStore(ProjectStore):
         if pfname not in self._files:
             raise FileNotInProjectError(pfname)
 
-        if pfname in self.zip.namelist():
+        if pfname in self.zip.namelist() and not self.read_only:
             self._zip_delete([pfname])
         self._zip_add(pfname, infile)
+
+    @property
+    def read_only(self):
+        """Whether the archive was opened read-only."""
+        return self.zip.mode == "r"
 
     def _load_settings(self) -> None:  # ty:ignore[invalid-method-override]
         """Grab the project.xtp file from the zip file and load it."""
@@ -253,9 +265,30 @@ class BundleProjectStore(ProjectStore):
         """Add the contents of ``infile`` to the zip with file name ``pfname``."""
         if hasattr(infile, "seek"):
             infile.seek(0)
+        if self.read_only:
+            self._keep_in_tempfile(pfname, infile)
+            return
         self.zip.writestr(pfname, infile.read())
         # Clear the cached file object to force the file to be read from the
         # zip file.
+        self._files[pfname] = None
+
+    def _keep_in_tempfile(self, pfname, infile) -> None:
+        """Keep the contents of ``infile`` as project file ``pfname`` in its
+        temporary file, for a read-only archive."""
+        tempfname = next((t for t, name in self._tempfiles.items() if name == pfname), None)
+        infname = getattr(infile, "name", None)
+        if tempfname and isinstance(infname, str) and os.path.abspath(infname) == tempfname:
+            # Already there: the caller passed the extracted file itself.
+            self._files[pfname] = None
+            return
+        data = infile.read()
+        if not tempfname:
+            tempfd, tempfname = mkstemp(suffix=f"_{os.path.split(pfname)[-1]}")
+            os.close(tempfd)
+        with open(tempfname, "wb") as handle:
+            handle.write(data)
+        self._tempfiles[tempfname] = pfname
         self._files[pfname] = None
 
     def _zip_delete(self, fnames) -> None:
@@ -265,6 +298,8 @@ class BundleProjectStore(ProjectStore):
             raise TypeError(f"fnames must be list or tuple: {fnames}")
         if not self.zip:
             raise ValueError("No zip file to work on")
+        if self.read_only:
+            raise PermissionError(errno.EACCES, os.strerror(errno.EACCES), self.zip.filename)
         zippedfiles = self.zip.namelist()
         for fn in fnames:
             if fn not in zippedfiles:

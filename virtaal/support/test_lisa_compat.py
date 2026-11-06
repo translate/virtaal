@@ -207,3 +207,33 @@ def test_a_utf16_file_opened_from_disk_stays_utf16(tmp_path):
     data = path.read_bytes()
     assert data.startswith(codecs.BOM_UTF16_LE)
     assert tmx.tmxfile.parsestring(data).units[0].target == "Servus"
+
+
+ASCII_TMX = b"""<?xml version="1.0" encoding="us-ascii"?>
+<tmx version="1.4"><header creationtool="x" creationtoolversion="1"
+  segtype="sentence" o-tmf="x" adminlang="en-US" srclang="en-US"
+  datatype="plaintext"/><body>
+<tu><tuv xml:lang="en-US"><seg>R&#233;sum&#233;</seg></tuv>
+<tuv xml:lang="fr-FR"><seg>R&#xe9;sum&#xe9;</seg></tuv></tu>
+</body></tmx>"""
+
+
+def test_translate_toolkit_still_fails_on_text_its_encoding_cant_hold():
+    # Once this fails translate-toolkit escapes such text itself, and the
+    # serialize_hook() patch can go.
+    store = tmx.tmxfile.parsestring(ASCII_TMX)
+
+    with pytest.raises(UnicodeEncodeError):
+        lisa_compat._serialize_hook(store, store.units[0].source)
+
+
+def test_text_an_ascii_tmx_cant_hold_is_saved_as_character_references():
+    store = tmx.tmxfile.parsestring(ASCII_TMX)
+    store.units[0].target = "Crème brûlée"
+
+    saved = bytes(store)
+
+    saved.decode("ascii")
+    assert b"Cr&#232;me br&#251;l&#233;e" in saved
+    reopened = tmx.tmxfile.parsestring(saved).units[0]
+    assert (reopened.source, reopened.target) == ("Résumé", "Crème brûlée")

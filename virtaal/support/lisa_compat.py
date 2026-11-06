@@ -10,8 +10,14 @@ string as the target's leading text and keep its inline elements and
 their tail text, so editing a TMX translation that starts with <ph/>
 saved "Neu<ph/>Hallo Welt" (#4627). Here a changed target replaces the
 whole content, and an unchanged one is left alone. Upstream bug; drop
-this once translate-toolkit clears the children in settarget()."""
+this once translate-toolkit clears the children in settarget().
 
+translate-toolkit's reindent() fails on a processing instruction inside
+an element, so an XLIFF holding one couldn't be saved (#4727). Here it
+leaves the instruction as it is, like a comment."""
+
+from lxml import etree
+from translate.misc import xml_helpers
 from translate.storage import lisa
 
 
@@ -50,3 +56,17 @@ _patch(lisa.LISAunit, use_lang=False)
 # find their target by language.
 if hasattr(lisa, "MultilingualLISAunit"):
     _patch(lisa.MultilingualLISAunit, use_lang=True)
+
+
+_reindent = xml_helpers.reindent
+
+
+def reindent(elem, *args, **kwargs):
+    if elem.tag is etree.PI:
+        return
+    _reindent(elem, *args, **kwargs)
+
+
+reindent.ttk_reindent = _reindent
+# reindent() recurses through xml_helpers' global; lisa imports it by name.
+xml_helpers.reindent = lisa.reindent = reindent

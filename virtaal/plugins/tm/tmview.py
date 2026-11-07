@@ -264,8 +264,11 @@ class TMView(BaseView, GObjectWrapper):
 
     # EVENT HANDLERS #
     def _on_editor_size_allocate(self, editor, allocation):
-        # The target grows and shrinks while typing.
-        geometry = (allocation.y, allocation.height)
+        # The target grows and shrinks while typing, and the editor moves
+        # with its row without its allocation changing.
+        window = editor.get_window() if editor is not None else None
+        origin = window.get_origin() if window is not None else None
+        geometry = (origin and (origin.x, origin.y), allocation.y, allocation.height)
         if geometry == self._editor_allocation:
             return
         self._editor_allocation = geometry

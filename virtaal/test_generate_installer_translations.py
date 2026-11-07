@@ -7,6 +7,7 @@
 
 import importlib.util
 import os
+import re
 import sys
 
 import pytest
@@ -33,6 +34,14 @@ def test_every_linguas_code_has_an_installer_decision(gen):
 
 def test_mapped_and_unmapped_are_disjoint(gen):
     assert not set(gen.INNO_LANGUAGES) & gen.NO_INNO_LANGUAGE
+
+
+def test_no_vendored_file_claims_us_englishs_language_id(gen):
+    # Auto-detection matches LanguageID: $0409 is english's own.
+    for name in gen.INNO_LANGUAGES.values():
+        ids = re.findall(rb"^LanguageID=\$([0-9A-Fa-f]+)", (gen.LANGUAGES_DIR / name).read_bytes(), re.M)
+        assert len(ids) == 1, name
+        assert int(ids[0], 16) != 0x0409, name
 
 
 def test_vendored_files_match_the_mapping(gen):

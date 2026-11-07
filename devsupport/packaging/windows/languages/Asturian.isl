@@ -15,7 +15,7 @@
 
 [LangOptions]
 LanguageName=Asturianu
-LanguageID=$0409
+LanguageID=$0000
 ; Si el lenguaje al cual está traduciendo requiere un tipo de letra o
 ; tamaño, quite el comentario de alguna de las siguientes entradas y cámbielas según el caso.
 ;DialogFontName=MS Shell Dlg

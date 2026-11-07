@@ -30,14 +30,15 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 LANGUAGES_DIR = Path(__file__).resolve().parent / "languages"
 
 # po/LINGUAS code -> vendored Inno Setup messages file in languages\,
-# all copied unmodified from jrsoftware/issrc's Files/Languages
-# (Unofficial/ for the ones Inno doesn't ship itself). The [Languages]
-# Name is the file's lowercased stem.
+# copied from jrsoftware/issrc's Files/Languages (Unofficial/ for the
+# ones Inno doesn't ship itself), unmodified but for Asturian.isl's
+# LanguageID. The [Languages] Name is the file's lowercased stem.
 INNO_LANGUAGES = {
     "af": "Afrikaans.isl",
     "ar": "Arabic.isl",
     # Last updated for Inno 4.0.x - more wizard strings fall back to
-    # English than for any other language here.
+    # English than for any other language here. Its LanguageID was
+    # US English's ($0409); Windows has none for Asturian, so $0000.
     "ast": "Asturian.isl",
     "be": "Belarusian.isl",
     "bg": "Bulgarian.isl",

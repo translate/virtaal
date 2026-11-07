@@ -47,6 +47,12 @@ from translate.search.lshtein import LevenshteinComparer
 
 logger = logging.getLogger(__name__)
 STRIP_REGEXP = re.compile(r"\W", re.UNICODE)
+# SQLite compiles the OR terms of a full-text query into a binary tree,
+# and refuses trees deeper than 12 levels ("FTS expression tree is too
+# large"), so a flat OR chain can carry at most 4095 terms (#4732). Very
+# long units easily have more words than that. Half the hard limit, for
+# margin across SQLite builds.
+FULLTEXT_MAX_WORDS = 2048
 
 
 class LanguageError(Exception):
@@ -314,6 +320,15 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
         maxlen = max_levenshtein_length(
             len(unit_source), self.min_similarity, self.max_length
         )
+        if maxlen < minlen:
+            # A unit longer than max_length had the window's upper bound
+            # capped below its lower bound, which no candidate can
+            # satisfy: such a unit silently matched nothing (#4732). Its
+            # only possible matches are close in length, so fall back to
+            # the similarity bound alone. Comparing against a long
+            # candidate stays bounded anyway: the comparer only scores
+            # the first max_length characters of a long string.
+            maxlen = math.floor(len(unit_source) / (self.min_similarity / 100.0))
 
         # split source into words, remove punctuation and special
         # chars, keep words that are at least 3 chars long
@@ -327,7 +342,13 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
                        AND fulltext MATCH ?""" % langs_in
             # Quoted, so a word such as AND, NOT or NEAR isn't read as an
             # FTS operator (#4332). STRIP_REGEXP has removed any quote.
-            search_str = " OR ".join('"%s"' % word for word in unit_words)
+            # Capped, so a very long unit doesn't build an OR expression
+            # deeper than SQLite accepts (#4732): a match for such a unit
+            # is close in length (window above) and shares its opening
+            # words.
+            search_str = " OR ".join(
+                '"%s"' % word for word in unit_words[:FULLTEXT_MAX_WORDS]
+            )
             self.cursor.execute(
                 query, (*source_langs, *target_langs, minlen, maxlen, search_str)
             )

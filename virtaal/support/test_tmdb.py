@@ -199,3 +199,30 @@ def test_translate_unit_matches_any_of_several_languages(db_path, source):
 
     assert [match['target'] for match in matches] == ['Afrikaans']
     assert db.translate_unit(source, ['de', 'fr'], ['af_ZA']) == []
+
+
+VERY_LONG = ' '.join('word%04d' % number for number in range(5000))
+
+
+def test_a_very_long_unit_is_searchable(db_path):
+    # 5000 words used to build a full-text OR expression deeper than
+    # SQLite accepts ("FTS expression tree is too large"), and for a
+    # unit longer than max_length the length window's bounds crossed,
+    # so such a unit got no suggestions at all (#4732).
+    db = tmdb.TMDB(db_path)
+    db.add_dict({'source': VERY_LONG, 'target': 'Bo lank', 'context': ''}, 'en', 'af')
+
+    matches = db.translate_unit(VERY_LONG, 'en', 'af')
+
+    assert [match['target'] for match in matches] == ['Bo lank']
+
+
+def test_a_very_long_unit_without_a_close_match_is_empty(db_path):
+    # Same lookup, but nothing in the TM is remotely similar: the lookup
+    # must complete without the FTS error and without matches (#4732).
+    db = tmdb.TMDB(db_path)
+    db.add_dict({'source': VERY_LONG, 'target': 'Bo lank', 'context': ''}, 'en', 'af')
+
+    other_long = ' '.join('ander%04d' % number for number in range(5000))
+
+    assert db.translate_unit(other_long, 'en', 'af') == []

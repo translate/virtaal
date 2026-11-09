@@ -74,12 +74,17 @@ gtkmac_mo_files = [
     if p.relative_to(_gtkmac_locale_dir).parts[0] in bundle_languages(LANGUAGES)
 ]
 
-# build_standalone.sh stages this (Intel builds only) from an old,
-# self-contained pyenchant wheel - see that script's own comment.
-# pan_app.py points PYENCHANT_LIBRARY_PATH at it, frozen+Intel only;
-# absent here just means an arm64 build, same as today.
-ENCHANT_INTEL_DIR = ROOT / "build" / "enchant_intel" / "enchant"
-_bundle_enchant = ENCHANT_INTEL_DIR.is_dir()
+# build_standalone.sh builds this enchant, with its hunspell provider,
+# and fetches the dictionaries. It replaces Homebrew's libenchant, which
+# GtkSpell links; pyi_rth_spelling.py points pyenchant at it.
+ENCHANT_PREFIX = ROOT / "build" / "enchant-macos" / "opt" / "virtaal-enchant"
+ENCHANT_LIBRARY = ENCHANT_PREFIX / "lib" / "libenchant-2.2.dylib"
+ENCHANT_PROVIDERS = [ENCHANT_PREFIX / "lib" / "enchant-2" / name
+                     for name in ("enchant_hunspell.so",)]
+DICTIONARIES = ROOT / "build" / "dictionaries" / "bundled"
+for _required in [ENCHANT_LIBRARY] + ENCHANT_PROVIDERS:
+    if not _required.is_file():
+        raise SystemExit("Not found (run build_standalone.sh): %s" % _required)
 
 datas = common.datas(ROOT) + [
     # CFBundleTypeIconFile below (via document_types()) names this
@@ -94,8 +99,7 @@ datas += [
     for part in ADWAITA_PARTS
 ]
 datas += mo_files + gtkmac_mo_files
-if _bundle_enchant:
-    datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
+datas += [(str(p), "share/hunspell") for p in sorted(DICTIONARIES.iterdir())]
 
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
@@ -103,29 +107,25 @@ a = Analysis(  # noqa: F821
     binaries=(
         [(str(GETTEXTPO), ".")] + [(str(dep), ".") for dep in GETTEXTPO_DEPS]
         + [(str(SVG_LOADER), "lib/gdk-pixbuf/loaders")]
+        + [(str(ENCHANT_LIBRARY), ".")]
+        + [(str(p), "libenchant/lib/enchant-2") for p in ENCHANT_PROVIDERS]
     ),
     datas=datas,
-    hiddenimports=common.hiddenimports(enchant=_bundle_enchant),
+    hiddenimports=common.hiddenimports(),
     hooksconfig=common.hooksconfig(
         LANGUAGES,
         # Optional native macOS menu-bar integration (mainview.py's
         # try/except-gated GtkosxApplication block) - statically imported,
         # so the gi hook would bundle it regardless; declared to match the
         # gi.require_version() call rather than whatever the hook guesses.
-        module_versions={"GtkosxApplication": "1.0"},
+        module_versions={"GtkosxApplication": "1.0", "GtkSpell": "3.0"},
         # Not every theme in Homebrew's share/icons: Adwaita is
         # bundled above, without its cursors.
         icons=["hicolor"],
     ),
-    excludes=(
-        common.EXCLUDES
-        # No bundled dylib for this build (arm64, or staging failed) -
-        # exclude enchant rather than let it fall through to Homebrew's
-        # own copy (this CI job installs it) and crash: two separate
-        # glib/gobject stacks in one process split the ObjC runtime's
-        # class registry.
-        + ([] if _bundle_enchant else ["enchant"])
-    ),
+    hookspath=[str(ROOT / "devsupport" / "packaging" / "pyinstaller-hooks")],
+    runtime_hooks=[str(PACKAGING / "pyi_rth_spelling.py")],
+    excludes=common.EXCLUDES,
     noarchive=False,
 )
 a.datas = common.trim(a.datas, ROOT)
@@ -139,9 +139,22 @@ _svg_entry = subprocess.run(
 with open(_LOADER_CACHE, "a", encoding="utf-8") as _cache:
     _cache.write("\n" + "\n".join(line for line in _svg_entry.splitlines() if not line.startswith("#")) + "\n")
 
+# One enchant, ours: GtkSpell's dependency on Homebrew's resolves to the
+# same name.
+a.binaries = [(dest, str(ENCHANT_LIBRARY) if dest == ENCHANT_LIBRARY.name else src, kind)
+              for dest, src, kind in a.binaries]
+_spelling = sorted((dest, os.path.realpath(src)) for dest, src, _kind in a.binaries
+                   if "enchant" in os.path.basename(dest) or "aspell" in os.path.basename(dest))
+_expected = sorted([(ENCHANT_LIBRARY.name, str(ENCHANT_LIBRARY.resolve()))]
+                   + [("libenchant/lib/enchant-2/" + p.name, str(p.resolve())) for p in ENCHANT_PROVIDERS])
+if _spelling != _expected:
+    raise SystemExit("Bundled the wrong enchant: %r" % _spelling)
 # The Toolkit's spelling check imports enchant.checker.
-if _bundle_enchant and "enchant.checker" not in {entry[0] for entry in a.pure}:
+if "enchant.checker" not in {entry[0] for entry in a.pure}:
     raise SystemExit("enchant.checker isn't bundled")
+# The spell checker plugin needs GtkSpell's typelib.
+if not any(dest.endswith("GtkSpell-3.0.typelib") for dest, _src, _kind in a.datas + a.binaries):
+    raise SystemExit("GtkSpell-3.0.typelib isn't bundled")
 
 # gtkmac_mo_files are among the copies Virtaal's own catalogs must beat.
 common.check_catalogs(a.datas, mo_files, LANGUAGES)

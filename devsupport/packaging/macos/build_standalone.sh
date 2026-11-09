@@ -54,36 +54,12 @@ EOF
 # is the documented way to trigger it without going through pip/build.
 "$PYTHON" setup.py --version >/dev/null
 
-# pyenchant stopped shipping self-contained macOS wheels after 2.0.0 -
-# that one is an Intel-only universal (i386+x86_64) bundle of
-# libenchant 1.x + myspell backend + a few dictionaries, its exports
-# matching what modern pyenchant's _enchant.py calls. No arm64 build
-# exists, so this step - and virtaal.spec's use of its output - is a
-# no-op there. Only the native bits are staged here; virtaal.spec
-# still bundles *current* pyenchant's own Python code, pointed at this
-# dylib via PYENCHANT_LIBRARY_PATH/ENCHANT_MODULE_DIR/ENCHANT_DATA_DIR
-# (pan_app.py sets these, frozen+Intel only).
-rm -rf build/enchant_intel
-if [ "$(uname -m)" = "x86_64" ]; then
-    curl -fsSL --retry 5 --retry-all-errors --connect-timeout 30 --max-time 300 \
-        -o /tmp/pyenchant-2.0.0-mac.whl \
-        "https://files.pythonhosted.org/packages/4f/c5/5c18df3c5dbf2ce1e6fc8b0fcce1a5dfe7c4ec5ab33b76722fcca9cbfff5/pyenchant-2.0.0-py2.py3.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp33.pp35-none-macosx_10_6_intel.macosx_10_9_intel.whl"
-    mkdir -p build/enchant_intel
-    # libiconv.2.dylib is skipped: nothing links it (libglib/libintl use
-    # /usr/lib/libiconv.2.dylib) and it has no LC_VERSION_MIN_MACOSX,
-    # which notarization rejects.
-    # en_US (traditional software source language) and en_GB (checks.po's
-    # own target language) - everything else comes via download
-    # (dictionary_source.py), not bundled.
-    unzip -q /tmp/pyenchant-2.0.0-mac.whl 'enchant/lib/*' \
-        'enchant/share/enchant/myspell/en_US.aff' \
-        'enchant/share/enchant/myspell/en_US.dic' \
-        'enchant/share/enchant/myspell/en_GB.aff' \
-        'enchant/share/enchant/myspell/en_GB.dic' \
-        -x 'enchant/lib/libiconv.2.dylib' \
-        -d build/enchant_intel
-    rm /tmp/pyenchant-2.0.0-mac.whl
-fi
+# enchant with a hunspell provider, and the dictionaries bundled: en_US
+# (the usual source language) and en_GB (checks.po's target language).
+# The rest are downloaded (dictionary_source.py).
+devsupport/packaging/macos/build_enchant.sh "$PWD/build/enchant-macos"
+rm -rf build/dictionaries/bundled
+"$PYTHON" devsupport/packaging/fetch_dictionaries.py build/dictionaries/bundled en_US en_GB
 
 rm -rf build/virtaal dist/Virtaal.app
 

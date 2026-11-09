@@ -14,7 +14,10 @@ github.com/LibreOffice/dictionaries, not hand-written guesses, so a
 real repo-shape change would actually be caught.
 """
 
+import os
 from urllib.error import HTTPError, URLError
+
+import pytest
 
 from virtaal.support import dictionary_source
 from virtaal.support.dictionary_source import (
@@ -366,3 +369,17 @@ def test_download_dictionary_cleans_up_partial_write_on_failure(monkeypatch, tmp
 
     assert result is None
     assert list(tmp_path.iterdir()) == []
+
+
+def test_dictionary_write_dir_is_enchants_hunspell_dir(monkeypatch):
+    enchant = pytest.importorskip('enchant')
+    monkeypatch.setattr(dictionary_source.platform, 'bundles_spelling', False)
+    assert dictionary_source.dictionary_write_dir() == os.path.join(enchant.get_user_config_dir(), 'hunspell')
+
+
+def test_dictionary_write_dir_in_the_macos_build(monkeypatch, tmp_path):
+    monkeypatch.setattr(dictionary_source.platform, 'bundles_spelling', True)
+    monkeypatch.setattr(dictionary_source.platform, 'is_mac', True)
+    monkeypatch.setenv('HOME', str(tmp_path))
+    monkeypatch.setenv('USERPROFILE', str(tmp_path))
+    assert dictionary_source.dictionary_write_dir() == str(tmp_path / 'Library' / 'Spelling')

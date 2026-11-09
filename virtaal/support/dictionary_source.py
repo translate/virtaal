@@ -33,6 +33,7 @@ from urllib.error import HTTPError, URLError
 
 from lxml import etree
 
+from virtaal.common.platform import platform
 from virtaal.support import proxy
 
 TREE_URL = 'https://api.github.com/repos/LibreOffice/dictionaries/git/trees/master?recursive=1'
@@ -247,6 +248,10 @@ def dictionary_write_dir():
     hunspell provider's identify() returns literally "hunspell" -
     matching enchant.get_user_config_dir() (Python) plus that name.
     """
+    if platform.bundles_spelling and platform.is_mac:
+        # The macOS build's enchant reads them there too; so do other
+        # apps.
+        return os.path.join(os.path.expanduser('~'), 'Library', 'Spelling')
     import enchant
     return os.path.join(enchant.get_user_config_dir(), 'hunspell')
 

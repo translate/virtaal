@@ -738,12 +738,15 @@ def test_unsupported_in_a_frozen_build(monkeypatch):
     bundled GTK3 and crash outright."""
     monkeypatch.setattr(platform, 'is_frozen', True)
     monkeypatch.setattr(platform, 'is_appimage', False)
+    monkeypatch.setattr(platform, 'bundles_spelling', False)
     with pytest.raises(PluginUnsupported, match='frozen'):
         Plugin('spellchecker', None)
 
 
-def test_appimage_passes_the_frozen_build_check(monkeypatch):
-    """The AppImage bundles gtkspell3 with its own GTK."""
+@pytest.mark.parametrize('flag', ['is_appimage', 'bundles_spelling'])
+def test_a_build_with_its_own_gtkspell_passes_the_frozen_build_check(monkeypatch, flag):
+    """The AppImage, and a macOS or Windows build whose runtime hook
+    sets up its bundled enchant and gtkspell3."""
     try:
         import gi
         gi.require_version('GtkSpell', '3.0')
@@ -751,7 +754,9 @@ def test_appimage_passes_the_frozen_build_check(monkeypatch):
     except (ImportError, ValueError):
         pytest.skip("GtkSpell 3.0 typelib not installed - optional")
     monkeypatch.setattr(platform, 'is_frozen', True)
-    monkeypatch.setattr(platform, 'is_appimage', True)
+    monkeypatch.setattr(platform, 'is_appimage', False)
+    monkeypatch.setattr(platform, 'bundles_spelling', False)
+    monkeypatch.setattr(platform, flag, True)
     monkeypatch.setattr(platform, 'is_windows', False)
     # Stops the plugin before it needs a main_controller.
     monkeypatch.setattr(spellchecker, 'import_enchant', lambda: None)

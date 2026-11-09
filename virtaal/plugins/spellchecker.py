@@ -17,12 +17,15 @@ from virtaal.support.dictionary_source import DEFAULT_REGIONS
 from virtaal.support.enchant_compat import enchant_tag, import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
-# GtkSpell checks each word of an insert against the whole line it's on,
-# so a long paste takes time growing with the square of its length
-# (#4443). A large insert is checked in one go after it instead, and text
-# with a line too long for even that isn't checked at all.
+# GtkSpell finds each word's ends from the whole line it's on, so
+# checking text takes time growing with the square of its lines' lengths
+# (#4443): several seconds for a line of 10,000 characters. A large
+# insert is checked in one go after it instead, and text that would take
+# more than a few tenths of a second, a line of 2,000 characters, isn't
+# checked at all.
 LARGE_INSERT = 1000
-LONGEST_CHECKED_LINE = 10000
+LONGEST_CHECKED_LINE = 2000
+CHECK_COST_LIMIT = LONGEST_CHECKED_LINE ** 2
 # GtkTextBuffer's line ends.
 _LINE_END_RE = re.compile('\r\n|[\r\n\u2029]')
 # GtkSpell reads iso-codes for its Languages submenu, which Virtaal removes,
@@ -60,9 +63,11 @@ def _is_dictionary_entry(label):
     return re.fullmatch(add, label) is not None
 
 
-def _longest_line(buffer):
+def _check_cost(buffer):
+    """How long checking buffer's text takes, relatively: the sum of its
+        lines' squared lengths."""
     text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
-    return max(len(line) for line in _LINE_END_RE.split(text))
+    return sum(len(line) ** 2 for line in _LINE_END_RE.split(text))
 
 
 def _in_placeable(textbox, start, end):
@@ -249,7 +254,7 @@ class Plugin(BasePlugin):
         if getattr(text_view, 'spell_pending', None) != language:
             # The language changed again before this ran.
             return
-        text_view.spell_too_long = _longest_line(text_view.get_buffer()) > LONGEST_CHECKED_LINE
+        text_view.spell_too_long = _check_cost(text_view.get_buffer()) > CHECK_COST_LIMIT
         if text_view.spell_too_long:
             self._detach(text_view)
             return
@@ -272,8 +277,8 @@ class Plugin(BasePlugin):
                 spell.set_language(language)
                 spell.attach(text_view)
             else:
+                # Setting the language checks the text again.
                 spell.set_language(language)
-            spell.recheck_all()
             text_view.spell_lang = language
         except Exception as e:
             logging.exception("Could not initialize spell checking: %s", e)

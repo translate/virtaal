@@ -1436,6 +1436,18 @@ jobs:
           grep -q "^gtkspell: ok$" /tmp/enchant-hu.txt
           grep -q "^marked: xqzwy$" /tmp/enchant-hu.txt
 
+      - name: Time a long paste with spell checking
+        # A paste through the plugin leaves the app busy for well under 3 s
+        # (#4443), a 2,000-character one still checked. "gtkspell" lines
+        # are GtkSpell alone, for comparison.
+        timeout-minutes: 10
+        run: |
+          dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.spelling_timing en_GB /tmp/spelling-timing.txt
+          cat /tmp/spelling-timing.txt
+          grep -q "^plugin: checking$" /tmp/spelling-timing.txt
+          grep -Eq "^plugin 2000: .*, [1-9][0-9]* marked$" /tmp/spelling-timing.txt
+          awk '/^plugin [0-9]+:/ { if ($7 + 0 >= 3) slow = 1 } /^typing:/ { if ($4 + 0 >= 0.5) slow = 1 } END { exit slow }' /tmp/spelling-timing.txt
+
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo, not Homebrew's, translating through
         # the bundled gettext-tools catalog.

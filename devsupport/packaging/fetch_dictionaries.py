@@ -31,6 +31,11 @@ DICTIONARIES = {
         "en/en_GB.dic": "04e90f34f5263bf26780e9c4a442e9ad16584e227af49ddd1b3b21b01df5b29c",
         "en/README_en_GB.txt": "18b5833de60a52ffcb6e5b6b5048bb5a5d910acfecd5b096985b77058223880c",
     },
+    "hu_HU": {
+        "hu_HU/hu_HU.aff": "f3a2748dd535cfde2142ab17d0f7f8e4787b03fb25a60829c69ac8d493db4802",
+        "hu_HU/hu_HU.dic": "97293d670ad4a3b8e7eebef7e25c6e8e939b914c64b6b4672b2bf416b768f990",
+        "hu_HU/README_hu_HU.txt": "52b17fc3d53b6935eab747a71894507d702f7f0fde379c819c16cc803005fc84",
+    },
 }
 
 

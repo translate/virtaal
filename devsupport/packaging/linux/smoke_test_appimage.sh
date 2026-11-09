@@ -5,7 +5,8 @@
 # AppImage leaves out (libxcb, the Wayland client libraries, fontconfig),
 # and the host's en_US hunspell dictionary (hunspell-en-us on
 # Debian/Ubuntu, hunspell-en-US on Fedora): the AppImage uses the host's
-# installed dictionaries. And pgrep.
+# installed dictionaries. And pgrep. With HUNSPELL_HU_DIR set to a
+# directory with hu_HU.aff and hu_HU.dic, also checks Hungarian.
 set -eu -o pipefail
 
 APPIMAGE="$(realpath "$1")"
@@ -52,6 +53,16 @@ grep -q "^gtkspell: ok$" "$LOGS/enchant.txt"
 grep -q "^marked: tset$" "$LOGS/enchant.txt"
 grep -qx "foreign: *" "$LOGS/enchant.txt"
 grep -qx "duplicates: *" "$LOGS/enchant.txt"
+
+if [ -n "${HUNSPELL_HU_DIR:-}" ]; then
+    stage "spell checking Hungarian"
+    mkdir -p "$LOGS/enchant-hu/hunspell"
+    cp "$HUNSPELL_HU_DIR/hu_HU.aff" "$HUNSPELL_HU_DIR/hu_HU.dic" "$LOGS/enchant-hu/hunspell"
+    ENCHANT_CONFIG_DIR="$LOGS/enchant-hu" run --run-module virtaal.support.enchant_compat hu_HU | tee "$LOGS/enchant-hu.txt"
+    grep -q "^dictionary: True$" "$LOGS/enchant-hu.txt"
+    grep -q "^gtkspell: ok$" "$LOGS/enchant-hu.txt"
+    grep -q "^marked: xqzwy$" "$LOGS/enchant-hu.txt"
+fi
 
 stage "the desktop's settings, not the build machine's"
 if command -v gsettings >/dev/null; then

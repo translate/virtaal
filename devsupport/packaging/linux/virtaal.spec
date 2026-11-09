@@ -83,7 +83,7 @@ a = Analysis(  # noqa: F821
     hiddenimports=common.hiddenimports(),
     # Adwaita is bundled above.
     hooksconfig=common.hooksconfig(LANGUAGES, {"GtkSpell": "3.0"}, icons=["hicolor"], themes=["Adwaita"]),
-    hookspath=[str(ROOT / "devsupport" / "packaging" / "linux" / "pyinstaller-hooks")],
+    hookspath=[str(ROOT / "devsupport" / "packaging" / "pyinstaller-hooks")],
     runtime_hooks=[str(ROOT / "devsupport" / "packaging" / "linux" / "pyi_rth_appimage.py")],
     excludes=common.EXCLUDES,
     noarchive=False,

@@ -268,9 +268,9 @@ dictionary:
   an:
     files: &id002
     - name: an_ES.aff
-      sha: 556d8668dcdd22cd10dda4510fb7f0a6c8911e6a
+      sha: 150d64a37acf293eef1c4979cd17d8ba14cc6b13
     - name: an_ES.dic
-      sha: cca4218798a0fb0985f5530ad26402562a3bf408
+      sha: 0972ee112dd2983a37fb744bca586b9aa8b5a21b
     folder: an_ES
   an_ES:
     files: *id002

@@ -6,8 +6,6 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
-import os
-import os.path
 import re
 
 from gi.repository import GLib
@@ -98,18 +96,6 @@ class Plugin(BasePlugin):
             # just failing to import.
             raise PluginUnsupported("gtkspell3 isn't bundled in a frozen build")
 
-        if platform.is_windows:
-            DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
-            # DICTDIR is already str (unicode text) under Python 3, so there's
-            # nothing to decode - .decode() doesn't exist on str at all and
-            # raised AttributeError unconditionally here. The original intent
-            # (enchant won't work on Windows with a non-ascii path) still
-            # applies though, so check encodability instead of decoding.
-            try:
-                DICTDIR.encode('ascii')
-            except UnicodeEncodeError:
-                raise PluginUnsupported("Spell checking is not supported with non-ascii username")
-
         # If these imports fail, the plugin is automatically disabled -
         # gi.require_version() raises ValueError (not ImportError) when
         # the typelib itself is simply missing (true for this project's
@@ -124,6 +110,13 @@ class Plugin(BasePlugin):
         enchant = import_enchant()
         if enchant is None:
             raise PluginUnsupported("pyenchant isn't installed")
+        if platform.is_windows:
+            # hunspell can't open a dictionary in a folder with a non-ASCII
+            # name there, and enchant then marks every word: the user's
+            # downloaded ones, or this build's own.
+            folders = [enchant.get_user_config_dir()] + ([platform.bundle_dir] if platform.is_frozen else [])
+            if not all(folder.isascii() for folder in folders):
+                raise PluginUnsupported("Spell checking is not supported with a non-ASCII folder name")
         self.gtkspell = gtkspell
         self.enchant = enchant
         # languages that we've handled before:

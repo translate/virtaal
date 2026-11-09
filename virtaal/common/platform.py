@@ -38,6 +38,9 @@ class Platform:
         # The AppImage runtime sets APPIMAGE to the file's path. Child
         # processes inherit it, so only a frozen build is one.
         self.is_appimage = self.is_frozen and self.is_linux and 'APPIMAGE' in environ
+        # A macOS or Windows build whose runtime hook points enchant and
+        # GtkSpell at the bundle's own copies.
+        self.bundles_spelling = self.is_frozen and '_VIRTAAL_BUNDLED_SPELLING' in environ
         # A frozen build's sys.prefix is the build machine's own Python
         # install prefix, not the bundle - callers that need the real
         # bundle directory (e.g. to find data files packaged alongside

@@ -308,7 +308,8 @@ def test_activate_checker_reuses_an_existing_checker():
     assert created == []  # reused, never constructed a new one
     assert existing.attached_to is None  # ... and so never (re)attached either
     assert existing.language == 'en_US'
-    assert existing.rechecked is True
+    # Setting the language checks the text; again would double the time.
+    assert existing.rechecked is False
     assert text_view.spell_lang == 'en_US'
 
 
@@ -323,7 +324,8 @@ def test_activate_checker_creates_and_attaches_a_new_checker_when_none_exists():
     assert len(created) == 1
     assert created[0].attached_to is text_view
     assert created[0].language == 'en_US'
-    assert created[0].rechecked is True
+    # Attaching checks the text.
+    assert created[0].rechecked is False
     assert text_view.spell_lang == 'en_US'
 
 
@@ -495,20 +497,32 @@ def test_an_insert_doesnt_turn_checking_back_on_once_disabled(monkeypatch):
     assert text_view.spell_lang is None
 
 
+def test_several_long_lines_together_are_not_checked(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    line = 'x' * (spellchecker.LONGEST_CHECKED_LINE * 3 // 4)
+    text_view = _text_view('\n'.join([line] * 2))
+
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    assert created == []
+    assert text_view.spell_lang is None
+
+
 @pytest.mark.parametrize('text,expected', [
     ('', 0),
-    ('ab\ncde', 3),
-    ('ab\r\ncde', 3),
-    ('ab\rcde', 3),
-    ('ab\u2029cde', 3),
+    ('ab\ncde', 13),
+    ('ab\r\ncde', 13),
+    ('ab\rcde', 13),
+    ('ab\u2029cde', 13),
     # Not a line end in a GtkTextBuffer.
-    ('ab\u2028cde', 6),
+    ('ab\u2028cde', 36),
 ])
-def test_longest_line_splits_where_a_text_buffer_does(text, expected):
+def test_check_cost_splits_where_a_text_buffer_does(text, expected):
     buffer = Gtk.TextBuffer()
     buffer.set_text(text)
 
-    assert spellchecker._longest_line(buffer) == expected
+    assert spellchecker._check_cost(buffer) == expected
 
 
 def test_activate_checker_sets_the_language_before_attaching():

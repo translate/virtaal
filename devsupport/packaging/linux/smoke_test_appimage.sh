@@ -49,6 +49,9 @@ grep -q "^enchant: /.*/enchant/lib/libenchant-2.so.2$" "$LOGS/enchant.txt"
 grep -q "^providers: .*hunspell" "$LOGS/enchant.txt"
 grep -q "^dictionary: True$" "$LOGS/enchant.txt"
 grep -q "^gtkspell: ok$" "$LOGS/enchant.txt"
+grep -q "^marked: tset$" "$LOGS/enchant.txt"
+grep -qx "foreign: *" "$LOGS/enchant.txt"
+grep -qx "duplicates: *" "$LOGS/enchant.txt"
 
 stage "the desktop's settings, not the build machine's"
 if command -v gsettings >/dev/null; then

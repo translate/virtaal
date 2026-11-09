@@ -91,13 +91,11 @@ class Plugin(BasePlugin):
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
 
-        if platform.is_frozen and not platform.is_appimage:
-            # No version-matched gtkspell3 bundled yet (UI-stage work) -
-            # a frozen build must never trust a system-found one: a
+        if platform.is_frozen and not (platform.is_appimage or platform.bundles_spelling):
+            # A frozen build must never trust a system-found gtkspell3: a
             # mismatched GTK3 copy crashes outright (GTK_IS_TEXT_VIEW
             # assertion, ObjC duplicate-class registration) rather than
-            # just failing to import. The AppImage bundles the
-            # gtkspell3 built against its own GTK.
+            # just failing to import.
             raise PluginUnsupported("gtkspell3 isn't bundled in a frozen build")
 
         if platform.is_windows:

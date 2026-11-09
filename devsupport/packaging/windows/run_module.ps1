@@ -1,12 +1,13 @@
 # Runs one of Virtaal's modules in a built Windows bundle and outputs
 # what it wrote:
-#   run_module.ps1 dist\virtaal virtaal.support.gettextpo [-TimeoutSeconds 60]
+#   run_module.ps1 dist\virtaal virtaal.support.gettextpo [-Arguments en_GB] [-TimeoutSeconds 60]
 #
 # virtaal.exe has no console, so the module writes to a file.
 
 param(
     [Parameter(Mandatory = $true)][string]$Bundle,
     [Parameter(Mandatory = $true)][string]$Module,
+    [string[]]$Arguments = @(),
     [int]$TimeoutSeconds = 60
 )
 
@@ -18,7 +19,7 @@ Remove-Item $out, $stacks -ErrorAction SilentlyContinue
 $env:VIRTAAL_STACK_DUMP = "$($TimeoutSeconds - 10):$stacks"
 # Not Start-Process -Wait: that also waits for any process virtaal.exe
 # leaves running.
-$p = Start-Process -PassThru -FilePath (Join-Path $Bundle "virtaal.exe") -ArgumentList "--run-module", $Module, $out
+$p = Start-Process -PassThru -FilePath (Join-Path $Bundle "virtaal.exe") -ArgumentList (@("--run-module", $Module) + $Arguments + $out)
 $exited = $p.WaitForExit($TimeoutSeconds * 1000)
 foreach ($child in Get-CimInstance Win32_Process -Filter "ParentProcessId = $($p.Id)") {
     Write-Host "::warning::virtaal.exe left $($child.Name) running: $($child.CommandLine)"

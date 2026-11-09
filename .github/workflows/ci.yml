@@ -1200,7 +1200,7 @@ jobs:
           brew untap aws/tap || true
           brew install pygobject3 gtk+3 gtk-mac-integration \
             gobject-introspection cairo pkg-config gettext \
-            enchant gtkspell3 adwaita-icon-theme librsvg
+            enchant gtkspell3 hunspell groff adwaita-icon-theme librsvg
 
       - name: Create venv with system site-packages
         run: |
@@ -1218,7 +1218,17 @@ jobs:
 
       - name: Hash the libraries PyInstaller will collect
         id: bincache
-        run: echo "hash=$(brew list --versions | shasum -a 256 | cut -c1-16)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "hash=$(brew list --versions | shasum -a 256 | cut -c1-16)" >> "$GITHUB_OUTPUT"
+          echo "enchant=$(brew list --versions glib hunspell | shasum -a 256 | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the enchant build
+        # build_enchant.sh rebuilds only when its pin or these libraries
+        # change.
+        uses: actions/cache@v6
+        with:
+          path: build/enchant-macos
+          key: macos-enchant-${{ matrix.arch }}-${{ steps.bincache.outputs.enchant }}-${{ hashFiles('devsupport/packaging/macos/build_enchant.sh', 'devsupport/packaging/macos/enchant-library-spelling.patch') }}
 
       - name: Cache PyInstaller's processed binaries
         # Entries are reused only when the source binary's digest matches.
@@ -1325,12 +1335,6 @@ jobs:
         # Launch with a real file in the background, confirm the process
         # is still alive after enough time for GTK/plugin init, and
         # confirm the log is clean - empty, not just "didn't crash".
-        # gtkspell3 is never bundled (spellchecker.py refuses it in any
-        # frozen build - see that file's comment) so "Failed to load
-        # plugin spellchecker"-type lines are expected and fine.
-        # enchant *is* bundled on Intel (virtaal.spec) - real, expected
-        # "Dictionary not found" output for a language with no matching
-        # dictionary (e.g. bare "en") is fine too; anything else isn't.
         run: |
           dist/Virtaal.app/Contents/MacOS/virtaal devsupport/testfiles/checks.po > /tmp/bundle-launch.log 2>&1 &
           PID=$!
@@ -1342,11 +1346,29 @@ jobs:
           fi
           kill "$PID"
           pkill -f virtaal.support.tmserver || true
-          if grep -Eqv "spellchecker|enchant|GtkosxApplication|spelling|Traceback" /tmp/bundle-launch.log; then
+          # The Toolkit's spelling check has no bare "en" dictionary, as
+          # on Windows (Assert-VirtaalLogsClean).
+          if grep -Eqv 'GtkosxApplication|^ERROR:translate\.filters\.spelling:Dictionary not found$|^Traceback \(most recent call last\):$|^ *File "(translate/filters/spelling\.py|enchant/checker/__init__\.py)", line [0-9]+, in (_get_checker|__init__)$|^enchant\.errors\.DefaultLanguageNotFoundError: ' /tmp/bundle-launch.log; then
             echo "::error::Unexpected output in the bundle's log"
             cat /tmp/bundle-launch.log
             exit 1
           fi
+
+      - name: Verify spell checking
+        # The bundled enchant, hunspell and GtkSpell mark a misspelt word,
+        # and nothing loads Homebrew's copies: this runner has them.
+        timeout-minutes: 3
+        run: |
+          dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.enchant_compat en_GB /tmp/enchant.txt
+          cat /tmp/enchant.txt
+          grep -q "^enchant: .*/Virtaal.app/Contents/Frameworks/libenchant/\.\./libenchant-2\.2\.dylib$" /tmp/enchant.txt
+          grep -q "^providers: hunspell$" /tmp/enchant.txt
+          grep -q "^dictionary: True$" /tmp/enchant.txt
+          grep -q "^typelib: .*/Virtaal.app/" /tmp/enchant.txt
+          grep -q "^gtkspell: ok$" /tmp/enchant.txt
+          grep -q "^marked: tset$" /tmp/enchant.txt
+          grep -qx "foreign: *" /tmp/enchant.txt
+          grep -qx "duplicates: *" /tmp/enchant.txt
 
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo, not Homebrew's, translating through

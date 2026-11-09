@@ -1,0 +1,16 @@
+--- a/providers/enchant_hunspell.cpp
++++ b/providers/enchant_hunspell.cpp
+@@ -218,6 +218,13 @@
+ 	dirs.push_back (tmp);
+ 	g_free(tmp);
+ 
++#ifdef __APPLE__
++	/* Where macOS apps share hunspell dictionaries. */
++	tmp = g_build_filename (g_get_home_dir (), "Library", "Spelling", nullptr);
++	dirs.push_back (tmp);
++	g_free(tmp);
++#endif
++
+ 	for (const gchar* const * iter = g_get_system_data_dirs (); *iter; iter++) {
+ 		tmp = g_build_filename (*iter, me->identify (me), nullptr);
+ 		dirs.push_back (tmp);

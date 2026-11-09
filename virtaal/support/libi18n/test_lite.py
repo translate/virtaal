@@ -160,10 +160,11 @@ def test_is_unused_catalog_drops_unread_library_and_pycountry_domains():
     def database(domain):
         return os.path.normpath("pycountry/databases/%s.json" % domain)
 
-    unused = [_dest("de", "atk10"), _dest("de", "gdk-pixbuf"), _dest("zu", "gtkspell3"),
+    unused = [_dest("de", "atk10"), _dest("de", "gdk-pixbuf"),
               pycountry("de", "iso3166-2"), pycountry("de", "iso4217"),
               database("iso3166-2"), database("iso4217")]
-    used = [_dest("de", "gtk30"), _dest("de", "glib20"), _dest("de", "virtaal"),
+    # GtkSpell is bundled, so its spelling menu catalogs are read.
+    used = [_dest("de", "gtk30"), _dest("de", "glib20"), _dest("de", "virtaal"), _dest("ko", "gtkspell3"),
             pycountry("hi", "iso639-3"), pycountry("de", "iso639-5"), pycountry("hi", "iso3166-1"),
             pycountry("sr", "iso15924"),
             database("iso639-3"), database("iso639-5"), database("iso3166-1")]

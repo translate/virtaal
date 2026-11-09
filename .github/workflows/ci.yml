@@ -841,6 +841,13 @@ jobs:
           echo "C:\gtkspell\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "GI_TYPELIB_PATH=C:\gtk\lib\girepository-1.0;C:\gtkspell\lib\girepository-1.0" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+      - name: Cache the hu_HU dictionary
+        # For the spell checking check (#1958); fetched only on a cache miss.
+        uses: actions/cache@v6
+        with:
+          path: build/dictionaries/hu_HU
+          key: dictionary-hu_HU-${{ runner.os }}-${{ hashFiles('devsupport/packaging/fetch_dictionaries.py') }}
+
       - name: Build self-contained bundle
         shell: pwsh
         env:
@@ -865,16 +872,28 @@ jobs:
 
       - name: Verify spell checking
         # The bundled enchant and GtkSpell mark a misspelt word, and
-        # nothing loads C:\gtk's or another copy.
+        # nothing loads C:\gtk's or another copy. Then Hungarian, whose
+        # compounding crashed old hunspell (#1958).
         timeout-minutes: 3
         shell: pwsh
         run: |
+          python devsupport\packaging\fetch_dictionaries.py build\dictionaries\hu_HU hu_HU
           $result = devsupport\packaging\windows\run_module.ps1 dist\virtaal virtaal.support.enchant_compat -Arguments en_GB
           if ($LASTEXITCODE) { exit 1 }
           $result
           foreach ($expected in '^enchant: .*\\dist\\virtaal\\enchant\\data\\mingw64\\bin\\libenchant-2\.dll$', '^providers: hunspell$',
                                '^dictionary: True$', '^typelib: .*\\dist\\virtaal\\', '^gtkspell: ok$', '^marked: tset$',
                                '^foreign: *$', '^duplicates: *$') {
+            if (-not ($result -match $expected)) { throw "Not in the report: $expected" }
+          }
+          $config = Join-Path $env:RUNNER_TEMP "enchant-hu"
+          New-Item -ItemType Directory -Force -Path "$config\hunspell" | Out-Null
+          Copy-Item build\dictionaries\hu_HU\hu_HU.aff, build\dictionaries\hu_HU\hu_HU.dic "$config\hunspell"
+          $env:ENCHANT_CONFIG_DIR = $config
+          $result = devsupport\packaging\windows\run_module.ps1 dist\virtaal virtaal.support.enchant_compat -Arguments hu_HU
+          if ($LASTEXITCODE) { exit 1 }
+          $result
+          foreach ($expected in '^dictionary: True$', '^gtkspell: ok$', '^marked: xqzwy$') {
             if (-not ($result -match $expected)) { throw "Not in the report: $expected" }
           }
 
@@ -1260,6 +1279,13 @@ jobs:
           path: build/enchant-macos
           key: macos-enchant-${{ matrix.arch }}-${{ steps.bincache.outputs.enchant }}-${{ hashFiles('devsupport/packaging/macos/build_enchant.sh', 'devsupport/packaging/macos/enchant-library-spelling.patch') }}
 
+      - name: Cache the hu_HU dictionary
+        # For the spell checking check (#1958); fetched only on a cache miss.
+        uses: actions/cache@v6
+        with:
+          path: build/dictionaries/hu_HU
+          key: dictionary-hu_HU-${{ runner.os }}-${{ hashFiles('devsupport/packaging/fetch_dictionaries.py') }}
+
       - name: Cache PyInstaller's processed binaries
         # Entries are reused only when the source binary's digest matches.
         # No restore-keys, so a version change starts an empty cache
@@ -1386,9 +1412,11 @@ jobs:
 
       - name: Verify spell checking
         # The bundled enchant, hunspell and GtkSpell mark a misspelt word,
-        # and nothing loads Homebrew's copies: this runner has them.
+        # and nothing loads Homebrew's copies: this runner has them. Then
+        # Hungarian, whose compounding crashed old hunspell (#1958).
         timeout-minutes: 3
         run: |
+          python3 devsupport/packaging/fetch_dictionaries.py build/dictionaries/hu_HU hu_HU
           dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.enchant_compat en_GB /tmp/enchant.txt
           cat /tmp/enchant.txt
           grep -q "^enchant: .*/Virtaal.app/Contents/Frameworks/libenchant/\.\./libenchant-2\.2\.dylib$" /tmp/enchant.txt
@@ -1399,6 +1427,14 @@ jobs:
           grep -q "^marked: tset$" /tmp/enchant.txt
           grep -qx "foreign: *" /tmp/enchant.txt
           grep -qx "duplicates: *" /tmp/enchant.txt
+          config="$RUNNER_TEMP/enchant-hu"
+          mkdir -p "$config/hunspell"
+          cp build/dictionaries/hu_HU/hu_HU.aff build/dictionaries/hu_HU/hu_HU.dic "$config/hunspell"
+          ENCHANT_CONFIG_DIR="$config" dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.enchant_compat hu_HU /tmp/enchant-hu.txt
+          cat /tmp/enchant-hu.txt
+          grep -q "^dictionary: True$" /tmp/enchant-hu.txt
+          grep -q "^gtkspell: ok$" /tmp/enchant-hu.txt
+          grep -q "^marked: xqzwy$" /tmp/enchant-hu.txt
 
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo, not Homebrew's, translating through
@@ -1759,6 +1795,29 @@ jobs:
             flatpak run --command=python3 io.github.translate.Virtaal -c \
             "from virtaal.common import pan_app; n = len(pan_app.get_available_ui_languages()); print(n, 'UI languages'); assert n > 20"
 
+      - name: Cache the hu_HU dictionary
+        if: steps.queue.outputs.tested != 'true'
+        # For the spell checking check (#1958); fetched only on a cache miss.
+        uses: actions/cache@v6
+        with:
+          path: build/dictionaries/hu_HU
+          key: dictionary-hu_HU-${{ runner.os }}-${{ hashFiles('devsupport/packaging/fetch_dictionaries.py') }}
+
+      - name: Smoke test - spell checking Hungarian
+        if: steps.queue.outputs.tested != 'true'
+        run: |
+          python3 devsupport/packaging/fetch_dictionaries.py build/dictionaries/hu_HU hu_HU
+          config="$RUNNER_TEMP/enchant-hu"
+          mkdir -p "$config/hunspell"
+          cp build/dictionaries/hu_HU/hu_HU.aff build/dictionaries/hu_HU/hu_HU.dic "$config/hunspell"
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak run --env=ENCHANT_CONFIG_DIR="$config" --filesystem="$config" io.github.translate.Virtaal \
+            --run-module virtaal.support.enchant_compat hu_HU | tee enchant-hu.txt
+          grep -q "^dictionary: True$" enchant-hu.txt
+          grep -q "^gtkspell: ok$" enchant-hu.txt
+          grep -q "^marked: xqzwy$" enchant-hu.txt
+          grep -qx "foreign: *" enchant-hu.txt
+
       - name: Run the tests inside the installed Flatpak
         if: steps.queue.outputs.tested != 'true'
         # The GNOME runtime's own Python and GTK, which the Flatpak ships;
@@ -1844,12 +1903,26 @@ jobs:
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: xvfb-run -a devsupport/packaging/linux/build_appimage.sh
 
+      - name: Cache the hu_HU dictionary
+        if: steps.queue.outputs.tested != 'true'
+        # For the spell checking check (#1958); fetched only on a cache miss.
+        uses: actions/cache@v6
+        with:
+          path: build/dictionaries/hu_HU
+          key: dictionary-hu_HU-${{ runner.os }}-${{ hashFiles('devsupport/packaging/fetch_dictionaries.py') }}
+
+      - name: Fetch the hu_HU dictionary
+        if: steps.queue.outputs.tested != 'true'
+        run: python3 devsupport/packaging/fetch_dictionaries.py build/dictionaries/hu_HU hu_HU
+
       - name: Smoke test - bare distributions
         if: steps.queue.outputs.tested != 'true'
         # Only what every desktop has installed: no GTK, no Python.
         # In parallel: each runs in its own container, and normally
         # takes under two minutes.
         timeout-minutes: 15
+        env:
+          HUNSPELL_HU_DIR: build/dictionaries/hu_HU
         run: |
           images=(ubuntu:22.04 ubuntu:24.04 debian:13 fedora:44)
           pids=()

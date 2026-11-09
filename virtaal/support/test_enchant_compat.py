@@ -174,6 +174,7 @@ def test_marked_words():
 
 def test_sample_text_by_language():
     assert sample_text('en_GB') == SAMPLES['en']
+    assert sample_text('hu_HU') == SAMPLES['hu']
     assert sample_text('xx') == SAMPLES['en']
 
 

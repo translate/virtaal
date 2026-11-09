@@ -765,13 +765,41 @@ def test_a_build_with_its_own_gtkspell_passes_the_frozen_build_check(monkeypatch
         Plugin('spellchecker', None)
 
 
-def test_unsupported_on_windows_with_a_non_ascii_username(monkeypatch):
-    monkeypatch.setattr(platform, 'is_frozen', False)
+def _windows_plugin(monkeypatch, config_dir, bundle_dir=None):
+    """Plugin() on Windows, with enchant's user folder config_dir: stops
+        just after the non-ASCII folder check."""
+    try:
+        import gi
+        gi.require_version('GtkSpell', '3.0')
+        from gi.repository import GtkSpell  # noqa: F401
+    except (ImportError, ValueError):
+        pytest.skip("GtkSpell 3.0 typelib not installed - optional")
     monkeypatch.setattr(platform, 'is_windows', True)
-    monkeypatch.setenv('APPDATA', 'C:\\Users\\\u00e9lise\\AppData\\Roaming')
+    monkeypatch.setattr(platform, 'is_frozen', bundle_dir is not None)
+    monkeypatch.setattr(platform, 'bundles_spelling', True)
+    monkeypatch.setattr(platform, 'bundle_dir', bundle_dir)
+    enchant = SimpleNamespace(get_user_config_dir=lambda: config_dir)
+    monkeypatch.setattr(spellchecker, 'import_enchant', lambda: enchant)
+    Plugin('spellchecker', None)
 
-    with pytest.raises(PluginUnsupported):
-        Plugin('spellchecker', None)
+
+def test_unsupported_on_windows_with_a_non_ascii_user_folder(monkeypatch):
+    # hunspell finds the dictionary, then marks every word.
+    with pytest.raises(PluginUnsupported, match='non-ASCII'):
+        _windows_plugin(monkeypatch, 'C:\\Users\\\u00e9lise\\AppData\\Local\\enchant')
+
+
+def test_unsupported_on_windows_installed_in_a_non_ascii_folder(monkeypatch):
+    with pytest.raises(PluginUnsupported, match='non-ASCII'):
+        _windows_plugin(monkeypatch, 'C:\\Users\\x\\AppData\\Local\\enchant',
+                        'C:\\Users\\\u00e9lise\\AppData\\Local\\Programs\\Virtaal')
+
+
+def test_supported_on_windows_with_ascii_folders(monkeypatch):
+    # Gets past the check, to where it needs a main_controller.
+    with pytest.raises(AttributeError):
+        _windows_plugin(monkeypatch, 'C:\\Users\\elise\\AppData\\Local\\enchant',
+                        'C:\\Program Files (x86)\\Virtaal')
 
 
 def test_unsupported_without_gtkspell(monkeypatch):

@@ -1,0 +1,354 @@
+<?xml version="1.0"?>
+<!-- This file was automatically generated from C sources - DO NOT EDIT!
+To affect the contents of this file, edit the original C definitions,
+and/or use gtk-doc annotations.  -->
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0"
+            xmlns:doc="http://www.gtk.org/introspection/doc/1.0"
+            xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
+  <include name="GLib" version="2.0"/>
+  <include name="GObject" version="2.0"/>
+  <include name="Gtk" version="3.0"/>
+  <c:include name="gtkspell/gtkspell.h"/>
+  <namespace name="GtkSpell"
+             version="3.0"
+             shared-library="libgtkspell3-3-0.dll"
+             c:identifier-prefixes="GtkSpell"
+             c:symbol-prefixes="gtk_spell">
+    <function-macro name="CHECKER"
+                    c:identifier="GTK_SPELL_CHECKER"
+                    introspectable="0">
+      <source-position filename="gtkspell.h" line="59"/>
+      <parameters>
+        <parameter name="obj">
+        </parameter>
+      </parameters>
+    </function-macro>
+    <function-macro name="CHECKER_CLASS"
+                    c:identifier="GTK_SPELL_CHECKER_CLASS"
+                    introspectable="0">
+      <source-position filename="gtkspell.h" line="61"/>
+      <parameters>
+        <parameter name="klass">
+        </parameter>
+      </parameters>
+    </function-macro>
+    <function-macro name="CHECKER_GET_CLASS"
+                    c:identifier="GTK_SPELL_CHECKER_GET_CLASS"
+                    introspectable="0">
+      <source-position filename="gtkspell.h" line="63"/>
+      <parameters>
+        <parameter name="obj">
+        </parameter>
+      </parameters>
+    </function-macro>
+    <class name="Checker"
+           c:symbol-prefix="checker"
+           c:type="GtkSpellChecker"
+           parent="GObject.InitiallyUnowned"
+           glib:type-name="GtkSpellChecker"
+           glib:get-type="gtk_spell_checker_get_type"
+           glib:type-struct="CheckerClass">
+      <source-position filename="gtkspell.h" line="87"/>
+      <constructor name="new" c:identifier="gtk_spell_checker_new">
+        <source-position filename="gtkspell.h" line="91"/>
+        <return-value transfer-ownership="none">
+          <type name="Checker" c:type="GtkSpellChecker*"/>
+        </return-value>
+      </constructor>
+      <function name="decode_language_code"
+                c:identifier="gtk_spell_checker_decode_language_code"
+                version="3.0.3">
+        <source-position filename="gtkspell.h" line="105"/>
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="lang" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </function>
+      <function name="get_from_text_view"
+                c:identifier="gtk_spell_checker_get_from_text_view">
+        <source-position filename="gtkspell.h" line="94"/>
+        <return-value transfer-ownership="none">
+          <type name="Checker" c:type="GtkSpellChecker*"/>
+        </return-value>
+        <parameters>
+          <parameter name="view" transfer-ownership="none">
+            <type name="Gtk.TextView" c:type="GtkTextView*"/>
+          </parameter>
+        </parameters>
+      </function>
+      <function name="get_language_list"
+                c:identifier="gtk_spell_checker_get_language_list"
+                version="3.0.3">
+        <source-position filename="gtkspell.h" line="104"/>
+        <return-value transfer-ownership="full">
+          <type name="GLib.List" c:type="GList*">
+            <type name="utf8"/>
+          </type>
+        </return-value>
+      </function>
+      <virtual-method name="language_changed">
+        <source-position filename="gtkspell.h" line="86"/>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="new_lang" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </virtual-method>
+      <method name="add_to_dictionary"
+              c:identifier="gtk_spell_checker_add_to_dictionary"
+              version="3.0.9">
+        <source-position filename="gtkspell.h" line="109"/>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="word" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="attach" c:identifier="gtk_spell_checker_attach">
+        <source-position filename="gtkspell.h" line="92"/>
+        <return-value transfer-ownership="none">
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="view" transfer-ownership="none">
+            <type name="Gtk.TextView" c:type="GtkTextView*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="check_word"
+              c:identifier="gtk_spell_checker_check_word"
+              version="3.0.8">
+        <source-position filename="gtkspell.h" line="106"/>
+        <return-value transfer-ownership="none">
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="word" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="detach" c:identifier="gtk_spell_checker_detach">
+        <source-position filename="gtkspell.h" line="95"/>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+        </parameters>
+      </method>
+      <method name="get_language"
+              c:identifier="gtk_spell_checker_get_language">
+        <source-position filename="gtkspell.h" line="103"/>
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="const gchar*"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+        </parameters>
+      </method>
+      <method name="get_suggestions"
+              c:identifier="gtk_spell_checker_get_suggestions"
+              version="3.0.8">
+        <source-position filename="gtkspell.h" line="96"/>
+        <return-value transfer-ownership="full">
+          <type name="GLib.List" c:type="GList*">
+            <type name="utf8"/>
+          </type>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="word" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="get_suggestions_menu"
+              c:identifier="gtk_spell_checker_get_suggestions_menu">
+        <source-position filename="gtkspell.h" line="98"/>
+        <return-value transfer-ownership="full">
+          <type name="Gtk.Widget" c:type="GtkWidget*"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="iter" transfer-ownership="none">
+            <type name="Gtk.TextIter" c:type="GtkTextIter*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="ignore_word"
+              c:identifier="gtk_spell_checker_ignore_word"
+              version="3.0.9">
+        <source-position filename="gtkspell.h" line="111"/>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="word" transfer-ownership="none">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="recheck_all" c:identifier="gtk_spell_checker_recheck_all">
+        <source-position filename="gtkspell.h" line="108"/>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+        </parameters>
+      </method>
+      <method name="set_language"
+              c:identifier="gtk_spell_checker_set_language"
+              throws="1">
+        <source-position filename="gtkspell.h" line="100"/>
+        <return-value transfer-ownership="none">
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <instance-parameter name="spell" transfer-ownership="none">
+            <type name="Checker" c:type="GtkSpellChecker*"/>
+          </instance-parameter>
+          <parameter name="lang"
+                     transfer-ownership="none"
+                     nullable="1"
+                     allow-none="1">
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <property name="decode-language-codes"
+                writable="1"
+                transfer-ownership="none"
+                default-value="FALSE">
+        <type name="gboolean" c:type="gboolean"/>
+      </property>
+      <field name="parent_instance">
+        <type name="GObject.InitiallyUnowned" c:type="GInitiallyUnowned"/>
+      </field>
+      <field name="priv" readable="0" private="1">
+        <type name="CheckerPrivate" c:type="GtkSpellCheckerPrivate*"/>
+      </field>
+      <glib:signal name="language-changed" when="last">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="lang" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </glib:signal>
+    </class>
+    <record name="CheckerClass"
+            c:type="GtkSpellCheckerClass"
+            glib:is-gtype-struct-for="Checker">
+      <source-position filename="gtkspell.h" line="87"/>
+      <field name="parent_class">
+        <type name="GObject.InitiallyUnownedClass"
+              c:type="GInitiallyUnownedClass"/>
+      </field>
+      <field name="language_changed">
+        <callback name="language_changed">
+          <source-position filename="gtkspell.h" line="86"/>
+          <return-value transfer-ownership="none">
+            <type name="none" c:type="void"/>
+          </return-value>
+          <parameters>
+            <parameter name="spell" transfer-ownership="none">
+              <type name="Checker" c:type="GtkSpellChecker*"/>
+            </parameter>
+            <parameter name="new_lang" transfer-ownership="none">
+              <type name="utf8" c:type="const gchar*"/>
+            </parameter>
+          </parameters>
+        </callback>
+      </field>
+    </record>
+    <record name="CheckerPrivate"
+            c:type="GtkSpellCheckerPrivate"
+            disguised="1"
+            opaque="1">
+      <source-position filename="gtkspell.h" line="71"/>
+    </record>
+    <enumeration name="Error"
+                 glib:type-name="GtkSpellError"
+                 glib:get-type="gtk_spell_error_get_type"
+                 c:type="GtkSpellError"
+                 glib:error-domain="gtkspell-error-quark">
+      <member name="backend"
+              value="0"
+              c:identifier="GTK_SPELL_ERROR_BACKEND"
+              glib:nick="backend"
+              glib:name="GTK_SPELL_ERROR_BACKEND">
+      </member>
+      <function name="quark" c:identifier="gtk_spell_error_quark">
+        <return-value transfer-ownership="none">
+          <type name="GLib.Quark" c:type="GQuark"/>
+        </return-value>
+      </function>
+    </enumeration>
+    <function-macro name="IS_CHECKER"
+                    c:identifier="GTK_SPELL_IS_CHECKER"
+                    introspectable="0">
+      <source-position filename="gtkspell.h" line="60"/>
+      <parameters>
+        <parameter name="obj">
+        </parameter>
+      </parameters>
+    </function-macro>
+    <function-macro name="IS_CHECKER_CLASS"
+                    c:identifier="GTK_SPELL_IS_CHECKER_CLASS"
+                    introspectable="0">
+      <source-position filename="gtkspell.h" line="62"/>
+      <parameters>
+        <parameter name="klass">
+        </parameter>
+      </parameters>
+    </function-macro>
+    <function name="error_quark"
+              c:identifier="gtk_spell_error_quark"
+              moved-to="Error.quark">
+      <return-value transfer-ownership="none">
+        <type name="GLib.Quark" c:type="GQuark"/>
+      </return-value>
+    </function>
+  </namespace>
+</repository>

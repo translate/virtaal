@@ -134,13 +134,18 @@ a = Analysis(  # noqa: F821
     datas=datas,
     # Overrides pyinstaller-hooks-contrib's own hook-enchant.py, which
     # bundles every dictionary in the wheel regardless of the en_GB
-    # filtering above - see that file's own docstring.
-    hookspath=[str(ROOT / "devsupport" / "packaging" / "windows" / "pyinstaller-hooks")],
+    # filtering above - see that file's own docstring. And GtkSpell's,
+    # build_gtkspell.ps1's build.
+    hookspath=[
+        str(ROOT / "devsupport" / "packaging" / "windows" / "pyinstaller-hooks"),
+        str(ROOT / "devsupport" / "packaging" / "pyinstaller-hooks"),
+    ],
+    runtime_hooks=[str(ROOT / "devsupport" / "packaging" / "windows" / "pyi_rth_spelling.py")],
     hiddenimports=common.hiddenimports(),
     # Keep enchant's .py files loose on disk, not archived - its
     # __file__-relative data lookup above needs a real path.
     module_collection_mode={"enchant": "py"},
-    hooksconfig=common.hooksconfig(LANGUAGES),
+    hooksconfig=common.hooksconfig(LANGUAGES, {"GtkSpell": "3.0"}),
     excludes=common.EXCLUDES,
     noarchive=False,
 )
@@ -152,6 +157,15 @@ if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
 # The Toolkit's spelling check imports enchant.checker.
 if not any(Path(entry[0]) == Path("enchant", "checker", "__init__.py") for entry in a.datas):
     raise SystemExit("enchant.checker isn't bundled")
+# The spell checker plugin needs GtkSpell, linking the wheel's enchant:
+# one enchant.
+_names = {Path(entry[0]).name.lower(): Path(entry[0]) for entry in a.datas + a.binaries}
+if "gtkspell-3.0.typelib" not in _names or "libgtkspell3-3-0.dll" not in _names:
+    raise SystemExit("GtkSpell isn't bundled")
+_enchants = sorted({str(Path(entry[0])) for entry in a.datas + a.binaries
+                    if Path(entry[0]).name.lower() == "libenchant-2.dll"})
+if _enchants != [str(Path("enchant", "data", "mingw64", "bin", "libenchant-2.dll"))]:
+    raise SystemExit("Bundled the wrong enchant: %r" % _enchants)
 
 common.check_catalogs(a.datas, mo_files, LANGUAGES)
 

@@ -826,6 +826,21 @@ jobs:
       - name: Install virtaal
         run: pip install .[spellcheck]
 
+      - name: Cache gtkspell3
+        # build_gtkspell.ps1 rebuilds only when its pins or the wheel's
+        # enchant change. Not in C:\gtk: test-windows restores that.
+        uses: actions/cache@v6
+        with:
+          path: C:\gtkspell
+          key: windows-gtkspell-${{ env.gvsbuild_version }}-${{ hashFiles('devsupport/packaging/windows/build_gtkspell.ps1', 'devsupport/packaging/windows/GtkSpell-3.0.gir', 'pyproject.toml') }}
+
+      - name: Build gtkspell3
+        shell: pwsh
+        run: |
+          devsupport\packaging\windows\build_gtkspell.ps1 C:\gtkspell
+          echo "C:\gtkspell\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "GI_TYPELIB_PATH=C:\gtk\lib\girepository-1.0;C:\gtkspell\lib\girepository-1.0" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Build self-contained bundle
         shell: pwsh
         env:
@@ -847,6 +862,21 @@ jobs:
           $result
           if (-not ($result -match '^library: .*\\dist\\virtaal\\')) { throw "Not the bundled libgettextpo" }
           if (-not ($result -match '^message: die Anzahl der Formatspezifikationen')) { throw "msgfmt's message isn't translated" }
+
+      - name: Verify spell checking
+        # The bundled enchant and GtkSpell mark a misspelt word, and
+        # nothing loads C:\gtk's or another copy.
+        timeout-minutes: 3
+        shell: pwsh
+        run: |
+          $result = devsupport\packaging\windows\run_module.ps1 dist\virtaal virtaal.support.enchant_compat -Arguments en_GB
+          if ($LASTEXITCODE) { exit 1 }
+          $result
+          foreach ($expected in '^enchant: .*\\dist\\virtaal\\enchant\\data\\mingw64\\bin\\libenchant-2\.dll$', '^providers: hunspell$',
+                               '^dictionary: True$', '^typelib: .*\\dist\\virtaal\\', '^gtkspell: ok$', '^marked: tset$',
+                               '^foreign: *$', '^duplicates: *$') {
+            if (-not ($result -match $expected)) { throw "Not in the report: $expected" }
+          }
 
       - name: Check the interface languages display in the bundle's fonts
         # Every shipped language's messages and its own name, in the UI

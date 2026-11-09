@@ -23,7 +23,11 @@ for attempt in 1 2 3; do
 done
 echo "== pulled (${SECONDS}s)"
 
-docker run --rm --init \
+hu=()
+if [ -n "${HUNSPELL_HU_DIR:-}" ]; then
+    hu=(-v "$(realpath "$HUNSPELL_HU_DIR"):/test/hu:ro" -e HUNSPELL_HU_DIR=/test/hu)
+fi
+docker run --rm --init "${hu[@]}" \
     -v "$APPIMAGE:/test/Virtaal.AppImage:ro" \
     -v "$HERE/smoke_test_appimage.sh:/test/smoke_test_appimage.sh:ro" \
     "$IMAGE" bash -c '

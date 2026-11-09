@@ -14,9 +14,11 @@ import sys
 
 _USED = ('dict_exists', 'list_languages', 'get_user_config_dir')
 
-# What self_check() has GtkSpell check, by language.
+# What self_check() has GtkSpell check, and the words it should mark,
+# by language. Hungarian's long compounds stress hunspell (#1958).
 SAMPLES = {
     'en': 'This is a tset',
+    'hu': 'Ez a számítógép legeslegmegszentségteleníthetetlenebbek kerékpárjavító-műhelyekben xqzwy',
 }
 _SPELLING_LIBRARY_RE = re.compile(r'enchant|gtkspell|hunspell|aspell|nuspell|winspell', re.IGNORECASE)
 

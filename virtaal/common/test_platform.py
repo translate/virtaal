@@ -122,6 +122,18 @@ def test_not_appimage_when_not_frozen():
     assert not p.is_appimage
 
 
+def test_bundles_spelling():
+    p = Platform(os_name='posix', sys_platform='darwin', frozen=True,
+                 environ={'_VIRTAAL_BUNDLED_SPELLING': '1'})
+    assert p.bundles_spelling
+
+
+def test_not_bundles_spelling():
+    assert not Platform(frozen=True, environ={}).bundles_spelling
+    # Inherited by anything the build starts.
+    assert not Platform(frozen=False, environ={'_VIRTAAL_BUNDLED_SPELLING': '1'}).bundles_spelling
+
+
 def test_install_method_windows_installer():
     p = Platform(os_name='nt', sys_platform='win32', frozen=True, environ={})
     assert p.install_method() == 'Windows installer'

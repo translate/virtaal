@@ -1,0 +1,79 @@
+/* Docs fixes for small screens, loaded after bootstrap-responsive.css. */
+
+@media (max-width: 979px) {
+  /* The menu button opens the collapsed menu (see _templates/layout.html). */
+  .nav-collapse.collapse.in {
+    height: auto;
+    overflow: visible;
+  }
+  .navbar .btn-navbar .icon-bar {
+    background-color: #777777;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  /* The Site and Page lists show open in the menu: no bullets, and long
+     headings wrap. */
+  .nav-collapse .dropdown-menu ul {
+    margin: 0;
+    list-style: none;
+  }
+  .nav-collapse .dropdown-menu ul ul {
+    margin-left: 15px;
+  }
+  .nav-collapse .dropdown-menu a {
+    white-space: normal;
+  }
+  .nav-collapse .navbar-search input {
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    min-height: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Code and literal blocks scroll inside themselves. */
+  pre {
+    overflow-x: auto;
+    white-space: pre;
+    word-wrap: normal;
+  }
+  /* Long paths in inline code wrap instead of widening the page. */
+  code,
+  code span.pre,
+  tt {
+    white-space: normal;
+    /* word-wrap is an alias: it must come first or it overrides anywhere. */
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+  /* Wide tables scroll inside themselves. */
+  table.docutils {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  /* Floated images stack above the text. */
+  img.align-right,
+  img.align-left,
+  .figure.align-right,
+  .figure.align-left,
+  figure.align-right,
+  figure.align-left {
+    float: none;
+    display: block;
+    margin: 0 auto 1em;
+  }
+  .input-append input {
+    max-width: 60%;
+  }
+  footer .pull-right {
+    float: none;
+  }
+}

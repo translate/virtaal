@@ -136,6 +136,10 @@ html_favicon = "../share/icons/virtaal.ico"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# Fit small screens: Bootstrap 2.1.1's responsive stylesheet (replacing
+# the theme's unused v2.0.3 copy of the same name) and our fixes on top.
+html_css_files = ['bootstrap-responsive.css', 'docs-responsive.css']
+
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
 #html_last_updated_fmt = '%b %d, %Y'

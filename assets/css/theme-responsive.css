@@ -21,3 +21,60 @@
     overflow: visible;
   }
 }
+
+@media (max-width: 767px) {
+  /* The hero is a full-width band: undo the body's side padding. */
+  .hero-unit {
+    margin-right: -20px;
+    margin-left: -20px;
+    padding: 10px 20px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+  .hero-unit h1 {
+    font-size: 32px;
+    line-height: 1.1;
+  }
+  h2 {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+  .content h1 {
+    font-size: 30px;
+  }
+  .content h2 {
+    font-size: 28px;
+  }
+  .content h3 {
+    font-size: 24px;
+  }
+  .content p,
+  .content li,
+  .content dd,
+  .content dt,
+  .content blockquote {
+    font-size: 19px;
+  }
+  .content li,
+  .content dd {
+    margin-left: 0;
+  }
+  .content section {
+    padding: 20px 0 10px;
+  }
+  /* Long file names in inline code wrap instead of widening the page. */
+  code {
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+  }
+  /* Wide tables scroll inside themselves, not the page. */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  footer .pull-right {
+    float: none;
+  }
+}

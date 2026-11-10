@@ -1,0 +1,23 @@
+/* Virtaal theme fixes for bootstrap-responsive.css, loaded after it. */
+
+@media (max-width: 979px) {
+  /* Keep the logo clear of the name once the brand padding shrinks. */
+  .navbar .brand {
+    padding-left: 52px;
+    background-position: 10px 12px;
+  }
+  .navbar .btn-navbar {
+    margin-top: 15px;
+  }
+  .navbar .btn-navbar .icon-bar {
+    background-color: #777777;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  /* The menu button opens the collapsed menu (see _includes/navbar.html). */
+  .nav-collapse.collapse.in {
+    height: auto;
+    overflow: visible;
+  }
+}

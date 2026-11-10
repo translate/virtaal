@@ -1,6 +1,12 @@
 <div class="container">
+  <button type="button" class="btn btn-navbar" aria-label="Menu"
+    aria-expanded="false" aria-controls="site-nav">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
   <a class="brand" href="index.html">{{ site.name }}</a>
-  <div class="nav-collapse collapse">
+  <div class="nav-collapse collapse" id="site-nav">
     <ul class="nav pull-right">
       <li><a href="discover.html">Discover</a></li>
       <li><a href="download.html">Download</a></li>
@@ -9,4 +15,14 @@
       <li><a href="{{ site.docs_url }}">Documentation</a></li>
     </ul>
   </div>
+  <script>
+  (function () {
+    var button = document.currentScript.parentNode.querySelector(".btn-navbar");
+    var menu = document.getElementById("site-nav");
+    button.addEventListener("click", function () {
+      var open = menu.classList.toggle("in");
+      button.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  })();
+  </script>
 </div>

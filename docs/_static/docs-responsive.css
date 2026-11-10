@@ -1,5 +1,20 @@
 /* Docs fixes for small screens, loaded after bootstrap-responsive.css. */
 
+@media (min-width: 980px) {
+  /* The Site and Page dropdowns: no bullets, nested headings indented, as
+     bootstrap-sphinx.js did. */
+  .dropdown-menu ul {
+    margin: 0;
+    list-style: none;
+  }
+  .dropdown-menu ul ul a {
+    padding-left: 35px;
+  }
+  .dropdown-menu ul ul ul a {
+    padding-left: 45px;
+  }
+}
+
 @media (max-width: 979px) {
   /* The menu button opens the collapsed menu (see _templates/layout.html). */
   .nav-collapse.collapse.in {
@@ -50,7 +65,8 @@
     overflow-wrap: anywhere;
   }
   /* Wide tables scroll inside themselves. */
-  table.docutils {
+  table.docutils,
+  table.table {
     display: block;
     max-width: 100%;
     overflow-x: auto;
@@ -75,5 +91,10 @@
   }
   footer .pull-right {
     float: none;
+  }
+  /* Long paths in search result summaries wrap. */
+  #search-results p.context {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 }

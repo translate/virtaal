@@ -1,7 +1,24 @@
 {# The theme's navbar, with its links behind a menu button on narrow
-   screens. The theme's bootstrap.js needs jQuery, which Sphinx no longer
-   ships, so a small script opens the menu. #}
+   screens. The theme's bootstrap.js and bootstrap-sphinx.js need jQuery,
+   which Sphinx no longer ships, so they are left out and a small script
+   opens the menu and the Site and Page dropdowns. #}
 {% extends "!layout.html" %}
+
+{%- block scripts %}
+  {%- for js in script_files %}
+    {%- if js not in ["_static/bootstrap.js", "_static/bootstrap-sphinx.js"] %}
+    {{ js_tag(js) }}
+    {%- endif %}
+  {%- endfor %}
+{%- endblock %}
+
+{# role="main" lets Sphinx's search find each page's text for its result
+   summaries. #}
+{%- block content %}
+<div class="container content" role="main">
+   {% block body %} {% endblock %}
+</div>
+{%- endblock %}
 
 {% block header %}
   <div id="navbar" class="navbar navbar-fixed-top">
@@ -34,6 +51,49 @@
           button.addEventListener("click", function () {
             var open = menu.classList.toggle("in");
             button.setAttribute("aria-expanded", open ? "true" : "false");
+          });
+
+          var toggles = menu.querySelectorAll(".dropdown-toggle");
+          function show(toggle, open) {
+            toggle.parentNode.classList.toggle("open", open);
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          }
+          function closeAll() {
+            toggles.forEach(function (toggle) { show(toggle, false); });
+          }
+          toggles.forEach(function (toggle) {
+            toggle.setAttribute("role", "button");
+            toggle.setAttribute("aria-haspopup", "true");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.addEventListener("click", function (event) {
+              event.preventDefault();
+              var open = !toggle.parentNode.classList.contains("open");
+              closeAll();
+              show(toggle, open);
+            });
+            toggle.addEventListener("keydown", function (event) {
+              if (event.key === " ") {
+                event.preventDefault();
+                toggle.click();
+              }
+            });
+          });
+          // Any other click, a link in a menu too, closes the menus.
+          document.addEventListener("click", function (event) {
+            if (!event.target.closest(".dropdown-toggle")) closeAll();
+          });
+          document.addEventListener("keydown", function (event) {
+            if (event.key !== "Escape") return;
+            var open = menu.querySelector(".dropdown.open .dropdown-toggle");
+            closeAll();
+            if (open) open.focus();
+          });
+
+          // Bootstrap's table style, as bootstrap-sphinx.js gave it.
+          document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("table.docutils").forEach(function (table) {
+              table.classList.replace("docutils", "table");
+            });
           });
         })();
         </script>

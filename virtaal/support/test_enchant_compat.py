@@ -18,6 +18,7 @@ from virtaal.support.enchant_compat import (
     bundle_roots,
     duplicate_libraries,
     enchant_tag,
+    find_dictionary,
     foreign_libraries,
     import_enchant,
     loaded_libraries,
@@ -245,3 +246,23 @@ def test_mapped_libraries():
         '/app/lib/libgtkspell3-3.so.0.2.0', '/usr/lib/enchant-2/enchant_hunspell.so',
         '/usr/lib/x86_64-linux-gnu/libc.so.6',
     ]
+
+class _Enchant:
+    def __init__(self, tags):
+        self.tags = tags
+
+    def dict_exists(self, tag):
+        return tag in self.tags
+
+
+@pytest.mark.parametrize('code, tags, languages, found', [
+    # A bare code tries its default region first (#4675)
+    ('en', {'en', 'en_US'}, [], 'en_US'),
+    ('en', {'en'}, [], 'en'),
+    # then any region enchant lists
+    ('es', set(), ['es_MX'], 'es_MX'),
+    ('ca@valencia', {'ca_VALENCIA'}, [], 'ca_VALENCIA'),
+    ('zz', set(), ['zza'], None),
+])
+def test_find_dictionary(code, tags, languages, found):
+    assert find_dictionary(_Enchant(tags), code, languages) == found

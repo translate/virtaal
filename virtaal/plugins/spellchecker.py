@@ -13,8 +13,7 @@ from gi.repository import GLib
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
-from virtaal.support.dictionary_source import DEFAULT_REGIONS
-from virtaal.support.enchant_compat import enchant_tag, import_enchant
+from virtaal.support.enchant_compat import enchant_tag, find_dictionary, import_enchant
 from virtaal.support.libi18n.locale import rebind_library_domain
 
 # GtkSpell finds each word's ends from the whole line it's on, so
@@ -208,36 +207,18 @@ class Plugin(BasePlugin):
         # enchant doesn't like anything except plain strings (bug 1852)
         language = str(language)
 
-        # A bare code tries its default region first (en: en_US, #4675),
-        # then the search below for any of its regions.
-        regions = DEFAULT_REGIONS.get(language, []) if '_' not in language and '@' not in language else []
-        language = enchant_tag(language)
-        if regions and language not in self._seen_languages and self.enchant.dict_exists(regions[0]):
-            self._seen_languages[language] = regions[0]
-
-        if not language in self._seen_languages and not self.enchant.dict_exists(language):
-            # Sometimes enchants *wants* a country code, other times it does not.
-            # For the cases where it requires one, we look for the first language
-            # code that enchant supports and use that one.
-            for code in self._enchant_languages:
-                if code.startswith(language+'_'):
-                    self._seen_languages[language] = code
-                    language = code
-                    break
-            else:
-                # DictionaryDownloadWatcher (wired to LanguageController,
-                # not this per-textview signal) handles trying to
-                # download a missing dictionary - nothing to do here but
-                # degrade gracefully for now.
-
-                # We couldn't find a dictionary for "language", so we should make sure that we don't
-                # have a spell checker for a different language on the text view. See bug 717.
-                self._disable_checking(text_view)
-                self._seen_languages[language] = None
-                return
-
-        language = self._seen_languages.get(language, language)
+        tag = enchant_tag(language)
+        if tag not in self._seen_languages:
+            self._seen_languages[tag] = find_dictionary(self.enchant, language, self._enchant_languages)
+        language = self._seen_languages[tag]
         if language is None:
+            # DictionaryDownloadWatcher (wired to LanguageController,
+            # not this per-textview signal) handles trying to
+            # download a missing dictionary - nothing to do here but
+            # degrade gracefully for now.
+
+            # We couldn't find a dictionary for "language", so we should make sure that we don't
+            # have a spell checker for a different language on the text view. See bug 717.
             self._disable_checking(text_view)
             return
 

@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from .basetmmodel import unescape_html_entities
+from .basetmmodel import BaseTMModel, unescape_html_entities
 
 
 def test_unescape_html_entities():
@@ -19,3 +19,8 @@ def test_unescape_html_entities_keeps_what_isnt_an_entity():
     # Machine translation results can contain text like "AT&T;".
     assert unescape_html_entities("AT&T; and &nosuch;") == "AT&T; and &nosuch;"
     assert unescape_html_entities("&#99999999; &amp;") == "&#99999999; &"
+
+
+def test_tm_ini_is_private():
+    # It holds machine translation API keys (#4749).
+    assert BaseTMModel.CONFIG_PRIVATE

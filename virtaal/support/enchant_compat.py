@@ -184,6 +184,25 @@ def _gtkspell_lines(lang):
     return lines
 
 
+def find_dictionary(enchant, code, languages):
+    """The tag of the enchant dictionary to use for a Virtaal language
+        code, or None if there's none. A bare code tries its default
+        region first (en: en_US, #4675), then its own tag, then any of
+        its regions in languages (enchant.list_languages())."""
+    from virtaal.support.dictionary_source import DEFAULT_REGIONS
+
+    regions = DEFAULT_REGIONS.get(code, []) if '_' not in code and '@' not in code else []
+    if regions and enchant.dict_exists(regions[0]):
+        return regions[0]
+    tag = enchant_tag(code)
+    if enchant.dict_exists(tag):
+        return tag
+    for language in languages:
+        if language.startswith(tag + '_'):
+            return language
+    return None
+
+
 def self_check(lang):
     """Report which enchant library and providers this build uses, the
         words GtkSpell marks in lang's sample text, and any native

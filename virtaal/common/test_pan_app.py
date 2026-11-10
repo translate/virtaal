@@ -896,6 +896,57 @@ def test_write_ini_keeps_the_files_mode_and_a_symlink(tmp_path):
     assert real.stat().st_mode & 0o777 == 0o640
 
 
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
+def test_write_ini_private_makes_an_open_file_owner_only(tmp_path):
+    # #4749: an older Virtaal left tm.ini, with its API keys, 0644.
+    path = tmp_path / 'tm.ini'
+    path.write_text('[google_translate]\nkey = old\n')
+    path.chmod(0o644)
+
+    pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
+
+    assert pan_app.load_config(str(path), 'google_translate') == {'key': 'new'}
+    assert path.stat().st_mode & 0o777 == 0o600
+
+
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
+@pytest.mark.parametrize('mode', [0o600, 0o400])
+def test_write_ini_private_never_loosens_a_stricter_mode(tmp_path, mode):
+    path = tmp_path / 'tm.ini'
+    path.write_text('')
+    path.chmod(mode)
+    try:
+        pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
+
+        assert path.stat().st_mode & 0o777 == mode
+    finally:
+        path.chmod(0o600)
+
+
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
+def test_write_ini_private_creates_an_owner_only_file(tmp_path):
+    path = tmp_path / 'tm.ini'
+
+    pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
+
+    assert path.stat().st_mode & 0o777 == 0o600
+
+
+def test_write_ini_private_leaves_the_mode_alone_on_windows(tmp_path, monkeypatch):
+    # POSIX modes don't apply on Windows: save as usual, no error.
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    path = tmp_path / 'tm.ini'
+    path.write_text('')
+    if os.name != 'nt':
+        path.chmod(0o644)
+    before = path.stat().st_mode & 0o777
+
+    pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
+
+    assert pan_app.load_config(str(path), 'google_translate') == {'key': 'new'}
+    assert path.stat().st_mode & 0o777 == before
+
+
 def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
     seed = tmp_path / 'seed.ini'
     seed.write_text('')

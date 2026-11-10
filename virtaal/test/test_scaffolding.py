@@ -17,10 +17,16 @@ from virtaal.controllers.modecontroller import ModeController
 from virtaal.controllers.storecontroller import StoreController
 from virtaal.controllers.undocontroller import UndoController
 from virtaal.controllers.unitcontroller import UnitController
+from virtaal.views import baseview
 
 
 class TestScaffolding:
     def setup_class(self):
+        # Its own builder cache: where classes share a process
+        # (Windows), the shared one's widgets sit in an earlier class's
+        # views, still connected to its controllers.
+        self._shared_builders = baseview._builders
+        baseview._builders = {}
         self.main_controller = MainController()
         self.store_controller = StoreController(self.main_controller)
         self.unit_controller = UnitController(self.store_controller)
@@ -71,3 +77,4 @@ msgstr "PROFIEL"
 
     def teardown_class(self):
         os.unlink(self.testfile[1])
+        baseview._builders = self._shared_builders

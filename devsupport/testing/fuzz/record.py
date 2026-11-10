@@ -37,9 +37,6 @@ GLIB_IGNORE = (
     # The runner has no font for some corpus characters.
     'All font fallbacks failed',
 )
-# Not Virtaal problems: translate-toolkit's spelling check logs this once
-# per language that has no installed dictionary.
-_LOG_IGNORE = (('translate.filters.spelling', 'Dictionary not found'),)
 STDERR_MARKER = '@@fuzz '
 
 
@@ -190,8 +187,6 @@ class _LogHandler(logging.Handler):
 
     def emit(self, record):
         message = record.getMessage()
-        if any(record.name == name and text in message for name, text in _LOG_IGNORE):
-            return
         if record.exc_info and record.exc_info[0]:
             signature = exception_signature(record.exc_info[0], record.exc_info[2])
             message += '\n' + ''.join(traceback.format_exception(*record.exc_info))

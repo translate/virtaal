@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
 from types import SimpleNamespace
 
 import pytest
@@ -82,3 +83,86 @@ def test_qt_checker_checks_ampersand_accelerators(source, target, fails):
     unit = _ts_store(source, target).units[0]
 
     assert ('accelerators' in checker.run_filters(unit)) is fails
+
+
+# Spelling (#4680) #
+
+@pytest.fixture
+def flatpak_enchant(monkeypatch):
+    """Enchant as in the Flatpak: en_US and en_GB dictionaries, none
+    named just en, so enchant.Dict('en') raises."""
+    from virtaal.support.enchant_compat import import_enchant
+
+    enchant = import_enchant()
+    from translate.filters import spelling
+    if enchant is None or not spelling.available:
+        pytest.skip("pyenchant is not available")
+    tags = ('en_GB', 'en_US')
+
+    class Dict:
+        def __init__(self, tag):
+            if tag not in tags:
+                raise enchant.errors.DictNotFoundError(tag)
+            self.tag = tag
+
+        def check(self, word):
+            return word != 'Teh'
+
+        def suggest(self, word):
+            return []
+
+    monkeypatch.setattr(enchant, 'Dict', Dict)
+    monkeypatch.setattr(enchant, 'dict_exists', lambda tag: tag in tags)
+    monkeypatch.setattr(enchant, 'list_languages', lambda: list(tags))
+    monkeypatch.setattr(spelling, 'checkers', {})
+    spelling.simple_check.cache_clear()
+    yield
+    spelling.simple_check.cache_clear()
+
+
+def _checks_controller(target_lang):
+    controller = _make_controller()
+    controller.main_controller.lang_controller.target_lang = SimpleNamespace(code=target_lang)
+    controller.main_controller.unit_controller.current_unit = None
+    controller._projview = SimpleNamespace(set_checker_name=lambda name: None)
+    controller.set_checker_by_code(None)
+    return controller
+
+
+def _checker_for(target_lang):
+    return _checks_controller(target_lang).get_checker()
+
+
+def _unit(source, target):
+    unit = po.pounit(source)
+    unit.target = target
+    return unit
+
+
+@pytest.mark.parametrize('target_lang', ['en', 'af'])
+def test_spelling_check_logs_no_traceback_without_an_exact_dictionary(flatpak_enchant, caplog, target_lang):
+    checker = _checker_for(target_lang)
+
+    with caplog.at_level(logging.ERROR):
+        checker.run_filters(_unit('Open the file', 'Open the file'))
+
+    assert [r.getMessage() for r in caplog.records if r.name == 'translate.filters.spelling'] == []
+
+
+def test_spelling_check_uses_the_default_region_for_a_bare_code(flatpak_enchant):
+    checker = _checker_for('en')
+
+    failures = checker.run_filters(_unit('The file', 'Teh file'))
+
+    assert 'spellcheck' in failures
+
+
+def test_a_new_target_language_gets_its_dictionary(flatpak_enchant, caplog):
+    controller = _checks_controller('af')
+
+    with caplog.at_level(logging.ERROR):
+        controller._on_target_lang_changed(None, 'en')
+        failures = controller.get_checker().run_filters(_unit('The file', 'Teh file'))
+
+    assert 'spellcheck' in failures
+    assert [r for r in caplog.records if r.name == 'translate.filters.spelling'] == []

@@ -183,6 +183,7 @@ class ChecksController(BaseController):
             target_lang = None
         self._checker = self.checker_info.get(code, self.checker_info[None])()
         self._checker.config.updatetargetlanguage(target_lang)
+        self._prime_spelling(self._checker.config)
         store = self.store_controller.get_store()
         if store is not None:
             from virtaal.support.extrachecks import with_extra_checks
@@ -196,6 +197,14 @@ class ChecksController(BaseController):
 
 
     # METHODS #
+    @staticmethod
+    def _prime_spelling(config):
+        """Spell-check source and target with the dictionaries Virtaal
+            uses for them (#4680)."""
+        from virtaal.support.enchant_compat import prime_spelling_check
+        prime_spelling_check(config.sourcelang.code)
+        prime_spelling_check(config.targetlanguage)
+
     def check_unit(self, unit):
         checker = self.get_checker()
         if not checker:
@@ -247,6 +256,7 @@ class ChecksController(BaseController):
         current_checker = self.get_checker()
         if current_checker:
            current_checker.config.updatetargetlanguage(langcode)
+           self._prime_spelling(current_checker.config)
            self.emit('checker-set', self.code)
            if self.last_unit:
                self.check_unit(self.last_unit)

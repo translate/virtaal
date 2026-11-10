@@ -8,6 +8,7 @@
 """Import pyenchant only if it is really there: a leftover "enchant"
 directory with no __init__.py imports as an empty namespace package."""
 
+import logging
 import os
 import re
 import sys
@@ -201,6 +202,33 @@ def find_dictionary(enchant, code, languages):
         if language.startswith(tag + '_'):
             return language
     return None
+
+
+def prime_spelling_check(code):
+    """Give translate-toolkit's spelling check the dictionary Virtaal
+        uses for code. On its own it asks enchant for the bare code and
+        logs a traceback when no dictionary has exactly that name, as
+        for the source language en with only en_US installed (#4680)."""
+    enchant = import_enchant()
+    if enchant is None or not code:
+        return
+    from translate.filters import spelling
+
+    if not spelling.available or spelling.checkers.get(code) is not None:
+        return
+    tag = find_dictionary(enchant, code, enchant.list_languages())
+    checker = None
+    if tag is not None:
+        from enchant.checker import SpellChecker
+
+        try:
+            checker = SpellChecker(tag)
+        except enchant.Error as e:
+            logging.debug('No spelling check for %s: %s', code, e)
+    spelling.checkers[code] = checker
+    if checker is not None:
+        # Results cached while it had no dictionary
+        spelling.simple_check.cache_clear()
 
 
 def self_check(lang):

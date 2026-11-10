@@ -81,6 +81,51 @@ class TestBundleProjectStore:
             if os.path.exists(test_file.name):
                 os.unlink(test_file.name)
 
+    def test_save_as_writes_a_new_bundle_and_keeps_using_it(self) -> None:
+        bundle = bundleprojstore.BundleProjectStore(self.bundle_file)
+        try:
+            with tempfile.NamedTemporaryFile(mode="wb", suffix=".txt", delete=False) as test_file:
+                test_file.write(b"save as content")
+            with open(test_file.name, "rb") as f:
+                bundle.append_sourcefile(f, "saveas.txt")
+            bundle.save()
+            copy_path = os.path.join(self.test_dir, "copy.zip")
+
+            bundle.save(copy_path)
+            with open(test_file.name, "rb") as f:
+                bundle.append_sourcefile(f, "after.txt")
+            bundle.save()
+
+            assert bundle.zip.filename == copy_path
+            with ZipFile(copy_path) as copy:
+                assert copy.read("sources/saveas.txt") == b"save as content"
+                assert "sources/after.txt" in copy.namelist()
+            with ZipFile(self.bundle_file) as original:
+                assert "sources/saveas.txt" in original.namelist()
+                assert "sources/after.txt" not in original.namelist()
+        finally:
+            bundle.close()
+            if os.path.exists(test_file.name):
+                os.unlink(test_file.name)
+
+    def test_save_as_the_current_bundle_name_saves_in_place(self) -> None:
+        bundle = bundleprojstore.BundleProjectStore(self.bundle_file)
+        try:
+            with tempfile.NamedTemporaryFile(mode="wb", suffix=".txt", delete=False) as test_file:
+                test_file.write(b"in place")
+            with open(test_file.name, "rb") as f:
+                bundle.append_sourcefile(f, "inplace.txt")
+            bundle.save()
+
+            bundle.save(self.bundle_file)
+
+            assert bundle.zip.filename == self.bundle_file
+            assert bundle.zip.read("sources/inplace.txt") == b"in place"
+        finally:
+            bundle.close()
+            if os.path.exists(test_file.name):
+                os.unlink(test_file.name)
+
     def test_cross_device_save(self) -> None:
         """
         Test that save works across different filesystems.

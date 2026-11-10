@@ -269,9 +269,7 @@ class StoreController(BaseController):
         if self.project is None:
             self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
         else:
-            # XXX: filename is the name that the bundle archive should be saved
-            #      as, seeing as self.store is opened from a temporary file
-            #      (see virtaal.support.bundleprojstore.BundleProjectStore.get_file())
+            # self.store is a temporary copy; filename names the bundle.
             self.store.save_file()
 
             proj_fname = self.project.get_proj_filename(self.real_filename)
@@ -281,7 +279,7 @@ class StoreController(BaseController):
                 self.project.convert_forward(proj_fname, overwrite_output=True)
             except UnsupportedConversionError:
                 pass
-            self.project.save()
+            self.project.save(filename)
         self.set_modified(False)
         # reaching here means the write succeeded, so any stale notice goes
         self.main_controller.view.hide_read_only_notice()

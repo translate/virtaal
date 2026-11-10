@@ -571,7 +571,7 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
             proj_fname=proj_fname, mode=infile.mode, content=infile.read()
         ),
         convert_forward=lambda *a, **k: None,
-        save=lambda: None,
+        save=lambda filename=None: None,
     )
     updated = {}
     controller.real_filename = str(real_file)
@@ -588,6 +588,31 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     assert updated['proj_fname'] == 'trans/source.po'
     assert updated['mode'] == 'rb'
     assert updated['content'] == real_file.read_bytes()
+
+
+def test_save_file_project_saves_the_bundle_under_the_given_name(tmp_path):
+    real_file = tmp_path / 'source.po'
+    real_file.write_bytes(b'msgid "a"\nmsgstr ""\n')
+    saved = []
+    controller = _controller()
+    controller.project = SimpleNamespace(
+        get_proj_filename=lambda fname: 'trans/source.po',
+        update_file=lambda proj_fname, infile: None,
+        convert_forward=lambda *a, **k: None,
+        save=lambda filename=None: saved.append(filename),
+    )
+    controller.real_filename = str(real_file)
+    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
+    controller.store = SimpleNamespace(save_file=lambda: None)
+    controller.main_controller = SimpleNamespace(
+        undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
+        set_saveable=lambda v: None,
+        view=SimpleNamespace(hide_read_only_notice=lambda: None),
+    )
+
+    controller.save_file('copy.zip')
+
+    assert saved == ['copy.zip']
 
 
 # binary_export() #

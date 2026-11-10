@@ -65,12 +65,17 @@ def config_int(value, default, minimum, maximum, name):
         return default
     return number
 
-def _write_ini(parser, filename):
+def _write_ini(parser, filename, private=False):
     """Write parser to filename, or log why it can't be (a directory in
     its place, a read-only file, #4340) rather than fail to quit.
 
     It is written to a temporary file that then replaces filename, so a
-    write that fails part-way leaves the old file whole (#4202)."""
+    write that fails part-way leaves the old file whole (#4202).
+
+    A new file is readable only by its owner; an existing one keeps its
+    mode, unless private is set: then group and other access is removed
+    (on macOS and Linux), so a file holding keys that an older Virtaal
+    left 0644 becomes 0600 (#4749)."""
     import tempfile
     # Replace a symlink's target, not the link.
     target = os.path.realpath(filename)
@@ -92,6 +97,8 @@ def _write_ini(parser, filename):
             f.flush()
             os.fsync(f.fileno())
         if mode is not None:
+            if private and not platform.is_windows:
+                mode &= ~0o077
             os.chmod(tmp, mode)
         os.replace(tmp, target)
         tmp = None
@@ -760,14 +767,15 @@ def load_config(filename, section=None):
         conf[section] = dict(parser.items(section))
     return conf
 
-def save_config(filename, config, section=None):
+def save_config(filename, config, section=None, private=False):
     """Save the given configuration data to the given filename and under the
         given section (if specified).
 
         @param config: A dictionary containing the configuration section data
             if C{section} was specified. Otherwise, if C{section} is not
             specified, it should be a 2D-dictionary representing the entire
-            configuration file."""
+            configuration file.
+        @param private: True if the file holds keys: see _write_ini()."""
     parser = ConfigParser.RawConfigParser()
     _read_ini_recovering(parser, filename)
 
@@ -791,4 +799,4 @@ def save_config(filename, config, section=None):
                 value = ','.join(value)
             parser.set(section, key, str(value))
 
-    _write_ini(parser, filename)
+    _write_ini(parser, filename, private)

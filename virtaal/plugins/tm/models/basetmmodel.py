@@ -41,6 +41,7 @@ class BaseTMModel(BaseModel, Configurable):
     }
 
     CONFIG_FILENAME = "tm.ini"
+    CONFIG_PRIVATE = True  # machine translation API keys (#4749)
 
     description = ""
     """A description of the backend. Will be displayed to users."""

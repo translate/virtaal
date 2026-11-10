@@ -17,6 +17,8 @@ class Configurable:
     in BasePlugin, BaseTerminologyModel and BaseTMModel."""
 
     CONFIG_FILENAME = None
+    CONFIG_PRIVATE = False
+    """True if the file holds keys, so only its owner may read it."""
     default_config = {}
 
     def load_config(self):
@@ -27,4 +29,4 @@ class Configurable:
 
     def save_config(self):
         config_file = os.path.join(pan_app.get_config_dir(), self.CONFIG_FILENAME)
-        pan_app.save_config(config_file, self.config, self.internal_name)
+        pan_app.save_config(config_file, self.config, self.internal_name, self.CONFIG_PRIVATE)

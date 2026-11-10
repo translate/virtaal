@@ -65,8 +65,8 @@
   }
   /* Long file names in inline code wrap instead of widening the page. */
   code {
-    overflow-wrap: anywhere;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
   /* Wide tables scroll inside themselves, not the page. */
   table {

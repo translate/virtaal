@@ -16,12 +16,41 @@ the pattern in a group, which moves a leading inline flag such as
 drop this shim once translate-toolkit fixes them.
 
 The shim also stops at max_matches instead of raising ValueError, which
-the search never caught (#4395); keep that when the rest goes.
+the search never caught (#4395), and runs an expression that can take
+exponential time in a child process with a time limit, raising
+SearchTimeout if it's stopped (#4692); keep those when the rest goes.
 """
 
 import re
 
+from translate.lang import data
 from translate.tools.pogrep import GrepFilter as _UpstreamGrepFilter
+
+from virtaal.support import regexsearch
+from virtaal.support.regexsearch import SearchTimeout  # noqa: F401
+
+
+class _Match:
+    def __init__(self, start, end):
+        self._start = start
+        self._end = end
+
+    def start(self):
+        return self._start
+
+    def end(self):
+        return self._end
+
+
+class _FoundSpans:
+    """Stands in for the compiled expression in find_matches(), with
+        the matches a child process found."""
+
+    def __init__(self, spans):
+        self.spans = spans
+
+    def finditer(self, string):
+        return [_Match(*span) for span in self.spans.get(string, ())]
 
 
 class GrepFilter(_UpstreamGrepFilter):
@@ -41,6 +70,18 @@ class GrepFilter(_UpstreamGrepFilter):
         if not self.useregexp:
             searchstring = re.escape(searchstring)
         self.re_search = re.compile(searchstring, flags)
+        pattern = self.re_search
+        if self.useregexp and regexsearch.is_risky(searchstring, flags):
+            strings = {
+                data.normalize(string)
+                for unit in units
+                for _part, unit_strings in self._parts(unit)
+                for string in unit_strings
+                if string
+            }
+            strings = sorted(strings)
+            spans = regexsearch.find_spans(searchstring, flags, strings)
+            pattern = _FoundSpans(dict(zip(strings, spans)))
 
         # Everything below here is upstream's getmatches(), except that
         # it stops at max_matches instead of raising.
@@ -52,21 +93,8 @@ class GrepFilter(_UpstreamGrepFilter):
         for index, unit in enumerate(units):
             old_length = len(matches)
 
-            if self.search_target:
-                targets = unit.target.strings if unit.hasplural() else [unit.target]
-                matches.extend(find_matches(unit, "target", targets, self.re_search))
-            if self.search_source:
-                sources = unit.source.strings if unit.hasplural() else [unit.source]
-                matches.extend(find_matches(unit, "source", sources, self.re_search))
-            if self.search_notes:
-                matches.extend(
-                    find_matches(unit, "notes", unit.getnotes(), self.re_search)
-                )
-
-            if self.search_locations:
-                matches.extend(
-                    find_matches(unit, "locations", unit.getlocations(), self.re_search)
-                )
+            for part, unit_strings in self._parts(unit):
+                matches.extend(find_matches(unit, part, unit_strings, pattern))
 
             if len(matches) > old_length:
                 old_length = len(matches)
@@ -79,3 +107,14 @@ class GrepFilter(_UpstreamGrepFilter):
                 break
 
         return matches, indexes
+
+    def _parts(self, unit):
+        """The (part, strings) of unit to search, in upstream's order."""
+        if self.search_target:
+            yield "target", unit.target.strings if unit.hasplural() else [unit.target]
+        if self.search_source:
+            yield "source", unit.source.strings if unit.hasplural() else [unit.source]
+        if self.search_notes:
+            yield "notes", unit.getnotes()
+        if self.search_locations:
+            yield "locations", unit.getlocations()

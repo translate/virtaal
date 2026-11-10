@@ -33,6 +33,8 @@
 # _update_from_tempfiles()'s open() was changed to binary mode - see
 # translate/virtaal#3609. update_file() adds a project file missing from
 # the archive instead of failing - see translate/virtaal#4533.
+# save(filename) saves to and keeps using filename instead of moving the
+# new archive over the opened one.
 
 import contextlib
 import os
@@ -178,6 +180,8 @@ class BundleProjectStore(ProjectStore):
         """Save all project files to the bundle zip file."""
         self._update_from_tempfiles()
 
+        if filename and os.path.abspath(filename) == os.path.abspath(self.zip.filename):
+            filename = None
         newzip = ZipFile(filename, "w") if filename else self._create_temp_zipfile()
 
         # Write project file for the new zip bundle
@@ -192,7 +196,12 @@ class BundleProjectStore(ProjectStore):
                 continue
             newzip.writestr(fname, self.zip.read(fname))
 
-        self._replace_project_zip(newzip)
+        if filename:
+            newzip.close()
+            self.zip.close()
+            self.zip = ZipFile(filename, mode="a")
+        else:
+            self._replace_project_zip(newzip)
 
     def update_file(self, pfname, infile) -> None:
         """

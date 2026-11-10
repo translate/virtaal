@@ -7,9 +7,11 @@
 
 import unicodedata
 
+import pytest
 from translate.storage import po
 
-from virtaal.support.pogrep_compat import GrepFilter
+from virtaal.support import regexsearch
+from virtaal.support.pogrep_compat import GrepFilter, SearchTimeout
 
 
 def _unit(source, target):
@@ -70,3 +72,26 @@ def test_getmatches_stops_at_max_matches_instead_of_raising():
 
     assert len(matches) == 3
     assert indexes == [0, 1]
+
+
+def _regexp_filter(searchstring):
+    return GrepFilter(searchstring=searchstring, searchparts=('source', 'target'),
+                      ignorecase=True, useregexp=True, max_matches=200)
+
+
+def test_getmatches_finds_a_nested_repetition_match():
+    units = [_unit("x", "xaab"), _unit("aab", "y")]
+
+    matches, indexes = _regexp_filter(r'(a+)+b').getmatches(units)
+
+    assert indexes == [0, 1]
+    assert [(m.part, m.start, m.end) for m in matches] == [('target', 1, 4), ('source', 0, 3)]
+
+
+def test_getmatches_stops_a_nested_repetition_that_takes_too_long(monkeypatch):
+    # #4692: re backtracks exponentially on this, for minutes.
+    monkeypatch.setattr(regexsearch, 'TIME_LIMIT', 1)
+    units = [_unit("Open the file before you save your changes.", "x")]
+
+    with pytest.raises(SearchTimeout):
+        _regexp_filter(r'(\w+\s?)+$').getmatches(units)

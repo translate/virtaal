@@ -241,7 +241,7 @@ class SearchMode(BaseMode):
         self._search_timeout = 0
         # See virtaal.support.pogrep_compat for why this isn't imported
         # straight from translate.tools.pogrep.
-        from virtaal.support.pogrep_compat import GrepFilter
+        from virtaal.support.pogrep_compat import GrepFilter, SearchTimeout
         store_units = self.storecursor.model.get_units()
         filter_args = dict(
             searchparts=('source', 'target'),
@@ -252,8 +252,9 @@ class SearchMode(BaseMode):
         try:
             self.filter = GrepFilter(searchstring=self.ent_search.get_text(), **filter_args)
             self.matches, indexes = self.filter.getmatches(store_units)
-        except (re.error, OverflowError):
-            # An invalid or unfinished regular expression matches nothing.
+        except (re.error, OverflowError, SearchTimeout):
+            # An invalid or unfinished regular expression matches nothing,
+            # nor does one stopped for taking too long (#4692).
             self.filter = GrepFilter(searchstring='', **filter_args)
             self.matches, indexes = [], []
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
@@ -710,9 +711,10 @@ class SearchMode(BaseMode):
     def _refresh_results(self):
         """Re-run the search over the file without moving the cursor."""
         self._search_timeout = 0
+        from virtaal.support.pogrep_compat import SearchTimeout
         try:
             self.matches, indexes = self.filter.getmatches(self.storecursor.model.get_units())
-        except (re.error, OverflowError):
+        except (re.error, OverflowError, SearchTimeout):
             self.matches, indexes = [], []
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
         self._match_text_cache = {}

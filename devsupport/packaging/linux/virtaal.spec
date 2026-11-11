@@ -63,11 +63,35 @@ ADWAITA = Path("/usr/share/icons/Adwaita")
 ADWAITA_PARTS = ["index.theme", "scalable", "scalable-up-to-32", "16x16"]
 for _part in ADWAITA_PARTS:
     _required(ADWAITA / _part)
+# And the full-colour icons of virtaal.ui's stock items (document-open
+# for gtk-open), at 16 and 32 pixels. Most are only in
+# adwaita-icon-theme-full, the rest of which is left out.
+STOCK_ICONS = [
+    "application-exit", "document-open", "document-properties", "document-save", "document-save-as",
+    "edit-copy", "edit-cut", "edit-paste", "edit-undo", "edit-undo-rtl", "go-down", "go-up",
+    "help-about", "list-add", "list-remove", "view-refresh", "window-close",
+]
+ADWAITA_FULL = set(subprocess.run(
+    ["dpkg-query", "-L", "adwaita-icon-theme-full"], capture_output=True, text=True, check=True,
+).stdout.splitlines())
+
+
+def _adwaita(part):
+    path = ADWAITA / part
+    if path.is_file():
+        return [(str(path), "share/icons/Adwaita")]
+    return [
+        (str(file), str(Path("share/icons") / file.parent.relative_to(ADWAITA.parent)))
+        for file in sorted(path.rglob("*")) if file.is_file() and str(file) not in ADWAITA_FULL
+    ]
+
 
 datas = common.datas(ROOT) + [(str(IMMODULES_CACHE), "lib/gtk-3.0/3.0.0")]
+for _part in ADWAITA_PARTS:
+    datas += _adwaita(_part)
 datas += [
-    (str(ADWAITA / part), "share/icons/Adwaita" if part == "index.theme" else "share/icons/Adwaita/" + part)
-    for part in ADWAITA_PARTS
+    (str(_required(ADWAITA / size / "legacy" / (name + ".png"))), "share/icons/Adwaita/%s/legacy" % size)
+    for size in ("16x16", "32x32") for name in STOCK_ICONS
 ]
 datas += mo_files
 

@@ -7,7 +7,8 @@
 #   python3-venv python3-gi python3-gi-cairo gir1.2-gtk-3.0
 #   gir1.2-gtkspell3-3.0 libgettextpo0 gettext gcc g++ make pkg-config
 #   libglib2.0-dev libhunspell-dev librsvg2-common adwaita-icon-theme
-#   ibus-gtk3 fcitx5-frontend-gtk3 desktop-file-utils file curl
+#   adwaita-icon-theme-full ibus-gtk3 fcitx5-frontend-gtk3
+#   desktop-file-utils file curl
 #
 # PyInstaller imports virtaal's modules, which start GTK: without a
 # display, run it under xvfb-run.

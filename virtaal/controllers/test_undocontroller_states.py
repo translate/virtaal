@@ -64,6 +64,32 @@ XLIFF_STATES = {
     'Final': 121,
 }
 
+PO = """msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Language: af\\n"
+
+msgid "Untranslated"
+msgstr ""
+
+msgid "Also untranslated"
+msgstr ""
+
+#, fuzzy
+msgid "Fuzzy"
+msgstr "Wollerig"
+
+msgid "Translated"
+msgstr "Vertaal"
+"""
+
+PO_STATES = {
+    'Untranslated': 0,
+    'Also untranslated': 0,
+    'Fuzzy': 30,
+    'Translated': 100,
+}
+
 TS = """<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="af">
@@ -132,6 +158,13 @@ class _StateUndo(TestScaffolding):
         monkeypatch.setattr(GLib, 'idle_add', later)
         monkeypatch.setattr(
             unitcontroller_module, 'timeout_add', lambda ms, func, *a: later(func, *a)
+        )
+        self.unit_controller._state_timer_id = None
+        # Saving a PO file asks for these in a modal dialog.
+        monkeypatch.setattr(
+            self.main_controller,
+            'get_translator_details',
+            lambda *args: ('Tester', 'tester@example.org', 'Afrikaans'),
         )
         with open(self.statefile, 'w', encoding='utf-8') as f:
             f.write(self.CONTENT)
@@ -347,6 +380,77 @@ class _StateUndo(TestScaffolding):
         assert saved.get_state_id() == S.EMPTY
 
 
+    # Leaving or saving before the 200 ms state timer fires.
+
+    def _hold_state_timers(self, monkeypatch):
+        """Keep state timers pending until _fire_state_timers()."""
+        self.timers = {}
+
+        def timeout_add(ms, func, *args):
+            timer_id = len(self.timers) + 1
+            self.timers[timer_id] = lambda: func(*args)
+            return timer_id
+
+        monkeypatch.setattr(unitcontroller_module, 'timeout_add', timeout_add)
+        monkeypatch.setattr(
+            unitcontroller_module, 'source_remove', self.timers.pop, raising=False
+        )
+
+    def _fire_state_timers(self):
+        while self.timers:
+            self.timers.pop(min(self.timers))()
+
+    def _type_before_the_timer(self, source, monkeypatch):
+        self._hold_state_timers(monkeypatch)
+        unit = self._select(source)
+        self._type('Nuut')
+        return unit
+
+    def test_a_typed_unit_left_before_the_state_timer_is_translated(
+        self, empty_source, monkeypatch
+    ):
+        self._type_before_the_timer(empty_source, monkeypatch)
+        self._leave(empty_source)
+
+        saved = self._saved(empty_source)
+        assert saved.target == 'Nuut' and saved.get_state_id() == S.UNREVIEWED
+
+    def test_a_typed_unit_saved_before_the_state_timer_is_translated(
+        self, empty_source, monkeypatch
+    ):
+        unit = self._type_before_the_timer(empty_source, monkeypatch)
+
+        saved = self._saved(empty_source)
+
+        assert saved.target == 'Nuut' and saved.get_state_id() == S.UNREVIEWED
+        self._assert_state(unit, S.UNREVIEWED)
+
+    def test_undo_after_leaving_before_the_state_timer_restores_the_state(
+        self, empty_source, monkeypatch
+    ):
+        unit = self._type_before_the_timer(empty_source, monkeypatch)
+        state_n = self.STATES[empty_source]
+        self._leave(empty_source)
+
+        # The first undo goes back to the unit, the second undoes.
+        self._undo()
+        assert self.unit_controller.current_unit is unit
+        self._undo()
+
+        assert self._target().get_text() == ''
+        self._assert_state(unit, state_n)
+
+    def test_a_typed_unit_left_after_the_state_timer_is_translated(
+        self, empty_source, monkeypatch
+    ):
+        unit = self._type_before_the_timer(empty_source, monkeypatch)
+        self._fire_state_timers()
+        self._assert_state(unit, S.UNREVIEWED)
+        self._leave(empty_source)
+
+        assert self._saved(empty_source).get_state_id() == S.UNREVIEWED
+
+
 def pytest_generate_tests(metafunc):
     cls = metafunc.cls
     if cls is None or cls.STATES is None:
@@ -355,9 +459,39 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize('source', list(cls.STATES))
     if 'translated_source' in metafunc.fixturenames:
         metafunc.parametrize('translated_source', list(cls.TRANSLATED))
+    if 'empty_source' in metafunc.fixturenames:
+        metafunc.parametrize(
+            'empty_source', [s for s in cls.STATES if cls.STATES[s] < S.NEEDS_WORK]
+        )
 
 
-class TestXliffStateUndo(_StateUndo):
+class _TwoEmptyUnits:
+    """Tests for a format with a needs-work pick for a typed unit, and
+    two empty units in its fixture."""
+
+    def test_a_unit_typed_into_before_the_last_ones_timer_is_corrected(self, monkeypatch):
+        first, second = [s for s in self.STATES if self.STATES[s] < S.NEEDS_WORK][:2]
+        self._type_before_the_timer(first, monkeypatch)
+        unit = self._select(second)
+        self._type('Nuut')
+
+        self._fire_state_timers()
+
+        self._assert_state(unit, S.UNREVIEWED)
+        assert self._unit(first).get_state_id() == S.UNREVIEWED
+
+    def test_a_chosen_state_stands_when_left_before_the_state_timer(
+        self, empty_source, monkeypatch
+    ):
+        unit = self._type_before_the_timer(empty_source, monkeypatch)
+        self._pick(S.NEEDS_WORK)
+        self._leave(empty_source)
+
+        assert self._saved(empty_source).get_state_id() == S.NEEDS_WORK
+        assert unit.get_state_id() == S.NEEDS_WORK
+
+
+class TestXliffStateUndo(_TwoEmptyUnits, _StateUndo):
     SUFFIX = '.xlf'
     CONTENT = XLIFF
     STATES = XLIFF_STATES
@@ -372,14 +506,14 @@ class TestXliffStateUndo(_StateUndo):
         self._leave('New')
         assert self._saved('New').get_state_n() == S.UNREVIEWED
 
-    def test_a_new_unit_left_before_the_state_timer_needs_review(self):
-        self._select('New')
-        self.unit_controller._state_timer_active = True  # the timer never fires
 
-        self._type('Nuut')
-        self._leave('New')
-
-        assert self._saved('New').get_state_n() == S.NEEDS_REVIEW
+class TestPoStateUndo(_TwoEmptyUnits, _StateUndo):
+    SUFFIX = '.po'
+    CONTENT = PO
+    STATES = PO_STATES
+    TRANSLATED = ['Fuzzy', 'Translated']
+    # An empty msgstr is untranslated, whatever was picked.
+    SAVED_PICK = {'Untranslated': S.EMPTY, 'Also untranslated': S.EMPTY}
 
 
 class TestTsStateUndo(_StateUndo):

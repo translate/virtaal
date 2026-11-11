@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-10T21:37:39Z",
- "commit": "0052b9faf0bded664d146062361543d19e70e305",
+ "generated": "2026-11-11T19:33:13Z",
+ "commit": "eaf9026259c3f5223c11c7feae49777a17e404a6",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -335,12 +335,12 @@
    "code": "lt",
    "name": "Lithuanian",
    "endonym": "lietuvių",
-   "core_missing": 23,
-   "rest_missing": 7,
-   "needed": 27,
-   "level2_missing": 123,
-   "level3_missing": 55,
-   "ships": "50%"
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 45,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "ne",
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/42906326523"
+ "packs": "https://github.com/translate/virtaal/actions/runs/43087634346"
 }

@@ -1893,6 +1893,7 @@ jobs:
             libhunspell-dev
             librsvg2-common
             adwaita-icon-theme
+            adwaita-icon-theme-full
             ibus-gtk3
             fcitx5-frontend-gtk3
             desktop-file-utils

@@ -78,6 +78,55 @@ if command -v gsettings >/dev/null; then
     fi
 fi
 
+stage "the bundled icons of every stock item, at 16 and 32 pixels"
+# GTK draws a stock item (gtk-open) with the theme's full-colour icon
+# (document-open), named in GTK 3's gtkiconfactory.c. Every stock item
+# in virtaal.ui must be listed.
+cat > "$LOGS/stock_icons.py" <<'EOF'
+import os
+import re
+import sys
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+from virtaal.common import pan_app
+ICONS = {
+    "gtk-about": "help-about", "gtk-add": "list-add", "gtk-cancel": "gtk-cancel",
+    "gtk-close": "window-close", "gtk-copy": "edit-copy", "gtk-cut": "edit-cut",
+    "gtk-go-down": "go-down", "gtk-go-up": "go-up", "gtk-missing-image": "image-missing",
+    "gtk-ok": "gtk-ok", "gtk-open": "document-open", "gtk-paste": "edit-paste",
+    "gtk-preferences": "gtk-preferences", "gtk-properties": "document-properties",
+    "gtk-quit": "application-exit", "gtk-refresh": "view-refresh", "gtk-remove": "list-remove",
+    "gtk-save": "document-save", "gtk-save-as": "document-save-as", "gtk-undo": "edit-undo",
+}
+with open(pan_app.get_abs_data_filename(["virtaal", "virtaal.ui"]), encoding="utf-8") as f:
+    used = sorted(set(re.findall(r">(gtk-[a-z-]+)<", f.read())))
+# The bundle's Adwaita only, not the host's (and GTK's built-in icons).
+theme = Gtk.IconTheme()
+theme.set_search_path([os.path.join(sys._MEIPASS, "share", "icons")])
+theme.set_custom_theme("Adwaita")
+style = Gtk.Image().get_style_context()
+for stock in used:
+    name = ICONS.get(stock)
+    if name is None:
+        print("unlisted stock item: " + stock)
+        continue
+    for size, scale in ((16, 1), (32, 1), (16, 2)):
+        info = theme.lookup_icon_for_scale(name, size, scale, 0)
+        print("%s %s %d@%d: %s" % (stock, name, size, scale, info.get_filename() if info else "missing"))
+    # As a menu item does: warns if the icon doesn't load.
+    for scale in (1, 2):
+        Gtk.IconFactory.lookup_default(stock).render_icon_surface(style, Gtk.IconSize.MENU, scale, None)
+print("stock icons checked: %d" % len(used))
+EOF
+echo "exec(open('$LOGS/stock_icons.py').read())" | run --run-module code > "$LOGS/stock-icons.txt" 2>&1 || true
+cat "$LOGS/stock-icons.txt"
+if ! grep -q "^stock icons checked: [1-9]" "$LOGS/stock-icons.txt" \
+        || grep -E ": missing$|^unlisted stock item|Error loading theme icon|Traceback" "$LOGS/stock-icons.txt"; then
+    echo "A stock item's icon isn't bundled" >&2
+    exit 1
+fi
+
 stage "IBus's input method module under Wayland, unless the user chose one"
 probe='import os; print("im=" + os.environ.get("GTK_IM_MODULE", "none"))'
 im="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus timeout -k 5 60 "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"

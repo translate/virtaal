@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-20 12:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-11-12 00:58-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"Language-Team: Brazilian Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.18\n"
+"X-Generator: Virtaal 1.0.0-rc1\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -31,7 +31,7 @@ msgstr "Árabe"
 
 #: ast
 msgid "Asturian"
-msgstr ""
+msgstr "Asturiano"
 
 #: eus
 msgid "Basque"
@@ -55,7 +55,7 @@ msgstr "Catalão"
 
 #: cgg
 msgid "Chiga"
-msgstr ""
+msgstr "Chiga"
 
 #: zho
 msgid "Chinese"
@@ -143,23 +143,23 @@ msgstr "Lituano"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "Grego moderno (1453-)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "Nepalês (macroidioma)"
 
 #: oci
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Occitano (pós-1500)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "Panjabi"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "Pedi"
 
 #: pol
 msgid "Polish"
@@ -199,7 +199,7 @@ msgstr "Espanhol"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "Suaíli (macroidioma)"
 
 #: swe
 msgid "Swedish"

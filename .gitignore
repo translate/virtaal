@@ -6,6 +6,7 @@
 /mo
 *.egg-info/
 /.coverage
+/.coverage.*
 /coverage.xml
 
 # /docs/

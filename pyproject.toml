@@ -180,6 +180,10 @@ omit = [
 # tests), so an incidental single-line drop on an unrelated PR doesn't
 # fail CI on its own.
 fail_under = 87
+# fail_under compares the total rounded to this many decimals: at the
+# default, 0, 86.55% rounded up to 87 and passed while pytest-cov
+# printed "FAIL Required test coverage of 87.0% not reached".
+precision = 2
 
 [tool.codespell]
 skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git,virtaal/support/test_statsdb_ported.py,devsupport/packaging/windows/languages/*"

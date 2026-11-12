@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-11T19:33:13Z",
- "commit": "eaf9026259c3f5223c11c7feae49777a17e404a6",
+ "generated": "2026-11-12T14:48:00Z",
+ "commit": "58d1c5be2ff3c5097f1f9dea8831222be78fbbd0",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -427,7 +427,7 @@
    "rest_missing": 0,
    "needed": 0,
    "level2_missing": 0,
-   "level3_missing": 1,
+   "level3_missing": 0,
    "ships": "level 1"
   },
   {
@@ -607,5 +607,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/43087634346"
+ "packs": "https://github.com/translate/virtaal/actions/runs/43239482797"
 }

@@ -265,6 +265,27 @@ def _communicate(proc, timeout, stacks_path):
     return f"Timed out after {timeout}s\n{stdout}{stderr}\nStacks:\n{stacks}", True
 
 
+def _measured():
+    """The arguments that run the subprocess under coverage when this
+    run measures it: pytest-cov 7 no longer measures subprocesses. Its
+    parallel data file sits beside this process's, and pytest-cov
+    combines them. Nothing else the subprocess starts is measured."""
+    try:
+        import coverage
+    except ImportError:
+        return []
+    cov = coverage.Coverage.current()
+    if cov is None:
+        return []
+    config = cov.config
+    args = ["-m", "coverage", "run", "--parallel-mode", "--data-file", config.data_file]
+    if config.config_file:
+        args += ["--rcfile", config.config_file]
+    if config.source:
+        args += ["--source", ",".join(config.source)]
+    return args
+
+
 def _run_group(item, group):
     """Run every collected test in `group` in one fresh pytest
     subprocess, storing each test's own reports in _isolated_reports."""
@@ -279,7 +300,7 @@ def _run_group(item, group):
         stacks_path = os.path.join(tmp, "stacks.txt")
         proc = subprocess.Popen(
             [
-                sys.executable, "-m", "pytest",
+                sys.executable, *_measured(), "-m", "pytest",
                 "-p", "no:cacheprovider",
                 "--basetemp", os.path.join(tmp, "basetemp"),
                 "-q", *nodeids,

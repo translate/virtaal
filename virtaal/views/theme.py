@@ -26,7 +26,7 @@ theme or not, can inspect this to know.
 def rgba_to_str(c: Gdk.RGBA):
     s = ["#"]
     for f in c.to_color().to_floats():
-        s.append("%x" % int(f*255))
+        s.append("%02x" % int(f*255))
     return "".join(s)
 
 

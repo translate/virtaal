@@ -162,8 +162,7 @@ def _set_native_return_key(title, modifiers):
 
 
 def fill_dialog(dialog, title='', message='', markup=''):
-    if title:
-        dialog.set_title(title)
+    dialog.set_title(title)
     if markup:
         dialog.set_markup(markup)
     else:
@@ -1081,7 +1080,7 @@ class MainView(BaseView):
             return ()
 
     def show_error_dialog(self, title='', message='', markup='', parent=None):
-        fill_dialog(self.error_dialog, title, message, markup)
+        fill_dialog(self.error_dialog, title or _("Error"), message, markup)
 
         self.error_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window

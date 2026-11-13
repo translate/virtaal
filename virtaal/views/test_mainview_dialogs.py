@@ -81,6 +81,22 @@ def test_prompt_dialog_defaults_to_no(view):
     assert dialog.get_widget_for_response(Gtk.ResponseType.NO).has_default()
 
 
+@pytest.mark.parametrize('show, name, response, untitled', [
+    ('show_prompt_dialog', 'prompt_dialog', Gtk.ResponseType.NO, ''),
+    ('show_info_dialog', 'info_dialog', Gtk.ResponseType.OK, ''),
+    ('show_error_dialog', 'error_dialog', Gtk.ResponseType.OK, 'Error'),
+], ids=['prompt', 'info', 'error'])
+def test_a_reused_dialog_drops_the_last_title(view, monkeypatch, show, name, response, untitled):
+    # Revert to Saved's title stayed on the next "reload the file?" prompt (#4775).
+    _press(monkeypatch, response)
+
+    getattr(view, show)(title='Revert to Saved', message='Revert?')
+    assert getattr(view, name).get_title() == 'Revert to Saved'
+    getattr(view, show)(message='Reload the file?')
+
+    assert getattr(view, name).get_title() == untitled
+
+
 def test_confirm_dialog_offers_save_discard_and_cancel_defaulting_to_save(view):
     dialog = view.confirm_dialog
     save = dialog.get_widget_for_response(Gtk.ResponseType.YES)

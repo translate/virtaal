@@ -8,6 +8,7 @@
 """Contains the AutoCompletor class."""
 
 import re
+import unicodedata
 from collections import defaultdict
 
 from gi.repository import GLib
@@ -16,12 +17,28 @@ from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
 
+def _combining_marks():
+    """A regular expression character class body for every combining mark
+    (Mn, Mc, Me) below U+20000 and the zero width (non-)joiner: vowel
+    signs, viramas and ZWNJ are part of words, though not \\w."""
+    ranges = []
+    for code in range(0x20000):
+        if unicodedata.category(chr(code))[0] == 'M':
+            if ranges and ranges[-1][1] == code - 1:
+                ranges[-1][1] = code
+            else:
+                ranges.append([code, code])
+    return '\u200c\u200d' + ''.join(
+        re.escape(chr(a)) + ('-' + re.escape(chr(b)) if b > a else '') for a, b in ranges
+    )
+
+
 class AutoCompletor:
     """
     Does auto-completion of registered words in registered widgets.
     """
 
-    wordsep_re = re.compile(r'\W+', re.UNICODE)
+    wordsep_re = re.compile(r'[^\w%s]+' % _combining_marks())
 
     MAX_WORDS = 10000
     DEFAULT_COMPLETION_LENGTH = 4 # The default minimum length of a word that may

@@ -83,6 +83,16 @@ def test_add_words_from_units_splits_target_text_into_words():
     assert 'world' in ac._word_list
 
 
+@pytest.mark.parametrize('word', ['করুন', 'हिन्दी', 'می‌خواهم'])
+def test_add_words_from_units_keeps_vowel_signs_viramas_and_zwnj_inside_words(word):
+    ac = _ac(comp_len=1)
+    unit = SimpleNamespace(target=word + '। ' + word)
+
+    ac.add_words_from_units([unit])
+
+    assert ac._word_list == [word]
+
+
 def test_add_words_from_units_skips_a_unit_with_no_target():
     ac = _ac(comp_len=1)
     unit = SimpleNamespace(target='')

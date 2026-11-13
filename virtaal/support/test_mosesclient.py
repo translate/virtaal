@@ -133,6 +133,15 @@ def test_loads_safe_disables_multilang_on_unknown_system_fault():
     assert client.multilang is False
 
 
+def test_loads_safe_returns_none_for_any_other_fault():
+    client = MosesClient('http://example.com')
+    client.set_multilang(True)
+    fault_body = xmlrpclib.dumps(xmlrpclib.Fault(2, 'Some other fault'), methodresponse=True)
+
+    assert client._loads_safe(fault_body) is None
+    assert client.multilang is True
+
+
 def test_loads_safe_returns_none_for_unparseable_data():
     client = MosesClient('http://example.com')
 

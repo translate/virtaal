@@ -17,6 +17,24 @@ from virtaal.common.gobjectwrapper import GObjectWrapper
 from virtaal.common.platform import platform
 from virtaal.support import proxy as proxy_settings
 
+_SECRET_PARAMS = {'key', 'api_key', 'apikey', 'auth_key', 'token', 'access_token'}
+
+
+def loggable_url(url):
+    """url with the values of secret query parameters (API keys) masked."""
+    try:
+        parts = parse.urlsplit(url)
+    except ValueError:
+        return url
+    if not parts.query:
+        return url
+    pairs = parse.parse_qsl(parts.query, keep_blank_values=True)
+    if not any(name.lower() in _SECRET_PARAMS for name, _value in pairs):
+        return url
+    masked = [(name, '***' if name.lower() in _SECRET_PARAMS else value) for name, value in pairs]
+    return parse.urlunsplit(parts._replace(query=parse.urlencode(masked, safe='*')))
+
+
 __all__ = ['HTTPClient', 'HTTPRequest', 'RESTRequest']
 
 
@@ -135,7 +153,7 @@ class HTTPRequest(GObjectWrapper):
                     self.curl.setopt(pycurl.PROXY, proxies[protocol])
 
     def __repr__(self):
-        return '<%s:%s>' % (self.method, self.get_effective_url())
+        return '<%s:%s>' % (self.method, loggable_url(self.get_effective_url()))
 
     def get_effective_url(self):
         return self.curl.getinfo(pycurl.EFFECTIVE_URL)
@@ -215,7 +233,7 @@ class HTTPClient:
         # see E_* constants in pycurl for error_code
         self.curl.remove_handle(fail_tuple[0])
         self.requests.remove(fail_tuple[0].request)
-        logging.debug('%s: %s', fail_tuple[0].request.url, fail_tuple[2])
+        logging.debug('%s: %s', loggable_url(fail_tuple[0].request.url), fail_tuple[2])
 
     def perform(self):
         """main event loop function, non blocking execution of all queued requests"""

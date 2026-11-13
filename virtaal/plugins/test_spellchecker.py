@@ -358,20 +358,31 @@ def test_activate_checker_ignores_a_systemerror_from_get_from_text_view(caplog):
     assert 'mandriva' in caplog.text
 
 
-def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
+def test_activate_checker_unloads_the_plugin_on_an_unexpected_error():
+    other = Gtk.TextView()
+    failing = Gtk.TextView()
+    attached = _FakeChecker()
+
     class _BrokenChecker:
-        get_from_text_view = staticmethod(lambda tv: None)
+        get_from_text_view = staticmethod(lambda tv: attached if tv is other else None)
 
         def __init__(self):
             raise RuntimeError('boom')
 
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_BrokenChecker)
-    text_view = _text_view(spell_pending='en_US')
+    plugin.unit_view = SimpleNamespace(sources=[other], targets=[failing])
+    plugin._signal_tracker = SignalTracker()
+    plugin._signal_tracker.connect(other, 'populate-popup', lambda *a: None)
+    other.spell_lang = 'en_US'
+    failing.spell_pending = 'af_ZA'
 
-    plugin._activate_checker(text_view, 'en_US')  # must not raise
+    plugin._activate_checker(failing, 'af_ZA')  # must not raise
 
     assert plugin.gtkspell is None
+    assert attached.detached
+    assert plugin._signal_tracker._ids == []
+    plugin.destroy()  # again at shutdown
 
 
 
@@ -561,6 +572,8 @@ def test_activate_checker_leaves_nothing_attached_when_set_language_fails():
     _Checker.attach = lambda self, text_view: attached.append(text_view)
     plugin = Plugin.__new__(Plugin)
     plugin.gtkspell = SimpleNamespace(Checker=_Checker)
+    plugin.unit_view = SimpleNamespace(sources=[], targets=[])
+    plugin._signal_tracker = SignalTracker()
 
     plugin._activate_checker(_text_view(spell_pending='en_US'), 'en_US')
 

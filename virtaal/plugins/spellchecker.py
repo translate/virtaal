@@ -183,7 +183,7 @@ class Plugin(BasePlugin):
 
     def _detach(self, text_view):
         """Take the checker off text_view, still wanting its language."""
-        if getattr(text_view, 'spell_lang', 'xxxx') is None:
+        if self.gtkspell is None or getattr(text_view, 'spell_lang', 'xxxx') is None:
             # No change necessary - already disabled
             return
         spell = None
@@ -263,8 +263,8 @@ class Plugin(BasePlugin):
             text_view.spell_lang = language
         except Exception as e:
             logging.exception("Could not initialize spell checking: %s", e)
+            self.destroy()
             self.gtkspell = None
-            #TODO: unload plugin
 
     def _on_insert_text(self, buffer, iter, text, length, text_view):
         """Check a large insert after it, not word by word as it goes in."""

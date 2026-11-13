@@ -265,6 +265,25 @@ class _FakeAddChooser:
         return self._filenames
 
 
+def test_the_add_files_chooser_filters_by_extension_only():
+    # A mime type filter makes Windows use GTK's own dialog (#4712).
+    dialog = FileSelectDialog.__new__(FileSelectDialog)
+    dialog.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(view=SimpleNamespace(main_window=None))
+    )
+
+    dialog._init_add_chooser()
+
+    filters = dialog.add_chooser.list_filters()
+    names = [f.get_name() for f in filters]
+    assert names[0] == 'All Supported Files'
+    assert names[-1] == 'All Files'
+    rules = [rule for f in filters for rule in f.to_gvariant().unpack()[1]]
+    assert rules
+    assert {kind for kind, _pattern in rules} == {0}  # globs, no mime types
+    assert dialog.add_chooser.get_select_multiple()
+
+
 def test_add_file_clicked_adds_the_file_on_accept(monkeypatch, tmp_path):
     # GtkFileChooserNative returns ACCEPT on a real accept, never OK -
     # comparing against OK meant a real pick silently did nothing.

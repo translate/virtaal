@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import builtins
+import logging
 import os
 import sys
 from types import SimpleNamespace
@@ -14,6 +15,7 @@ import certifi
 import pycurl
 from gi.repository import GLib
 
+from virtaal.support import httpclient
 from virtaal.support.httpclient import HTTPClient, HTTPRequest, RESTRequest
 
 # HTTPRequest's own CA bundle configuration - pycurl's wheel bundles no
@@ -396,3 +398,36 @@ def test_set_virtaal_useragent_on_macos_includes_the_release(monkeypatch):
 
     assert client.user_agent.startswith('Virtaal/')
     assert 'darwin' in client.user_agent
+
+
+def test_loggable_url_masks_secret_query_values():
+    url = 'https://translation.googleapis.com/language/translate/v2?key=SECRET123&q=hi&target=af'
+
+    logged = httpclient.loggable_url(url)
+
+    assert 'SECRET123' not in logged
+    assert 'q=hi' in logged and 'target=af' in logged
+
+
+def test_loggable_url_leaves_a_url_without_secrets_alone():
+    url = 'https://amagama-live.translatehouse.org/api/v1/en/af/unit/Open?x=1'
+
+    assert httpclient.loggable_url(url) == url
+
+
+def test_a_failed_request_logs_no_api_key(caplog):
+    client = httpclient.HTTPClient()
+
+    class _Request:
+        url = 'https://example.com/v2?api_key=SECRET123'
+
+    request = _Request()
+    handle = SimpleNamespace(request=request)
+    client.requests.add(request)
+    client.curl = SimpleNamespace(remove_handle=lambda h: None)
+
+    with caplog.at_level(logging.DEBUG):
+        client.close_failed_request((handle, 7, 'could not connect'))
+
+    assert 'SECRET123' not in caplog.text
+    assert 'could not connect' in caplog.text

@@ -153,3 +153,8 @@ def test_unit_style_of_a_format_without_states_follows_fuzzy(fuzzy, styled):
     unit = SimpleNamespace(STATE={}, isfuzzy=lambda: fuzzy)
 
     assert bool(theme.unit_style(unit)) is styled
+
+
+def test_rgba_to_str_keeps_leading_zeros():
+    for value in ('#0a0a0a', '#ff0000', '#000000', '#ffffff'):
+        assert theme.rgba_to_str(theme.str_to_rgba(value)) == value

@@ -1382,15 +1382,23 @@ class MainView(BaseView):
         infobar.get_content_area().pack_start(box, True, True, 0)
 
         def on_response(infobar, response_id):
-            self._template_update_infobar = None
-            infobar.destroy()
+            self.hide_template_update_notice()
         infobar.connect('response', on_response)
 
         self._template_update_infobar = infobar
+        store_controller = getattr(getattr(self, 'controller', None), 'store_controller', None)
+        self._template_update_store = getattr(store_controller, 'store', None)
         infobar.show_all()
         vbox_main = self.gui.get_object('vbox_main')
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
+    def hide_template_update_notice(self):
+        infobar = getattr(self, '_template_update_infobar', None)
+        self._template_update_infobar = None
+        self._template_update_store = None
+        if infobar is not None:
+            infobar.destroy()
 
     @staticmethod
     def _template_stats_grid(before, after):
@@ -1663,6 +1671,7 @@ class MainView(BaseView):
         GLib.idle_add(self.main_window.present)
 
     def _on_store_closed(self, store_controller):
+        self.hide_template_update_notice()
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export',
                              'mnu_next_unit', 'mnu_state_advance', 'mnu_state_reverse'):
             self.gui.get_object(widget_name).set_sensitive(False)
@@ -1670,6 +1679,10 @@ class MainView(BaseView):
         self.main_window.set_title(_('Virtaal'))
 
     def _on_store_loaded(self, store_controller):
+        # Update from Template loads the same store again; any other
+        # file makes its counts stale.
+        if getattr(store_controller, 'store', None) is not getattr(self, '_template_update_store', None):
+            self.hide_template_update_notice()
         self.gui.get_object('mnu_saveas').set_sensitive(True)
         self.gui.get_object('mnu_close').set_sensitive(True)
         self.gui.get_object('mnu_update').set_sensitive(True)

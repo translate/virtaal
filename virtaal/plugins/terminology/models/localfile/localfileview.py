@@ -217,7 +217,8 @@ class FileSelectDialog:
                 self.term_model.save_config()
 
     def _init_add_chooser(self):
-        # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
+        # Extensions only, as for File > Open: a mime type filter makes
+        # Windows use GTK's own dialog (#4712).
         dlg = Gtk.FileChooserNative.new(
             _('Add Files'),
             self.controller.main_controller.view.main_window,
@@ -245,10 +246,6 @@ class FileSelectDialog:
                     for compress_extension in store_factory.decompressclass.keys():
                         new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
                         all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
-            if mimetypes:
-                for mimetype in mimetypes:
-                    new_filter.add_mime_type(mimetype)
-                    all_supported_filter.add_mime_type(mimetype)
             dlg.add_filter(new_filter)
         all_filter = Gtk.FileFilter()
         all_filter.set_name(_("All Files"))

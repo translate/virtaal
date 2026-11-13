@@ -1851,10 +1851,11 @@ def test_fill_dialog_sets_the_title_when_given():
     assert dialog.title == 'A Title'
 
 
-def test_fill_dialog_leaves_the_title_unset_without_one():
+def test_fill_dialog_clears_the_title_without_one():
+    # The dialogs are reused: the last title mustn't stay (#4775).
     dialog = _FakeDialogForFill()
     mainview.fill_dialog(dialog)
-    assert dialog.title is None
+    assert dialog.title == ''
 
 
 def test_fill_dialog_prefers_markup_over_a_plain_message():

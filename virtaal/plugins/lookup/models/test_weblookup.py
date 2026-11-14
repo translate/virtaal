@@ -19,7 +19,7 @@ from virtaal.views import baseview
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     monkeypatch.setattr(baseview, '_builders', {})
 
 

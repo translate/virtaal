@@ -16,7 +16,7 @@ from virtaal.views.widgets.langselectdialog import LanguageSelectDialog
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     # A cached builder hands every test the same treeviews, with earlier
     # tests' row-activated handlers still connected.
     monkeypatch.setattr(baseview, '_builders', {})

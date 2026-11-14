@@ -15,7 +15,7 @@ from virtaal.views.welcomescreenview import WelcomeScreenView
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     # WelcomeScreenView.__init__ loads real widgets from virtaal.ui via
     # the cached builder - a cached one would hand back the very same
     # WelcomeScreen object (already reparented by a previous test's

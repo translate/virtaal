@@ -19,7 +19,7 @@ from virtaal.views.widgets.popupmenubutton import PopupMenuButton
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     # _create_dialogs() loads real widgets from virtaal.ui - a cached
     # builder would hand back the very same btn_add object (with every
     # previous test's own 'clicked' handler still connected to it)

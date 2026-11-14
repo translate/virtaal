@@ -449,6 +449,20 @@ def _no_stats_cache_fill(monkeypatch):
     monkeypatch.setattr(statsworker, 'fill_in_background', lambda filename: None)
 
 
+@pytest.fixture
+def destroy_new_windows():
+    """Destroy the windows a test made. Only for tests with a fresh
+    builder cache, whose windows no other test uses. Each leaked
+    virtaal.ui build keeps a few MB, enough for xdist workers to be
+    OOM-killed in a 2 GB Docker VM (#4555)."""
+    from gi.repository import Gtk
+    before = set(Gtk.Window.list_toplevels())
+    yield
+    for window in Gtk.Window.list_toplevels():
+        if window not in before:
+            window.destroy()
+
+
 def pytest_sessionfinish(session, exitstatus):
     allowed_prefixes = _load_allowlist()
     unexpected = [

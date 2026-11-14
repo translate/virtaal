@@ -17,7 +17,7 @@ from virtaal.views.propertiesview import PropertiesView, _nice_percentage, _stat
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     # PropertiesView._get_widgets() loads real widgets from virtaal.ui -
     # a cached builder would hand back objects already used/mutated by
     # a previous test.

@@ -16,7 +16,7 @@ from virtaal.views.prefsview import PreferencesView
 
 
 @pytest.fixture(autouse=True)
-def _fresh_builder_cache(monkeypatch):
+def _fresh_builder_cache(monkeypatch, destroy_new_windows):
     # _load_widgets() below loads real widgets from virtaal.ui - a
     # cached builder would hand back the very same GtkComboBoxText
     # object (and whatever it was left showing) across tests.

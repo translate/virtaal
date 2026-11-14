@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2026-10-18 21:12+0300\n"
+"PO-Revision-Date: 2026-11-14 15:06+0300\n"
 "Last-Translator: Burak Yavuz (BouRock)\n"
 "Language-Team: \n"
 "Language: tr\n"
@@ -151,7 +151,7 @@ msgstr "S_onrakini Bul"
 
 #: share/virtaal/virtaal.ui
 msgid "Find Pre_vious"
-msgstr "Ö_ncekini Bul"
+msgstr "Ön_cekini Bul"
 
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
@@ -170,7 +170,7 @@ msgstr "_Önceki Yerleştirilebilir"
 
 #: share/virtaal/virtaal.ui
 msgid "_Next Placeable"
-msgstr "_Sonraki Yerleştirilebilir"
+msgstr "Sonr_aki Yerleştirilebilir"
 
 #: share/virtaal/virtaal.ui
 msgid "_View"
@@ -194,7 +194,7 @@ msgstr "Sayfa Y_ukarı"
 
 #: share/virtaal/virtaal.ui
 msgid "_Page Down"
-msgstr "Sayfa Aşa_ğı"
+msgstr "Sayfa A_şağı"
 
 #: share/virtaal/virtaal.ui
 msgid "_First Unit"
@@ -222,7 +222,7 @@ msgstr "_Yardım"
 
 #: share/virtaal/virtaal.ui
 msgid "_Online Help"
-msgstr "Çe_vrimiçi Yardım"
+msgstr "_Çevrimiçi Yardım"
 
 #: share/virtaal/virtaal.ui
 msgid "_Tutorial"
@@ -230,7 +230,7 @@ msgstr "_Eğitim"
 
 #: share/virtaal/virtaal.ui
 msgid "_Localization Guide"
-msgstr "Ye_relleştirme Rehberi"
+msgstr "_Yerelleştirme Rehberi"
 
 #: share/virtaal/virtaal.ui
 msgid "Report a _Bug"
@@ -410,7 +410,7 @@ msgstr "<u>Eğitim</u>"
 
 #: share/virtaal/virtaal.ui
 msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Kopya Kağıdı</u>"
+msgstr "<u>Özet Bilgi Sayfası</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
@@ -561,7 +561,7 @@ msgstr "Virtaal ile düzenle"
 #. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
 #: devsupport/tmp_strings.py
 msgid "Uninstall the older Virtaal 0.7 first"
-msgstr ""
+msgstr "Önce eski Virtaal 0.7'yi kaldır"
 
 #: devsupport/tmp_strings.py
 msgid "usage: "
@@ -739,7 +739,7 @@ msgstr "Belirsiz"
 #: virtaal/controllers/checkscontroller.py
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Untranslated"
-msgstr "Çevrilmemiş"
+msgstr "Çevrilmedi"
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Accelerators"
@@ -1206,11 +1206,11 @@ msgstr "İnceleme gerekli"
 
 #: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
-msgstr "Çevrilmiş"
+msgstr "Çevrildi"
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Reviewed"
-msgstr "İncelenmiş"
+msgstr "İncelendi"
 
 #: virtaal/models/storemodel.py
 msgid ""
@@ -1766,6 +1766,9 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Bu biraz daha uzun iletiyi çevirin. Eğer bir yazım denetleyicisi mevcutsa "
+"yazım hataları, kelime işlemcilerdekine benzer şekilde gösterilir. "
+"Pencerenin sağ alt köşesinde doğru dilin seçildiğinden emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1773,6 +1776,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Bu eğitim, yazılım programlarını çevirirken dikkat etmek isteyebileceğiniz "
+"bazı hususları gösterecektir. Bazı sorunlardan kaçınmanıza ve daha yüksek "
+"kalitede çeviriler üretmenize yardımcı olacaktır."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1781,6 +1787,10 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Bazı tavsiyeler sadece bazı dillerle alakalı olacaktır. Örneğin, eğer "
+"diliniz Latin alfabesini kullanmıyorsa, tavsiyelerden bazıları sizin "
+"dilinizdeki çeviriyle alakalı olmayabilir. Birçok dil için belirlenmiş "
+"çeviri kuralları vardır."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1788,6 +1798,8 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"Büyük harflerin doğru kullanımı birçok dilde önemlidir. Bu iletiyi büyük "
+"harfle \"Virtaal\" yazmaya dikkat ederek çevirin."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1797,6 +1809,11 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"Bu iletide İngilizce hemen hemen her kelime için büyük harf kullanıyor. "
+"Neredeyse başka hiçbir dil bu tarzı kullanmaz. Dilinizin kesinlikle "
+"İngilizce stiline (Başlık Harf Düzeni de denir) uyması gerekmediği sürece, "
+"bunu dilinize uygun normal büyük harf kullanımı kurallarını izleyerek "
+"çevirin. Eğer dilinizde büyük harf kullanılmıyorsa, normal şekilde çevirin."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1806,6 +1823,11 @@ msgid ""
 "copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Eğer önceki iletiyi çevirdiyseniz, bu çeviriyi ve kaynak dizgilerin "
+"(İngilizce) ne kadar benzer olduğunu gösteren bir yüzdeyi içeren bir pencere "
+"görmelisiniz. Bu, Virtaal'ın çeviri belleğinin iş başında olmasıdır. "
+"Önerilen çeviriyi şu anki çeviriye kopyalamak için Ctrl+1 tuşlarına basın. "
+"Önerileri kullanmadan önce mutlaka gözden geçirmeyi unutmayın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1813,6 +1835,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Bu İngilizce'de büyük harfle başlayan basit bir iletidir. Eğer diliniz büyük "
+"harfler kullanıyorsa, çevirinize de kesinlikle büyük harfle başlamak "
+"istersiniz."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1820,17 +1845,24 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Bu, İngilizce'de küçük harfle başlayan basit bir iletidir. Eğer diliniz "
+"küçük harfler kullanılıyorsa, çevirinize de kesinlikle küçük harfle başlamak "
+"istersiniz."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Bu ileti bir sorudur. Çevirinizde de soru işaretini doğru kullandığınızdan "
+"emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Bu ileti bir formun parçası olan bir etikettir. İki nokta üst üste (:) ile "
+"nasıl bittiğine dikkat edin."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1838,6 +1870,10 @@ msgid ""
 "copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
 "translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
+"Eğer kaynak çoğunlukla veya tamamen değişmeden kalacaksa kaynak dizginin "
+"tamamını Ctrl+Shift+V tuşlarıyla kopyalamak uygun olur. Burada çevrilecek "
+"neredeyse hiçbir şey yok, bu yüzden sadece Ctrl+Shift+V tuşlarına basın ve "
+"gerekirse düzeltmeler yapın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1855,6 +1891,9 @@ msgid ""
 "placeholders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Tanınan yerleştirilebilirler arasında özel semboller, sayılar, değişken yer "
+"tutucular, kısaltmalar ve çok daha fazlası bulunur. Alt+Sağ tuşu ile her "
+"birine gidin ve Alt+Aşağı tuşu ile aşağıya aktarın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1862,6 +1901,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Bu ileti, bu metne tıklamanın yalnızca bir eylem gerçekleştirmek yerine bir "
+"diyalogun görünmesine neden olacağını belirtmek için ... ile biter. "
+"İletinizi de ... ile bitirmeyi unutmayın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1869,6 +1911,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Bu ileti üç noktaya benzeyen özel bir karakterle biter. Alt+Sağ tuşu ile "
+"özel karakteri seçin ve Alt+Aşağı tuşu ile çevirinize kopyalayın. Sadece üç "
+"nokta karakteri yazmayın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1876,6 +1921,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Bu iletide iki cümle var. Bunları çevirin ve dilinizde kullanılıyorsa her "
+"birine büyük harfle başladığınızdan ve her cümleyi uygun şekilde "
+"bitirdiğinizden emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1884,6 +1932,11 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Bu ileti \"şimdi\" kelimesini kalın etiketlerle önemli olarak işaretler. Bu "
+"etiketler Alt+Sağ ve Alt+Aşağı tuşlarıyla kaynaktan aktarılabilir. Çeviride "
+"\"şimdi\"ye karşılık gelen kısmın etrafına <b> ve </b> işaretlerini bırakın. "
+"XML işaretlemesi hakkında daha fazla bilgiyi burada bulabilirsiniz: https://"
+"en.wikipedia.org/wiki/XML"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1891,6 +1944,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Bu ileti önceki iletiye çok benzer. Önceki çevirinin önerisini Ctrl+1 "
+"tuşlarıyla kullanın. Tek farkın, bunun son etiketten sonra nokta ile bitmesi "
+"olduğuna dikkat edin."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1901,6 +1957,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"Bu iletide \"%d\" bir sayıyı temsil eden bir yer tutucudur (değişken). "
+"Çevirinizin bir yerde \"%d\" ifadesini içerdiğinden emin olun. Bu durumda "
+"bir dizi dosyayı ifade eder. Bu ileti kullanıldığında \"%d\" bir sayıyla "
+"değiştirilecektir; örn. 'Kopyalanan dosya sayısı: 5'.  \"%d\"nin yüzde "
+"anlamına gelmediğini unutmayın."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1913,6 +1974,13 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"Bu iletide \"%d\" yine dosya sayısını ifade etmektedir, ancak \"(ler)\"in "
+"kaç tane olacağını bilmediğimizi göstermek için nasıl kullanıldığına dikkat "
+"edin. Bunu iyi çevirmek genellikle zordur. Yazılım çevirisinde bununla "
+"karşılaşırsanız, bunun önlenip önlenemeyeceğini geliştiricilerden öğrenmek "
+"isteyebilirsiniz. Bununla ilgili daha fazlasını okuyun ve bunu kendi "
+"dilinizde nasıl yapacağınıza karar verin: http://docs.translatehouse.org/"
+"projects/localization-guide/en/latest/guide/translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1922,6 +1990,11 @@ msgid ""
 "docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
 "translation/plurals.html"
 msgstr ""
+"Bu iletide çoğulların çevirisinin düzgün şekli görülmektedir. Dilinizde "
+"gramerin doğru olmasını sağlamak için çevirinin 1 ila 6 farklı sürümünü "
+"girmeniz gerekir. Bununla ilgili daha fazlasını burada okuyun: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1931,6 +2004,10 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"Bu iletide \"%s\", bir dosya adını temsil eden bir yer tutucudur (değişken). "
+"Çevirinizin bir yerde %s içerdiğinden emin olun. Bu ileti kullanıldığında, "
+"%s bir dosya adıyla değiştirilecektir; örn. 'Dosya ornek.odt olarak "
+"kaydedilecektir'.  \"%s\"nin yüzde anlamına gelmediğini unutmayın."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -1941,6 +2018,12 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different quoting characters you can just type them around the variable."
 msgstr ""
+"Bu iletide değişken çift tırnak içine alınmıştır. Çevirinizin %s değişkenini "
+"içerdiğinden emin olun ve onu da dilinizin gerektirdiği şekilde tırnak "
+"işaretleri içine alın. Eğer diliniz İngilizce ile aynı tırnak işaretlerini "
+"kullanıyorsa, bunu tam olarak İngilizce için gösterildiği şekilde yazın. "
+"Eğer diliniz farklı tırnak karakterleri kullanıyorsa bunları değişkenin "
+"etrafına yazmanız yeterlidir."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1949,6 +2032,11 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"Bu iletideki \"%(name)s\" bir yer tutucudur (değişken). 's'nin değişkenin "
+"bir parçası olduğunu ve '%' ile 's' arasındaki değişkenin tamamının "
+"çevirinizin herhangi bir yerinde değişmeden görünmesi gerektiğini unutmayın. "
+"Bu tür değişkenler size ne içerdikleri konusunda bir fikir verir. Bu durumda "
+"bir ad içerecektir."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1956,6 +2044,8 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"Bu iletide yazılımın kullanıcısından bir şeyler yapması istenir. Kültürünüz "
+"için gerektiği kadar kibar veya saygılı davranarak çevirdiğinizden emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1963,12 +2053,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"Bu iletide \"Linux\"a (bir ürün adı) atıfta bulunulmaktadır. Birçok dil bunu "
+"çevirmeyecektir, ancak dilinizde Latin alfabesini kullanmıyorsanız, "
+"dilinizde harf çevirisi kullanılabilir."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Bu ileti proje web sitesinin URL'sini (web adresini) içerir. "
+"Yerleştirilebilir olarak aktarılmak veya tam olarak yazılmak zorundadır."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1978,6 +2073,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Bu ileti daha fazla bilgi içeren bir web sitesine atıfta bulunmaktadır. "
+"Bazen URL'yi (web adresi) kendi dilinizdeki bir web sitesiyle değiştirmenize "
+"izin verilebilir veya teşvik edilebilir. Bu durumda, adresin başındaki "
+"\"en\" harfini kendi dil kodunuzla değiştirin, böylece adres, XML ile ilgili "
+"dilinizde karşılık gelen makaleyi gösterir."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1985,6 +2085,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Bu çeviri belirsiz bir kelime içeriyor - iki olası anlamı var. Bunun bir "
+"fiil (\"görüntülemek için buraya tıklayın\" örneğindeki gibi bir eylem) "
+"olduğunu gösteren bağlam bilgisini görebildiğinizden emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -1994,6 +2097,11 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Bu çeviri belirsiz bir kelime içeriyor - iki olası anlamı var. Bunun bir ad "
+"olduğunu gösteren bağlam bilgisini görebildiğinizden emin olun (\"görünümü "
+"tam ekrana değiştirmek için tıklayın\" gibi bir şey). Eğer Virtaal önceki "
+"çevirinizi öneri olarak vermişse bu durumda da yalnızca kesinlikle uygunsa "
+"kullanmaya özen gösterin."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2006,14 +2114,22 @@ msgid ""
 "before this letter and it means that this accelerator could be triggered by "
 "pressing Alt+F."
 msgstr ""
+"Hızlandırıcı tuş, klavyenizde bir menüye veya işleve hızla erişmek için "
+"basabileceğiniz bir tuştur. Buna ayrıca kısayol tuşu, erişim tuşu veya "
+"anımsatıcı da denir. Program arayüzlerinde metin etiketinde altı çizili harf "
+"olarak gösterilirler. Çevrilebilir metinde, buradaki alt çizgi gibi bir "
+"karakter kullanılarak işaretlenirler, ancak bunun için başka karakterler de "
+"kullanılır. Bu durumda alt çizgi bu harfin önünde olduğundan hızlandırıcı "
+"tuşu \"f\" olur ve bu hızlandırıcının Alt+F tuşlarına basılarak "
+"tetiklenebileceği anlamına gelir."
 
 #: virtaal/support/tutorial.py
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "Bu girişte diğer tür hızlandırıcıları görebilirsiniz."
 
 #: virtaal/support/tutorial.py
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "Ve başka tür bir hızlandırıcı."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2021,12 +2137,18 @@ msgid ""
 "consistently. To add a term, select a word (or words), press Ctrl+T and fill "
 "in the details for the new term. Select the text below and add a term for it."
 msgstr ""
+"Tutarlı bir şekilde çevirmenize yardımcı olmak için yerel bir terminoloji "
+"dosyası tutabilirsiniz. Bir terim eklemek için bir kelime (veya kelimeler) "
+"seçin, Ctrl+T tuşlarına basın ve yeni terimin ayrıntılarını girin. Aşağıdaki "
+"metni seçin ve bunun için bir terim ekleyin."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"Önceki girişte \"süz\" fiili için bir terminoloji girişi oluşturdunuz. Şimdi "
+"aynısını \"süzme\" ismi için de yapın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2040,6 +2162,15 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Eğer önceki girişlerde herhangi bir terminoloji oluşturduysanız, artık bazı "
+"kelimelerin arka planını yeşil (veya temanıza bağlı olarak başka bir renkte) "
+"görebilirsiniz. Bu, Virtaal'ın o kelime için terminoloji önerileri olduğu "
+"anlamına gelir. Vurgulanan sözcüğü seçmek için Alt+Sağ tuşlarını kullanın ve "
+"ardından Alt+Aşağı tuşlarına basın. Eğer sadece bir öneri sağlanmışsa "
+"Alt+Aşağı tuşu, öneriyi çeviri alanına kopyalar. Ancak birden fazla öneri "
+"mevcutsa Alt+Aşağı tuşu, Aşağı ve Yukarı tuşlarını kullanarak "
+"gezinebileceğiniz bir öneri listesi gösterir. İstediğiniz öneriyi seçtikten "
+"sonra onu çeviri alanına kopyalamak için Enter tuşuna basın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2047,12 +2178,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
+"Bu ileti iki satırdan oluşur. Çevirinizin de iki satır içerdiğinden emin "
+"olun. Satırları Shift+Enter tuşlarıyla ayırabilir veya yerleştirilebilir "
+"yeni satırı (¶ olarak görüntülenir) kopyalayabilirsiniz."
 
 #: virtaal/support/tutorial.py
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Bu ileti bazı başlıkları ayırmak için sekme karakterleri içerir. "
+"Çevirilerinizi de aynı şekilde ayırdığınızdan emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2063,6 +2199,11 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: this number is bigger than one thousand."
 msgstr ""
+"Bu ileti Amerikan kurallarına göre biçimlendirilmiş çok sayıda ileti içerir. "
+"Bunu çevirin ancak numarayı dilinizin kurallarına göre biçimlendirdiğinizden "
+"emin olun. Virgül (,) ve noktayı (.) başka karakterlerle değiştirmeniz "
+"gerekebilir ve ayrıca farklı bir sayı sistemi kullanmanız gerekebilir. "
+"Amerikan biçimini anladığınızdan emin olun: bu sayı binden büyüktür."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2072,6 +2213,12 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do so."
 msgstr ""
+"Bu ileti mil anlamına gelir. Eğer programcılar buna teşvik ederse ve "
+"dilinizde kilometre daha yaygın olarak kullanılıyorsa çevirinizde bunu "
+"kilometre olarak değiştirmek isteyebilirsiniz. 1 milin yaklaşık 1,6 "
+"kilometre olduğunu unutmayın. \"Sayılar\" için otomatikleştirilmiş "
+"denemelerin, sayı değiştirilirse şikayette bulunacağını, ancak bu durumda "
+"bunu yapmanın güvenli olduğunu unutmayın."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2080,6 +2227,11 @@ msgid ""
 "angle brackets (<...>). The double quotes (\") should never be changed in "
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
+"Bu ileti, kullanıcının yardım sayfasını ziyaret etmek için tıklayabileceği "
+"bir bağlantı içerir. Açılı parantezlerin (<...>) arasındaki bilgileri doğru "
+"şekilde tuttuğunuzdan emin olun. Dilinizde farklı türde tırnak işaretleri "
+"kullanılsa bile, etiketlerdeki çift tırnak işaretleri (\") hiçbir zaman "
+"değiştirilmemelidir."
 
 #: virtaal/support/tutorial.py
 #, python-format
@@ -2089,6 +2241,10 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tags of the previous translation."
 msgstr ""
+"Bu ileti benzer bir bağlantı içerir, ancak programcılar çevirmenlerin "
+"değiştirememesi için etiketleri değişkenler kullanarak eklemeye karar "
+"verdiler. İki değişkeni (%s) önceki çevirinin açılış ve kapanış etiketlerine "
+"karşılık gelecek şekilde konumlandırdığınızdan emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2096,6 +2252,9 @@ msgid ""
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
+"Bu ileti, bir kelimeyi vurgulamak için <b> ve </b> etiketlerini içerirken, "
+"her şey <p> ve </p> etiketlerinin içindedir. Çevirinizin tamamının <p> ve </"
+"p> etiketlerinin içinde olduğundan emin olun."
 
 #: virtaal/support/tutorial.py
 msgid ""
@@ -2107,6 +2266,13 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Bu ileti <span> ve </span> içinde bulunan benzer bir bağlantıyı içerir. Tüm "
+"etiketleri (<...>) doğru şekilde tuttuğunuzdan ve bağlantının çevirinizde "
+"tamamen <span> ve </span> etiketleri arasında yer aldığından emin olun. "
+"\"a\" etiketleri içindeki metnin \"yardım sayfası\"na karşılık geldiğinden "
+"ve ikinci cümleye karşılık gelen çevirinizin <span> etiketlerinde yer "
+"aldığından emin olun. Noktanın hala </span> etiketinin içinde olduğuna "
+"dikkat edin."
 
 #: virtaal/views/checksprojview.py
 msgid "Project Type"
@@ -2168,7 +2334,7 @@ msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
-"Şu anki dosya değiştirilmiş.\n"
+"Şu anki dosya değiştirildi.\n"
 "Değişikliklerinizi kaydetmek istiyor musunuz?"
 
 #: virtaal/views/mainview.py virtaal/views/propertiesview.py
@@ -2291,13 +2457,13 @@ msgstr "Günlükler"
 
 #: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
 msgid "_Close"
-msgstr "_Kapat"
+msgstr "Ka_pat"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
 #: virtaal/views/modeview.py
 msgid "N_avigation:"
-msgstr "G_ezinme:"
+msgstr "Gezin_me:"
 
 #. l10n: Context: show no units around the one being edited
 #: virtaal/views/modeview.py
@@ -2328,7 +2494,7 @@ msgstr "%(language)s - %(endonym)s"
 # 81%
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
-msgstr "Çevrilmemiş:"
+msgstr "Çevrilmedi:"
 
 #: virtaal/views/propertiesview.py
 msgid "Needs work:"
@@ -2345,11 +2511,11 @@ msgstr "İnceleme gerekli:"
 # 78%
 #: virtaal/views/propertiesview.py
 msgid "Translated:"
-msgstr "Çevrilmiş:"
+msgstr "Çevrildi:"
 
 #: virtaal/views/propertiesview.py
 msgid "Reviewed:"
-msgstr "İncelenmiş:"
+msgstr "İncelendi:"
 
 #. l10n: A percentage in the file properties, e.g. "(25.5%)"
 #: virtaal/views/propertiesview.py

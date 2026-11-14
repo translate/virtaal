@@ -910,6 +910,22 @@ def test_editor_size_change_moves_the_visible_window():
     assert calls == ['geometry', 'geometry']
 
 
+def test_an_editor_moved_with_its_row_moves_the_visible_window():
+    # Its allocation is the same in the next unit's row: only its window moves.
+    view = _tmview(isvisible=True)
+    calls = []
+    view.update_geometry = lambda: calls.append('geometry')
+    origin = SimpleNamespace(x=0, y=200)
+    editor = SimpleNamespace(get_window=lambda: SimpleNamespace(get_origin=lambda: origin))
+
+    view._on_editor_size_allocate(editor, SimpleNamespace(y=0, height=134))
+    view._on_editor_size_allocate(editor, SimpleNamespace(y=0, height=134))
+    origin = SimpleNamespace(x=0, y=230)
+    view._on_editor_size_allocate(editor, SimpleNamespace(y=0, height=134))
+
+    assert calls == ['geometry', 'geometry']
+
+
 def test_editor_size_change_leaves_a_hidden_window_alone():
     view = _tmview(isvisible=False)
     calls = []

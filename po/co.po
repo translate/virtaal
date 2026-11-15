@@ -2440,7 +2440,7 @@ msgstr "Affissà u dialogu di e preferenze"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Show file properties and statistics"
-msgstr "Affissà e pruprietà è e statistiche di u sch4"
+msgstr "Affissà e pruprietà è e statistiche di u schedariu"
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Toggle fullscreen mode"

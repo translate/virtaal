@@ -1,0 +1,41 @@
+# Corsican localization file for Virtaal.
+#
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+#
+# Corsican translation created by Patriccollu di Santa Maria è Sichè in November 2026.
+#
+# Translators:
+# * Patriccollu di Santa Maria è Sichè <Patriccollu [at] gmail [dot] com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-mac-integration lite in Corsican\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-06 07:41+0100\n"
+"PO-Revision-Date: 2026-11-15 19:12+0100\n"
+"Last-Translator: Patriccollu di Santa Maria è Sichè <https://github.com/Patriccollu/Lingua_Corsa-Infurmatica/#readme>\n"
+"Language-Team: \n"
+"Language: co\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "About %s"
+msgstr "Apprupositu di %s"
+
+msgid "Hide %s"
+msgstr "Piattà %s"
+
+msgid "Hide Others"
+msgstr "Piattà l’altri"
+
+msgid "Quit %s"
+msgstr "Esce da %s"
+
+msgid "Services"
+msgstr "Servizii"
+
+msgid "Show All"
+msgstr "Tuttu affissà"

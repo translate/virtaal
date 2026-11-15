@@ -428,7 +428,7 @@ msgstr "Diritta"
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "Save _As"
-msgstr "Arregistrà cù u nome"
+msgstr "Arregistrà cù u _nome"
 
 #. Seen in: font chooser
 msgid "Search font name"

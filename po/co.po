@@ -1,0 +1,2591 @@
+# Corsican localization file for Virtaal.
+#
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+#
+# Corsican translation created by Patriccollu di Santa Maria è Sichè in November 2026.
+#
+# Translators:
+# * Patriccollu di Santa Maria è Sichè <Patriccollu [at] gmail [dot] com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal in Corsican\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-10-31 14:30+0000\n"
+"PO-Revision-Date: 2026-11-15 18:59+0100\n"
+"Last-Translator: Patriccollu di Santa Maria è Sichè <https://github.com/Patriccollu/Lingua_Corsa-Infurmatica/#readme>\n"
+"Language-Team: \n"
+"Language: co\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+#: virtaal/views/widgets/aboutdialog.py
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: share/applications/io.github.translate.Virtaal.desktop.in
+msgid "Translation Tool"
+msgstr "Attrezzu di traduzzione"
+
+#. l10n: The summary should be less than 100 characters
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid ""
+"Translation tool to help a human translator translate files into other "
+"languages"
+msgstr "Attrezzu di traduzzione per aiutà un traduttore umanu à traduce schedarii in altre lingue"
+
+#: share/virtaal/virtaal.ui
+msgid "Add Missing Language"
+msgstr "Aghjunghje una lingua assente"
+
+#: share/virtaal/virtaal.ui
+msgid "Language name:"
+msgstr "Nome di a lingua :"
+
+#: share/virtaal/virtaal.ui
+msgid "ISO code:"
+msgstr "Codice ISO :"
+
+#: share/virtaal/virtaal.ui
+msgid "Plural expression:"
+msgstr "Spressione di forma plurale :"
+
+#: share/virtaal/virtaal.ui
+msgid "Number of plurals:"
+msgstr "Numeru di plurali :"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr "Secondu à u tipu di traduzzione, l’infurmazioni nant’à u plurale puderianu esse ozzionale."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Language Information</b>"
+msgstr "<b>Infurmazione nant’à a lingua</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "New Language Pair"
+msgstr "Paghju di lingue novu"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr "L’<b>origine</b> hè a lingua di principiu di a traduzzione, chjamata dinù a lingua di fonte.\n"
+"\n"
+"Per indettu, s’è vo traducite da l’inglese à u corsu, l’inglese hè a lingua d’origine o lingua di fonte."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Original</b>"
+msgstr "<b>Origine</b>"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr "A <b>traduzzione</b> hè a lingua finale di a traduzzione, chjamata dinù a lingua di destinazione.\n"
+"\n"
+"Per indettu, s’è vo traducite da l’inglese à u corsu, u francese hè a lingua di traduzzione o lingua di destinazione."
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translation</b>"
+msgstr "<b>Traduzzione</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "_Add Missing Language…"
+msgstr "_Aghjunghje una lingua assente…"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit Translation Language…"
+msgstr "_Mudificà a lingua di traduzzione…"
+
+#: share/virtaal/virtaal.ui
+msgid "_File"
+msgstr "_Schedariu"
+
+#: share/virtaal/virtaal.ui
+msgid "Re_vert to Saved"
+msgstr "Rivene à a _versione arregistrata"
+
+#: share/virtaal/virtaal.ui
+msgid "_Update from Template"
+msgstr "_Mette à livellu da u mudellu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Export"
+msgstr "_Espurtà"
+
+#: share/virtaal/virtaal.ui
+msgid "_Recent Files"
+msgstr "Schedarii _recente"
+
+#: share/virtaal/virtaal.ui
+msgid "_Edit"
+msgstr "_Mudificà"
+
+#: share/virtaal/virtaal.ui
+msgid "_Redo"
+msgstr "_Rifà"
+
+#: share/virtaal/virtaal.ui
+msgid "_Find…"
+msgstr "C_ircà…"
+
+#: share/virtaal/virtaal.ui
+msgid "Find Ne_xt"
+msgstr "Circà u _seguente"
+
+#: share/virtaal/virtaal.ui
+msgid "Find Pre_vious"
+msgstr "Circà u pr_ecedente"
+
+#. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
+#: share/virtaal/virtaal.ui
+msgid "Transfer From Source"
+msgstr "Trasferisce da a fonte"
+
+#. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
+#: share/virtaal/virtaal.ui
+msgid "_Insert Placeable"
+msgstr "_Framette un elementu piazzevule"
+
+#. l10n: More information about placeables: https://docs.translatehouse.org/projects/virtaal/en/latest/placeables.html
+#: share/virtaal/virtaal.ui
+msgid "P_revious Placeable"
+msgstr "Elementu pia_zzevule precedente"
+
+#: share/virtaal/virtaal.ui
+msgid "_Next Placeable"
+msgstr "Elementu piazze_vule seguente"
+
+#: share/virtaal/virtaal.ui
+msgid "_View"
+msgstr "_Affissà"
+
+#: share/virtaal/virtaal.ui
+msgid "_Full Screen"
+msgstr "_Screnu sanu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Quality Checks"
+msgstr "_Cuntrolli di qualità"
+
+#: share/virtaal/virtaal.ui
+msgid "_Navigation"
+msgstr "_Navigazione"
+
+#: share/virtaal/virtaal.ui
+msgid "P_age Up"
+msgstr "Pagina in_sù"
+
+#: share/virtaal/virtaal.ui
+msgid "_Page Down"
+msgstr "Pagina ing_hjò"
+
+#: share/virtaal/virtaal.ui
+msgid "_First Unit"
+msgstr "_Primu elementu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Last Unit"
+msgstr "_Ultimu elementu"
+
+#: share/virtaal/virtaal.ui
+msgid "Next Unit"
+msgstr "Elementu seguente"
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Advance State"
+msgstr "Prossimu elementu è avanzà u statu"
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Next Unit and Reverse State"
+msgstr "Prossimu elementu è invertisce u statu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Help"
+msgstr "A_iutu"
+
+#: share/virtaal/virtaal.ui
+msgid "_Online Help"
+msgstr "Aiutu in _linea"
+
+#: share/virtaal/virtaal.ui
+msgid "_Tutorial"
+msgstr "_Furmazione autonoma"
+
+#: share/virtaal/virtaal.ui
+msgid "_Localization Guide"
+msgstr "_Guida di lucalizazione"
+
+#: share/virtaal/virtaal.ui
+msgid "Report a _Bug"
+msgstr "_Signalà un prublema"
+
+#: share/virtaal/virtaal.ui
+msgid "Show Lo_gs"
+msgstr "Affissà i g_hjurnali"
+
+#: share/virtaal/virtaal.ui
+msgid "Keyboard _Shortcuts"
+msgstr "Accurtatoghji di _tastera"
+
+#: share/virtaal/virtaal.ui
+msgid "Virtaal Preferences"
+msgstr "Preferenze di Virtaal"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The name stored in the file header"
+msgstr "U nome piazzatu in l’intestatura di u schedariu"
+
+#. l10n: This label is for the name of the translator
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Name:"
+msgstr "Nome :"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "The e-mail address stored in the file header"
+msgstr "L’indirizzu elettronicu piazzatu in l’intestatura di u schedariu"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "E-mail address:"
+msgstr "Indirizzu elettronicu :"
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr "L’infurmazione nant’à a squadra piazzata in l’intestatura di u schedariu. Per indettu, un indirizzu elettronicu o un indirizzu web."
+
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
+msgid "Team:"
+msgstr "Squadra :"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Translator Information</b>"
+msgstr "<b>Infurmazione nant’à u traduttore</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Source text:"
+msgstr "Testu d’origine :"
+
+#: share/virtaal/virtaal.ui
+msgid "Target text:"
+msgstr "Testu di destinazione :"
+
+#: share/virtaal/virtaal.ui
+msgid "Use _Default Fonts"
+msgstr "Impiegà e grafie pre_definite"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Fonts</b>"
+msgstr "<b>Grafie</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Language:"
+msgstr "Lingua :"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Language</b>"
+msgstr "<b>Lingua</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: share/virtaal/virtaal.ui
+msgid "General"
+msgstr "Generale"
+
+#: share/virtaal/virtaal.ui
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr "L’oggetti piazzevule sò parti speziale di u testu chì ponu esse messi in evidenza autumaticamente è framessi facilmente in a traduzzione."
+
+#: share/virtaal/virtaal.ui
+msgid "Placeables"
+msgstr "Oggetti piazzevule"
+
+#: share/virtaal/virtaal.ui virtaal/views/widgets/shortcutswindow.py
+msgid "Plug-ins"
+msgstr "Moduli d’estensione"
+
+#: share/virtaal/virtaal.ui
+msgid "Properties"
+msgstr "Pruprietà"
+
+#: share/virtaal/virtaal.ui
+msgid "Saved file"
+msgstr "Schedariu arregistratu"
+
+#: share/virtaal/virtaal.ui
+msgid "With unsaved changes"
+msgstr "Cù cambiamenti non arregistrati"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Words</b> (total):"
+msgstr "<b>Parolle</b> (tutale) :"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Catene</b> (tutale) :"
+
+#: share/virtaal/virtaal.ui
+msgid "File type:"
+msgstr "Tipu di schedariu :"
+
+#: share/virtaal/virtaal.ui
+msgid "File size:"
+msgstr "Dimensione di schedariu :"
+
+#: share/virtaal/virtaal.ui
+msgid "Location:"
+msgstr "Locu :"
+
+#: share/virtaal/virtaal.ui
+msgid "Add Term"
+msgstr "Aghjunghje un termine"
+
+#. l10n: This label refers to comments about a new term that is added
+#: share/virtaal/virtaal.ui
+msgid "C_omments"
+msgstr "_Cummenti"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology _file:"
+msgstr "Schedariu di _terminolugia :"
+
+#: share/virtaal/virtaal.ui
+msgid "Terminology Files"
+msgstr "Schedarii di terminolugia"
+
+#: share/virtaal/virtaal.ui
+msgid "Add URL"
+msgstr "Aghjunghje un indirizzu web"
+
+#: share/virtaal/virtaal.ui
+msgid "URL:"
+msgstr "Indirizzu web :"
+
+#: share/virtaal/virtaal.ui
+msgid "Put queries in quotes"
+msgstr "Mette e richieste trà virgulette"
+
+#: share/virtaal/virtaal.ui
+msgid "<b>Options</b>"
+msgstr "<b>Ozzioni</b>"
+
+#: share/virtaal/virtaal.ui
+msgid "Web Look-ups"
+msgstr "Ricerche web"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages will not need to change this. Translate the word Open normally.
+#: share/virtaal/virtaal.ui
+msgid "<u>Open</u>"
+msgstr "<u>Apre</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Schedarii recente</big></b>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Tutorial</u>"
+msgstr "<u>Furmazione autonome</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Lista di l’accurtatoghji</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
+msgstr "https://docs.translatehouse.org/projects/virtaal/en/latest/features.html"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>More…</u>"
+msgstr "<u>Altri…</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Features</u>"
+msgstr "<u>Funzioni</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Per principià</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
+msgstr "https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Manual</u>"
+msgstr "<u>Manuale</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
+msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Guida di lucalizazione</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: share/virtaal/virtaal.ui virtaal/controllers/welcomescreencontroller.py
+msgid ""
+"https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
+msgstr "https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Feedback</u>"
+msgstr "<u>U vostru avisu</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "Report a bug on GitHub"
+msgstr "Signalà un prublema nant’à GitHub"
+
+#: share/virtaal/virtaal.ui
+msgid "<u>Report a Bug</u>"
+msgstr "<u>Signalà un prublema</u>"
+
+#: share/virtaal/virtaal.ui
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Assistenza</big></b>"
+
+#: devsupport/tmp_strings.py
+msgid "Base translation store"
+msgstr "Magazinu di traduzzione di basa"
+
+#: devsupport/tmp_strings.py
+msgid "Comma Separated Value"
+msgstr "Valori staccati da virgula"
+
+#: devsupport/tmp_strings.py
+msgid "Fluent file"
+msgstr "Schedariu Fluent"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext MO file"
+msgstr "Schedariu MO di Gettext"
+
+#: devsupport/tmp_strings.py
+msgid "Gettext PO file"
+msgstr "Schedariu PO di Gettext"
+
+#: devsupport/tmp_strings.py
+msgid "Haiku catkeys file"
+msgstr "Schedariu catkeys di Haiku"
+
+#: devsupport/tmp_strings.py
+msgid "Mozilla .lang"
+msgstr "Schedariu .lang di Mozilla"
+
+#: devsupport/tmp_strings.py
+msgid "OmegaT Glossary"
+msgstr "Schedariu Glossariu d’OmegaT"
+
+#: devsupport/tmp_strings.py
+msgid "Qt .qm file"
+msgstr "Schedariu .qm di Qt"
+
+#: devsupport/tmp_strings.py
+msgid "Qt Linguist Translation File"
+msgstr "Schedariu di traduzzione Qt Linguist"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Phrase Book"
+msgstr "Libru di frasa Qt"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX Glossary"
+msgstr "Glossariu TBX"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX Translation Memory"
+msgstr "Memoria di traduzzione TMX"
+
+#: devsupport/tmp_strings.py
+msgid "Trados Translation Memory"
+msgstr "Memoria di traduzzione Trados"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX Dictionary"
+msgstr "Dizziunariu UTX"
+
+#: devsupport/tmp_strings.py
+msgid "WiX Localization File"
+msgstr "Schedariu di lucalizazione WiX"
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Wordfast Translation Memory"
+msgstr "Memoria di traduzzione Wordfast"
+
+#: devsupport/tmp_strings.py
+msgid "XLIFF Translation File"
+msgstr "Schedariu di traduzzione XLIFF"
+
+#: devsupport/tmp_strings.py
+msgid "SDL XLIFF Translation File"
+msgstr "Schedariu di traduzzione SDLXLIFF"
+
+#: devsupport/tmp_strings.py
+msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
+msgstr "Assucià Virtaal à i tipi di schedariu di traduzzione (.po, .xlf, .tmx, …)"
+
+#: devsupport/tmp_strings.py
+msgid "Edit with Virtaal"
+msgstr "Mudificà cù Virtaal"
+
+#. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
+#: devsupport/tmp_strings.py
+msgid "Uninstall the older Virtaal 0.7 first"
+msgstr "Da prima, disinstallà u vechju Virtaal 0.7"
+
+#: devsupport/tmp_strings.py
+msgid "usage: "
+msgstr "aghjovu : "
+
+#: devsupport/tmp_strings.py
+msgid "positional arguments"
+msgstr "parametri pusiziunali"
+
+#: devsupport/tmp_strings.py
+msgid "options"
+msgstr "ozzioni"
+
+#: devsupport/tmp_strings.py
+msgid "show this help message and exit"
+msgstr "affissà stu messaghju d’aiutu è esce"
+
+#: devsupport/tmp_strings.py
+msgid "show program's version number and exit"
+msgstr "affissà u numeru di versione di u prugramma è esce"
+
+#. l10n: The name should be less than 30 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Virtaal Translation Tool"
+msgstr "Attrezzu di traduzzione Virtaal"
+
+#. l10n: Paragraphs should be less than 600 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr "Virtaal hè un prugramma per fà a traduzzione. U so scopu hè d’offre una cumbinazione deliziosa di simplicità è di putenza. S'integra cù risorse in linea selezziunate per rende a traduzzione piacevule, aiutendu dinù à amendanne a qualità."
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr "U so puntu fucale iniziale hè a traduzzione di prugrammi (lucalizazione o l10n), ma à dilla franca, hè cuncipitu per esse ghjuvevule cum'è un attrezzu generale per a Traduzzione Assistata da l’Urdinatore (TAO in francese è CAT in inglese)."
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Some features:"
+msgstr "Qualchì funzione :"
+
+#. l10n: These list items should be less than 100 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Translation reuse (translation memory)"
+msgstr "Riadopru di traduzzione (memoria di traduzzione)"
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+#: virtaal/views/widgets/welcomescreen.py
+msgid "Terminology assistance"
+msgstr "Assistenza per a terminolugia"
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "AutoCompletor and AutoCorrector"
+msgstr "Cumpienda è currettore autumatichi"
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Quality checks with customization for many languages"
+msgstr "Persunalizazione di i cuntrolli di qualità per parechje lingue"
+
+#. l10n: Captions should be shorter than 50 characters
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Easy access to recent files and documentation"
+msgstr "Accessu faciule à i schedarii è a documentazione recenti"
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Recognized elements don't need to be typed"
+msgstr "L’elementi ricunnisciuti ùn richiedenu micca d’esse stampittati"
+
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Quality checks while you type"
+msgstr "Cuntrolli di qualità durante a stampittata"
+
+#. l10n: The developer/organisation name "Translate", not the verb "to translate"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Translate"
+msgstr "Traduce"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX"
+msgstr "TMX"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Translation Memory eXchange"
+msgstr "Scambiu di memoria di traduzzione"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX"
+msgstr "TBX"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "TermBase eXchange"
+msgstr "Scambiu di dati di terminolugia"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Message File"
+msgstr "Schedariu di messaghju Qt"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX"
+msgstr "UTX"
+
+#: share/mime/packages/virtaal-mimetype.xml.in
+msgid "Universal Terminology eXchange"
+msgstr "Scambiu di terminolugia universale"
+
+#: virtaal/cli.py
+msgid "LOG"
+msgstr "GHJURNALE"
+
+#: virtaal/cli.py
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "attivà l’arregistramentu di i messaghji, piazzendu u risultatu in u nome di schedariu pruvistu."
+
+#: virtaal/cli.py
+msgid "CONFIG"
+msgstr "CUNFIGURAZIONE"
+
+#: virtaal/cli.py
+msgid "use the configuration file given by the supplied filename."
+msgstr "impiegà u schedariu di cunfigurazione indicatu da u nome di schedariu pruvistu."
+
+#: virtaal/cli.py
+msgid "enable debugging features"
+msgstr "attivà e funzioni di spannatura"
+
+#: virtaal/cli.py
+msgid "LANG"
+msgstr "LINGUA"
+
+#: virtaal/cli.py
+msgid ""
+"override the UI language for this run (e.g. \"fr\"; \"en\" for the "
+"untranslated source strings; \"system\" for the OS's own default), without "
+"changing the saved Preferences setting"
+msgstr "rimpiazzà a lingua di l’interfaccia grafica per stu lanciu (per indettu « fr » ; « en » per e catene di fonte micca tradutte ; « system » per u valore predefinitu di u sistema), senza cambià u parametru arregistratu in e Preferenze"
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open log file '%(filename)s'"
+msgstr "Ùn si pò micca apre u ghjurnale di messaghji « %(filename)s »"
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Ùn si pò micca leghje u schedariu di cunfigurazione « %(filename)s »"
+
+#: virtaal/cli.py
+#, python-format
+msgid "No translation found for language '%(lang)s'"
+msgstr "Ùn si trova alcuna traduzzione per a lingua « %(lang)s »"
+
+#: virtaal/cli.py
+#, python-format
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Ùn si pò micca apre u schedariu di prufilu « %(filename)s »"
+
+#: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
+msgid "Fuzzy"
+msgstr "Dubbitosu"
+
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
+msgid "Untranslated"
+msgstr "Micca traduttu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Accelerators"
+msgstr "Accurtatoghji di tastera"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Acronyms"
+msgstr "Acronimi"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Blank"
+msgstr "Biancu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Brackets"
+msgstr "Ancini"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Compendium conflict"
+msgstr "Cunflittu di cumpendiu"
+
+#. l10n: Name of a quality check. Your names go in the "translator-credits" message, not here
+#: virtaal/controllers/checkscontroller.py
+msgid "Translator credits"
+msgstr "Lista di i traduttori"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Double quotes"
+msgstr "Virgulette doppie"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Double spaces"
+msgstr "Spazii in doppiu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Repeated word"
+msgstr "Parolla ripituta"
+
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
+msgid "E-mail"
+msgstr "eMail"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Ending punctuation"
+msgstr "Puntuazione finale"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Ending whitespace"
+msgstr "Spaziu finale"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Escapes"
+msgstr "Scappamenti"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "File paths"
+msgstr "Chjassi di schedariu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Functions"
+msgstr "Funzioni"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "GConf values"
+msgstr "Valori GConf"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Old KDE comment"
+msgstr "Cummentu vechju KDE"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Long"
+msgstr "Longu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Must translate words"
+msgstr "Parolle chì devenu esse tradutte"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Newlines"
+msgstr "Salti di linea"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Number of plurals"
+msgstr "Numeru di plurali"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Don't translate words"
+msgstr "Parolle chì ùn devenu esse tradutte"
+
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
+msgid "Numbers"
+msgstr "Numeri"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Options"
+msgstr "Ozzioni"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "printf()"
+msgstr "printf()"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Punctuation spacing"
+msgstr "Spaziamentu di a puntuazione"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Pure punctuation"
+msgstr "Puntuazione simplice"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Number of sentences"
+msgstr "Numeru di frase"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Short"
+msgstr "Corta"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Simple capitalization"
+msgstr "Usu simplice di e maiuscule"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Simple plural(s)"
+msgstr "Plurali simplice"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Single quotes"
+msgstr "Virgulette simplice"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Spelling"
+msgstr "Ortugrafia"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Starting capitalization"
+msgstr "Maiuscule iniziale"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Starting punctuation"
+msgstr "Puntuazione di principiu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Starting whitespace"
+msgstr "Spaziu di principiu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Tabs"
+msgstr "Tabulazioni"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Unchanged"
+msgstr "Senza cambiamentu"
+
+#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/placeablescontroller.py
+msgid "URLs"
+msgstr "URL"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Valid characters"
+msgstr "Caratteri accettevule"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Placeholders"
+msgstr "Campi di sustituzione"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "XML tags"
+msgstr "Etichette XML"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Default"
+msgstr "Predefinitu"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "LibreOffice"
+msgstr "LibreOffice"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "KDE"
+msgstr "KDE"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Qt"
+msgstr "Qt"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "GNOME"
+msgstr "GNOME"
+
+#: virtaal/controllers/checkscontroller.py
+msgid "Drupal"
+msgstr "Drupal"
+
+#: virtaal/controllers/maincontroller.py
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr "Avete sceltu d’apre u schedariu apertu attualmente. Vulete caricà torna quellu schedariu ?"
+
+#: virtaal/controllers/maincontroller.py virtaal/main.py
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Loading '%s'…"
+msgstr "Caricamentu di « %s »…"
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"Could not open file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr "Impussibule d’apre u schedariu\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pruvate d’apre un schedariu sfarente."
+
+#: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
+msgid "Save"
+msgstr "Arregistrà"
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"%(filename)s is read-only.\n"
+"\n"
+"Try saving to a different location."
+msgstr "%(filename)s hè in lettura sola.\n"
+"\n"
+"Pruvate d’arregistrà in un locu sfarente."
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr "Impussibule d’arregistrà u schedariu\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pruvate d’arregistrà in un locu sfarente."
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr "Impussibule d’arregistrà u schedariu\n"
+"\n"
+"%(error_message)s"
+
+#: virtaal/controllers/maincontroller.py
+msgid "Can only export Gettext PO files"
+msgstr "Si pò espurtà solu i schedarii PO di Gettext"
+
+#: virtaal/controllers/maincontroller.py
+msgid "Export"
+msgstr "Espurtà"
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr "Impussibule d’espurtà u schedariu\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pruvate d’arregistrà in un locu sfarente."
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr "Impussibule d’espurtà u schedariu\n"
+"\n"
+"%(error_message)s"
+
+#: virtaal/controllers/maincontroller.py
+msgid "Revert to Saved"
+msgstr "Rivene à a versione arregistrata"
+
+#: virtaal/controllers/maincontroller.py
+msgid "Revert to the last saved copy and lose all changes?"
+msgstr "Rivene à l’ultima copia arregistrata è perde tutti i cambiamenti ?"
+
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: virtaal/controllers/placeablescontroller.py
+msgid "CamelCase"
+msgstr "CassaCamellu"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid ""
+"Words with internal capitalization, such as some brand names and WikiWords"
+msgstr "Parolle cù maiuscule interne, cum’è certi nomi di marca o di parolle Wiki"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Capitals"
+msgstr "Maiuscule"
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: virtaal/controllers/placeablescontroller.py
+msgid "Words containing uppercase letters only"
+msgstr "Parolle chì cuntenenu solu lettere maiuscule"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Command Line Options"
+msgstr "Ozzioni di linea di cumanda"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Application command line options, such as --help, -h and -I"
+msgstr "Ozzioni di linea di cumanda d’appiecazioni, cum’è --help, -h è -I"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "E-mail addresses"
+msgstr "Indirizzi elettronichi"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "File Names"
+msgstr "Nomi di schedariu"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Paths referring to file locations"
+msgstr "Chjassi chì si riferiscenu à e piazze di schedariu"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders (printf)"
+msgstr "Campi di sustituzione (printf)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders used in \"printf\" strings"
+msgstr "Campi di sustituzione impiegati in e catene « printf »"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders (Python)"
+msgstr "Campi di sustituzione (Python)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders in Python strings"
+msgstr "Campi di sustituzione in e catene Python"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders (Java)"
+msgstr "Campi di sustituzione (Java)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders in Java strings"
+msgstr "Campi di sustituzione in e catene Java"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders (Qt)"
+msgstr "Campi di sustituzione (Qt)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders in Qt strings"
+msgstr "Campi di sustituzione in e catene Qt"
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: virtaal/controllers/placeablescontroller.py
+msgid "Integer numbers and decimal fractions"
+msgstr "Numeri interi è frazzioni decimale"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Punctuation"
+msgstr "Puntuazione"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Symbols and less frequently used punctuation marks"
+msgstr "Simbuli è segni di puntuazione pocu impiegati"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "URLs, hostnames and IP addresses"
+msgstr "Indirizzi web, nomi d’ospite è indirizzi IP"
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: virtaal/controllers/placeablescontroller.py
+msgid "XML Entities"
+msgstr "Entità XML"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Entity references, such as &amp; and &#169;"
+msgstr "Referenze d’entità, cum’è &amp; è &#169;"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "XML Tags"
+msgstr "Etichette XML"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "XML tags, such as <b> and </i>"
+msgstr "Etichette XML, cum’è <b> è </i>"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Spaces"
+msgstr "Spazii"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Double spaces and spaces in unexpected positions"
+msgstr "Spazii in doppiu è spazii in pusizioni impreviste"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "\"alt\" Attributes"
+msgstr "Attributi « alt »"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "Elementu piazzevule per l’attributi « alt » (tale chì trovi in HTML)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders (Drupal)"
+msgstr "Campi di sustituzione (Drupal)"
+
+#: virtaal/controllers/placeablescontroller.py
+msgid "Placeholders in Drupal strings"
+msgstr "Campi di sustituzione in e catene Drupal"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: virtaal/controllers/storecontroller.py
+msgid "File Updated"
+msgstr "Schedariu mudificatu"
+
+#: virtaal/controllers/unitcontroller.py
+msgid "Needs work"
+msgstr "À rivede"
+
+#: virtaal/controllers/unitcontroller.py
+msgid "Rejected"
+msgstr "Righjittatu"
+
+#: virtaal/controllers/unitcontroller.py
+msgid "Needs review"
+msgstr "Richiede una rivista"
+
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
+msgid "Translated"
+msgstr "Traduttu"
+
+#: virtaal/controllers/unitcontroller.py
+msgid "Reviewed"
+msgstr "Rivistu"
+
+#: virtaal/models/storemodel.py
+msgid ""
+"The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
+"Open it with File > Open or from your file manager."
+msgstr "U schedariu ùn esiste micca, o Virtaal ùn pò tuccallu in u so ambiente isulatu Flatpak. Apritelu cù Schedariu > Apre o da u vostru ghjestiunariu di schedarii."
+
+#: virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr "U schedariu ùn esiste micca."
+
+#: virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr "Ùn hè micca un schedariu accettevule."
+
+#. l10n: Context: show every unit, not only the matching ones
+#: virtaal/modes/defaultmode.py virtaal/views/modeview.py
+msgid "All"
+msgstr "Tutti"
+
+#: virtaal/modes/qualitycheckmode.py
+msgid "Quality Checks"
+msgstr "Cuntrolli di qualità"
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: virtaal/modes/qualitycheckmode.py
+msgid "Select Checks"
+msgstr "Selezziunà i cuntrolli"
+
+#. l10n: This refers to quality checks
+#: virtaal/modes/qualitycheckmode.py
+msgid "All Checks"
+msgstr "Tutti i cuntrolli"
+
+#: virtaal/modes/quicktransmode.py
+msgid "Incomplete"
+msgstr "Incompletu"
+
+#: virtaal/modes/searchmode.py virtaal/views/widgets/shortcutswindow.py
+msgid "Search"
+msgstr "Ricercà"
+
+#: virtaal/modes/searchmode.py
+msgid "_Case sensitive"
+msgstr "Sensibile à a _cassa"
+
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: virtaal/modes/searchmode.py
+msgid "_Regular expression"
+msgstr "Espressione _regulare"
+
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consider translating this as
+#. "Replacement"
+#: virtaal/modes/searchmode.py
+msgid "Replace with"
+msgstr "Rimpiazzà cù"
+
+#. l10n: Button text
+#: virtaal/modes/searchmode.py
+msgid "Replace"
+msgstr "Rimpiazzà"
+
+#. l10n: Check box
+#: virtaal/modes/searchmode.py
+msgid "Replace _All"
+msgstr "_Tuttu rimpiazzà"
+
+#: virtaal/modes/workflowmode.py
+msgid "Workflow"
+msgstr "Flussu di travagliu"
+
+#. l10n: This is the button where the user can select units by workflow state
+#: virtaal/modes/workflowmode.py
+msgid "Select States"
+msgstr "Selezziunà i stati"
+
+#. l10n: This refers to workflow states
+#: virtaal/modes/workflowmode.py
+msgid "All States"
+msgstr "Tutti i stati"
+
+#: virtaal/plugins/autocompletor.py
+msgid "Automatically complete long words while you type"
+msgstr "Compie autumaticamente e parolle longhe durante a stampittata"
+
+#: virtaal/plugins/autocompletor.py
+msgid "AutoCompletor"
+msgstr "Cumpienda autumatica"
+
+#: virtaal/plugins/autocorrector.py
+msgid "Automatically correct text while you type"
+msgstr "Currege autumaticamente u testu durante a stampittata"
+
+#: virtaal/plugins/autocorrector.py
+msgid "AutoCorrector"
+msgstr "Currettore autumaticu"
+
+#: virtaal/plugins/lookup/__init__.py
+msgid "Perform look-ups on selected text"
+msgstr "Effettuà ricerche nant’à u testu selezziunatu"
+
+#: virtaal/plugins/lookup/__init__.py
+msgid "External Look-up"
+msgstr "Ricerca esterna"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: virtaal/plugins/lookup/lookupview.py
+msgid "Select Look-up Services"
+msgstr "Selezziunà i servizii di ricerca"
+
+#: virtaal/plugins/lookup/lookupview.py
+msgid "Select the services that should be used to perform look-ups"
+msgstr "Selezziunà i servizii chì devenu esse impiegati per effettuà e ricerche"
+
+#: virtaal/plugins/lookup/lookupview.py
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "Circà « %(selection)s »"
+
+#. l10n: plugin name
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Thesaurus"
+msgstr "Dizziunariu di i sinonimi"
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Look up synonyms for the selected word"
+msgstr "Circà i sinonimi per a parolla selezziunata"
+
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Loading thesaurus…"
+msgstr "Caricamentu di u dizziunariu di i sinonimi…"
+
+#. l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Checking for thesaurus…"
+msgstr "Cuntrollu di u dizziunariu di i sinonimi…"
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Downloading %(language)s thesaurus…"
+msgstr "Scaricamentu di u dizziunariu di i sinonimi per %(language)s…"
+
+#. l10n: %(language)s is a language name, e.g. "Afrikaans"
+#: virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Download %(language)s thesaurus…"
+msgstr "Scaricà u dizziunariu di i sinonimi per %(language)s…"
+
+#. l10n: The menu entry offering synonyms for the selected word.
+#: virtaal/plugins/lookup/models/thesaurus.py
+msgid "Synonyms"
+msgstr "Sinonimi"
+
+#. l10n: plugin name
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Web Look-up"
+msgstr "Ricerca web"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Look-up the selected text on a web site"
+msgstr "Ricerca di u testu selezziunatu nant’à un situ web"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/plugins/tm/models/google_translate.py
+msgid "Google"
+msgstr "Google"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Wiktionary"
+msgstr "Wiktionary"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Bing"
+msgstr "Bing"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Yahoo"
+msgstr "Yahoo"
+
+#. l10n: Whether this look-up is offered at all
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
+msgid "Enabled"
+msgstr "Attivata"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+#: virtaal/views/widgets/selectview.py
+msgid "Name"
+msgstr "Nome"
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "URL"
+msgstr "Indirizzu web"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Quote Query"
+msgstr "Richiesta cù virgulette"
+
+#. l10n: "virtaal-" is a literal prefix - leave it untranslated
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Names starting with \"virtaal-\" are reserved."
+msgstr "I nomi principiendu da « virtaal- » sò riservati."
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "A web look-up with this name already exists."
+msgstr "Una ricerca web cù stu nome esiste dighjà."
+
+#: virtaal/plugins/migration.py
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr "Trasferisce i parametri da KBabel, Lokalize è/o Poedit versu Virtaal."
+
+#: virtaal/plugins/migration.py
+msgid "Migration Assistant"
+msgstr "Assistente di trasferimentu"
+
+#: virtaal/plugins/migration.py
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr "Vulete chì Virtaal provi d’impurtà i parametri è i dati da d’altre appiecazioni ?"
+
+#: virtaal/plugins/migration.py
+msgid "Import data from other applications?"
+msgstr "Impurtà i dati da d’altre appiecazioni ?"
+
+#: virtaal/plugins/migration.py
+msgid "Migration was successfully completed"
+msgstr "U trasferimentu hè compiu currettamente"
+
+#: virtaal/plugins/migration.py
+msgid "The following items were migrated:"
+msgstr "Quelli elementi sò stati trasferiti :"
+
+#: virtaal/plugins/migration.py
+msgid "Migration completed"
+msgstr "Trasferimentu compiu"
+
+#: virtaal/plugins/migration.py
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "Virtaal ùn hà micca pussutu trasferisce parametri o dati"
+
+#: virtaal/plugins/migration.py
+msgid "Nothing migrated"
+msgstr "Nunda trasferitu"
+
+#: virtaal/plugins/migration.py
+msgid "Poedit settings"
+msgstr "Parametri Poedit"
+
+#: virtaal/plugins/migration.py
+msgid "Lokalize settings"
+msgstr "Parametri Lokalize"
+
+#: virtaal/plugins/migration.py
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Memoria di traduzzione di Lokalize : %(database_name)s"
+
+#: virtaal/plugins/spellchecker.py
+msgid "Spell Checker"
+msgstr "Cuntrullore d’ortugrafia"
+
+#: virtaal/plugins/spellchecker.py
+msgid "Check spelling and provide suggestions"
+msgstr "Cuntrollà l’ortugrafia è furnisce suggestioni"
+
+#: virtaal/plugins/terminology/__init__.py
+msgid "Terminology Help"
+msgstr "Aiutu per a terminolugia"
+
+#: virtaal/plugins/terminology/__init__.py
+msgid "Terminology suggestions"
+msgstr "Suggestioni di terminolugia"
+
+#: virtaal/plugins/terminology/models/autoterm.py
+msgid "Localization Terminology"
+msgstr "Terminolugia di lucalizazione"
+
+#: virtaal/plugins/terminology/models/autoterm.py
+msgid "Selected localization terminology"
+msgstr "Terminolugia di lucalizazione selezziunata"
+
+#: virtaal/plugins/terminology/models/localfile/__init__.py
+msgid "Local Files"
+msgstr "Schedarii lucali"
+
+#: virtaal/plugins/terminology/models/localfile/__init__.py
+msgid "Local terminology files"
+msgstr "Schedarii lucali di terminolugia"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Terminology _Files…"
+msgstr "_Schedarii di terminolugia…"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Add _Term…"
+msgstr "_Aghjunghje un termine…"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid "Add Term \"%(selection)s\"…"
+msgstr "Aghjunghje u termine « %(selection)s »…"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "File"
+msgstr "Schedariu"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Extendable"
+msgstr "Estensibile"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Add Files"
+msgstr "Aghjunghje schedarii"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
+msgid "All Supported Files"
+msgstr "Tutti i schedarii accettati"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#: virtaal/views/mainview.py
+msgid "All Files"
+msgstr "Tutti i schedarii"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr "Impussibule di caricà %(filename)s :\n"
+"\n"
+"%(errormsg)s"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Error opening file"
+msgstr "Sbagliu à l’apertura di u schedariu"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr "Termine di _fonte - %(langname)s"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr "Termine di _destinazione - %(langname)s"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+msgid "Identical entry already exists."
+msgstr "Un elementu uguale esiste dighjà."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: virtaal/plugins/terminology/models/localfile/localfileview.py
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Traduzzioni esistente : %(translations)s"
+
+#: virtaal/plugins/terminology/models/pontoon.py
+msgid "Mozilla Pontoon"
+msgstr "Mozilla Pontoon"
+
+#: virtaal/plugins/terminology/models/pontoon.py
+msgid "Community localization terminology from Mozilla Pontoon"
+msgstr "Terminolugia di lucalizazione di a cumunità da Mozilla Pontoon"
+
+#: virtaal/plugins/terminology/termview.py
+msgid "Select Terminology Sources"
+msgstr "Selezziunà e fonti di terminolugia"
+
+#: virtaal/plugins/terminology/termview.py
+msgid "Select the sources of terminology suggestions"
+msgstr "Selezziunà e fonti di e suggestioni di terminolugia"
+
+#: virtaal/plugins/tm/__init__.py
+msgid "Translation Memory"
+msgstr "Memoria di traduzzione"
+
+#: virtaal/plugins/tm/__init__.py
+msgid "Translation memory suggestions"
+msgstr "Suggestioni di memoria di traduzzione"
+
+#. l10n: Try to keep this as short as possible.
+#: virtaal/plugins/tm/models/amagama.py
+msgid "Amagama"
+msgstr "Omonimu"
+
+#: virtaal/plugins/tm/models/amagama.py
+msgid "Previous translations for Free and Open Source Software"
+msgstr "Traduzzioni precedente per i prugrammi liberi è di fonte aperta"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Apertium"
+msgstr "Apertium"
+
+#: virtaal/plugins/tm/models/apertium.py
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Traduzzioni autumatiche non verificate da Apertium"
+
+#: virtaal/plugins/tm/models/currentfile.py
+msgid "Current File"
+msgstr "Schedariu attuale"
+
+#: virtaal/plugins/tm/models/currentfile.py
+msgid "Translated units from the currently open file"
+msgstr "Elementi tradutti in u schedariu apertu attualmente"
+
+#. l10n: Try to keep this as short as possible.
+#: virtaal/plugins/tm/models/currentfile.py
+msgid "This file"
+msgstr "Quellu schedariu"
+
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: virtaal/plugins/tm/models/google_translate.py
+msgid "Google Translate"
+msgstr "Google Translate"
+
+#: virtaal/plugins/tm/models/google_translate.py
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr "Traduzzioni autumatiche non verificate da u serviziu di traduzzione di Google"
+
+#: virtaal/plugins/tm/models/localtm.py
+msgid "Local Translation Memory"
+msgstr "Memoria lucale di traduzzione"
+
+#: virtaal/plugins/tm/models/localtm.py
+msgid "Previous translations you have made"
+msgstr "E traduzzioni precedente chì vo avete fatte"
+
+#. l10n: Try to keep this as short as possible.
+#: virtaal/plugins/tm/models/localtm.py
+msgid "Local TM"
+msgstr "MdT lucale"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: virtaal/plugins/tm/models/moses.py
+msgid "Moses"
+msgstr "Moses"
+
+#: virtaal/plugins/tm/models/moses.py
+msgid "Unreviewed machine translations from a Moses server"
+msgstr "Traduzzioni autumatiche non verificate da un servitore Moses"
+
+#: virtaal/plugins/tm/models/remotetm.py
+msgid "Remote Server"
+msgstr "Servitore alluntanatu"
+
+#: virtaal/plugins/tm/models/remotetm.py
+msgid "A translation memory server"
+msgstr "Un servitore di memoria di traduzzione"
+
+#. l10n: Try to keep this as short as possible.
+#: virtaal/plugins/tm/models/remotetm.py
+msgid "Remote TM"
+msgstr "MdT alluntanata"
+
+#: virtaal/plugins/tm/tmview.py
+msgid "Translation _Suggestions"
+msgstr "Sugestioni di _traduzzione"
+
+#: virtaal/plugins/tm/tmview.py
+msgid "Suggestions for This _Unit"
+msgstr "Sugestioni per quell’_elementu"
+
+#: virtaal/plugins/tm/tmview.py
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: virtaal/plugins/tm/tmview.py
+msgid "Select sources of Translation Memory"
+msgstr "Selezziunà e fonti di a memoria di traduzzione"
+
+#: virtaal/plugins/tm/tmview.py
+msgid "Select the sources that should be queried for translation memory"
+msgstr "Selezziunà e fonti chì devenu esse interrugate per a memoria di traduzzione"
+
+#. l10n: match quality column label
+#: virtaal/plugins/tm/tmwidgets.py
+msgid "%"
+msgstr "%"
+
+#: virtaal/plugins/tm/tmwidgets.py
+msgid "Matches"
+msgstr "Currispundenze"
+
+#: virtaal/plugins/tm/tmwidgets.py
+msgid "TM Source"
+msgstr "Fonte di MdT"
+
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: virtaal/plugins/tm/tmwidgets.py
+msgid "?"
+msgstr "?"
+
+#: virtaal/support/crash_dialog.py
+msgid "Virtaal hit an unexpected error"
+msgstr "Virtaal hà scontru un sbagliu inaspettatu"
+
+#: virtaal/support/crash_dialog.py
+msgid ""
+"This might not affect your current work, but if it keeps happening, "
+"reporting it helps get it fixed."
+msgstr "Ùn duveria micca affettà u vostru travagliu attuale, ma s’ellu accade torna, u so signalamentu aiuterà à curregelu."
+
+#: virtaal/support/crash_dialog.py
+msgid "Details"
+msgstr "Detaglii"
+
+#: virtaal/support/crash_dialog.py
+msgid "Close"
+msgstr "Chjode"
+
+#: virtaal/support/crash_dialog.py
+msgid "Report This Bug…"
+msgstr "Signalà quellu prublema…"
+
+#: virtaal/support/tutorial.py
+msgid ""
+"Welcome to the Virtaal tutorial. You can do the first translation by typing "
+"just the translation for \"Welcome\". Then press Enter."
+msgstr "Benvenuta in a furmazione autonome di Virtaal. Pudete fà a prima traduzzione stampittendu solu a traduzzione per « Welcome ». Eppò appughjà nant’à Entre."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"Translate this slightly longer message. If a spell checker is available, "
+"spelling mistakes are indicated similarly to word processors. Make sure the "
+"correct language is selected in the bottom right of the window."
+msgstr "Traduce stu messaghju appena più longu. S’è un cuntrullore d’ortugrafia hè dispunibule, i sbaglii d’ortugrafia sò affissati di a listessa manera chè in i trattamenti di testu. Assicuratevi chì a lingua apprupriata hè selezziunata in bassu è à diritta di a finestra."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This tutorial will show you some of the things you might want to pay "
+"attention to while translating software programs. It will help you to avoid "
+"some problems and produce translations of a higher quality."
+msgstr "Sta furmazione autonome hà da mustravvi parechji punti chì ci vole à cunnosce quandu si traduce i prugrammi infurmatichi. Vi aiuterà à scartà certi prublemi è à pruduce traduzzioni di qualità superiore."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"Some of the advice will only be relevant to some languages. For example, if "
+"your language does not use the Latin alphabet, some of the advice might not "
+"be relevant to translation in your language. For many languages there are "
+"established translation rules."
+msgstr "Ceri cunsiglii s’appiecanu solu à certe lingue. Per indettu, s’è a vostra lingua ùn impiegheghja micca u santacroce latinu, certi cunsiglii puderianu ùn esse apprupriati à a traduzzione in a vostra lingua. Per parechje lingue, ci sò regule di traduzzione chì sò stabilite."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"The correct use of capital letters are important in many languages. "
+"Translate this message with careful attention to write \"Virtaal\" with a "
+"capital letter."
+msgstr "L’impiegu currettu di e lettere maiuscule hè impurtante in parechje lingue. Fate casu, quandu vo traducite stu messaghju, à scrive « Virtaal » cù una lettera maiuscula."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In this message the English uses a capital letter for almost every word. "
+"Almost no other language uses this style. Unless your language definitely "
+"needs to follow the English style (also called Title Case), translate this "
+"by following the normal capitalisation rules for your language. If your "
+"language does not use capital letters, simply translate it normally."
+msgstr "In stu messaghju, a lingua inglese impiegheghja una lettera maiuscula per guasi ogni parolla. Ci hè guasi nisuna altra lingua chì impiegheghja stu stilu. For chè a vostra lingua richiede assulutamente di seguità u stilu inglese (chjamatu dinù Cassa Titulu), traducite què seguitendu e regule nurmale d’impiegu di e lettere maiuscule di a vostra lingua. S’è a vostra lingua ùn impiegheghja micca e lettere maiuscule, traducitelu puru nurmalmente."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"If you translated the previous message you should see a window with that "
+"translation and a percentage indicating how similar the source strings "
+"(English) are. It is Virtaal's translation memory at work. Press Ctrl+1 to "
+"copy the suggested translation to the current translation. Remember to "
+"always review suggestions before you use them."
+msgstr "S’è vo avete traduttu u messaghju precedente, duveriate vede una finestra cù quella traduzzione è un percentuale affissendu quantu sò simile e catene d’origine (in inglese). Ghjè u funziunamentu di a memoria di traduzzione di Virtaal. Appughjate nant’à Ctrl+1 per cupià a traduzzione suggerita versu a traduzzione attuale. Arricurdatevi d’esaminà sempre e suggestioni prima d’impiegalle."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This is a simple message that starts with a capital letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a capital letter as well."
+msgstr "Eccu un messaghju simplice chì principieghja cù una lettera maiuscula in inglese. S’è a vostra lingua impiegheghja e lettere maiuscule, ci vole à principià dinù a vostra traduzzione cù una lettera maiuscula."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This is a simple message that starts with a lower case letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a lower case letter as well."
+msgstr "Eccu un messaghju simplice chì principieghja cù una lettera minuscula in inglese. S’è a vostra lingua impiegheghja e lettere maiuscule, ci vole à principià dinù a vostra traduzzione cù una lettera minuscula."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message is a question. Make sure that you use the correct question mark "
+"in your translation as well."
+msgstr "Stu messaghju hè una dumanda. Assicuratevi chì vo impiegate dinù u puntu d’interrugazione apprupriatu in a vostra traduzzione."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message is a label as part of a form. Note how it ends with a colon (:)."
+msgstr "Stu messaghju hè un’etichetta chì si trova dentru un furmulariu. Mirate cum’ellu si compie da i dui punti (:)."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"If the source will remain mostly or completely unchanged it is convenient to "
+"copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
+"translate, so just press Ctrl+Shift+V and make corrections if necessary."
+msgstr "S’è a fonte hà da esse impiegata, in parte o tutta, serà praticu di cupià a catena sana d’origine cù Ctrl+Maiusc+V. Quì, ci hè guasi nunda à traduce, dunque appughjate nant’à Ctrl+Maiusc+V è fate puru e currezzioni richieste."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"Placeables are special parts of the text, like the © symbol, that can be "
+"automatically highlighted and easily inserted into the translation. Select "
+"the © with Alt+Right and transfer it to the target with Alt+Down."
+msgstr "L’oggetti piazzevule sò parti speziale di u testu, cum’è u simbulu ©, chì ponu esse messi in evidenza autumaticamente è framessi facilmente in a traduzzione. Selezziunate u © cù Alt+Diritta è trasferitelu versu a destinazione cù Alt+Ghjò."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"Recognised placeables include special symbols, numbers, variable "
+"placeholders, acronyms and many more. Move to each one with Alt+Right and "
+"transfer it down with Alt+Down."
+msgstr "L’oggetti piazzevule ricunnisciuti sò simbuli speziali, numeri, campi di sustituzione variabili, acronimi è ancu di più. Dispiazzatevi d’unu à l’altru cù Alt+Diritta è trasferitelu inghjò cù Alt+Ghjò."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message ends with ... to indicate that clicking on this text will cause "
+"a dialogue to appear instead of just performing an action. Be sure to end "
+"your message with ... as well."
+msgstr "Stu messaghju si compie da trè punti (...) per indicà chì un cliccu nant’à stu testu affisserà un dialogu invece di lancià un’azzione. Assicuratevi di compie u vostru messaghju da trè punti … dinù."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message ends with a special character that looks like three dots. "
+"Select the special character with Alt+Right and copy it to your translation "
+"with Alt+Down. Don't just type three dot characters."
+msgstr "Stu messaghju si compie da un caratteru speziale chì s’assumiglia à trè punti. Selezziunate u caratteru speziale cù Alt+Diritta è cupiatelu versu a traduzzione cù Alt+Ghjò. Ùn stampittate micca i trè caratteri di u puntu."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message has two sentences. Translate them and make sure you start each "
+"with a capital letter if your language uses them, and end each sentence "
+"properly."
+msgstr "Stu schedariu cuntene dui frase. Traducitele è assicuratevi chì ogni frasa principeghja cù una lettera maiuscula, s’è a vostra lingua l’impiegheghja, è ch’ella si compie currettamente."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message marks the word \"now\" as important with bold tags. These tags "
+"can be transferred from the source with Alt+Right and Alt+Down. Leave the "
+"<b> and </b> in the translation around the part that corresponds to \"now\". "
+"Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
+msgstr "Stu messaghju marca a parolla « now » cum’è essendu impurtante via l’etichette di grafia grassa. St’etichette ponu esse trasferite da a fonte versu a destinazione via Alt+Diritta è Alt+Ghjò. Cunservate u <b> è u </b> in a traduzzione intornu à a parte chì currisponde à « now ». Sapene di più nant’à u linguaghju d’etichette XML quì : https://en.wikipedia.org/wiki/XML"
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message is very similar to the previous message. Use the suggestion of "
+"the previous translation with Ctrl+1. Note how the only difference is that "
+"this one ends with a full stop after the last tag."
+msgstr "Stu messaghju hè assai simile à u messaghju precedente. Impiegate a suggestione di a traduzzione precedente cù Ctrl+1. Mirate cum’è a sola sfarenza hè chì quella si compie da un puntu finale dopu à l’ultima etichetta."
+
+#: virtaal/support/tutorial.py
+#, python-format
+msgid ""
+"In this message \"%d\" is a placeholder (variable) that represents a number. "
+"Make sure your translation contains \"%d\" somewhere. In this case it refers "
+"a number of files. When this message is used the \"%d\" will be replaced "
+"with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
+"refer to a percentage."
+msgstr "In stu messaghju « %d » hè un campu di sustituzione (variabile) chì riprisenteghja un numeru. Assicuratevi chì a vostra traduzzione cunteni « %d » in qualchì locu. In questu casu, si riferisce à un numeru di schedarii. Quandu stu messaghju serà impiegatu, u « %d » serà rimpiazzatu da un numeru, per indettu « Numeru di schedarii cupiati : 5 ».  Sappiate chì « %d » ùn si riferisce micca à un percentuale."
+
+#: virtaal/support/tutorial.py
+#, python-format
+msgid ""
+"In this message, \"%d\" refers again to the number of files, but note how "
+"the \"(s)\" is used to show that we don't know how many it will be. This is "
+"often hard to translate well. If you encounter this in software translation, "
+"you might want to hear from developers if this can be avoided. Read more "
+"about this and decide how to do it in your language: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
+msgstr "In stu messaghju « %d » si riferisce torna à un numeru di schedarii, ma mirate u « (s) » chì hè impiegatu per mustrà chì ùn sapemu micca quantu ci ne serà. Què hè aspessu difficiule à traduce currettamente. S’è vo scuntrate què in a traduzzione di i prugrammi, ci vuleria à cunnosce u parè di i sviluppatori s’ella si pò evità. Sapene di più nant’à stu sughjettu è decide cumu fà in a vostra lingua : https://docs.translatehouse.org/projects/localization-guide/en/latest/guide/translation/plurals.html"
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In this message the proper way of translating plurals are seen. You need to "
+"enter between 1 and 6 different versions of the translation to ensure the "
+"correct grammar in your language. Read more about this here: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
+msgstr "In stu messaghju si vede cumu traduce i plurali d’una manera curretta. Ci vole à pruvede trà 1 è 6 versioni sfarente di a traduzzione per assicurà a ghjustezza grammaticale in a vostra lingua. Sapene di più nant’à stu sughjettu quì : https://docs.translatehouse.org/projects/localization-guide/en/latest/guide/translation/plurals.html"
+
+#: virtaal/support/tutorial.py
+#, python-format
+msgid ""
+"In this message, \"%s\" is a placeholder (variable) that represents a file "
+"name. Make sure your translation contains %s somewhere. When this message is "
+"used, the %s will be replaced with a file name e.g. 'The file will be saved "
+"as example.odt'.  Note that \"%s\" does not refer to a percentage."
+msgstr "In stu messaghju « %s » hè un campu di sustituzione (variabile) chì riprisenteghja un nome di schedariu. Assicuratevi chì a vostra traduzzione cunteni « %s » in qualchì locu. Quandu stu messaghju serà impiegatu, u « %s » serà rimpiazzatu da un nome, per indettu « U schedariu serà arregistratu cum’è esempiu.odt ».  Sappiate chì « %s » ùn si riferisce micca à un percentuale."
+
+#: virtaal/support/tutorial.py
+#, python-format
+msgid ""
+"In this message the variable is surrounded by double quotes. Make sure your "
+"translation contains the variable %s and surround it similarly with quotes "
+"in the way required by your language. If your language uses the same quotes "
+"as English, type it exactly as shown for the English. If your language uses "
+"different quoting characters you can just type them around the variable."
+msgstr "In stu messaghju, a variabile hè cinta da virgulette doppie. Assicuratevi chì a vostra traduzzione cunteni a variabile %s è ch’ella sia cinta di a manera richiesta da a vostra lingua. S’è a vostra lingua impiegheghja e listesse virgulette cum’è l’inglese, stampittate a variabile esattamente cum’è per l’inglese. S’è a vostra lingua impiegheghja caratteri sfarenti di citazione, stampittateli puru in giru di a variabile."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
+"is part of the variable, and the whole variable from '%' to the 's' should "
+"appear unchanged somewhere in your translation. These type of variables give "
+"you an idea of what they will contain. In this case, it will contain a name."
+msgstr "In stu messaghju « %(name)s » hè un campu di sustituzione (variabile). Sappiate chì u « s » face parte di a variabile, è chì a variabile sana, da u « % » à u « s » deve si truvà cusì, senza cambiamentu, in a vostra traduzzione. Sti tipi di variabile vi danu un’idea di ciò ch’elli anu da cuntene. In quellu casu, a variabile hà da cuntene un nome."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In this message the user of the software is asked to do something. Make sure "
+"you translate it by being as polite or respectful as is necessary for your "
+"culture."
+msgstr "In stu messaghju, hè dumandatu à l’utilizatore di u prugramma di fà qualcosa. Assicuratevi di traducelu essendu altrettantu crianzatu è rispettosu ch’ella hè richiesta da a vostra cultura."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In this message there is reference to \"Linux\" (a product name). Many "
+"languages will not translate it, but your language might use a "
+"transliteration if you don't use the Latin script for your language."
+msgstr "In stu messaghju, ghjè una referenza à « Linux » (un nome di pruduttu). Parechje lingue ùn u traducerà micca, ma a vostra lingua puderia impiegà una trasliterazione s’è vo ùn impiegate micca a scrittura latina per a vostra lingua."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains the URL (web address) of the project website. It must "
+"be transferred as a placeable or typed over exactly."
+msgstr "Stu messaghju cuntene l’URL (indirizzu web) di u situ web di u prughjettu. Deve esse trasferitu cum’è un elementu piazzevule o stampittatu tale è quale."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message refers to a website with more information. Sometimes you might "
+"be allowed or encouraged to change the URL (web address) to a website in "
+"your language. In this case, replace the \"en\" at the start of the address "
+"to your language code so that the address points to the corresponding "
+"article in your language about XML."
+msgstr "Stu messaghju si riferisce à un situ web cù d’altre infurmazioni. Ognitantu, serà permessu, o ancu benvenutu, di cambià l’URL (indirizzu web) per un situ web specificu à a vostra lingua. In quellu casu, rimpiazzate u « en » in a parte di l’indirizzu, aspessu à u principiu, da u codice di a vostra lingua, per indettu « co ». È cusì, l’indirizzu currisponderà à l’articulu nant’à u XML specificu à a vostra lingua."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a verb "
+"(an action as in \"click here to view it\")."
+msgstr "Sta traduzzione cuntene una parolla ambigua perchè hà duie significazioni pussibule. Assicuratevi ch’ella si pò truvà l’infurmazione di u cuntestu dicendu ch’ella hè un verbu (un’azzione cum’è in « un cliccu quì per affissallu »)."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a noun (a "
+"thing as in \"click to change the view to full screen\"). If Virtaal gives "
+"your previous translation as a suggestion, take care to only use it if it is "
+"definitely appropriate in this case as well."
+msgstr "Sta traduzzione cuntene una parolla ambigua perchè hà duie significazioni pussibule. Assicuratevi ch’ella si pò truvà l’infurmazione di u cuntestu dicendu ch’ella hè un nome (una cosa cum’è in « un cliccu per cambià l’affissera in screnu sanu »). S’è Virtaal vi prupone a vostra traduzzione precedente cum’è una suggestione, fate casu d’impiegalla solu s’ella hè adequata per quellu casu dinù."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"An accelerator key is a key on your keyboard that you can press to quickly "
+"access a menu or function. It is also called a hot key, access key or "
+"mnemonic. In program interfaces they are shown as an underlined letter in "
+"the text label. In the translatable text they are marked using some "
+"character like the underscore here, but other characters are used for this "
+"as well. In this case the accelerator key is \"f\" since the underscore is "
+"before this letter and it means that this accelerator could be triggered by "
+"pressing Alt+F."
+msgstr "Un tastu d’accurtatoghju di tastera hè un tastu di a vostra tastera induve si pò appughjà per accede in furia à un listinu o à una funzione. Hè chjamatu dinù : un tastu di scelta rapida, un tastu d’accelerazione, o un mnemonicu. In l’interfaccie di prugramma, sti tasti sò identificati da una lettera sottulineata in l’etichetta di u testu. In u testu traducevule, sti tasti sò marcati impieghendu qualchì caratteru speziale, cum’è u spaziu sottulineatu « _ » quì, ma d’altri caratteri ponu esse impiegati dinù, per indettu « & ». In quellu casu, u tastu d’accurtatoghju di tastera hè « f » perchè u spaziu sottulineatu si trova nanzu à sta lettera, vole si dì chì stu tastu d’accurtatoghju di tastera pò esse scruchjatu appughjendu nant’à Alt+F."
+
+#: virtaal/support/tutorial.py
+msgid "In this entry you can see other kind of accelerator."
+msgstr "In quellu esempiu, si pò vede un altru generu di tastu d’accelerazione."
+
+#: virtaal/support/tutorial.py
+msgid "And another kind of accelerator."
+msgstr "È ancu un altru generu di tastu di scelta rapida."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"You can maintain a local terminology file to help you translate "
+"consistently. To add a term, select a word (or words), press Ctrl+T and fill "
+"in the details for the new term. Select the text below and add a term for it."
+msgstr "Pudete mantene un schedariu lucale di terminolugia per aiutavvi à traduce d’una manera cuerente. Per aghjunghje un termine, selezziunate una parolla (o parechje parolle), appughjate nant’à Ctrl+T è riimpiite i detaglii per u termine novu. Selezziunate u testu quaghjò è aghjunghjiteli un termine."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"In the previous entry you have created one terminology entry for the "
+"\"filter\" verb. Now do the same for \"filter\" noun."
+msgstr "In l’esempiu precedente, avete creatu un elementu di terminolugia per u verbu « filter ». Avà, fate listessa per u nome « filter »."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"If you have created any terminology in the previous entries you may now see "
+"some of the words with a green background (or other color depending on your "
+"theme). This means that Virtaal has terminology suggestions for that word. "
+"Use Alt+Right to select the highlighted word, and then press Alt+Down. If "
+"only one suggestion is provided then Alt+Down just copies the suggestion to "
+"the translation field. But if several suggestions are available Alt+Down "
+"shows a suggestion list which you can navigate using Down and Up keys. Once "
+"you have selected the desired suggestion press Enter to copy it to the "
+"translation field."
+msgstr "S’è vo avete creatu qualchì elementu di terminolugia in l’esempii precedenti, pudete fighjà avà certe parolle cù un sfondulu verde (o un altru culore secondu à u vostru tema). Vole si dì chì Virtaal hà qualchì suggestione per quelle parolle. Impiegate Alt+Diritta per selezziunà a parolla messa in evidenza, eppò appughjate nant’à Alt+Ghjò. S’ella ci hè solu una suggestione di pruvista, tandu Alt+Ghjò face a copia di sta suggestione in u campu di traduzzione. Ma s’ella ci hè parechje suggestioni dispunibule, Alt+Ghjò affisseghja una lista di suggestioni induve si pò navigà impieghendu i tasti Insù è Ghjò. Quandu vo avete selezziunatu a suggestione scelta, appughjate nant’à Entre per cupialla in u campu di traduzzione."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message has two lines. Make sure that your translation also contains "
+"two lines. You can separate lines with Shift+Enter or copy newline "
+"placeables (displayed as ¶)."
+msgstr "Quellu messaghju hà duie linee. Assicuratevi chì a vostra traduzzione cunteni duie linee dinù. Pudete staccà e linee via Maiusc+Entre o cupià l’elementu piazzevule di linea nova (affissatu cum’è ¶)."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains tab characters to separate some headings. Make sure "
+"you separate your translations in the same way."
+msgstr "Stu messaghju cuntene caratteri di tabulazione per staccà parechje rubriche. Assicuratevi chì vo staccate e vostre traduzzioni di a listessa manera."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains a large number that is formatted according to the "
+"American convention. Translate this but make sure to format the number "
+"according to your language's convention. You might need to change the comma "
+"(,) and full stop (.) to other characters, and you also might need to use a "
+"different number system. Make sure that you understand the American "
+"formatting: this number is bigger than one thousand."
+msgstr "Stu messaghju cuntene un numeru maiò chì hà un furmatu chì seguita una cunvenzione americana. Traducitelu ma assicuratevi d’impiegà un furmatu chì seguiteghja a cunvenzione di a vostra lingua. Puderiate cambià a virgula (,) è u puntu (.) da d’altri caratteri è puderiate dinù impiegà un altru sistema numericu. Assicuratevi chì vo capiscite u furmatu americanu : stu numeru hè più maiò chè un millaia."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message refers to miles. If the programmers encourage it, you might "
+"want to change this to kilometres in your translation, if kilometers are "
+"more commonly used in your language. Note that 1 mile is about 1.6 "
+"kilometres. Note that automated tests for \"numbers\" will complain if the "
+"number is changed, but in this case it is safe to do so."
+msgstr "Stu messaghju si riferisce à i miglii. S’è i sviluppatori di u prugramma u vi prupone, puderiate cambià què da chilometri in a vostra traduzzione, s’è i chilometri sò piuttostu impiegati in a vostra lingua. Sappiate chì 1 migliu riprisenta circa 1,6 chilometru. Sappiate chì i cuntrolli autumatichi nant’à i numeri signaleranu un sbagliu s’è u numeru hè cambiatu, ma in quellu casu, si pò fà senza risicu."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains a link that the user will be able to click on to visit "
+"the help page. Make sure you correctly keep the information between the "
+"angle brackets (<...>). The double quotes (\") should never be changed in "
+"tags, even if your language uses a different type of quotation marks."
+msgstr "Stu messaghju cuntene un liame nant’à quellu l’utilizatore pò fà un cliccu per fighjà a pagina d’aiutu. Assicuratevi chì vo manteni currettamente l’infurmazione dentru l’ancini angulari (<…>). E virgulette doppie (\") ùn devenu mai esse cambiate in l’etichette, ancu s’è a vostra lingua impiegheghja un tipu sfarente di menzione."
+
+#: virtaal/support/tutorial.py
+#, python-format
+msgid ""
+"This message contains a similar link, but the programmers decided to rather "
+"insert the tags by using variables so that translators can't change them. "
+"Make sure you position the two variables (%s) so that they correspond to the "
+"opening and closing tags of the previous translation."
+msgstr "Stu messaghju cuntene un liame simile, ma i sviluppatori anu decisu di framette piuttostu l’etichette impieghendu variabile è cusì i traduttori ùn ponu cambialle. Assicuratevi di pusiziunà e duie variabile (%s) per ch’elle currispondinu à l’etichette d’apertura è di chjusura di a traduzzione precedente."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains the <b> and </b> tags to emphasize a word, while "
+"everything is within the <p> and </p> tags. Make sure your whole translation "
+"is within the <p> and </p> tags."
+msgstr "Stu messaghju cuntene l’etichette <b> è </b> per mette in evidenza una parolla, invece chì u restu si trova dentru l’etichette <p> è </p>. Assicuratevi chì a vostra traduzzione sana si trovi dentru l’etichette <p> è </p>."
+
+#: virtaal/support/tutorial.py
+msgid ""
+"This message contains a similar link that is contained within <span> and </"
+"span>. Make sure you correctly keep all the tags (<...>), and that the link "
+"is completely contained within the <span> and </span> tags in your "
+"translation. Make sure that the text inside the \"a\" tags correspond to "
+"\"help page\" and that your translation corresponding to the second sentence "
+"is contained in the <span> tags. Note how the full stop is still inside the "
+"</span> tag."
+msgstr "Stu messaghju cuntene un liame simile chì si trova trà <span> è </span>. Assicuratevi di cunservà currettamente tutte l’etichette (<…>), è chì u liame sia cuntenutu sanu sanu dentru l’etichette <span> è </span> in a vostra traduzzione. Assicuratevi chì u testu dentru l’etichette « a » currispondi à « help page » è chì a vostra traduzzione chì currisponde à a seconda frasa sia cuntenuta trà l’etichette <span>. Mirate cum’è u puntu finale hè sempre dentru l’etichetta <span>."
+
+#: virtaal/views/checksprojview.py
+msgid "Project Type"
+msgstr "Tipu di prughjettu"
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: virtaal/views/checksprojview.py
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "Cuntrolli : %(checker_name)s"
+
+#: virtaal/views/checksunitview.py
+msgid "Quality Check"
+msgstr "Cuntrollu di qualità"
+
+#: virtaal/views/checksunitview.py
+msgid "Description"
+msgstr "Discrizzione"
+
+#: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
+msgid "Quality checks"
+msgstr "Cuntrolli di qualità"
+
+#: virtaal/views/langview.py
+msgid "_New Language Pair…"
+msgstr "_Paghju di lingue novu…"
+
+#: virtaal/views/mainview.py
+msgid "_Cancel"
+msgstr "_Abbandunà"
+
+#: virtaal/views/mainview.py
+msgid "_OK"
+msgstr "_Vai"
+
+#. l10n: macOS app menu item that opens the Preferences dialog
+#: virtaal/views/mainview.py
+msgid "Settings…"
+msgstr "Parametri…"
+
+#: virtaal/views/mainview.py
+msgid "Error"
+msgstr "Sbagliu"
+
+#: virtaal/views/mainview.py
+msgid "Choose a Translation File"
+msgstr "Sceglie un schedariu di traduzzione"
+
+#: virtaal/views/mainview.py
+msgid "Choose a PO Template File"
+msgstr "Sceglie un schedariu di mudellu PO (POT)"
+
+#: virtaal/views/mainview.py
+msgid "PO Template Files"
+msgstr "Schedarii di mudellu PO"
+
+#: virtaal/views/mainview.py
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr "U schedariu attuale hè statu mudificatu.\n"
+"Vulete arregistrà i vostri cambiamenti ?"
+
+#: virtaal/views/mainview.py virtaal/views/propertiesview.py
+msgid "_Save"
+msgstr "_Arregistrà"
+
+#: virtaal/views/mainview.py
+msgid "_Discard"
+msgstr "_Scartà"
+
+#: virtaal/views/mainview.py
+msgid "Could not open the dropped file - its file name could not be decoded."
+msgstr "Ùn si pò micca apre u schedariu depostu ; u so nome ùn pò micca esse discudificatu."
+
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: virtaal/views/mainview.py
+#, python-format
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+
+#. l10n: This is the title of the main window of Virtaal, without the app name
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: virtaal/views/mainview.py
+#, python-format
+msgid "%(modified_marker)s%(current_file)s"
+msgstr "%(modified_marker)s%(current_file)s"
+
+#: virtaal/views/mainview.py
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Stampittate u numeru di forme di nome (plurale) à impiegà"
+
+#: virtaal/views/mainview.py
+msgid "Please enter the plural equation to use"
+msgstr "Stampittate l’equazione di plurale à impiegà"
+
+#: virtaal/views/mainview.py
+msgid "Header information"
+msgstr "Infurmazione d’intestatura"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Virtaal %s is available (you have %s)"
+msgstr "Virtaal %s hè dispunibule (avete %s)"
+
+#: virtaal/views/mainview.py
+msgid "Release Notes"
+msgstr "Annutazioni di versione"
+
+#: virtaal/views/mainview.py
+msgid "Download"
+msgstr "Scaricà"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid ""
+"Your settings file could not be read, so Virtaal started with default "
+"settings. The old file was kept at: %s"
+msgstr "Ùn si pò leghje u vostru schedariu di parametri, dunque Virtaal hè lanciatu cù i parametri predefiniti. U vechju schedariu hè statu cunservatu in : %s"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Couldn't open '%(file)s': %(reason)s"
+msgstr "Ùn si pò micca apre « %(file)s » : %(reason)s"
+
+#: virtaal/views/mainview.py
+#, python-format
+msgid "Couldn't open '%(file)s'."
+msgstr "Ùn si pò micca apre « %(file)s »."
+
+#: virtaal/views/mainview.py
+msgid "Restart Virtaal for the new language to take effect."
+msgstr "Rilancià Virtaal per piglià in contu a lingua nova."
+
+#. l10n: Column heading: unit counts before updating to the new template
+#: virtaal/views/mainview.py
+msgid "Before"
+msgstr "Nanzu"
+
+#. l10n: Column heading: unit counts after updating to the new template
+#: virtaal/views/mainview.py
+msgid "After"
+msgstr "Dopu"
+
+#. l10n: Column heading: difference between the before and after unit counts
+#: virtaal/views/mainview.py
+msgid "Change"
+msgstr "Cambià"
+
+#. l10n: Row heading: total number of units in the file
+#: virtaal/views/mainview.py
+msgid "Total"
+msgstr "Tutale"
+
+#: virtaal/views/mainview.py
+msgid "Source and target language are the same."
+msgstr "E lingue di fonte è di destinazione sò listesse."
+
+#: virtaal/views/mainview.py
+msgid "Change Language Pair"
+msgstr "Cambià u paghju di lingue"
+
+#: virtaal/views/mainview.py
+msgid "This file is read-only."
+msgstr "Stu schedariu hè in lettura sola."
+
+#: virtaal/views/mainview.py
+msgid "Save As…"
+msgstr "Arregistrà cù u nome…"
+
+#: virtaal/views/mainview.py
+msgid "Logs"
+msgstr "Ghjurnali di messaghji"
+
+#: virtaal/views/mainview.py virtaal/views/widgets/selectdialog.py
+msgid "_Close"
+msgstr "_Chjode"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: virtaal/views/modeview.py
+msgid "N_avigation:"
+msgstr "N_avigazione :"
+
+#. l10n: Context: show no units around the one being edited
+#: virtaal/views/modeview.py
+msgid "None"
+msgstr "Nisunu"
+
+#. l10n: How many units to show around the one being edited, when a
+#. navigation mode only goes to some units
+#: virtaal/views/modeview.py
+msgid "Conte_xt:"
+msgstr "Cuntest_u :"
+
+#: virtaal/views/prefsview.py
+msgid "Settings"
+msgstr "Parametri"
+
+#: virtaal/views/prefsview.py
+msgid "System default"
+msgstr "Valore predefinitu di u sistema"
+
+#. l10n: A UI language: its name in your language, then in
+#. itself, e.g. "French - Français"
+#: virtaal/views/prefsview.py
+#, python-format
+msgid "%(language)s - %(endonym)s"
+msgstr "%(language)s - %(endonym)s"
+
+#: virtaal/views/propertiesview.py
+msgid "Untranslated:"
+msgstr "Micca traduttu :"
+
+#: virtaal/views/propertiesview.py
+msgid "Needs work:"
+msgstr "À rivede :"
+
+#: virtaal/views/propertiesview.py
+msgid "Rejected:"
+msgstr "Righjittatu :"
+
+#: virtaal/views/propertiesview.py
+msgid "Needs review:"
+msgstr "Richiede una rivista :"
+
+#: virtaal/views/propertiesview.py
+msgid "Translated:"
+msgstr "Traduttu :"
+
+#: virtaal/views/propertiesview.py
+msgid "Reviewed:"
+msgstr "Rivistu :"
+
+#. l10n: A percentage in the file properties, e.g. "(25.5%)"
+#: virtaal/views/propertiesview.py
+#, python-format
+msgid "(%s)"
+msgstr "(%s)"
+
+#: virtaal/views/propertiesview.py
+msgid "This file has unsaved changes."
+msgstr "Stu schedariu cuntene cambiamenti non arregistrati."
+
+#: virtaal/views/unitview.py
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr "Rinculà d’un passu in u flussu di travagliu (Ctrl+Maiusc+Entre)"
+
+#: virtaal/views/unitview.py
+msgid "Click to move to a specific state in the workflow"
+msgstr "Cliccu per dispiazzassi à un statu specificu in u flussu di travagliu"
+
+#: virtaal/views/unitview.py
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr "Avanzà d’un passu in u flussu di travagliu (Ctrl+Entre)"
+
+#: virtaal/views/unitview.py
+msgid "Previous state"
+msgstr "Statu precedente"
+
+#: virtaal/views/unitview.py
+msgid "Next state"
+msgstr "Prossimu statu"
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid "Copyright © 2007-2026 Zuza Software Foundation"
+msgstr "Diritti d’autore © 2007-2026 Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: virtaal/views/widgets/aboutdialog.py
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal hè un prugramma per fà a traduzzione."
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid ""
+"The initial focus is on software translation (localization or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr "U so puntu fucale iniziale hè a traduzzione di prugrammi (lucalizazione o l10n), ma à dilla franca, vulemu ch’ellu sia ghjuvevule cum'è un attrezzu generale per a Traduzzione Assistata da l’Urdinatore (TAO in francese è CAT in inglese)."
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid "Virtaal website"
+msgstr "Situ web di Virtaal"
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid "We thank our donors:"
+msgstr "Ringraziemu i nostri dunadori :"
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid "The International Development Research Centre"
+msgstr "U centru di ricerche per u sviluppu internaziunale"
+
+#: virtaal/views/widgets/aboutdialog.py
+msgid "Mozilla Corporation"
+msgstr "Mozilla Corporation"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: virtaal/views/widgets/aboutdialog.py
+msgid "translator-credits"
+msgstr "Patriccollu di Santa Maria è Sichè"
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Edit Language"
+msgstr "Mudificà a lingua"
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Enter a language name."
+msgstr "Stampittate u nome di a lingua."
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Language code must be an ASCII string."
+msgstr "U codice di lingua deve esse una catena ASCII."
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Language code must be at least 2 characters long."
+msgstr "U codice di lingua deve cuntene omancu 2 caratteri."
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Language code must not contain spaces."
+msgstr "U codice di lingua ùn deve micca cuntene spazii."
+
+#: virtaal/views/widgets/langadddialog.py
+#, python-format
+msgid "Language code %s is already used."
+msgstr "U codice di lingua %s hè dighjà impiegatu."
+
+#: virtaal/views/widgets/langselectdialog.py
+msgid "Language"
+msgstr "Lingua"
+
+#. l10n: This is the column heading for the language code
+#: virtaal/views/widgets/langselectdialog.py
+msgid "Code"
+msgstr "Codice"
+
+#: virtaal/views/widgets/selectview.py
+msgid "Configure…"
+msgstr "Cunfigurà…"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Global"
+msgstr "Glubale"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Open a file"
+msgstr "Apre un schedariu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Save the current file"
+msgstr "Arregistrà u schedariu attuale"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Save the current file under a new name"
+msgstr "Arregistrà u schedariu attuale sottu un nome novu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Close the current file"
+msgstr "Chjode u schedariu attuale"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Quit Virtaal"
+msgstr "Esce da Virtaal"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show preferences dialog"
+msgstr "Affissà u dialogu di e preferenze"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show file properties and statistics"
+msgstr "Affissà e pruprietà è e statistiche di u sch4"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Toggle fullscreen mode"
+msgstr "Attivà o disattivà u modu screnu sanu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show this Keyboard Shortcuts window"
+msgstr "Affissà sta finestra di l’accurtatoghji di tastera"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Navigation"
+msgstr "Navigazione"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next translation"
+msgstr "Dispiazzassi a a prossima traduzzione"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous unit"
+msgstr "Dispiazzassi à l’elementu precedente"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next unit"
+msgstr "Dispiazzassi à u prossimu elementu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units up"
+msgstr "Dispiazzassi insù di 10 elementi"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move 10 units down"
+msgstr "Dispiazzassi ghjò di 10 elementi"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to first unit"
+msgstr "Dispiazzassi à u primu elementu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to last unit"
+msgstr "Dispiazzassi à l’ultimu elementu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to next search match"
+msgstr "Dispiazzassi à a prossima currispundenza di ricerca"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to previous search match"
+msgstr "Dispiazzassi à a currispundenza precedente di ricerca"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Units"
+msgstr "Elementi"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Select previous placeable"
+msgstr "Selezziunà l’elementu piazzevule precedente"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Select next placeable"
+msgstr "Selezziunà u prossimu elementu piazzevule"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Insert the selected placeable"
+msgstr "Framette l’elementu piazzevule selezziunatu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Replace the translation with the source"
+msgstr "Rimpiazzà a traduzzione cù a fonte"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Copy the source, if nothing is selected"
+msgstr "Cupià a fonte, s’è nunda hè selezziunatu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Enter a new line"
+msgstr "Creà una linea nova"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Undo the last change"
+msgstr "Disfà l’ultimu cambiamentu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Redo the last undone change"
+msgstr "Rifà l’ultimu cambiamentu disfattu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Use the first translation suggestion"
+msgstr "Impiegà a prima suggestione di traduzzione"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show/Hide checks"
+msgstr "Affissà o piattà i cuntrolli"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Show translation suggestions for this unit"
+msgstr "Affissà e suggestioni di traduzzione per st’elementu"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Turn translation suggestions on or off"
+msgstr "Attiva o disattiva e suggestioni di traduzzione"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Hide translation suggestions, if shown"
+msgstr "Piattà e suggestioni di traduzzione, s’elle sò affissate"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Add a term to the local terminology file"
+msgstr "Aghjunghje un termine à u schedariu lucale di terminolugia"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Moving focus"
+msgstr "Dispiazzamentu di u puntu fucale"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the next target field"
+msgstr "Dispiazzassi à u prossimu campu di destinazione"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to the previous target field"
+msgstr "Dispiazzassi à u campu di destinazione precedente"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the language-pair selector"
+msgstr "Saltà à u selettore di paghju di lingue"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Jump to the \"Navigation:\" mode selector"
+msgstr "Saltà à u selettore di u modu « Navigazione : »"
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Close the search bar and return to normal editing"
+msgstr "Chjode a barra di ricerca è rivene à a mudificazione nurmale"
+
+#: virtaal/views/widgets/welcomescreen.py
+msgid "Translation memory"
+msgstr "Memoria di traduzzione"
+
+#: virtaal/views/widgets/welcomescreen.py
+msgid "Machine translation"
+msgstr "Traduzzione autumatica"
+
+#: virtaal/views/widgets/welcomescreen.py
+msgid "Highlighting and insertion of placeables"
+msgstr "Messa in evidenza è inserzione d’oggetti piazzevule"
+
+#: virtaal/views/widgets/welcomescreen.py
+msgid "Many plugins and options for customization"
+msgstr "Moduli d’estensione è ozzioni numerosi di persunalizazione"

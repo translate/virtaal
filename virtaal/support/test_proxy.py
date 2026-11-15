@@ -54,6 +54,14 @@ def test_a_failed_lookup_logs_no_api_key(linux, monkeypatch, caplog):
     assert 'SECRET' not in caplog.text
 
 
+def test_a_failed_lookup_logs_no_password(linux, monkeypatch, caplog):
+    _resolve_to(monkeypatch, error=GLib.Error('no portal'))
+    proxy.desktop_proxy('https://user:hunter2@tm.example.org/tmserver/')
+    assert 'tm.example.org' in caplog.text
+    assert 'hunter2' not in caplog.text
+    assert 'user' not in caplog.text
+
+
 def test_desktop_proxy_leaves_it_to_the_environment_without_pygobject(linux, monkeypatch):
     # #4486: the asset manifest job runs the download helpers without it.
     monkeypatch.setitem(sys.modules, 'gi.repository', None)

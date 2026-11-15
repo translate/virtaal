@@ -1,0 +1,56 @@
+# Corsican localization file for Virtaal.
+#
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+#
+# Corsican translation created by Patriccollu di Santa Maria è Sichè in November 2026.
+#
+# Translators:
+# * Patriccollu di Santa Maria è Sichè <Patriccollu [at] gmail [dot] com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib20 lite in Corsican\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-06 00:20+0100\n"
+"PO-Revision-Date: 2026-11-15 19:07+0100\n"
+"Last-Translator: Patriccollu di Santa Maria è Sichè <https://github.com/Patriccollu/Lingua_Corsa-Infurmatica/#readme>\n"
+"Language-Team: \n"
+"Language: co\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. Seen in: Properties dialog
+msgctxt "format-size"
+msgid "%.1f %s"
+msgstr "%.1f %s"
+
+msgctxt "format-size"
+msgid "%u %s"
+msgstr "%u %s"
+
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "ottettu"
+msgstr[1] "ottetti"
+
+msgid "EB"
+msgstr "Eo"
+
+msgid "GB"
+msgstr "Go"
+
+#. Seen in: Properties dialog
+msgid "kB"
+msgstr "Ko"
+
+msgid "MB"
+msgstr "Mo"
+
+msgid "PB"
+msgstr "Po"
+
+msgid "TB"
+msgstr "To"

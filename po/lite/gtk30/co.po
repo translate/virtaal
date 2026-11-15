@@ -289,7 +289,7 @@ msgstr "Predefinitu"
 #. * it isn't default:LTR or default:RTL it will not work
 #. Configuration: Direction
 msgid "default:LTR"
-msgstr "predefinizione : LTR"
+msgstr "default:LTR"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically

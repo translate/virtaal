@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2026-10-25 09:23+0900\n"
+"PO-Revision-Date: 2026-11-17 01:29+0900\n"
 "Last-Translator: VenusGirl <venusgirl@outlook.com>\n"
 "Language-Team: Korean Team\n"
 "Language: ko\n"
@@ -558,7 +558,7 @@ msgstr "Virtaal로 편집"
 #. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
 #: devsupport/tmp_strings.py
 msgid "Uninstall the older Virtaal 0.7 first"
-msgstr ""
+msgstr "먼저 이전 버전의 Virtaal 0.7을 제거하세요"
 
 #: devsupport/tmp_strings.py
 msgid "usage: "

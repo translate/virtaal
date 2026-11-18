@@ -31,7 +31,7 @@ msgstr "arabia"
 
 #: ast
 msgid "Asturian"
-msgstr ""
+msgstr "asturia"
 
 #: eus
 msgid "Basque"
@@ -55,7 +55,7 @@ msgstr "katalaani"
 
 #: cgg
 msgid "Chiga"
-msgstr ""
+msgstr "chiga"
 
 #: zho
 msgid "Chinese"
@@ -95,7 +95,7 @@ msgstr "fulani"
 
 #: glg
 msgid "Galician"
-msgstr ""
+msgstr "galego"
 
 #: lug
 msgid "Ganda"
@@ -143,23 +143,23 @@ msgstr "liettua"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "nykykreikka (1453–)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "nepali (makrokieli)"
 
 #: oci
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "oksitaani (1500–)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "pandžabi"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "pedi"
 
 #: pol
 msgid "Polish"
@@ -179,7 +179,7 @@ msgstr "serbia"
 
 #: sin
 msgid "Sinhala"
-msgstr ""
+msgstr "sinhala"
 
 #: slk
 msgid "Slovak"
@@ -191,7 +191,7 @@ msgstr "eteläsotho"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "eteläsotho"
 
 #: spa
 msgid "Spanish"
@@ -199,7 +199,7 @@ msgstr "espanja"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "swahili (makrokieli)"
 
 #: swe
 msgid "Swedish"

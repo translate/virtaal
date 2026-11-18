@@ -15,4 +15,4 @@ msgstr ""
 
 #: son
 msgid "Songhai languages"
-msgstr ""
+msgstr "songhai"

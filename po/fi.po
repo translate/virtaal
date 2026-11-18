@@ -2650,7 +2650,7 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
-msgstr "Jussi Aalto, Pia Vinkki"
+msgstr "Jussi Aalto\nPia Vinkki"
 
 #: virtaal/views/widgets/langadddialog.py
 #, fuzzy

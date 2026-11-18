@@ -9,6 +9,7 @@
 # * Patriccollu di Santa Maria è Sichè <Patriccollu [at] gmail [dot] com>, 2026.
 #
 msgid ""
+msgstr ""
 "Project-Id-Version: Virtaal in Corsican\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-20 13:27+0100\n"

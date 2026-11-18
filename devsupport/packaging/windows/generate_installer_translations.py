@@ -45,6 +45,7 @@ INNO_LANGUAGES = {
     "bn_IN": "Bengali.islu",
     "ca": "Catalan.isl",
     "ca@valencia": "Valencian.isl",
+    "co": "Corsican.isl",
     "cs": "Czech.isl",
     "da": "Danish.isl",
     "de": "German.isl",

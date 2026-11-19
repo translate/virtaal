@@ -2016,6 +2016,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"Tämän viestin ”%d” on paikkamerkki (muuttuja). Pidä huoli siitä, että ”%d” "
+"on mukana myös käännöksessä. Ruudulla näkyvässä tekstissä ”%d” korvataan "
+"numerolla, joka tässä yhteydessä viittaa tiedostojen määrään, esim. ”"
+"Kopioitujen tiedostojen määrä: 5”.  Huomaa, että ”%d” ei viittaa "
+"prosenttilukuun. "
 
 #: virtaal/support/tutorial.py
 #, python-format

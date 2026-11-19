@@ -41,7 +41,7 @@ msgstr "Tietoja (_A)"
 #. Seen in: Add Term dialog; Terminology Files dialog
 msgctxt "Stock label"
 msgid "_Add"
-msgstr "Lisää (_A)("
+msgstr "Lisää (_A)"
 
 #. File dialog - Cancel button
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser

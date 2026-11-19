@@ -2923,7 +2923,7 @@ msgstr "Useita liitännäisiä ja mukautusvaihtoehtoja"
 #~ "<Ctrl+Shift+Enter>."
 #~ msgstr ""
 #~ "Nykyisen käännöksen voi merkitä keskeneräiseksi painamalla "
-#~ "<Ctlr+Shift+Enter>."
+#~ "<Ctrl+Shift+Enter>."
 
 # 75%
 #~ msgid ""

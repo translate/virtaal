@@ -83,6 +83,30 @@ def test_merge_leaves_a_translation_alone_for_a_fuzzy_one(packs, tmp_path):
     assert 'msgstr "_Datei"' in (tmp_path / "de.po").read_text(encoding="utf-8")
 
 
+def test_merge_keeps_an_unchanged_fuzzy_translation_fuzzy(packs, tmp_path):
+    catalog = tmp_path / "de.po"
+    catalog.write_text(catalog.read_text(encoding="utf-8").replace(
+        'msgid "Settings"\nmsgstr ""', '#, fuzzy\nmsgid "Settings"\nmsgstr "Einstellung"'), encoding="utf-8")
+    returned = _returned(tmp_path, '\nmsgid "Settings"\nmsgstr "Einstellung"\n')
+
+    assert packs.merge("de", returned) == ["Settings"]
+
+    assert '#, fuzzy\nmsgid "Settings"\nmsgstr "Einstellung"' in catalog.read_text(encoding="utf-8")
+
+
+def test_merge_takes_a_changed_translation_of_a_fuzzy_one(packs, tmp_path):
+    catalog = tmp_path / "de.po"
+    catalog.write_text(catalog.read_text(encoding="utf-8").replace(
+        'msgid "Settings"\nmsgstr ""', '#, fuzzy\nmsgid "Settings"\nmsgstr "Einstellung"'), encoding="utf-8")
+    returned = _returned(tmp_path, '\nmsgid "Settings"\nmsgstr "Einstellungen"\n')
+
+    assert packs.merge("de", returned) == []
+
+    text = catalog.read_text(encoding="utf-8")
+    assert 'msgid "Settings"\nmsgstr "Einstellungen"' in text
+    assert "fuzzy" not in text
+
+
 def test_merge_brings_back_an_obsolete_message_instead_of_doubling_it(packs, tmp_path):
     returned = _returned(tmp_path, '\nmsgid "Undo"\nmsgstr "Zurück"\n')
 
@@ -175,6 +199,31 @@ def test_a_returned_library_pack_goes_into_its_lite_catalog(lite, tmp_path):
     assert 'msgid "Shift"\nmsgstr "Shifu"' in catalog
     assert 'msgid "Home"' in catalog
     assert 'msgstr "_Datei"' in (tmp_path / "de.po").read_text(encoding="utf-8")
+
+
+def _fuzzy_shift(lite, tmp_path):
+    (tmp_path / "lite" / "gtk30" / "zu.po").write_text(
+        HEADER.replace("de", "zu") + '\n#, fuzzy\nmsgctxt "keyboard label"\nmsgid "Shift"\nmsgstr "Shifu"\n',
+        encoding="utf-8", newline="\n")
+    returned = tmp_path / "gtk30-zu-level1.po"
+    returned.write_text(HEADER.replace("de", "zu") + '\nmsgctxt "keyboard label"\nmsgid "Shift"\nmsgstr "Shifu"\n',
+                        encoding="utf-8")
+    return returned
+
+
+def test_an_unchanged_fuzzy_message_is_reported_with_its_context(lite, tmp_path):
+    returned = _fuzzy_shift(lite, tmp_path)
+
+    assert lite.merge("zu", returned) == ["keyboard label\x04Shift"]
+
+
+def test_the_merge_report_names_the_context(lite, tmp_path, monkeypatch, capsys):
+    returned = _fuzzy_shift(lite, tmp_path)
+    monkeypatch.setattr("sys.argv", ["level-pack.py", "--merge", "zu", str(returned)])
+
+    assert lite.main() == 0
+
+    assert "'Shift' (context 'keyboard label')" in capsys.readouterr().err
 
 
 def test_a_returned_language_family_pack_starts_its_lite_catalog(lite, tmp_path):

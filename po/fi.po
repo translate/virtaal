@@ -2473,15 +2473,13 @@ msgstr ""
 
 #. l10n: Column heading: unit counts before updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "Before:"
 msgid "Before"
-msgstr "Ennen:"
+msgstr "Ennen"
 
 #. l10n: Column heading: unit counts after updating to the new template
 #: virtaal/views/mainview.py
-#| msgid "After:"
 msgid "After"
-msgstr "Jälkeen:"
+msgstr "Jälkeen"
 
 #. l10n: Column heading: difference between the before and after unit counts
 #: virtaal/views/mainview.py

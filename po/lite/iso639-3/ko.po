@@ -61,6 +61,10 @@ msgstr "치가어"
 msgid "Chinese"
 msgstr "중국어"
 
+#: cos
+msgid "Corsican"
+msgstr "코르시카어"
+
 #: ces
 msgid "Czech"
 msgstr "체코어"

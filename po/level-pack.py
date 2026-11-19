@@ -26,7 +26,9 @@
     <domain>-<lang>-level*.po one into po/lite/<domain>/<lang>.po: its
     translations replace the ones there, or are added if po/<lang>.po
     doesn't have the message yet; an untranslated or fuzzy one in it
-    leaves the one there alone. Nothing else in the catalog changes."""
+    leaves the one there alone, and a fuzzy one there that comes back
+    unchanged stays fuzzy (they're listed). Nothing else in the catalog
+    changes."""
 
 import argparse
 import importlib.util
@@ -188,7 +190,10 @@ def merge_target(lang, returned):
 def merge(lang, returned):
     """Merges returned (a pack .po) into its catalog, changing only the
         messages it translates: one already there gets the new
-        translation, one not there yet is added at the end."""
+        translation, one not there yet is added at the end. A fuzzy
+        translation that comes back unchanged stays fuzzy: an editor can
+        drop the flag without anyone reviewing it. Returns those
+        messages, as msgctxt\\x04msgid."""
     from translate.storage import po
     target_path, domain = merge_target(lang, returned)
     if domain and not target_path.is_file():
@@ -199,6 +204,7 @@ def merge(lang, returned):
         _run('msgfmt', '-c', '-o', Path(tmp) / 'check.mo', returned)
     target = po.pofile.parsefile(str(target_path))
     units = {unit.getid(): unit for unit in target.units if not unit.isheader()}
+    unreviewed = []
     for new in po.pofile.parsefile(str(returned)).units:
         if new.isheader() or not new.istranslated():
             continue
@@ -208,12 +214,15 @@ def merge(lang, returned):
             unit = None
         if unit is None:
             target.addunit(new)
-        elif unit.target != new.target or unit.isfuzzy():
+        elif unit.isfuzzy() and unit.target == new.target:
+            unreviewed.append(unit.getid())
+        elif unit.target != new.target:
             unit.target = new.target
             unit.markfuzzy(False)
     target.savefile(str(target_path))
     with tempfile.TemporaryDirectory() as tmp:
         _run('msgfmt', '-c', '-o', Path(tmp) / 'check.mo', target_path)
+    return unreviewed
 
 
 def _shipped():
@@ -230,7 +239,12 @@ def main():
     parser.add_argument('--merge', nargs=2, metavar=('LANG', 'FILE'), help='merge a returned pack into po/LANG.po')
     args = parser.parse_args()
     if args.merge:
-        merge(args.merge[0], Path(args.merge[1]))
+        unreviewed = merge(args.merge[0], Path(args.merge[1]))
+        if unreviewed:
+            print('Came back unchanged, so still fuzzy - ask the translator:', file=sys.stderr)
+            for key in unreviewed:
+                context, _, source = key.rpartition('\x04')
+                print('  %r%s' % (source, ' (context %r)' % context if context else ''), file=sys.stderr)
         return 0
     languages = _shipped() if args.all else args.languages
     if not languages:

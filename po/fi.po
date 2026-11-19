@@ -298,14 +298,12 @@ msgid "<b>Fonts</b>"
 msgstr "<b>Kirjasimet</b>"
 
 #: share/virtaal/virtaal.ui
-#| msgid "Language"
 msgid "Language:"
-msgstr "Kieli"
+msgstr "Kieli:"
 
 #: share/virtaal/virtaal.ui
-#| msgid "<b>Language Information</b>"
 msgid "<b>Language</b>"
-msgstr "<b>Kielen tiedot</b>"
+msgstr "<b>Kieli</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: share/virtaal/virtaal.ui

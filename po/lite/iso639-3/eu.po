@@ -62,6 +62,10 @@ msgstr "chigera"
 msgid "Chinese"
 msgstr "Txinera"
 
+#: cos
+msgid "Corsican"
+msgstr ""
+
 #: ces
 msgid "Czech"
 msgstr "Txekiera"

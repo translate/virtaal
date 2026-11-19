@@ -61,6 +61,10 @@ msgstr "chiga"
 msgid "Chinese"
 msgstr "kiina"
 
+#: cos
+msgid "Corsican"
+msgstr "korsika"
+
 #: ces
 msgid "Czech"
 msgstr "tšekki"

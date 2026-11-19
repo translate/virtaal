@@ -62,6 +62,10 @@ msgstr ""
 msgid "Chinese"
 msgstr "Kinų"
 
+#: cos
+msgid "Corsican"
+msgstr "Korsikiečių"
+
 #: ces
 msgid "Czech"
 msgstr "Čekų"

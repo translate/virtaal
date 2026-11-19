@@ -2420,9 +2420,8 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 #. most languages will not need to change this
 #: virtaal/views/mainview.py
 #, python-format
-#| msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgid "%(modified_marker)s%(current_file)s"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s"
 
 #: virtaal/views/mainview.py
 msgid "Please enter the number of noun forms (plurals) to use"

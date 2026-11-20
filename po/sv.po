@@ -383,7 +383,7 @@ msgstr "URL:"
 
 #: share/virtaal/virtaal.ui
 msgid "Put queries in quotes"
-msgstr "Sätt frågor inom citattecken"
+msgstr "Sätt söktermer inom citattecken"
 
 #: share/virtaal/virtaal.ui
 msgid "<b>Options</b>"
@@ -524,7 +524,7 @@ msgstr "Qt Lingvist-översättningsfil"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "Qt Phrase Book"
-msgstr "Qt Parlör"
+msgstr "Qt-parlör"
 
 #: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
 msgid "TBX Glossary"
@@ -1437,7 +1437,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: virtaal/plugins/lookup/models/weblookup.py
 msgid "Quote Query"
-msgstr "Citatförfrågning"
+msgstr "Citera sökterm"
 
 #. l10n: "virtaal-" is a literal prefix - leave it untranslated
 #: virtaal/plugins/lookup/models/weblookup.py

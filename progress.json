@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-19T22:00:06Z",
- "commit": "536dcce740cde96d44a2ee8a7b9a8cc4805443fc",
+ "generated": "2026-11-19T23:59:03Z",
+ "commit": "f87de319d77e449bc087ac222d9ec9dfa352f783",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -132,6 +132,17 @@
    "level2_missing": 133,
    "level3_missing": 76,
    "ships": null
+  },
+  {
+   "code": "co",
+   "name": "Corsican",
+   "endonym": "corsu",
+   "core_missing": 0,
+   "rest_missing": 0,
+   "needed": 0,
+   "level2_missing": 0,
+   "level3_missing": 0,
+   "ships": "level 1"
   },
   {
    "code": "cs",
@@ -607,5 +618,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/44623835207"
+ "packs": "https://github.com/translate/virtaal/actions/runs/44641835531"
 }

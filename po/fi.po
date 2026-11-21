@@ -2058,14 +2058,7 @@ msgid ""
 "name. Make sure your translation contains %s somewhere. When this message is "
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
-msgstr ""
-"Pidä huoli siitä, että paikkamerkki on mukana myös käännöksessä. Ruudulla "
-"näkyvässä tekstissä ”%s” korvataan tiedoston nimellä, esim. ”Tiedosto "
-"tallennetaan nimellä example.odt”.Pidä huoli siitä, että paikkamerkki on "
-"mukana myös käännöksessä. Ruudulla näkyvässä tekstissä ”%s” korvataan "
-"tiedoston nimellä, esim. ”Tiedosto tallennetaan nimellä example.odt”\n"
-"Huomaa, että ”%s” ei viittaa prosenttilukuun.   Huomaa, että ”%s” ei viittaa "
-"prosenttilukuun. "
+msgstr "Tämän viestin muuttuja ”%s” on tiedostonimen paikkamerkki. Pidä huoli siitä, että merkintä ”%s” on mukana myös käännöksessä. Ruudulla näkyvässä tekstissä ”%s” korvataan tiedoston nimellä, esim. ”Tiedosto tallennetaan nimellä example.odt”.  Huomaa, että ”%s” ei viittaa prosenttilukuun. "
 
 #: virtaal/support/tutorial.py
 #, python-format

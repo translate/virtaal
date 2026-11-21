@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-21T16:42:54Z",
- "commit": "4aae2fe75459f637a6017a61c033049ee10eccbd",
+ "generated": "2026-11-21T17:26:36Z",
+ "commit": "6b98ee18807a74a010c541e66deabf78f338b57d",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -225,12 +225,12 @@
    "code": "fi",
    "name": "Finnish",
    "endonym": "suomi",
-   "core_missing": 1,
+   "core_missing": 0,
    "rest_missing": 0,
-   "needed": 1,
+   "needed": 0,
    "level2_missing": 0,
    "level3_missing": 55,
-   "ships": "50%"
+   "ships": "level 1"
   },
   {
    "code": "fo",
@@ -618,5 +618,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/44925817493"
+ "packs": "https://github.com/translate/virtaal/actions/runs/44929792307"
 }

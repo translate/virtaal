@@ -122,7 +122,7 @@ msgstr "_Bestand"
 
 #: share/virtaal/virtaal.ui
 msgid "Re_vert to Saved"
-msgstr "Te_rugkeren naar Opgeslagen"
+msgstr "Terug_keren naar Opgeslagen"
 
 #: share/virtaal/virtaal.ui
 msgid "_Update from Template"
@@ -164,16 +164,16 @@ msgstr "Overzetten vanuit brontekst"
 #. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
 #: share/virtaal/virtaal.ui
 msgid "_Insert Placeable"
-msgstr "_Placeable invoegen"
+msgstr "Pla_ceable invoegen"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: share/virtaal/virtaal.ui
 msgid "P_revious Placeable"
-msgstr "Vo_rige placeable"
+msgstr "Vor_ige placeable"
 
 #: share/virtaal/virtaal.ui
 msgid "_Next Placeable"
-msgstr "Vo_lgende placeable"
+msgstr "Volg_ende placeable"
 
 #: share/virtaal/virtaal.ui
 msgid "_View"
@@ -225,7 +225,7 @@ msgstr "_Hulp"
 
 #: share/virtaal/virtaal.ui
 msgid "_Online Help"
-msgstr "_Online hulp"
+msgstr "Online _hulp"
 
 #: share/virtaal/virtaal.ui
 msgid "_Tutorial"
@@ -241,7 +241,7 @@ msgstr "Een _bug melden"
 
 #: share/virtaal/virtaal.ui
 msgid "Show Lo_gs"
-msgstr ""
+msgstr "L_ogs tonen"
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"
@@ -2424,15 +2424,15 @@ msgstr "Header-informatie"
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
-msgstr ""
+msgstr "Virtaal %s is beschikbaar (u hebt %s)"
 
 #: virtaal/views/mainview.py
 msgid "Release Notes"
-msgstr ""
+msgstr "Versieopmerkingen"
 
 #: virtaal/views/mainview.py
 msgid "Download"
-msgstr ""
+msgstr "Downloaden"
 
 #: virtaal/views/mainview.py
 #, python-format

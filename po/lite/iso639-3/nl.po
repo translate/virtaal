@@ -147,11 +147,11 @@ msgstr "Litouws"
 
 #: ell
 msgid "Modern Greek (1453-)"
-msgstr ""
+msgstr "Nieuwgrieks (1453-)"
 
 #: nep
 msgid "Nepali (macrolanguage)"
-msgstr ""
+msgstr "Nepalees (macrotaal)"
 
 #: oci
 msgid "Occitan (post 1500)"
@@ -159,11 +159,11 @@ msgstr "Occitaans (na 1500)"
 
 #: pan
 msgid "Panjabi"
-msgstr ""
+msgstr "Punjabi"
 
 #: nso
 msgid "Pedi"
-msgstr ""
+msgstr "Pedi"
 
 #: pol
 msgid "Polish"
@@ -187,15 +187,15 @@ msgstr "Sinhala"
 
 #: slk
 msgid "Slovak"
-msgstr "Slovaaks, Slowaaks"
+msgstr "Slowaaks"
 
 #: sot
 msgid "Sotho, Southern"
-msgstr "Sothaans, Zuid"
+msgstr "Sotho, Zuid"
 
 #: sot
 msgid "Southern Sotho"
-msgstr ""
+msgstr "Zuid-Sotho"
 
 #: spa
 msgid "Spanish"
@@ -203,7 +203,7 @@ msgstr "Spaans"
 
 #: swa
 msgid "Swahili (macrolanguage)"
-msgstr ""
+msgstr "Swahili (macrotaal)"
 
 #: swe
 msgid "Swedish"
@@ -215,7 +215,7 @@ msgstr "Telugu"
 
 #: tha
 msgid "Thai"
-msgstr "Thais"
+msgstr "Thai"
 
 #: tur
 msgid "Turkish"

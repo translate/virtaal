@@ -4,3 +4,16 @@
 ach  # an abundance of serious issues (d46e9821, 2012)
 km  # no translations
 sq  # no translations
+ak  # level 1 incomplete at 1.0.0 (40 core, 33 other strings missing)
+am  # level 1 incomplete at 1.0.0 (72 core, 58 other strings missing)
+bg  # level 1 incomplete at 1.0.0 (38 core, 54 other strings missing)
+cgg  # level 1 incomplete at 1.0.0 (40 core, 44 other strings missing)
+hu  # level 1 incomplete at 1.0.0 (36 core, 64 other strings missing)
+lg  # level 1 incomplete at 1.0.0 (38 core, 43 other strings missing)
+ne  # level 1 incomplete at 1.0.0 (55 core, 66 other strings missing)
+pa  # level 1 incomplete at 1.0.0 (40 core, 56 other strings missing)
+si  # level 1 incomplete at 1.0.0 (83 core, 67 other strings missing)
+st  # level 1 incomplete at 1.0.0 (55 core, 56 other strings missing)
+sw  # level 1 incomplete at 1.0.0 (73 core, 70 other strings missing)
+te  # level 1 incomplete at 1.0.0 (36 core, 50 other strings missing)
+th  # level 1 incomplete at 1.0.0 (37 core, 49 other strings missing)

@@ -499,7 +499,7 @@ msgstr "«%s» empra «%%C» però «%s» no ho fa"
 #: src/format-gfc-internal.c:369
 #, c-format
 msgid "'%s' does not use %%C but '%s' uses %%C"
-msgstr "«%s» no empra «%%m» però «%s» empra «%%m»"
+msgstr "«%s» no empra «%%C» però «%s» empra «%%C»"
 
 #: src/format-go.c:115
 #: src/format-rust.c:172

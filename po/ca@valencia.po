@@ -655,7 +655,7 @@ msgstr "Comprovacions de qualitat mentre escriviu"
 #. l10n: The developer/organisation name "Translate", not the verb "to translate"
 #: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Translate"
-msgstr "Tradueix"
+msgstr "Translate"
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"

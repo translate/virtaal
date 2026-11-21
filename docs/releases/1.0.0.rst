@@ -128,9 +128,11 @@ Known limitations
 ==================
 Nothing release-blocking, but worth knowing about:
 
-- No spell checking in the Apple Silicon macOS build (the Intel build
-  has it) - the underlying spell-check library has no ready-made build
-  for that platform yet.
+- The Windows and macOS packages don't underline misspelled words as
+  you type. The Windows and Intel macOS builds still report them in
+  Quality Checks; the Apple Silicon build has no spell checking at all,
+  as the underlying spell-check library has no ready-made build for it
+  yet. The Linux packages and source installs are not affected.
 
 Full changelog
 ================

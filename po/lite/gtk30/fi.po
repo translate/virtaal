@@ -47,7 +47,7 @@ msgstr "Lisää (_A)"
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser
 msgctxt "Stock label"
 msgid "_Cancel"
-msgstr "Peru (_C)"
+msgstr "Peruuta (_C)"
 
 #. File dialog - Cancel button
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser

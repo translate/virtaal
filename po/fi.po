@@ -238,7 +238,7 @@ msgstr "Tee vikailmoitus (_B)"
 
 #: share/virtaal/virtaal.ui
 msgid "Show Lo_gs"
-msgstr ""
+msgstr "Näytä lokit (_G)"
 
 #: share/virtaal/virtaal.ui
 msgid "Keyboard _Shortcuts"

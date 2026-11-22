@@ -15,16 +15,25 @@
 """
 A translation memory server using tmdb for storage, communicates with
 clients using JSON over HTTP.
+
+Every request sends the server's token in the X-Virtaal-TM-Token header.
+The token comes from the VIRTAAL_TMSERVER_TOKEN environment variable
+(Virtaal's local TM sets it); without it, the server makes one and prints
+it on stderr, for a client such as Virtaal's Remote TM (its "token"
+setting in tm.ini).
 """
 
+import hmac
 import json
 import logging
+import os
+import socket
 import sys
 from argparse import ArgumentParser
 from io import BytesIO
-from urllib.parse import unquote_to_bytes
+from urllib.parse import unquote_to_bytes, urlsplit
 
-from bottle import Bottle, request, response
+from bottle import Bottle, abort, request, response
 from translate.storage import base, factory
 
 from virtaal.support import (
@@ -32,8 +41,33 @@ from virtaal.support import (
     poparser_compat,  # noqa: F401 - applies its patch on import
     tmdb,
 )
+from virtaal.support.proxy import is_loopback
+from virtaal.support.tmauth import TOKEN_ENV, TOKEN_HEADER, new_token
 
 logger = logging.getLogger(__name__)
+
+_TOKEN_ENVIRON = "HTTP_" + TOKEN_HEADER.upper().replace("-", "_")
+
+
+def binds_loopback(bind) -> bool:
+    """Whether C{bind} (an address or a host name) is only loopback."""
+    if is_loopback(bind.lower()):
+        return True
+    try:
+        addresses = socket.getaddrinfo(bind, None)
+    except (OSError, UnicodeError):
+        return False
+    # An IPv6 address can carry a zone ("fe80::1%lo0").
+    return bool(addresses) and all(is_loopback(a[4][0].split("%")[0]) for a in addresses)
+
+
+def _host_name(host_header):
+    """The host name in a Host header, without the port; None if it
+        can't be parsed."""
+    try:
+        return urlsplit("//" + host_header).hostname
+    except ValueError:
+        return None
 
 
 def _decode_path_from_request_uri() -> None:
@@ -67,17 +101,27 @@ class TMServer:
         prefix="",
         source_lang=None,
         target_lang=None,
+        token=None,
+        allowed_hosts=None,
     ) -> None:
+        """C{token}: when set, every request must send it in
+            L{TOKEN_HEADER}. C{allowed_hosts}: when set, a request's Host
+            must be a loopback address or one of these names."""
         if not isinstance(tmdbfile, str):
             tmdbfile = tmdbfile.decode(sys.getfilesystemencoding())
 
         self.tmdb = tmdb.TMDB(tmdbfile, max_candidates, min_similarity, max_length)
+        self.token = token
+        self.allowed_hosts = (
+            None if allowed_hosts is None else {h.lower() for h in allowed_hosts}
+        )
 
         if tmfiles:
             self._load_files(tmfiles, source_lang, target_lang)
 
         # initialize url dispatcher
         self.rest = Bottle()
+        self.rest.add_hook("before_request", self._check_request)
         self.rest.add_hook("before_request", _decode_path_from_request_uri)
         # Bottle's path filter is ".+?", which doesn't match a newline.
         unit_path = rf"{prefix}/<slang>/<tlang>/unit/<uid:re:[\s\S]+>"
@@ -90,6 +134,23 @@ class TMServer:
         self.rest.route(store_path, "PUT", self.upload_store)
         self.rest.route(store_path, "POST", self.add_store)
         self.rest.route(store_path, "DELETE", self._forget_store_route)
+
+    def _check_request(self) -> None:
+        """Only requests from Virtaal's own client: no Origin header, a
+            Host from C{allowed_hosts}, and the token."""
+        # The WSGI environ: Bottle's request.headers raises on a value
+        # that isn't UTF-8.
+        environ = request.environ
+        if "HTTP_ORIGIN" in environ:
+            abort(403)
+        if self.allowed_hosts is not None:
+            host = _host_name(environ.get("HTTP_HOST", ""))
+            if not host or not (is_loopback(host) or host in self.allowed_hosts):
+                abort(403)
+        if self.token:
+            sent = environ.get(_TOKEN_ENVIRON, "").encode("latin-1", "replace")
+            if not hmac.compare_digest(sent, self.token.encode("latin-1", "replace")):
+                abort(403)
 
     def _load_files(self, tmfiles, source_lang, target_lang) -> None:
         if isinstance(tmfiles, list):
@@ -246,6 +307,15 @@ def main() -> None:
 
     logging.basicConfig(level=level, format=format)
 
+    # Virtaal's local TM passes its own; run by hand, make one for the
+    # client to send.
+    token = os.environ.get(TOKEN_ENV)
+    if not token:
+        token = new_token()
+        print(f"{TOKEN_HEADER}: {token}", file=sys.stderr, flush=True)
+    # Bound to loopback: answer only to loopback names.
+    allowed_hosts = {args.bind} if binds_loopback(args.bind) else None
+
     application = TMServer(
         args.tmdbfile,
         args.tmfiles,
@@ -255,6 +325,8 @@ def main() -> None:
         prefix="/tmserver",
         source_lang=args.source_lang,
         target_lang=args.target_lang,
+        token=token,
+        allowed_hosts=allowed_hosts,
     )
     logger.info("Starting server, listening on port %s", args.port)
     try:

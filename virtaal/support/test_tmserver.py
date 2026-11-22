@@ -22,8 +22,10 @@ import pytest
 from cheroot import wsgi
 
 from virtaal.support import tmserver
+from virtaal.support.tmauth import TOKEN_ENV, TOKEN_HEADER
 
 _servers = []
+TOKEN = 'the-token'
 
 
 @pytest.fixture(autouse=True)
@@ -37,7 +39,7 @@ def _start_server(db_path):
     """Start a TM server on a free port; returns (app, port)."""
     # The same cheroot server application.rest.run(server='cheroot')
     # builds, but one the test can stop.
-    app = tmserver.TMServer(str(db_path), None)
+    app = tmserver.TMServer(str(db_path), None, token=TOKEN, allowed_hosts=set())
     server = wsgi.Server(('127.0.0.1', 0), app.rest)
     # stop() waits for the serve loop's next wake-up, every 0.5s by default.
     server.expiration_interval = 0.01
@@ -67,18 +69,31 @@ def _wait_for_port(port, timeout=10):
     pytest.fail('nothing accepted connections on port %d within %ds' % (port, timeout))
 
 
-def _request(port, method, path, data=None):
+def _request(port, method, path, data=None, headers=None, token=TOKEN):
     url = 'http://127.0.0.1:%d%s' % (port, path)
     body = data.encode('utf-8') if isinstance(data, str) else data
-    req = urllib.request.Request(url, data=body, method=method)
+    headers = dict(headers or {})
+    if token is not None:
+        headers[TOKEN_HEADER] = token
+    req = urllib.request.Request(url, data=body, method=method, headers=headers)
     with urllib.request.urlopen(req, timeout=5) as resp:
         return resp.status, resp.read().decode('utf-8')
 
 
+def _status(*args, **kwargs):
+    """The HTTP status of a request that may fail."""
+    try:
+        return _request(*args, **kwargs)[0]
+    except urllib.error.HTTPError as e:
+        return e.code
+    except ConnectionResetError:
+        # Windows: the server answered 403 before reading the body.
+        return 403
+
+
 def _translate(port, source, slang, tlang):
-    url = 'http://127.0.0.1:%d/%s/%s/unit/%s' % (port, slang, tlang, quote(source, safe=''))
-    with urllib.request.urlopen(url, timeout=5) as resp:
-        return json.loads(resp.read().decode('utf-8'))
+    path = '/%s/%s/unit/%s' % (slang, tlang, quote(source, safe=''))
+    return json.loads(_request(port, 'GET', path)[1])
 
 
 def test_translate_unit_matches_a_non_ascii_source_exactly(tmp_path):
@@ -213,6 +228,133 @@ def test_translate_unit_ignores_a_callback_parameter(tmp_path):
 
     assert status == 200
     assert json.loads(body)[0]['target'] == 'oiseau'
+
+
+ROUTES = [
+    ('GET', '/en/fr/unit/cat', None),
+    ('PUT', '/en/fr/unit/cat', json.dumps({'source': 'cat', 'target': 'chat'})),
+    ('POST', '/en/fr/unit/cat', json.dumps({'source': 'cat', 'target': 'chat'})),
+    ('DELETE', '/en/fr/unit/cat', None),
+    ('GET', '/en/fr/store/import', None),
+    ('PUT', '/en/fr/store/import.po', 'msgid "cat"\nmsgstr "chat"\n'),
+    ('POST', '/en/fr/store/import', json.dumps([{'source': 'cat', 'target': 'chat', 'context': ''}])),
+    ('DELETE', '/en/fr/store/import', None),
+]
+
+
+@pytest.mark.parametrize(('method', 'path', 'data'), ROUTES)
+@pytest.mark.parametrize('token', [None, '', 'the-wrong-token', TOKEN + 'x', 'the-tokén'])
+def test_every_route_refuses_a_request_without_the_token(tmp_path, method, path, data, token):
+    app, port = _start_server(tmp_path / 'tm.db')
+
+    assert _status(port, method, path, data, token=token) == 403
+    assert app.tmdb.translate_unit('cat', 'en', 'fr') == []
+
+
+@pytest.mark.parametrize(('method', 'path', 'data'), ROUTES)
+def test_every_route_refuses_a_request_with_an_origin(tmp_path, method, path, data):
+    app, port = _start_server(tmp_path / 'tm.db')
+
+    assert _status(port, method, path, data, headers={'Origin': 'http://127.0.0.1:%d' % port}) == 403
+    assert app.tmdb.translate_unit('cat', 'en', 'fr') == []
+
+
+@pytest.mark.parametrize('host', ['example.com', 'example.com:%d', 'localhost.example.com', '127.0.0.1.example.com', ''])
+def test_a_request_for_another_host_is_refused(tmp_path, host):
+    app, port = _start_server(tmp_path / 'tm.db')
+    app.tmdb.add_dict({'source': 'cat', 'target': 'chat', 'context': ''}, 'en', 'fr')
+    host = host % port if '%d' in host else host
+
+    assert _status(port, 'GET', '/en/fr/unit/cat', headers={'Host': host}) == 403
+
+
+@pytest.mark.parametrize('host', ['localhost:%d', 'LOCALHOST:%d', '127.0.0.1:%d', '127.0.0.3:%d', '[::1]:%d', 'localhost'])
+def test_a_request_for_a_loopback_host_is_answered(tmp_path, host):
+    app, port = _start_server(tmp_path / 'tm.db')
+    app.tmdb.add_dict({'source': 'cat', 'target': 'chat', 'context': ''}, 'en', 'fr')
+    host = host % port if '%d' in host else host
+
+    status, body = _request(port, 'GET', '/en/fr/unit/cat', headers={'Host': host})
+
+    assert status == 200
+    assert json.loads(body)[0]['target'] == 'chat'
+
+
+def test_without_a_token_or_hosts_any_request_without_an_origin_is_answered(tmp_path):
+    app = tmserver.TMServer(str(tmp_path / 'tm.db'), None)
+    server = wsgi.Server(('127.0.0.1', 0), app.rest)
+    server.expiration_interval = 0.01
+    server.prepare()
+    port = server.bind_addr[1]
+    threading.Thread(target=server.serve, daemon=True).start()
+    _servers.append(server)
+
+    assert _status(port, 'GET', '/en/fr/unit/cat', token=None, headers={'Host': 'example.com'}) == 200
+    assert _status(port, 'GET', '/en/fr/unit/cat', token=None, headers={'Origin': 'http://example.com'}) == 403
+
+
+def test_virtaals_client_adds_a_store_and_looks_up_a_unit(tmp_path, monkeypatch):
+    # The two requests Virtaal's local TM makes: add_store() on saving a
+    # file, translate_unit() for suggestions.
+    from virtaal.support.tmclient import TMClient
+
+    _, port = _start_server(tmp_path / 'tm.db')
+    client = TMClient('http://localhost:%d' % port, TOKEN)
+    requests = []
+    monkeypatch.setattr(client, 'add', requests.append)
+    found = []
+
+    def perform():
+        request = requests.pop()
+        request.curl.perform()
+        request.handle_result()
+        assert request.status == 200
+
+    client.add_store('a.po', [{'source': 'cat', 'target': 'chat', 'context': ''}], 'en', 'fr')
+    perform()
+    client.translate_unit('cat', 'en', 'fr', callback=lambda widget, id, matches: found.append(matches))
+    perform()
+
+    assert found[0][0]['target'] == 'chat'
+
+
+def test_a_request_for_the_bind_name_is_answered(tmp_path):
+    app, port = _start_server(tmp_path / 'tm.db')
+    app.allowed_hosts = {'tm.localdomain'}
+
+    assert _status(port, 'GET', '/en/fr/unit/cat', headers={'Host': 'tm.localdomain:%d' % port}) == 200
+
+
+def _resolves_to(monkeypatch, *addresses):
+    def getaddrinfo(host, port):
+        if not addresses:
+            raise OSError('unknown host')
+        return [(None, None, None, '', (address, 0)) for address in addresses]
+    monkeypatch.setattr(tmserver.socket, 'getaddrinfo', getaddrinfo)
+
+
+@pytest.mark.parametrize('bind', ['localhost', 'LocalHost', '127.0.0.1', '127.0.0.2', '::1'])
+def test_binds_loopback_for_a_loopback_address(monkeypatch, bind):
+    _resolves_to(monkeypatch)
+
+    assert tmserver.binds_loopback(bind)
+
+
+@pytest.mark.parametrize(('addresses', 'expected'), [
+    (('127.0.0.1', '::1'), True),
+    (('fe80::1%lo0', '::1'), False),
+    (('127.0.0.1', '192.168.1.1'), False),
+    ((), False),
+])
+def test_binds_loopback_resolves_a_name(monkeypatch, addresses, expected):
+    _resolves_to(monkeypatch, *addresses)
+
+    assert tmserver.binds_loopback('tm.localdomain') is expected
+
+
+@pytest.mark.parametrize('bind', ['0.0.0.0', '::', '192.168.1.1'])
+def test_binds_loopback_is_false_elsewhere(bind):
+    assert not tmserver.binds_loopback(bind)
 
 
 def test_forget_unit_returns_the_not_implemented_stub(tmp_path):
@@ -388,6 +530,55 @@ def test_main_swallows_a_keyboard_interrupt_from_the_server(monkeypatch, tmp_pat
     tmserver.main()  # must not raise
 
 
+def _main_server(monkeypatch, tmp_path, *argv):
+    """The TMServer main() builds for C{argv}, without serving."""
+    built = []
+    real = tmserver.TMServer
+    monkeypatch.setattr(tmserver, 'TMServer', lambda *args, **kwargs: built.append(real(*args, **kwargs)) or built[-1])
+    monkeypatch.setattr(tmserver.Bottle, 'run', lambda self, **kwargs: None)
+    monkeypatch.setattr(sys, 'argv', ['tmserver', '-d', str(tmp_path / 'tm.db'), *argv])
+    tmserver.main()
+    return built[0]
+
+
+def test_main_takes_the_token_from_the_environment(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv(TOKEN_ENV, 'from-virtaal')
+
+    server = _main_server(monkeypatch, tmp_path)
+
+    assert server.token == 'from-virtaal'
+    assert 'from-virtaal' not in capsys.readouterr().err
+
+
+def test_main_makes_and_prints_a_token_without_one(monkeypatch, tmp_path, capsys):
+    monkeypatch.delenv(TOKEN_ENV, raising=False)
+
+    server = _main_server(monkeypatch, tmp_path)
+
+    assert len(server.token) >= 32
+    assert capsys.readouterr().err == '%s: %s\n' % (TOKEN_HEADER, server.token)
+    assert _main_server(monkeypatch, tmp_path).token != server.token
+
+
+@pytest.mark.parametrize('bind', ['localhost', '127.0.0.1', '127.0.0.2', '::1'])
+def test_main_answers_only_loopback_names_when_bound_to_loopback(monkeypatch, tmp_path, bind):
+    monkeypatch.setenv(TOKEN_ENV, TOKEN)
+
+    server = _main_server(monkeypatch, tmp_path, '-b', bind)
+
+    assert server.allowed_hosts == {bind}
+
+
+@pytest.mark.parametrize('bind', ['0.0.0.0', '192.168.1.1', 'tm.example.org'])
+def test_main_answers_any_host_name_when_bound_elsewhere(monkeypatch, tmp_path, bind):
+    monkeypatch.setenv(TOKEN_ENV, TOKEN)
+    _resolves_to(monkeypatch, '192.0.2.1')
+
+    server = _main_server(monkeypatch, tmp_path, '-b', bind)
+
+    assert server.allowed_hosts is None
+
+
 def test_main_serves_over_http_as_the_subprocess_localtm_spawns(tmp_path):
     # localtm.py always launches tmserver this way ("-m
     # virtaal.support.tmserver"), never by importing TMServer directly -
@@ -398,9 +589,10 @@ def test_main_serves_over_http_as_the_subprocess_localtm_spawns(tmp_path):
         sys.executable, '-m', 'virtaal.support.tmserver',
         '-b', '127.0.0.1', '-p', str(port), '-d', str(tmp_path / 'tm.db'),
     ]
-    proc = subprocess.Popen(command, env=os.environ.copy())
+    proc = subprocess.Popen(command, env=dict(os.environ, **{TOKEN_ENV: TOKEN}))
     try:
         _wait_for_port(port)
+        assert _status(port, 'GET', '/tmserver/en/fr/unit/owl', token=None) == 403
         _request(port, 'PUT', '/tmserver/en/fr/unit/owl', json.dumps({'source': 'owl', 'target': 'hibou'}))
 
         status, body = _request(port, 'GET', '/tmserver/en/fr/unit/owl')

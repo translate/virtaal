@@ -20,6 +20,8 @@ class TMModel(BaseTMModel):
     default_config = {
         "host" : "localhost",
         "port" : "55555",
+        # What virtaal.support.tmserver prints when it starts.
+        "token" : "",
     }
 
     # INITIALIZERS #
@@ -30,7 +32,7 @@ class TMModel(BaseTMModel):
         url = "http://%s:%s/tmserver" % (self.config["host"], self.config["port"])
 
         from virtaal.support import tmclient
-        self.tmclient = tmclient.TMClient(url)
+        self.tmclient = tmclient.TMClient(url, self.config.get("token"))
         self.tmclient.set_virtaal_useragent()
 
 

@@ -95,12 +95,16 @@ class TMModel(remotetm.TMModel):
         try:
             import subprocess
 
-            from virtaal.support import helperprocess, tmclient
+            from virtaal.support import helperprocess, tmauth, tmclient
 
-            self.tmserver = subprocess.Popen(command, env=helperprocess.env())
+            # In the environment: other users can see a command line.
+            token = tmauth.new_token()
+            env = helperprocess.env()
+            env[tmauth.TOKEN_ENV] = token
+            self.tmserver = subprocess.Popen(command, env=env)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
-            self.tmclient = tmclient.TMClient(url)
+            self.tmclient = tmclient.TMClient(url, token)
         except OSError as e:
             message = "Failed to start TM server: %s" % str(e)
             logging.exception('Failed to start TM server')

@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import functools
+import io
 import os
 
 from virtaal.common import pan_app
@@ -224,6 +225,9 @@ class StoreModel(BaseModel):
         self.nplurals = self._compute_nplurals(self._trans_store)
 
     def save_file(self, filename=None):
+        # ttk's save() truncates the file before a format that can't be
+        # written (Qt .qm) raises, so fail before touching it.
+        self._check_writable()
         self._update_header()
         if filename is None:
             filename = self.filename
@@ -235,6 +239,15 @@ class StoreModel(BaseModel):
         self._edited_units = set()
         self.update_stats()
         self._fill_stats_cache()
+
+    def _check_writable(self):
+        """Raise NotImplementedError if this file's format can't be written."""
+        try:
+            type(self._trans_store)().serialize(io.BytesIO())
+        except NotImplementedError:
+            raise
+        except Exception:
+            pass
 
     def _fill_stats_cache(self):
         if os.path.isfile(self.filename):

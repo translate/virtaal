@@ -119,7 +119,9 @@ class HTTPRequest(GObjectWrapper):
     def _configure_proxy(self):
         # '' connects directly: libcurl would otherwise use the proxy
         # environment variables, and ask the local TM server for full URLs.
-        if proxy_settings.uses_desktop_proxy() and (proxy := proxy_settings.desktop_proxy(self.url)) is not None:
+        if proxy_settings.is_loopback(parse.urlsplit(self.url).hostname):
+            self.curl.setopt(pycurl.PROXY, '')
+        elif proxy_settings.uses_desktop_proxy() and (proxy := proxy_settings.desktop_proxy(self.url)) is not None:
             self.curl.setopt(pycurl.PROXY, proxy)
         else:
             # Proxy: let's be careful to isolate the protocol to ensure that we

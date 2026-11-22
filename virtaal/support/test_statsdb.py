@@ -263,6 +263,31 @@ def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, fresh_caches):
     assert cache.cur.fetchone()[0] == 0
 
 
+def test_an_out_of_date_database_that_cant_be_deleted_falls_back_to_memory(
+        tmp_path, fresh_caches, monkeypatch, caplog):
+    # #4870: Windows refuses to delete it while another process has it open.
+    path = tmp_path / "stats.db"
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+    cache = statsdb.StatsCache(str(path))
+    cache.filestatestats(str(po_file))
+    cache.cur.execute("UPDATE files SET toolkitbuild=0")
+    cache.con.commit()
+    cache.con.close()
+    fresh_caches()
+
+    def unlink(name):
+        raise PermissionError(13, 'The process cannot access the file', name)
+
+    monkeypatch.setattr(statsdb.os, 'unlink', unlink)
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert path.exists()
+    assert [r.getMessage().split(',')[0] for r in caplog.records] == ['Keeping statistics in memory']
+
+
 def _write_truncated_database(path):
     statsdb.StatsCache(str(path)).close()
     data = path.read_bytes()

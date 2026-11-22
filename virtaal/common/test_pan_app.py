@@ -627,10 +627,36 @@ def test_repo_root_resolves_to_the_real_checkout_root():
 def test_name_tolerates_a_missing_pwd_module(monkeypatch):
     import sys
     monkeypatch.setitem(sys.modules, 'pwd', None)  # forces `import pwd` to raise ImportError
+    monkeypatch.setenv('LOGNAME', 'someone')
 
     result = pan_app.name()
 
-    assert result  # falls back to plain getpass.getuser()
+    assert result == 'someone'  # falls back to plain getpass.getuser()
+
+
+def test_name_tolerates_a_user_without_a_passwd_entry(monkeypatch):
+    # Containers, sudo with another user's environment, some LDAP setups.
+    import sys
+    import types
+
+    def getpwnam(name):
+        raise KeyError('getpwnam(): name not found: ' + name)
+
+    monkeypatch.setitem(sys.modules, 'pwd', types.SimpleNamespace(getpwnam=getpwnam))
+    monkeypatch.setenv('LOGNAME', 'nobody-here')
+
+    assert pan_app.name() == 'nobody-here'
+
+
+def test_name_is_empty_when_the_user_name_is_unknown(monkeypatch):
+    import getpass
+
+    def getuser():
+        raise OSError('No username set in the environment')
+
+    monkeypatch.setattr(getpass, 'getuser', getuser)
+
+    assert pan_app.name() == ''
 
 
 # get_locale_lang() #

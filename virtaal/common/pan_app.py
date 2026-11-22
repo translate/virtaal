@@ -233,12 +233,15 @@ def get_locale_lang():
 
 def name():
     import getpass
-    name = getpass.getuser()  # username only
+    try:
+        name = getpass.getuser()  # username only
+    except (ImportError, KeyError, OSError):
+        return ""
     # pwd is only available on UNIX
     try:
         import pwd
         name = pwd.getpwnam(name)[4].split(",")[0]
-    except ImportError as _e:
+    except (ImportError, KeyError):
         pass
     return name or ""
 

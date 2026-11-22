@@ -1869,6 +1869,22 @@ def test_fill_dialog_escapes_a_plain_messages_angle_brackets():
     assert dialog.markup == 'a &lt; b'
 
 
+def test_fill_dialog_escapes_a_plain_messages_ampersand():
+    dialog = _FakeDialogForFill()
+    mainview.fill_dialog(dialog, message='Q&A.po')
+    assert dialog.markup == 'Q&amp;A.po'
+
+
+def test_fill_dialog_replaces_a_reused_dialogs_message_containing_an_ampersand():
+    # The error, prompt and info dialogs are built once and reused.
+    dialog = Gtk.MessageDialog()
+    mainview.fill_dialog(dialog, message='First message')
+    mainview.fill_dialog(dialog, message='Could not open Q&A.po')
+    labels = [child.get_text() for child in dialog.get_message_area().get_children()]
+    assert 'Could not open Q&A.po' in labels
+    dialog.destroy()
+
+
 # open_chooser / save_chooser - real native file-chooser construction #
 
 def test_open_chooser_builds_a_real_native_file_chooser():

@@ -14,7 +14,7 @@ import subprocess
 from contextlib import contextmanager
 from functools import cache, cached_property
 
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
@@ -160,7 +160,7 @@ def fill_dialog(dialog, title='', message='', markup=''):
     if markup:
         dialog.set_markup(markup)
     else:
-        dialog.set_markup(message.replace('<', '&lt;'))
+        dialog.set_markup(GLib.markup_escape_text(message))
 
 
 class EntryDialog(Gtk.Dialog):

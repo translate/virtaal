@@ -629,6 +629,13 @@ def test_on_store_loaded_enables_binary_export_for_a_compressed_po_file(monkeypa
     assert binary_export.sensitive == [True]
 
 
+def _file_uri(path):
+    import os
+
+    from gi.repository import GLib
+    return GLib.filename_to_uri(os.path.abspath(path), None)
+
+
 def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
     from virtaal.views import recent
     added = []
@@ -643,7 +650,7 @@ def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
 
     view._on_store_loaded(store_controller)
 
-    assert added == ['file:///tmp/bundle.zip']
+    assert added == [_file_uri('/tmp/bundle.zip')]
 
 
 def test_on_store_loaded_adds_the_store_filename_even_with_a_stale_uri_set(monkeypatch):
@@ -652,8 +659,6 @@ def test_on_store_loaded_adds_the_store_filename_even_with_a_stale_uri_set(monke
     # own openFile: event) never set self._uri, leaving it stale from
     # whatever a *different*, earlier open last set it to - it must
     # never be trusted here even when it happens to be set (#3863).
-    import os
-
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
@@ -669,27 +674,7 @@ def test_on_store_loaded_adds_the_store_filename_even_with_a_stale_uri_set(monke
 
     view._on_store_loaded(store_controller)
 
-    assert added == ['file://' + os.path.abspath('/tmp/dropped.po')]
-
-
-def test_on_store_loaded_adds_an_extra_leading_slash_on_windows(monkeypatch):
-    import os
-
-    from virtaal.views import recent
-    added = []
-    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
-    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
-    monkeypatch.setattr(platform, 'is_windows', True)
-    view = MainView.__new__(MainView)
-    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
-    view.status_bar = _FakeSensitiveWidget()
-    store_controller = SimpleNamespace(
-        get_store_filename=lambda: 'opened.po', project=None,
-        store=SimpleNamespace(filename='/tmp/opened.po'))
-
-    view._on_store_loaded(store_controller)
-
-    assert added == ['file:///' + os.path.abspath('/tmp/opened.po')]
+    assert added == [_file_uri('/tmp/dropped.po')]
 
 
 # _on_store_saved(): a plain save or a Save As also refreshes the
@@ -709,11 +694,10 @@ def test_on_store_saved_adds_the_bundle_filename_for_a_project(monkeypatch):
 
     view._on_store_saved(store_controller)
 
-    assert added == ['file:///tmp/bundle.zip']
+    assert added == [_file_uri('/tmp/bundle.zip')]
 
 
 def test_on_store_saved_adds_the_current_store_filename(monkeypatch):
-    import os
 
     from virtaal.views import recent
     added = []
@@ -726,24 +710,29 @@ def test_on_store_saved_adds_the_current_store_filename(monkeypatch):
 
     view._on_store_saved(store_controller)
 
-    assert added == ['file://' + os.path.abspath('/tmp/save-as-target.po')]
+    assert added == [_file_uri('/tmp/save-as-target.po')]
 
 
-def test_on_store_saved_adds_an_extra_leading_slash_on_windows(monkeypatch):
-    import os
+@pytest.mark.parametrize('name, uri_name', [
+    ('50% done.po', '50%25%20done.po'),
+    ('a#b.po', 'a%23b.po'),
+    ('%41.po', '%2541.po'),
+])
+def test_on_store_saved_escapes_the_recent_file_uri(monkeypatch, tmp_path, name, uri_name):
+    from gi.repository import GLib
 
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
     monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
-    monkeypatch.setattr(platform, 'is_windows', True)
     view = MainView.__new__(MainView)
-    store_controller = SimpleNamespace(
-        project=None, store=SimpleNamespace(filename='/tmp/save-as-target.po'))
+    path = str(tmp_path / name)
+    store_controller = SimpleNamespace(project=None, store=SimpleNamespace(filename=path))
 
     view._on_store_saved(store_controller)
 
-    assert added == ['file:///' + os.path.abspath('/tmp/save-as-target.po')]
+    assert added[0].endswith('/' + uri_name)
+    assert GLib.filename_from_uri(added[0])[0] == path
 
 
 def test_on_store_saved_notes_the_store_filename_on_mac(monkeypatch):

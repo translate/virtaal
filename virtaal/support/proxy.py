@@ -28,7 +28,7 @@ def desktop_proxy(url):
     if urllib.request.getproxies_environment():
         return None
     # The local TM server, even when the desktop lists no exceptions.
-    if _is_loopback(parse.urlsplit(url).hostname):
+    if is_loopback(parse.urlsplit(url).hostname):
         return ''
     try:
         from gi.repository import Gio, GLib
@@ -44,7 +44,7 @@ def desktop_proxy(url):
     return '' if proxy == 'direct://' else proxy
 
 
-def _is_loopback(host):
+def is_loopback(host):
     if host == 'localhost':
         return True
     try:

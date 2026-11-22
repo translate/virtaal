@@ -138,6 +138,18 @@ def test_httprequest_ignores_the_resolver_on_windows_and_macos(monkeypatch):
     assert httpclient.pycurl.PROXY not in request.curl.opts
 
 
+@pytest.mark.parametrize('desktop', [True, False])
+@pytest.mark.parametrize('url', ['http://localhost:55555/tm', 'http://127.0.0.1:55555/tm', 'http://[::1]:55555/tm'])
+def test_httprequest_connects_directly_to_the_local_tm_server_despite_proxy_variables(linux, monkeypatch, desktop, url):
+    monkeypatch.setattr(proxy, 'uses_desktop_proxy', lambda: desktop)
+    monkeypatch.setenv('http_proxy', 'http://env.example:8080')
+    monkeypatch.setattr(httpclient.pycurl, 'Curl', _RecordingCurl)
+
+    request = httpclient.HTTPRequest(url)
+
+    assert request.curl.opts[httpclient.pycurl.PROXY] == ''
+
+
 @pytest.mark.parametrize('os_name, sys_platform, expected', [
     ('posix', 'linux', True),
     ('posix', 'freebsd14', True),

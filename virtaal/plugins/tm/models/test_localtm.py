@@ -18,6 +18,7 @@ from virtaal.common.platform import Platform
 from virtaal.plugins.tm.models import localtm
 from virtaal.plugins.tm.models.localtm import TMModel, find_free_port
 from virtaal.support import helperprocess
+from virtaal.support.tmauth import TOKEN_ENV
 
 # localtm.test_port is a production function, not a test - even a
 # module-level alias here would make pytest try to collect and run it
@@ -197,15 +198,32 @@ def test_launch_tmserver_starts_the_process_and_builds_a_tmclient(monkeypatch):
             popen_calls.append((command, env))
 
     monkeypatch.setattr('subprocess.Popen', _FakePopen)
-    tmclient_urls = []
-    monkeypatch.setattr('virtaal.support.tmclient.TMClient', lambda url: tmclient_urls.append(url) or 'the-client')
+    tmclients = []
+    monkeypatch.setattr('virtaal.support.tmclient.TMClient', lambda url, token: tmclients.append((url, token)) or 'the-client')
 
     model._launch_tmserver(['the', 'command'], 55555)
 
-    assert popen_calls == [(['the', 'command'], {'PYTHONPATH': '/x'})]
+    [(command, env)] = popen_calls
+    [(url, token)] = tmclients
+    assert command == ['the', 'command']
+    assert env == {'PYTHONPATH': '/x', TOKEN_ENV: token}
+    assert len(token) >= 32
+    assert token not in command
     assert isinstance(model.tmserver, _FakePopen)
-    assert tmclient_urls == ['http://localhost:55555/tmserver']
+    assert url == 'http://localhost:55555/tmserver'
     assert model.tmclient == 'the-client'
+
+
+def test_launch_tmserver_uses_a_new_token_each_time(monkeypatch):
+    model = _model_with_config()
+    monkeypatch.setattr('subprocess.Popen', lambda command, env: None)
+    tokens = []
+    monkeypatch.setattr('virtaal.support.tmclient.TMClient', lambda url, token: tokens.append(token))
+
+    model._launch_tmserver(['the', 'command'], 55555)
+    model._launch_tmserver(['the', 'command'], 55555)
+
+    assert tokens[0] != tokens[1]
 
 
 def test_launch_tmserver_logs_and_reraises_on_oserror(monkeypatch):

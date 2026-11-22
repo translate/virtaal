@@ -99,8 +99,16 @@ class TestTMStartup(TestScaffolding):
         model = self._controller('remotetm').plugin_controller.plugins['remotetm']
 
         assert model.tmclient.base_url == 'http://tm.example.org:8080/tmserver'
+        assert model.tmclient.headers is None
         assert model.source_lang == self.lang_controller.source_lang.code
         assert model.target_lang == self.lang_controller.target_lang.code
+
+    def test_remote_tm_model_sends_the_configured_token(self):
+        (self.config_dir / 'tm.ini').write_text('[remotetm]\nhost = tm.example.org\ntoken = abc\n')
+
+        model = self._controller('remotetm').plugin_controller.plugins['remotetm']
+
+        assert model.tmclient.headers == ['X-Virtaal-TM-Token: abc']
 
     def test_local_tm_model_starts_its_server_on_the_configured_database(self):
         (self.config_dir / 'tm.ini').write_text('[localtm]\ntmdb = memory.db\n')

@@ -277,3 +277,36 @@ def test_a_reply_that_is_not_json_is_dropped_without_raising(monkeypatch, reply)
     handler(requests[0], reply)  # must not raise
 
     assert calls == []
+
+
+_EVERY_REQUEST = [
+    lambda client: client.translate_unit('hello', 'en', 'af'),
+    lambda client: client.add_unit({'source': 'hello', 'target': 'hallo'}, 'en', 'af'),
+    lambda client: client.update_unit({'source': 'hello', 'target': 'hallo'}, 'en', 'af'),
+    lambda client: client.forget_unit('hello', 'en', 'af'),
+    lambda client: client.get_store_stats(_FakeStore('a.po')),
+    lambda client: client.upload_store(_FakeStore('a.po'), 'en', 'af'),
+    lambda client: client.add_store('a.po', [], 'en', 'af'),
+    lambda client: client.forget_store(_FakeStore('a.po')),
+]
+
+
+@pytest.mark.parametrize('make_request', _EVERY_REQUEST)
+def test_every_request_sends_the_token(monkeypatch, make_request):
+    client, requests = _make_client(monkeypatch)
+    client.headers = TMClient('http://example.com', 'the-token').headers
+
+    make_request(client)
+
+    assert requests[0].headers == ['X-Virtaal-TM-Token: the-token']
+    assert requests[0].curl.opts[pycurl.FOLLOWLOCATION] == 0
+
+
+@pytest.mark.parametrize('make_request', _EVERY_REQUEST)
+def test_no_token_sends_no_header(monkeypatch, make_request):
+    client, requests = _make_client(monkeypatch)
+
+    make_request(client)
+
+    assert requests[0].headers is None
+    assert pycurl.FOLLOWLOCATION not in requests[0].curl.opts

@@ -86,7 +86,7 @@ def _status(port, method, path, data=None, **kwargs):
         return _request(port, method, path, data, **kwargs)[0]
     except urllib.error.HTTPError as e:
         return e.code
-    except ConnectionResetError:
+    except (ConnectionResetError, ConnectionAbortedError):
         # Windows: the server answered before reading the body.
         if data is None:
             raise

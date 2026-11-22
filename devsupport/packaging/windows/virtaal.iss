@@ -65,8 +65,13 @@ Name: "fileassoc"; Description: "{cm:FileAssocTask}"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 ; 0.7's Python 2 plug-in source, left by an install over 0.7 (#4645).
+; The previous build's translations and GIO modules, so [Files] copies
+; only this build's: a language dropped from po/LINGUAS stays offered
+; otherwise.
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\virtaal_plugins"
+Type: filesandordirs; Name: "{app}\share\locale"
+Type: filesandordirs; Name: "{app}\lib\gio\modules"
 
 [Files]
 Source: "{#DistDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

@@ -14,7 +14,7 @@ import subprocess
 from contextlib import contextmanager
 from functools import cache, cached_property
 
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
@@ -1621,18 +1621,11 @@ class MainView(BaseView):
         from virtaal.views import recent
         if store_controller.project:
             path = store_controller.get_bundle_filename()
-            recent.rm.add_item('file://' + path)
-            if platform.is_mac:
-                _note_recent_document(path)
         else:
             path = os.path.abspath(store_controller.store.filename)
-            if platform.is_windows:
-                url = 'file:///' + path
-            else:
-                url = 'file://' + path
-            recent.rm.add_item(url)
-            if platform.is_mac:
-                _note_recent_document(path)
+        recent.rm.add_item(GLib.filename_to_uri(os.path.abspath(path), None))
+        if platform.is_mac:
+            _note_recent_document(path)
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')

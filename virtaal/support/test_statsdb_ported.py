@@ -20,6 +20,9 @@
 # cache other tests in this same suite share for the rest of the run.
 
 import os.path
+import sys
+import types
+from sqlite3 import dbapi2
 
 from translate.filters import checks
 from translate.storage import factory
@@ -159,3 +162,62 @@ def test_singletonness(tmp_path):
     f2, cache2 = _setup_file_and_db(tmp_path, FR_TERMINOLOGY_EXTRACT)
 
     assert cache1 == cache2
+
+
+def _write_out_of_date_statsfile(path):
+    """Create the statistics file an older translate-toolkit left behind."""
+    con = dbapi2.connect(str(path))
+    con.execute("""CREATE TABLE files(
+        fileid INTEGER PRIMARY KEY AUTOINCREMENT,
+        path VARCHAR NOT NULL UNIQUE,
+        st_mtime INTEGER NOT NULL,
+        st_size INTEGER NOT NULL,
+        toolkitbuild INTEGER NOT NULL);""")
+    con.execute("""INSERT INTO files(path, st_mtime, st_size, toolkitbuild)
+        VALUES ('old.po', 0, 0, 0);""")
+    con.commit()
+    con.close()
+
+
+def test_keeps_an_out_of_date_statsfile_it_cannot_delete(tmp_path, monkeypatch):
+    # translate/virtaal#4870: os.unlink() raises PermissionError (WinError 32)
+    # on Windows while another process - a second Virtaal, or the stats worker -
+    # still has stats.db open, which made opening the first file after an
+    # upgrade fail. The file only holds statistics, so keep using it.
+    statsfile = tmp_path / "stats.db"
+    _write_out_of_date_statsfile(statsfile)
+
+    def unlink_in_use(path):
+        raise PermissionError(
+            13, "The process cannot access the file because it is being used by another process", str(path)
+        )
+
+    monkeypatch.setattr(statsdb.os, "unlink", unlink_in_use)
+
+    cache = statsdb.StatsCache(str(statsfile))
+
+    assert statsfile.exists()
+    assert cache.cur.execute("SELECT count(*) FROM files;").fetchone() == (1,)
+
+
+def test_default_cache_directory_created_by_another_process(tmp_path, monkeypatch):
+    # translate/virtaal#4870: the stats worker creates the directory as well, so
+    # it can exist between the exists() check and the mkdir() call.
+    cachedir = tmp_path / "Translate Toolkit"
+    cachedir.mkdir()
+    real_exists = os.path.exists
+
+    def exists_without_the_created_directory(path):
+        return False if str(path) == str(cachedir) else real_exists(path)
+
+    platform_stub = types.ModuleType("virtaal.common.platform")
+    platform_stub.platform = types.SimpleNamespace(is_windows=True, is_flatpak=False)
+    monkeypatch.setitem(sys.modules, "virtaal.common", types.ModuleType("virtaal.common"))
+    monkeypatch.setitem(sys.modules, "virtaal.common.platform", platform_stub)
+    monkeypatch.setattr(statsdb.os.path, "expanduser", lambda path: str(tmp_path))
+    monkeypatch.setattr(statsdb.os.path, "exists", exists_without_the_created_directory)
+    monkeypatch.setattr(statsdb.StatsCache, "defaultfile", None)
+
+    statsdb.StatsCache()
+
+    assert statsdb.StatsCache.defaultfile == os.path.realpath(str(cachedir / "stats.db"))

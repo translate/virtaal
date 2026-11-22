@@ -319,8 +319,18 @@ class StatsCache:
                     # process may have it open.
                     if val and val[0] is not None and val[0] < toolkitversion.build:
                         cache.con.close()
-                        del cache
-                        os.unlink(statsfile)
+                        try:
+                            os.unlink(statsfile)
+                        except OSError as error:
+                            # Windows refuses to delete a file another process
+                            # still has open (WinError 32): a second Virtaal, or
+                            # the stats worker, may be reading it right now.
+                            # Out-of-date statistics are only a cache, so keep
+                            # using them instead of failing to open the file.
+                            logging.warning("Keeping out-of-date statistics, %s can't be replaced: %s",
+                                            statsfile, error)
+                            connect(cache)
+                            return False
                         return True
                     return False
                 except dbapi2.OperationalError:
@@ -378,8 +388,9 @@ class StatsCache:
                     cachedir = os.path.join(os.environ['XDG_CACHE_HOME'], "translate_toolkit")
                 else:
                     cachedir = os.path.join(userdir, ".translate_toolkit")
-                if not os.path.exists(cachedir):
-                    os.mkdir(cachedir)
+                # The stats worker starts alongside the parent process and
+                # creates the same directory, so it can exist already.
+                os.makedirs(cachedir, exist_ok=True)
                 cls.defaultfile = os.path.realpath(os.path.join(cachedir, "stats.db"))
             statsfile = cls.defaultfile
         else:

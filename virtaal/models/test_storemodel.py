@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
+
 import pytest
 
 from virtaal.models.storemodel import StoreModel
@@ -100,6 +102,34 @@ def test_saving_fills_the_stats_cache_for_the_saved_file(tmp_path, monkeypatch, 
     model.save_file(str(tmp_path / "saved.po"))
 
     assert fills == [str(path), str(tmp_path / "saved.po")]
+
+
+@pytest.fixture
+def qm_copy(tmp_path):
+    import shutil
+    source = os.path.join(os.path.dirname(__file__), '..', '..', 'devsupport', 'testfiles', 'workflow.qm')
+    path = tmp_path / 'workflow.qm'
+    shutil.copy(source, path)
+    return path
+
+
+def test_saving_a_qm_file_leaves_it_untouched(qm_copy):
+    original = qm_copy.read_bytes()
+    model = StoreModel(str(qm_copy), _FakeController())
+
+    with pytest.raises(NotImplementedError):
+        model.save_file()
+
+    assert qm_copy.read_bytes() == original
+
+
+def test_saving_a_qm_file_elsewhere_writes_nothing(qm_copy, tmp_path):
+    model = StoreModel(str(qm_copy), _FakeController())
+
+    with pytest.raises(NotImplementedError):
+        model.save_file(str(tmp_path / 'other.qm'))
+
+    assert not (tmp_path / 'other.qm').exists()
 
 
 def test_update_file_compares_the_old_stats_with_the_merged_ones(tmp_path):
@@ -613,3 +643,14 @@ def test_saving_records_the_projects_checks_style(tmp_path, monkeypatch):
 
     header = StoreModel(str(path), _FakeController())._trans_store.parseheader()
     assert header["X-Project-Style"] == "openoffice"
+
+
+def test_a_format_that_cannot_be_probed_is_assumed_writable(qm_copy):
+    class _NeedsAnArgument:
+        def __init__(self, required):
+            pass
+
+    model = StoreModel(str(qm_copy), _FakeController())
+    model._trans_store = _NeedsAnArgument(None)
+
+    model._check_writable()  # must not raise

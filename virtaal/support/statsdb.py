@@ -362,6 +362,10 @@ class StatsCache:
                             cache = open_database()
                         except (OSError, dbapi2.DatabaseError) as e:
                             cache = in_memory(e)
+                except OSError as e:
+                    # Windows can't delete an out-of-date one while another
+                    # process has it open (#4870).
+                    cache = in_memory(e)
             cls._caches.setdefault(current_thread, {})[statsfile] = cache
             return cache
 
@@ -378,8 +382,8 @@ class StatsCache:
                     cachedir = os.path.join(os.environ['XDG_CACHE_HOME'], "translate_toolkit")
                 else:
                     cachedir = os.path.join(userdir, ".translate_toolkit")
-                if not os.path.exists(cachedir):
-                    os.mkdir(cachedir)
+                # The stats worker may create it at the same time.
+                os.makedirs(cachedir, exist_ok=True)
                 cls.defaultfile = os.path.realpath(os.path.join(cachedir, "stats.db"))
             statsfile = cls.defaultfile
         else:

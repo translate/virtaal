@@ -102,11 +102,7 @@ class TMServer:
         response.content_type = "text/plain"
         candidates = self.tmdb.translate_unit(uid, slang, tlang)
         logger.debug("candidates: %s", candidates)
-        body = json.dumps(candidates, indent=4)
-        callback = request.query.callback
-        if callback:
-            body = f"{callback}({body})"
-        return body
+        return json.dumps(candidates, indent=4)
 
     def add_unit(self, slang, tlang, uid):
         response.content_type = "text/plain"

@@ -205,16 +205,14 @@ def test_update_unit_changes_the_target(tmp_path):
     assert any(m['target'] == 'chien' for m in matches)
 
 
-def test_translate_unit_wraps_response_in_jsonp_callback(tmp_path):
+def test_translate_unit_ignores_a_callback_parameter(tmp_path):
     app, port = _start_server(tmp_path / 'tm.db')
     app.tmdb.add_dict({'source': 'bird', 'target': 'oiseau', 'context': ''}, 'en', 'fr')
 
     status, body = _request(port, 'GET', '/en/fr/unit/bird?callback=myCallback')
 
     assert status == 200
-    assert body.startswith('myCallback(')
-    assert body.endswith(')')
-    assert json.loads(body[len('myCallback('):-1])[0]['target'] == 'oiseau'
+    assert json.loads(body)[0]['target'] == 'oiseau'
 
 
 def test_forget_unit_returns_the_not_implemented_stub(tmp_path):

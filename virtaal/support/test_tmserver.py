@@ -80,14 +80,16 @@ def _request(port, method, path, data=None, headers=None, token=TOKEN):
         return resp.status, resp.read().decode('utf-8')
 
 
-def _status(*args, **kwargs):
+def _status(port, method, path, data=None, **kwargs):
     """The HTTP status of a request that may fail."""
     try:
-        return _request(*args, **kwargs)[0]
+        return _request(port, method, path, data, **kwargs)[0]
     except urllib.error.HTTPError as e:
         return e.code
     except ConnectionResetError:
-        # Windows: the server answered 403 before reading the body.
+        # Windows: the server answered before reading the body.
+        if data is None:
+            raise
         return 403
 
 
@@ -259,7 +261,7 @@ def test_every_route_refuses_a_request_with_an_origin(tmp_path, method, path, da
     assert app.tmdb.translate_unit('cat', 'en', 'fr') == []
 
 
-@pytest.mark.parametrize('host', ['example.com', 'example.com:%d', 'localhost.example.com', '127.0.0.1.example.com', ''])
+@pytest.mark.parametrize('host', ['example.com', 'example.com:%d', 'localhost.example.com', '127.0.0.1.example.com', '[::1', ''])
 def test_a_request_for_another_host_is_refused(tmp_path, host):
     app, port = _start_server(tmp_path / 'tm.db')
     app.tmdb.add_dict({'source': 'cat', 'target': 'chat', 'context': ''}, 'en', 'fr')

@@ -41,6 +41,8 @@ class _FakeRequest:
         self.user_agent = user_agent
         self.params = params
         self.curl = _FakeCurl()
+        # As RESTRequest sets it.
+        self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
         self.connected = []
 
     def connect(self, signal, handler):
@@ -309,4 +311,4 @@ def test_no_token_sends_no_header(monkeypatch, make_request):
     make_request(client)
 
     assert requests[0].headers is None
-    assert pycurl.FOLLOWLOCATION not in requests[0].curl.opts
+    assert requests[0].curl.opts[pycurl.FOLLOWLOCATION] == 1

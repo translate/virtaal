@@ -132,7 +132,10 @@ probe='import os; print("im=" + os.environ.get("GTK_IM_MODULE", "none"))'
 im="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus timeout -k 5 60 "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
 chosen="$(echo "$probe" | WAYLAND_DISPLAY=smoke-test XMODIFIERS=@im=ibus GTK_IM_MODULE=fcitx timeout -k 5 60 "$APPIMAGE" --run-module code 2>&1 | grep -o 'im=[a-z0-9]*')"
 echo "$im, with fcitx chosen: $chosen"
-[ "$im" = im=ibus ] && [ "$chosen" = im=fcitx ]
+if [ "$im" != im=ibus ] || [ "$chosen" != im=fcitx ]; then
+    echo "The AppImage doesn't pick IBus under Wayland, or overrides the user's choice" >&2
+    exit 1
+fi
 
 stage "a browser gets the host's libraries, not the bundle's"
 mkdir -p "$LOGS/bin"

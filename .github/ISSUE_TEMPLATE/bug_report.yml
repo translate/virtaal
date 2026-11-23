@@ -58,10 +58,16 @@ body:
     id: logs
     attributes:
       label: Log output (if relevant)
-      description: >
-        On Windows/macOS frozen builds, `stdout_virtaal.log`/`stderr_virtaal.log`
-        live next to your Virtaal config directory. Paste anything relevant -
-        a real crash/traceback is far more useful here than a description of one.
+      description: |
+        Only the Windows package keeps a log file. Otherwise quit Virtaal, start it again from a terminal with `--debug`, repeat the problem, and copy what the terminal shows.
+
+        - **Windows:** Help > Show Logs, or `stdout_virtaal.log` and `stderr_virtaal.log` in `%APPDATA%\Virtaal`
+        - **macOS:** `/Applications/Virtaal.app/Contents/MacOS/virtaal --debug`
+        - **Flatpak:** `flatpak run io.github.translate.Virtaal --debug`
+        - **AppImage:** `./Virtaal-linux-x86_64.AppImage --debug` or `./Virtaal-linux-aarch64.AppImage --debug`
+        - **Linux (distribution package or source):** `virtaal --debug`
+
+        Paste anything relevant - a real crash/traceback is far more useful here than a description of one.
       render: shell
     validations:
       required: false

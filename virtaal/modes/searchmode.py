@@ -237,8 +237,9 @@ class SearchMode(BaseMode):
             rstring = unit_controller.get_unit_target(match.part_n)
             unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 
-    def update_search(self):
-        self._search_timeout = 0
+    def _search_units(self):
+        """Search the file for the search box's text; return the indexes
+            of the matching units."""
         # See virtaal.support.pogrep_compat for why this isn't imported
         # straight from translate.tools.pogrep.
         from virtaal.support.pogrep_compat import GrepFilter, SearchTimeout
@@ -257,6 +258,11 @@ class SearchMode(BaseMode):
             # nor does one stopped for taking too long (#4692).
             self.filter = GrepFilter(searchstring='', **filter_args)
             self.matches, indexes = [], []
+        return indexes
+
+    def update_search(self):
+        self._search_timeout = 0
+        indexes = self._search_units()
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
 
         self._match_text_cache = {}
@@ -711,11 +717,9 @@ class SearchMode(BaseMode):
     def _refresh_results(self):
         """Re-run the search over the file without moving the cursor."""
         self._search_timeout = 0
-        from virtaal.support.pogrep_compat import SearchTimeout
-        try:
-            self.matches, indexes = self.filter.getmatches(self.storecursor.model.get_units())
-        except (re.error, OverflowError, SearchTimeout):
-            self.matches, indexes = [], []
+        # The box's text, not the last search's: undo can come before
+        # the search for newly typed text has run (#4844).
+        indexes = self._search_units()
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
         self._match_text_cache = {}
         for match in self.matches:

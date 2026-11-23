@@ -178,12 +178,27 @@ class TMController(BaseController):
         if not self.storecursor:
             return
         unit = getattr(self, 'unit', None)
-        if self.view.active and unit is not None and not unit.istranslated():
+        if self.view.active and unit is not None and self._needs_work(unit):
             return self.start_query()
         if getattr(self, '_delay_id', None):
             GLib.source_remove(self._delay_id)
             self._delay_id = None
         self.view.hide()
+
+    def _needs_work(self, unit):
+        # translate-toolkit counts a plural unit as translated once any
+        # form is filled; one with an empty or missing form still needs
+        # suggestions. Only the forms the editor shows count.
+        if not unit.istranslated():
+            return True
+        if not unit.hasplural():
+            return False
+        forms = [str(form) for form in getattr(unit.target, 'strings', [unit.target])]
+        lang_controller = getattr(self.main_controller, 'lang_controller', None)
+        from virtaal.views.unitview import UnitView
+        nplurals = (lang_controller.get_target_nplurals() if lang_controller else 0) or len(forms)
+        shown = min(nplurals, UnitView.MAX_TARGETS)
+        return not all((forms + [''] * shown)[:shown])
 
     def summon(self):
         """Show suggestions for the current unit once, whether or not they
@@ -247,7 +262,7 @@ class TMController(BaseController):
             return
         unit = self.storecursor.deref()
         if getattr(self.view, 'summoned', False) or (
-                self.view.active and unit is not None and not unit.istranslated()):
+                self.view.active and unit is not None and self._needs_work(unit)):
             self.start_query()
 
     def _on_lang_changed(self, lang_controller, code):

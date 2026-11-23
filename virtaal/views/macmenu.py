@@ -5,25 +5,47 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""Menu labels for the macOS menu bar, which has no access keys (#4823).
+"""Labels without bracketed access keys, for macOS (#4823).
 
-gtk-mac-integration titles each native item with gtk_label_get_text(),
-which drops only the underscore, so a bracketed access key such as
-"파일(_F)" shows as "파일(F)"."""
+macOS has no access keys: gtk-mac-integration titles each native menu
+item with gtk_label_get_text(), which drops only the underscore, and
+GTK shows no underline in windows, so "파일(_F)" showed as "파일(F)"."""
 
 import re
 
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 
-# "(_F)" or "（_F）", with an optional space before it, at the end of
-# the label or before a trailing ellipsis or colon. "(__F)" is a
-# literal underscore, not an access key.
-_BRACKET_MNEMONIC = re.compile(r"\s?[(（]_[^\s_)）][)）](?=(?:…|\.\.\.|:|：)?$)")
+# "(_F)" or "（_F）", with an optional space before it or inside the
+# brackets. "(__F)" is a literal underscore, not an access key.
+_BRACKET_MNEMONIC = re.compile(r"\s?[(（]\s*_[^\s_)）]\s*[)）]")
 
 
 def menu_title(label):
-    """C{label} without a bracketed access key, as macOS menus show it."""
-    return _BRACKET_MNEMONIC.sub("", label, count=1)
+    """C{label} without bracketed access keys, as macOS shows it."""
+    return _BRACKET_MNEMONIC.sub("", label)
+
+
+def strip_window_access_keys():
+    """Removes bracketed access keys from every label with an access key,
+        in the windows already open and in every label realized later.
+        Returns the emission hook's id."""
+    hook_id = GObject.add_emission_hook(Gtk.Widget, "realize", _on_realize)
+    for window in Gtk.Window.list_toplevels():
+        _watch_tree(window)
+    return hook_id
+
+
+def _on_realize(widget, *args):
+    if isinstance(widget, Gtk.Label):
+        _watch(widget)
+    return True
+
+
+def _watch_tree(widget):
+    if isinstance(widget, Gtk.Label):
+        _watch(widget)
+    elif isinstance(widget, Gtk.Container):
+        widget.forall(_watch_tree)
 
 
 def strip_bracket_mnemonics(menu_shell):
@@ -64,6 +86,10 @@ def _watch_label(item):
     label = _find_label(item.get_child())
     if label is None:
         return
+    _watch(label)
+
+
+def _watch(label):
     _strip_label(label)
     if not getattr(label, "_virtaal_mac_titles", False):
         label._virtaal_mac_titles = True

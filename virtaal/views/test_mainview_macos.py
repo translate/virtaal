@@ -140,10 +140,14 @@ def test_macos_integration_without_gtk_mac_integration_leaves_the_menu_bar(monke
         return real_require_version(namespace, version)
     monkeypatch.setattr(gi, 'require_version', require_version)
     monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
+    stripped = []
+    monkeypatch.setattr(mainview, 'strip_window_access_keys', lambda: stripped.append(True))
     view = mock.Mock()
 
     with caplog.at_level(logging.DEBUG):
         mainview.MainView._setup_macos_integration(view)
 
     assert not view.menubar.hide.called
+    # Window labels lose bracketed access keys all the same (#4823).
+    assert stripped == [True]
     assert 'GtkosxApplication not found' in caplog.text

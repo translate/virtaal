@@ -389,6 +389,111 @@ def test_ensure_dev_locale_installed_is_a_noop_when_already_present(tmp_path, mo
     assert (existing / 'virtaal.mo').read_bytes() == b'already-there'
 
 
+def _write_po(path, translation):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+        'msgid "Hello"\nmsgstr "%s"\n' % translation,
+        encoding='utf-8')
+
+
+def _installed_hello(localedir):
+    import gettext
+    with open(localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo', 'rb') as f:
+        return gettext.GNUTranslations(f).gettext('Hello')
+
+
+def test_ensure_dev_locale_installed_rebuilds_when_the_po_is_newer(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    po = repo_root / 'po' / 'xx.po'
+    _write_po(po, 'Kgotso')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    target = localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo'
+
+    _write_po(po, 'Dumela')
+    os.utime(po, (os.path.getmtime(target) - 5,) * 2)
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    assert _installed_hello(localedir) == 'Kgotso'
+
+    os.utime(po, (os.path.getmtime(target) + 5,) * 2)
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    assert _installed_hello(localedir) == 'Dumela'
+
+
+def test_ensure_dev_locale_installed_drops_gettexts_cached_catalog(tmp_path, monkeypatch):
+    import gettext
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    po = repo_root / 'po' / 'xx.po'
+    _write_po(po, 'Kgotso')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    assert gettext.translation('virtaal', str(localedir), ['xx']).gettext('Hello') == 'Kgotso'
+
+    _write_po(po, 'Dumela')
+    target = localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo'
+    os.utime(po, (os.path.getmtime(target) + 5,) * 2)
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    assert gettext.translation('virtaal', str(localedir), ['xx']).gettext('Hello') == 'Dumela'
+
+
+def test_ensure_dev_locale_installed_compiles_the_po_over_an_older_repo_mo(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'mo' / 'xx').mkdir(parents=True)
+    stale_mo = repo_root / 'mo' / 'xx' / 'virtaal.mo'
+    stale_mo.write_bytes(b'stale')
+    po = repo_root / 'po' / 'xx.po'
+    _write_po(po, 'Kgotso')
+    os.utime(po, (os.path.getmtime(stale_mo) + 5,) * 2)
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    assert _installed_hello(localedir) == 'Kgotso'
+
+
+def test_ensure_dev_locale_installed_leaves_nothing_behind_on_a_failed_copy(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'mo' / 'xx').mkdir(parents=True)
+    (repo_root / 'mo' / 'xx' / 'virtaal.mo').write_bytes(b'fake-mo-content')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    def broken_copy(src, dst):
+        with open(dst, 'wb') as f:
+            f.write(b'partial')
+        raise OSError('disk full')
+    monkeypatch.setattr(pan_app.shutil, 'copyfile', broken_copy)
+
+    with pytest.raises(OSError):
+        pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    assert os.listdir(localedir / 'xx' / 'LC_MESSAGES') == []
+
+
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
+def test_ensure_dev_locale_installed_keeps_the_umask_permissions(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    _write_po(repo_root / 'po' / 'xx.po', 'Kgotso')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+    old_umask = os.umask(0o022)
+    try:
+        pan_app._ensure_dev_locale_installed('xx', str(localedir))
+    finally:
+        os.umask(old_umask)
+
+    assert os.stat(localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo').st_mode & 0o777 == 0o644
+
+
 @pytest.mark.parametrize('packaging', ['is_frozen', 'is_flatpak'])
 def test_ensure_dev_locale_installed_does_nothing_when_packaged(tmp_path, monkeypatch, packaging):
     monkeypatch.setattr(pan_app.platform, 'is_frozen', False)

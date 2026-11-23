@@ -48,9 +48,21 @@ def _strip_item(item):
     item.connect("notify::submenu", lambda item, pspec: strip_bracket_mnemonics(item.get_submenu()))
 
 
+def _find_label(widget):
+    if isinstance(widget, Gtk.Label):
+        return widget
+    if isinstance(widget, Gtk.Container):
+        for child in widget.get_children():
+            label = _find_label(child)
+            if label is not None:
+                return label
+    return None
+
+
 def _watch_label(item):
-    label = item.get_child()
-    if not isinstance(label, Gtk.Label):
+    # gtk-mac-integration also takes the first label below the item.
+    label = _find_label(item.get_child())
+    if label is None:
         return
     _strip_label(label)
     if not getattr(label, "_virtaal_mac_titles", False):

@@ -89,3 +89,26 @@ def test_strip_bracket_mnemonics_leaves_labels_without_access_keys():
     strip_bracket_mnemonics(menubar)
 
     assert _titles(menubar) == ['notes(_F)']
+
+
+def test_strip_bracket_mnemonics_finds_a_label_inside_the_item():
+    # Stock items such as ja "開く(_O)" come from GTK's own catalog.
+    stock = Gtk.ImageMenuItem(label='gtk-open', use_stock=True)
+    boxed = Gtk.MenuItem()
+    box = Gtk.Box()
+    box.add(Gtk.Image())
+    box.add(Gtk.AccelLabel.new('파일(_F)'))
+    box.get_children()[1].set_use_underline(True)
+    boxed.add(box)
+    menu = Gtk.Menu()
+    menu.append(stock)
+    menu.append(boxed)
+    strip_bracket_mnemonics(menu)
+    stock_label = stock.get_child()
+    if not isinstance(stock_label, Gtk.Label):
+        stock_label = [w for w in stock_label.get_children() if isinstance(w, Gtk.Label)][0]
+
+    stock_label.set_label('開く(_O)')
+
+    assert stock_label.get_label() == '開く'
+    assert box.get_children()[1].get_label() == '파일'

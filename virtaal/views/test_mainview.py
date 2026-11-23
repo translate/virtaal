@@ -3015,7 +3015,8 @@ menu_file.append(Gtk.MenuItem.new_with_mnemonic('열기(_O)…'))
 menubar.append(menuitem_file)
 window.show_all()
 view = mock.Mock(menubar=menubar, main_window=window)
-view.gui.get_object.side_effect = lambda name: Gtk.MenuItem()
+mnu_prefs = Gtk.ImageMenuItem(label='gtk-preferences', use_stock=True)
+view.gui.get_object.side_effect = lambda name: mnu_prefs if name == 'mnu_prefs' else Gtk.MenuItem()
 mainview.MainView._setup_macos_integration(view)
 # A plug-in's item, added after ready().
 menu_file.append(Gtk.MenuItem.new_with_mnemonic('도구(_T)'))
@@ -3043,8 +3044,9 @@ def test_native_menu_bar_titles_have_no_bracketed_access_keys():
     env = dict(os.environ, PYTHONPATH=repo_root)
 
     result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_NATIVE_MENU_TITLES],
-                            env=env, capture_output=True, text=True, check=True, timeout=60)
+                            env=env, capture_output=True, text=True, timeout=60)
 
+    assert result.returncode == 0, result.stderr
     assert result.stdout.split('\n')[:3] == ['파일', '열기…', '도구']
 
 

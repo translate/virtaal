@@ -173,9 +173,15 @@ class HTTPRequest(GObjectWrapper):
         elif self.status >= 400 and self.status < 500:
             # 4xx client error
             self.emit("http-client-error", self.status)
-        elif self.status >= 500 and self.status < 600:
-            # 5xx server error
+        else:
+            # 5xx server error, or no usable HTTP response (0, 1xx)
             self.emit("http-server-error", self.status)
+
+    def handle_failure(self):
+        """called when the request got no response (DNS, connection,
+            timeout or TLS failure, or it was never queued)"""
+        self.status = 0
+        self.emit("http-server-error", self.status)
 
 
 class RESTRequest(HTTPRequest):
@@ -213,6 +219,8 @@ class HTTPClient:
         """add a request to the queue"""
         # First ensure that we're not piling up on unanswered requests:
         if len(self.requests) > 15:
+            # From the main loop: get() connects the callbacks after add().
+            GLib.idle_add(self._fail_unqueued, request)
             return
         self.curl.add_handle(request.curl)
         self.requests.add(request)
@@ -223,6 +231,11 @@ class HTTPClient:
         if self.running: return
         GLib.timeout_add(100, self.perform)
         self.running = True
+
+    def _fail_unqueued(self, request):
+        logging.debug('%s: too many requests pending', loggable_url(request.url))
+        request.handle_failure()
+        return False
 
     def close_request(self, handle):
         """finalize a successful request"""
@@ -236,17 +249,17 @@ class HTTPClient:
         self.curl.remove_handle(fail_tuple[0])
         self.requests.remove(fail_tuple[0].request)
         logging.debug('%s: %s', loggable_url(fail_tuple[0].request.url), fail_tuple[2])
+        fail_tuple[0].request.handle_failure()
 
     def perform(self):
         """main event loop function, non blocking execution of all queued requests"""
         ret, num_handles = self.curl.perform()
-        if ret != pycurl.E_CALL_MULTI_PERFORM and num_handles == 0:
-            self.running = False
         num, completed, failed = self.curl.info_read()
         [self.close_request(com) for com in completed]
         [self.close_failed_request(fail) for fail in failed]
-        if not self.running:
-            #we are done with this batch what do we do?
+        # A callback above may have added a request: this timeout keeps going.
+        if ret != pycurl.E_CALL_MULTI_PERFORM and num_handles == 0 and not self.requests:
+            self.running = False
             return False
         return True
 

@@ -8,6 +8,7 @@
 import builtins
 import logging
 import os
+import socket
 import sys
 from types import SimpleNamespace
 
@@ -99,8 +100,24 @@ def test_handle_result_emits_http_server_error_for_5xx():
     assert _signal_after_status(500) == ['http-server-error']
 
 
-def test_handle_result_emits_nothing_for_an_unrecognized_status():
-    assert _signal_after_status(0) == []
+def test_handle_result_reports_no_http_status_as_an_error():
+    assert _signal_after_status(0) == ['http-server-error']
+
+
+def test_handle_result_reports_an_informational_status_as_an_error():
+    assert _signal_after_status(101) == ['http-server-error']
+
+
+def test_handle_failure_reports_status_0_as_an_error():
+    req = HTTPRequest('http://example.com')
+    fired = []
+    for signal in ('http-success', 'http-redirect', 'http-client-error', 'http-server-error'):
+        req.connect(signal, lambda r, arg, signal=signal: fired.append((signal, arg)))
+
+    req.handle_failure()
+
+    assert fired == [('http-server-error', 0)]
+    assert req.status == 0
 
 
 def test_get_effective_url_reads_it_from_curl():
@@ -146,12 +163,18 @@ class _FakeRequest:
     def __init__(self, curl=None, handle_result=None, url='http://example.com'):
         self.curl = curl
         self.url = url
+        self.failures = 0
         if handle_result is not None:
             self.handle_result = handle_result
+
+    def handle_failure(self):
+        self.failures += 1
 
 
 def test_add_declines_once_the_queue_is_full(monkeypatch):
     monkeypatch.setattr(GLib, 'timeout_add', lambda interval, func: None)
+    idle = []
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: idle.append((func, args)))
     client = _client()
     client.requests = {object() for _ in range(16)}
     request = _FakeRequest(curl='handle')
@@ -160,6 +183,11 @@ def test_add_declines_once_the_queue_is_full(monkeypatch):
 
     assert request not in client.requests
     assert client.curl.added == []
+    # Reported from the main loop: get() connects the callbacks after add().
+    assert request.failures == 0
+    for func, args in idle:
+        assert func(*args) is False
+    assert request.failures == 1
 
 
 def test_add_queues_the_request_and_starts_the_pump(monkeypatch):
@@ -237,6 +265,89 @@ def test_perform_closes_a_failed_request_without_calling_handle_result():
 
     assert request not in client.requests
     assert handle in client.curl.removed
+    assert request.failures == 1
+
+
+def test_a_connection_failure_reaches_the_error_callback_once():
+    client = _client()
+    client.running = True
+    client.add = lambda request: client.requests.add(request)
+    successes = []
+    errors = []
+    client.get('http://example.com', callback=lambda r, v: successes.append(v),
+               error_callback=lambda r, status: errors.append(status))
+    (request,) = client.requests
+    handle = SimpleNamespace(request=request)
+    client.curl.info_read_result = (0, [], [(handle, pycurl.E_COULDNT_RESOLVE_HOST, 'Could not resolve host')])
+
+    client.perform()
+
+    assert errors == [0]
+    assert successes == []
+    assert request not in client.requests
+
+
+def test_a_refused_connection_reaches_the_error_callback(monkeypatch):
+    monkeypatch.setattr(httpclient.proxy_settings, 'uses_desktop_proxy', lambda: False)
+    monkeypatch.setattr(httpclient.request, 'getproxies', lambda: {})
+    # A port nothing listens on: curl fails without any HTTP response.
+    with socket.socket() as sock:
+        sock.bind(('127.0.0.1', 0))
+        port = sock.getsockname()[1]
+    client = HTTPClient()
+    loop = GLib.MainLoop()
+    errors = []
+    client.get('http://127.0.0.1:%d/' % port, callback=lambda r, v: loop.quit(),
+               error_callback=lambda r, status: (errors.append(status), loop.quit()))
+    GLib.timeout_add(5000, loop.quit)
+
+    loop.run()
+
+    assert errors == [0]
+    assert client.requests == set()
+
+
+def test_an_error_callback_can_retry_straight_away(monkeypatch):
+    monkeypatch.setattr(GLib, 'timeout_add', lambda interval, func: None)
+    client = _client()
+    client.running = True
+    client.requests = {object() for _ in range(15)}
+    retried = []
+
+    def retry(request, status):
+        if not retried:
+            retried.append(status)
+            client.get('http://example.com/again', callback=None)
+
+    client.get('http://example.com', callback=None, error_callback=retry)
+    request = next(r for r in client.requests if isinstance(r, HTTPRequest))
+    handle = SimpleNamespace(request=request)
+    client.curl.info_read_result = (0, [], [(handle, pycurl.E_COULDNT_CONNECT, 'refused')])
+
+    assert client.perform() is True
+
+    assert retried == [0]
+    assert any(isinstance(r, HTTPRequest) and r.url == 'http://example.com/again'
+               for r in client.requests)
+
+
+def test_a_request_added_from_a_callback_keeps_the_current_pump(monkeypatch):
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add', lambda interval, func: scheduled.append(func))
+    client = _client()
+    client.running = True
+    client.get('http://example.com', callback=None,
+               error_callback=lambda r, status: client.get('http://example.com/again', callback=None))
+    (request,) = client.requests
+    client.curl.info_read_result = (0, [], [(SimpleNamespace(request=request), pycurl.E_COULDNT_CONNECT, 'refused')])
+
+    assert client.perform() is True
+    assert scheduled == []
+
+    (retry,) = client.requests
+    client.curl.info_read_result = (0, [], [(SimpleNamespace(request=retry), pycurl.E_COULDNT_CONNECT, 'refused')])
+    assert client.perform() is False
+    assert client.running is False
 
 
 def test_close_failed_request_logs_the_url_alongside_the_error(caplog):
@@ -420,6 +531,9 @@ def test_a_failed_request_logs_no_api_key(caplog):
 
     class _Request:
         url = 'https://example.com/v2?api_key=SECRET123'
+
+        def handle_failure(self):
+            pass
 
     request = _Request()
     handle = SimpleNamespace(request=request)

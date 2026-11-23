@@ -83,27 +83,32 @@ class TerminologyModel(BaseTerminologyModel):
     def init_matcher(self, filename=''):
         """
         Initialize the matcher to be used by the C{TerminologyPlaceable} parser.
+        Return False if C{filename} exists but can't be loaded.
         """
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+        self.store = None
         if os.path.isfile(filename):
             logging.debug('Loading terminology from %s' % (filename))
-            if filename.lower().endswith('.tbx'):
-                # Pontoon's export is the TBX-Basic dialect, which
-                # translate-toolkit's own tbx.py doesn't parse (it
-                # targets the older MARTIF-rooted TBX) - see this
-                # class's own docstring. Parsed directly here instead.
-                with open(filename, 'rb') as f:
-                    self.store = _parse_tbx_basic(f.read())
-            else:
-                self.store = factory.getobject(filename)
-        else:
+            try:
+                if filename.lower().endswith('.tbx'):
+                    # Pontoon exports TBX-Basic, which translate-toolkit's
+                    # MARTIF-based tbx.py doesn't parse.
+                    with open(filename, 'rb') as f:
+                        self.store = _parse_tbx_basic(f.read(), filename)
+                else:
+                    self.store = factory.getobject(filename)
+            except Exception:
+                logging.exception('Skipping terminology file "%s"' % (filename))
+        loaded = self.store is not None or not os.path.isfile(filename)
+        if self.store is None:
             logging.debug('Creating empty terminology store')
             self.store = TranslationStore()
         self.store.makeindex()
         self.matcher = terminologymatcher(self.store)
         TerminologyPlaceable.matchers.append(self.matcher)
+        return loaded
 
 
     # ACCESSORS #
@@ -173,7 +178,8 @@ class TerminologyModel(BaseTerminologyModel):
 
         if not self.is_update_needed(srclang, tgtlang):
             logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
-            self.init_matcher(self._term_path(srclang, tgtlang))
+            if not self._load_cached_file(srclang, tgtlang):
+                self._check_for_update(srclang, tgtlang)
             return
 
         self._update_term_file(srclang, tgtlang)
@@ -312,13 +318,20 @@ class TerminologyModel(BaseTerminologyModel):
         """Update the terminology file for the given languages."""
         # The cached copy until a download replaces it: a failed one may
         # never call back.
-        localfile = self._term_path(srclang, tgtlang)
-        try:
-            self.init_matcher(localfile or '')
-        except Exception:
-            logging.debug('Could not load %s' % (localfile), exc_info=True)
-            self.init_matcher()
+        self._load_cached_file(srclang, tgtlang)
         self._check_for_update(srclang, tgtlang)
+
+    def _load_cached_file(self, srclang, tgtlang):
+        """Load the cached file for the language pair. If it can't be
+            loaded, forget its ETag, so the next download replaces it
+            instead of being told it is unchanged. Return whether it
+            loaded."""
+        localfile = self._term_path(srclang, tgtlang)
+        if self.init_matcher(localfile or ''):
+            return True
+        for key in (os.path.basename(localfile),):
+            self.config.pop(key, None)
+        return False
 
 
     # SIGNAL HANDLERS #
@@ -372,20 +385,21 @@ def _is_tbx(content):
     return qname.namespace == _TBX_BASIC_NS and qname.localname == 'tbx'
 
 
-def _parse_tbx_basic(content):
+def _parse_tbx_basic(content, filename=''):
     """Parse a TBX-Basic (ISO 30042:ed-2) document's bytes into a plain
         C{TranslationStore}, one unit per concept entry that has both an
         English source term and a target-language term. Malformed or
         genuinely empty input (e.g. a locale Pontoon has no terminology
         for - a valid header with a completely empty <body>) both just
         produce an empty store, matching this model's existing "nothing
-        to show" behaviour rather than raising."""
+        to show" behaviour rather than raising; C{filename} names the
+        malformed file in the log."""
     store = TranslationStore()
     from lxml import etree
     try:
         root = etree.fromstring(content)
     except etree.Error as e:
-        logging.debug('Could not parse TBX-Basic content: %s' % (e,))
+        logging.warning('Skipping terminology file "%s": %s' % (filename, e))
         return store
 
     ns = {'t': _TBX_BASIC_NS, 'xml': _XML_NS}

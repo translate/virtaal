@@ -267,12 +267,32 @@ def test_update_terms_reuses_a_fresh_local_file_without_fetching(tmp_path):
     (tmp_path / 'en__af.tbx').write_text('')
     model = _model(tmp_path, source_lang='en', target_lang='af')
     matched = []
-    model.init_matcher = lambda filename='': matched.append(filename)
+    model.init_matcher = lambda filename='': matched.append(filename) or True
     model._update_term_file = lambda *a: pytest.fail('should not fetch a fresh file')
 
     model.update_terms('en', 'af')
 
     assert matched == [str(tmp_path / 'en__af.tbx')]
+
+
+def test_update_terms_refetches_a_fresh_file_that_does_not_load(tmp_path, monkeypatch):
+    from virtaal.plugins.terminology.models import pontoon
+
+    (tmp_path / 'en__af.tbx').write_bytes(_tbx())
+
+    def unreadable(content, filename=''):
+        raise PermissionError(13, 'Permission denied', filename)
+
+    monkeypatch.setattr(pontoon, '_parse_tbx_basic', unreadable)
+    model = _model(tmp_path, source_lang='en', target_lang='af', config={'en__af.tbx': 'abc'})
+    fetched = []
+    model._check_for_update = lambda srclang, tgtlang: fetched.append((srclang, tgtlang))
+
+    model.update_terms('en', 'af')
+
+    assert fetched == [('en', 'af')]
+    assert model.config == {}  # no ETag, so the server can't answer 304
+    assert model.store.getunits() == []
 
 
 def test_update_terms_fetches_when_the_local_file_is_stale_or_missing(tmp_path):

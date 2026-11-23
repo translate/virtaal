@@ -63,19 +63,26 @@ class TerminologyModel(BaseTerminologyModel):
     def init_matcher(self, filename=''):
         """
         Initialize the matcher to be used by the C{TerminologyPlaceable} parser.
+        Return False if C{filename} exists but can't be loaded.
         """
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+        self.store = None
         if os.path.isfile(filename):
             logging.debug('Loading terminology from %s' % (filename))
-            self.store = factory.getobject(filename)
-        else:
+            try:
+                self.store = factory.getobject(filename)
+            except Exception:
+                logging.exception('Skipping terminology file "%s"' % (filename))
+        loaded = self.store is not None or not os.path.isfile(filename)
+        if self.store is None:
             logging.debug('Creating empty terminology store')
             self.store = TranslationStore()
         self.store.makeindex()
         self.matcher = terminologymatcher(self.store)
         TerminologyPlaceable.matchers.append(self.matcher)
+        return loaded
 
 
     # ACCESSORS #
@@ -134,7 +141,8 @@ class TerminologyModel(BaseTerminologyModel):
 
         if not self.is_update_needed(srclang, tgtlang):
             logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
-            self.init_matcher(self._term_path(srclang, tgtlang))
+            if not self._load_cached_file(srclang, tgtlang):
+                self._check_for_update(srclang, tgtlang)
             return
 
         self._update_term_file(srclang, tgtlang)
@@ -259,13 +267,20 @@ class TerminologyModel(BaseTerminologyModel):
         """Update the terminology file for the given languages."""
         # The cached copy until a download replaces it: a failed one may
         # never call back.
-        localfile = self._term_path(srclang, tgtlang)
-        try:
-            self.init_matcher(localfile or '')
-        except Exception:
-            logging.debug('Could not load %s' % (localfile), exc_info=True)
-            self.init_matcher()
+        self._load_cached_file(srclang, tgtlang)
         self._check_for_update(srclang, tgtlang)
+
+    def _load_cached_file(self, srclang, tgtlang):
+        """Load the cached file for the language pair. If it can't be
+            loaded, forget its ETag, so the next download replaces it
+            instead of being told it is unchanged. Return whether it
+            loaded."""
+        localfile = self._term_path(srclang, tgtlang)
+        if self.init_matcher(localfile or ''):
+            return True
+        for key in (localfile, os.path.abspath(localfile)):
+            self.config.pop(key, None)
+        return False
 
 
     # SIGNAL HANDLERS #

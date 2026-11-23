@@ -300,11 +300,28 @@ def test_update_terms_skips_the_download_when_not_needed(monkeypatch, tmp_path):
     fake_self.target_lang = 'fr'
     open(os.path.join(str(tmp_path), 'en__fr.po'), 'w').close()
     calls = []
-    monkeypatch.setattr(fake_self, 'init_matcher', lambda f: calls.append(f))
+    monkeypatch.setattr(fake_self, 'init_matcher', lambda f: calls.append(f) or True)
 
     TerminologyModel.update_terms(fake_self, 'en', 'fr')
 
     assert calls == [os.path.join(str(tmp_path), 'en__fr.po')]
+
+
+def test_update_terms_refetches_a_fresh_file_that_does_not_load(monkeypatch, tmp_path):
+    fake_self = _fake_self()
+    fake_self.source_lang = 'en'
+    fake_self.target_lang = 'fr'
+    localfile = os.path.join(str(tmp_path), 'en__fr.po')
+    open(localfile, 'wb').write(b'<html>Please log in</html>')
+    fake_self.config = {localfile: 'abc'}
+    fetched = []
+    monkeypatch.setattr(fake_self, '_check_for_update', lambda s, t: fetched.append((s, t)))
+
+    TerminologyModel.update_terms(fake_self, 'en', 'fr')
+
+    assert fetched == [('en', 'fr')]
+    assert fake_self.config == {}  # no ETag, so the server can't answer 304
+    assert fake_self.store.getunits() == []
 
 
 def test_update_terms_downloads_when_needed(monkeypatch, tmp_path):

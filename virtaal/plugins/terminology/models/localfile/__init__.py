@@ -111,8 +111,9 @@ class TerminologyModel(BaseTerminologyModel):
         for filename in self.config['files']:
             if not filename:
                 continue
-            if not os.path.isfile(filename):
-                logging.debug('Not a file: "%s"' % (filename))
-            self.stores.append(factory.getobject(filename))
+            try:
+                self.stores.append(factory.getobject(filename))
+            except Exception:
+                logging.exception('Skipping terminology file "%s"' % (filename))
         self.matcher = terminologymatcher(self.stores)
         TerminologyPlaceable.matchers.append(self.matcher)

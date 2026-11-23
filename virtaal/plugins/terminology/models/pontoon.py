@@ -8,6 +8,7 @@
 import logging
 import os
 import time
+from urllib.parse import quote
 
 from translate.lang.data import normalize_code
 from translate.search.match import terminologymatcher
@@ -16,6 +17,7 @@ from translate.storage.base import TranslationStore
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
+from virtaal.common.langpath import is_safe_lang_code, path_inside
 from virtaal.support.httpclient import HTTPClient
 
 from .basetermmodel import BaseTerminologyModel
@@ -114,6 +116,8 @@ class TerminologyModel(BaseTerminologyModel):
             # Pontoon only ever serves .tbx - see class docstring. 'po'
             # was the old terminology.locamotion.org source's format.
             ext = 'tbx'
+        if not (is_safe_lang_code(srclang) and is_safe_lang_code(tgtlang)):
+            return None
 
         base = '%s__%s' % (srclang, tgtlang)
         for filename in os.listdir(self.TERMDIR):
@@ -121,6 +125,20 @@ class TerminologyModel(BaseTerminologyModel):
                 return filename
         return base + os.extsep + ext
     curr_term_filename = property(_get_curr_term_filename)
+
+    def _term_path(self, srclang=None, tgtlang=None, ext=None):
+        """The cache file for this language pair in TERMDIR, or None if
+            a language code can't be part of a file name."""
+        filename = self._get_curr_term_filename(srclang, tgtlang, ext)
+        if filename is None:
+            return None
+        return path_inside(self.TERMDIR, filename)
+
+    def _init_matcher_for(self, srclang, tgtlang, filename=''):
+        """init_matcher(filename), unless the languages changed after
+            srclang/tgtlang were requested."""
+        if srclang is None or (srclang, tgtlang) == (self.source_lang, self.target_lang):
+            self.init_matcher(filename)
 
 
     # METHODS #
@@ -147,39 +165,43 @@ class TerminologyModel(BaseTerminologyModel):
             self.init_matcher()
             return
 
+        if self._term_path(srclang, tgtlang) is None:
+            logging.debug('No terminology file name for (%r, %r)' % (srclang, tgtlang))
+            self.init_matcher()
+            return
+
         if not self.is_update_needed(srclang, tgtlang):
             logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
-            localfile = self._get_curr_term_filename(srclang, tgtlang)
-            localfile = os.path.join(self.TERMDIR, localfile)
-            self.init_matcher(localfile)
+            self.init_matcher(self._term_path(srclang, tgtlang))
             return
 
         self._update_term_file(srclang, tgtlang)
 
     def is_update_needed(self, srclang, tgtlang):
-        localfile = self._get_curr_term_filename(srclang, tgtlang)
-        localfile = os.path.join(self.TERMDIR, localfile)
-        if not os.path.isfile(localfile):
+        localfile = self._term_path(srclang, tgtlang)
+        if localfile is None or not os.path.isfile(localfile):
             return True
         stats = os.stat(localfile)
         from datetime import datetime
         return (time.mktime(datetime.now().timetuple()) - stats.st_mtime) > THREE_DAYS
 
     def _check_for_update(self, srclang, tgtlang):
-        filename = self._get_curr_term_filename(srclang, tgtlang)
-        localfile = os.path.join(self.TERMDIR, filename)
+        localfile = self._term_path(srclang, tgtlang)
+        if localfile is None:
+            return
+        filename = os.path.basename(localfile)
         etag = None
         if os.path.isfile(localfile) and filename in self.config:
             etag = self.config[filename]
 
         url = self._l10n_URL % {
-            'srclang': _pontoon_locale_code(srclang),
-            'tgtlang': _pontoon_locale_code(tgtlang),
+            'srclang': quote(_pontoon_locale_code(srclang), safe=''),
+            'tgtlang': quote(_pontoon_locale_code(tgtlang), safe=''),
         }
 
         if not os.path.isfile(localfile):
             localfile = None
-        callback = lambda *args: self._process_header(localfile=localfile, *args)
+        callback = lambda *args: self._process_header(*args, localfile=localfile, srclang=srclang, tgtlang=tgtlang)
 
         if logging.root.level != logging.DEBUG:
             self.client.get(url, callback, etag, download=True)
@@ -217,7 +239,7 @@ class TerminologyModel(BaseTerminologyModel):
             pass
         return None
 
-    def _process_header(self, request, result, localfile=None):
+    def _process_header(self, request, result, localfile=None, srclang=None, tgtlang=None):
         if request.status == 304:
             logging.debug('ETag matches for file %s :)' % (localfile))
         elif request.status == 200:
@@ -228,8 +250,10 @@ class TerminologyModel(BaseTerminologyModel):
                 if ext is None:
                     logging.debug('Unable to determine extension for store. Defaulting to "po".')
                     ext = 'po'
-                localfile = self._get_curr_term_filename(ext=ext)
-                localfile = os.path.join(self.TERMDIR, localfile)
+                localfile = self._term_path(srclang, tgtlang, ext=ext)
+                if localfile is None:
+                    self._init_matcher_for(srclang, tgtlang)
+                    return
             logging.debug('Saving to %s' % (localfile))
             # result is real bytes (httpclient.py's BytesIO().getvalue()),
             # not str - 'wb' preserves it exactly regardless of the
@@ -255,14 +279,11 @@ class TerminologyModel(BaseTerminologyModel):
         if os.path.isfile(localfile):
             # Update mtime
             os.utime(localfile, None)
-        self.init_matcher(localfile)
+        self._init_matcher_for(srclang, tgtlang, localfile)
 
     def _update_term_file(self, srclang, tgtlang):
         """Update the terminology file for the given languages."""
         self.init_matcher() # Make sure that the matcher is empty until we have an update
-        filename = self._get_curr_term_filename(srclang, tgtlang)
-        localfile = os.path.join(self.TERMDIR, filename)
-
         self._check_for_update(srclang, tgtlang)
 
 

@@ -30,6 +30,7 @@ import logging
 import os
 from urllib.error import HTTPError, URLError
 
+from virtaal.common.langpath import is_safe_lang_code, lang_folder_name, path_inside
 from virtaal.support import proxy
 from virtaal.support.dictionary_source import candidate_folders
 
@@ -96,7 +97,11 @@ def autocorrect_root_dir():
 def autocorrect_write_dir(locale_code):
     """Where AutoCorrector looks for a downloaded locale's
     DocumentList.xml."""
-    return os.path.join(autocorrect_root_dir(), locale_code.replace('-', '_'))
+    locale_code = locale_code.replace('-', '_')
+    path = path_inside(autocorrect_root_dir(), lang_folder_name(locale_code)) if is_safe_lang_code(locale_code) else None
+    if path is None:
+        raise ValueError('not a language code: %r' % (locale_code,))
+    return path
 
 
 def download_document_list(locale_code, target_dir=None):

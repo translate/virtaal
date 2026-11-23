@@ -51,6 +51,7 @@ import threading
 from gi.repository import GLib, Gtk
 
 from virtaal.common import SignalTracker, pan_app
+from virtaal.common.langpath import is_safe_lang_code, lang_folder_name, path_inside
 from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
 from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support import mythes
@@ -68,9 +69,16 @@ def thesaurus_cache_dir():
     return os.path.join(pan_app.get_config_dir(), 'thesaurus')
 
 
+def _locale_dir(locale_code):
+    """locale_code's folder in the cache, or None if it has none there."""
+    if not is_safe_lang_code(locale_code):
+        return None
+    return path_inside(thesaurus_cache_dir(), lang_folder_name(locale_code))
+
+
 def _cached_dat_path(locale_code):
-    path = os.path.join(thesaurus_cache_dir(), locale_code)
-    if not os.path.isdir(path):
+    path = _locale_dir(locale_code)
+    if path is None or not os.path.isdir(path):
         return None
     for name in os.listdir(path):
         if name.endswith('.dat'):
@@ -143,6 +151,8 @@ class LookupModel(BaseLookupModel):
             return []
         word = word[0]
         locale_code = (srclang if role == 'source' else tgtlang).replace('-', '_')
+        if _locale_dir(locale_code) is None:
+            return []
 
         if locale_code in self._thesauruses:
             meanings = mythes.lookup(self._thesauruses[locale_code], word)
@@ -227,7 +237,7 @@ class LookupModel(BaseLookupModel):
 
     def _maybe_auto_download(self, locale_code):
         locale_code = locale_code.replace('-', '_')
-        if locale_code in self._auto_tried:
+        if not is_safe_lang_code(locale_code) or locale_code in self._auto_tried:
             return
         self._auto_tried.add(locale_code)
         if _cached_dat_path(locale_code) is not None:
@@ -270,6 +280,8 @@ class LookupModel(BaseLookupModel):
         return True
 
     def _start_check(self, locale_code):
+        if not is_safe_lang_code(locale_code):
+            return
         if locale_code in self._checking or locale_code in self._downloading:
             return
         self._parse_failed.discard(locale_code)
@@ -310,12 +322,16 @@ class LookupModel(BaseLookupModel):
         # (_after_manifest_fresh) can both resolve for the same locale
         # during the manifest's own idle-lull-gated refresh window -
         # whichever gets here first wins, the other is a no-op.
+        target_dir = _locale_dir(locale_code)
+        if target_dir is None:
+            logging.debug('Not downloading a thesaurus for %r: no folder for it in the cache', locale_code)
+            return
         if locale_code in self._downloading:
             return
         self._downloading.add(locale_code)
         downloader = self._downloader_factory(
             locale_code, on_done=lambda success: self._on_download_finished(locale_code, success),
-            target_dir=os.path.join(thesaurus_cache_dir(), locale_code))
+            target_dir=target_dir)
         downloader.start_with_known_files(folder, files)
 
     def _on_download_finished(self, locale_code, succeeded):

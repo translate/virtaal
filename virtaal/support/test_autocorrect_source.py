@@ -13,8 +13,11 @@ is tested here with those two monkeypatched away.
 
 from urllib.error import HTTPError
 
+import pytest
+
 from virtaal.support import autocorrect_source
 from virtaal.support.autocorrect_source import (
+    autocorrect_write_dir,
     download_document_list,
     find_document_list_folder,
     list_autocorrect_folders,
@@ -97,3 +100,18 @@ def test_download_document_list_returns_none_on_a_real_404(monkeypatch, tmp_path
 
     result = download_document_list('af_ZA', target_dir=str(tmp_path))
     assert result is None
+
+
+@pytest.mark.parametrize('code, folder', [('af', 'af'), ('af-ZA', 'af_ZA'), ('sr@latin', 'sr@latin'), ('con', 'con_')])
+def test_autocorrect_write_dir_is_one_folder_per_locale(monkeypatch, tmp_path, code, folder):
+    monkeypatch.setattr(autocorrect_source, 'autocorrect_root_dir', lambda: str(tmp_path))
+
+    assert autocorrect_write_dir(code) == str(tmp_path / folder)
+
+
+@pytest.mark.parametrize('code', ['../x', '/abs', 'a/b', '..', ''])
+def test_autocorrect_write_dir_rejects_a_code_that_is_not_a_folder_name(monkeypatch, tmp_path, code):
+    monkeypatch.setattr(autocorrect_source, 'autocorrect_root_dir', lambda: str(tmp_path))
+
+    with pytest.raises(ValueError):
+        autocorrect_write_dir(code)

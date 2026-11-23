@@ -286,14 +286,27 @@ class StoreController(BaseController):
             except UnsupportedConversionError:
                 pass
             self.project.save(filename)
-        self.set_modified(False)
-        # reaching here means the write succeeded, so any stale notice goes
-        self.main_controller.view.hide_read_only_notice()
+        # The file is written: a failure from here on is not a failed save.
+        for step in (
+            lambda: self.set_modified(False),
+            lambda: self.main_controller.view.hide_read_only_notice(),
+            self._mark_undo_clean,
+            lambda: self.emit('stats-changed'),
+            lambda: self.emit('store-saved'),
+        ):
+            try:
+                step()
+            except Exception:
+                import logging
+                logging.exception('StoreController.save_file(): after the write')
+
+    def _mark_undo_clean(self):
         # Unlike open_file()/close_file(), a save doesn't clear the undo
-        # stack, so it needs its own explicit clean-point mark.
-        self.main_controller.undo_controller.model.mark_clean()
-        self.emit('stats-changed')
-        self.emit('store-saved')
+        # stack, so it needs its own explicit clean-point mark. The undo
+        # controller is created after start-up opens a file, and starts clean.
+        undo_controller = self.main_controller.undo_controller
+        if undo_controller is not None:
+            undo_controller.model.mark_clean()
 
     def binary_export(self, filename):
         #TODO: confirm file extension is correct

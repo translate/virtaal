@@ -349,8 +349,17 @@ class StoreModel(BaseModel):
             insort(checks.setdefault(key, []), index)
         return True
 
+    @property
+    def can_update_from_template(self):
+        """pot2po.convert_stores() always gives a PO store, so only a PO
+        file keeps its format."""
+        from translate.storage import pocommon
+        return isinstance(self._trans_store, pocommon.pofile)
+
     def update_file(self, filename):
         # Adapted from Document.__init__()
+        if not self.can_update_from_template:
+            raise ValueError('Only Gettext PO files can be updated from a template.')
         from translate.storage import factory
 
         from virtaal.support import statsdb, statsworker
@@ -367,19 +376,24 @@ class StoreModel(BaseModel):
             oldstats = statsworker.state_lists(self._trans_store)
 
         from translate.convert import pot2po
-        self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
-
-        self.update_stats()
-        self.checks = None
-        self._edited_units = set(range(len(self)))
-
-        self.controller.compare_stats(oldstats, self.stats)
-
+        merged = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
         # convert_stores() returns a store without them, which confuses
         # save (#3808).
-        self._trans_store.filename = oldfilename
-        self._trans_store.fileobj = oldfileobj
-        self.nplurals = self._compute_nplurals(self._trans_store)
+        merged.filename = oldfilename
+        merged.fileobj = oldfileobj
+        nplurals = self._compute_nplurals(merged)
+        newstats = statsworker.state_lists(merged)
+        stats = fix_indexes(newstats)
+
+        self.controller.compare_stats(oldstats, stats)
+
+        # Nothing changes until everything above has worked.
+        self._trans_store = merged
+        self._valid_units = newstats['total']
+        self.stats = stats
+        self.checks = None
+        self._edited_units = set(range(len(self)))
+        self.nplurals = nplurals
 
     def get_declared_nplurals(self):
         """The number of plural forms the file's own Plural-Forms header

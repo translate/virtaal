@@ -573,6 +573,77 @@ def test_update_file_for_a_file_no_longer_on_disk(tmp_path):
     assert compared == [{'total': (1, 2), 'translated': (1, 1), 'untranslated': (0, 1)}]
 
 
+_OPEN_XLIFF = b"""<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+<file original="x" source-language="en" target-language="af" datatype="po"><body>
+<trans-unit id="1"><source>Hello</source><target>Hallo</target></trans-unit>
+</body></file></xliff>
+"""
+
+_OPEN_TS = b"""<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="af"><context><name>c</name>
+<message><source>Hello</source><translation>Hallo</translation></message>
+</context></TS>
+"""
+
+_OPEN_FTL = b"Hello = Hallo\n"
+
+
+@pytest.mark.parametrize("name, content", [
+    ("old.xlf", _OPEN_XLIFF),
+    ("old.ts", _OPEN_TS),
+    # pot2po "succeeds" here, but hands back a PO store that would then be
+    # saved over the .ftl file.
+    ("old.ftl", _OPEN_FTL),
+], ids=["xliff", "ts", "fluent"])
+def test_update_file_refuses_a_non_po_file_and_keeps_it(tmp_path, name, content):
+    old_path = tmp_path / name
+    new_path = tmp_path / "new.pot"
+    old_path.write_bytes(content)
+    new_path.write_bytes(_NEW_PO)
+    model = StoreModel(str(old_path), _FakeController())
+    trans_store = model._trans_store
+
+    assert not model.can_update_from_template
+    with pytest.raises(ValueError):
+        model.update_file(str(new_path))
+
+    assert model._trans_store is trans_store
+    assert [u.target for u in model.get_units()] == ["Hallo"]
+    assert old_path.read_bytes() == content
+
+
+def test_a_failed_update_leaves_the_po_file_as_it_was(tmp_path):
+    old_path = tmp_path / "old.po"
+    new_path = tmp_path / "new.pot"
+    old_path.write_bytes(_OLD_PO)
+    new_path.write_bytes(_NEW_PO)
+    controller = _FakeController()
+
+    def fail(old, new):
+        raise RuntimeError('notice failed')
+    controller.compare_stats = fail
+    model = StoreModel(str(old_path), controller)
+    trans_store, stats, nplurals = model._trans_store, model.stats, model.nplurals
+
+    with pytest.raises(RuntimeError):
+        model.update_file(str(new_path))
+
+    assert model._trans_store is trans_store
+    assert model.stats == stats
+    assert model.nplurals == nplurals
+    assert model._edited_units == set()
+    assert [u.source for u in model.get_units()] == ["Hello"]
+
+
+def test_a_po_file_can_be_updated_from_a_template(tmp_path):
+    path = tmp_path / "old.po"
+    path.write_bytes(_OLD_PO)
+
+    assert StoreModel(str(path), _FakeController()).can_update_from_template
+
+
 _GERMAN_SOURCE_XLIFF = b'''<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
 <file original="test" source-language="de" target-language="af" datatype="plaintext"><body>

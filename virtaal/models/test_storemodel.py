@@ -5,10 +5,12 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import errno
 import os
 
 import pytest
 
+from virtaal.common.platform import platform
 from virtaal.models.storemodel import StoreModel
 from virtaal.support import statsdb, statsworker
 
@@ -654,3 +656,205 @@ def test_a_format_that_cannot_be_probed_is_assumed_writable(qm_copy):
     model._trans_store = _NeedsAnArgument(None)
 
     model._check_writable()  # must not raise
+
+
+# Saving goes through a temporary file that replaces the original (#4841).
+
+def _saved_model(tmp_path):
+    model = _checks_model(tmp_path)
+    model[0].target = "Maak die lêer oop."
+    return model, tmp_path / "checks.po"
+
+
+def _leftovers(folder):
+    return sorted(p.name for p in folder.iterdir() if 'virtaal-save' in p.name)
+
+
+def test_save_file_leaves_the_file_whole_when_serialising_fails(tmp_path, monkeypatch):
+    model, path = _saved_model(tmp_path)
+    original = path.read_bytes()
+
+    def broken(out):
+        out.write(b'msgid ""\n')
+        raise ValueError("can't serialise")
+
+    monkeypatch.setattr(model._trans_store, 'serialize', broken)
+    with pytest.raises(ValueError):
+        model.save_file()
+
+    assert path.read_bytes() == original
+    assert _leftovers(tmp_path) == []
+
+
+def test_save_file_leaves_the_file_whole_when_the_disk_is_full(tmp_path, monkeypatch):
+    model, path = _saved_model(tmp_path)
+    original = path.read_bytes()
+
+    def full(fd):
+        raise OSError(errno.ENOSPC, "No space left on device")
+
+    monkeypatch.setattr('os.fsync', full)
+    with pytest.raises(OSError):
+        model.save_file()
+
+    assert path.read_bytes() == original
+    assert _leftovers(tmp_path) == []
+
+
+def test_save_file_writes_the_file_and_can_save_again(tmp_path):
+    model, path = _saved_model(tmp_path)
+
+    model.save_file()
+    assert "Maak die lêer oop." in path.read_text(encoding="utf-8")
+    model[1].target = "Maak toe."
+    model.save_file()
+
+    assert "Maak toe." in path.read_text(encoding="utf-8")
+    assert model.get_filename() == str(path)
+    assert _leftovers(tmp_path) == []
+
+
+def test_save_file_as_writes_the_new_file(tmp_path):
+    model, path = _saved_model(tmp_path)
+    copy = tmp_path / "copy.po"
+
+    model.save_file(str(copy))
+
+    assert "Maak die lêer oop." in copy.read_text(encoding="utf-8")
+    assert "Maak die lêer oop." not in path.read_text(encoding="utf-8")
+    assert model.filename == model.get_filename() == str(copy)
+
+
+@pytest.mark.skipif(platform.is_windows, reason="POSIX modes")
+@pytest.mark.parametrize('mode', [0o644, 0o600, 0o664])
+def test_save_file_keeps_the_mode(tmp_path, mode):
+    model, path = _saved_model(tmp_path)
+    os.chmod(path, mode)
+
+    model.save_file()
+
+    assert os.stat(path).st_mode & 0o7777 == mode
+
+
+@pytest.mark.skipif(platform.is_windows, reason="POSIX modes")
+def test_save_file_as_gives_a_new_file_the_usual_mode(tmp_path):
+    model, _path = _saved_model(tmp_path)
+    old = os.umask(0o022)
+    try:
+        model.save_file(str(tmp_path / "copy.po"))
+    finally:
+        os.umask(old)
+
+    assert os.stat(tmp_path / "copy.po").st_mode & 0o777 == 0o644
+
+
+@pytest.mark.skipif(platform.is_windows, reason="symlinks need privileges on Windows")
+def test_save_file_through_a_symlink_keeps_the_link(tmp_path):
+    model_dir = tmp_path / "real"
+    model_dir.mkdir()
+    model, path = _saved_model(model_dir)
+    link = tmp_path / "link.po"
+    link.symlink_to(path)
+    model.save_file(str(link))
+
+    assert link.is_symlink()
+    assert os.readlink(link) == str(path)
+    assert "Maak die lêer oop." in path.read_text(encoding="utf-8")
+    assert _leftovers(model_dir) == [] and _leftovers(tmp_path) == []
+
+
+def test_save_file_keeps_hard_links(tmp_path):
+    model, path = _saved_model(tmp_path)
+    other = tmp_path / "other.po"
+    os.link(path, other)
+
+    model.save_file()
+
+    assert "Maak die lêer oop." in other.read_text(encoding="utf-8")
+    assert os.path.samefile(path, other)
+
+
+@pytest.mark.parametrize('error', [
+    PermissionError(13, "Access is denied"),  # Windows: another program has it open
+    OSError(errno.EBUSY, "Device or resource busy"),  # a bind-mounted file
+])
+def test_save_file_writes_in_place_when_the_file_cant_be_replaced(tmp_path, monkeypatch, error):
+    model, path = _saved_model(tmp_path)
+
+    def refused(src, dst):
+        raise error
+
+    monkeypatch.setattr('os.replace', refused)
+    model.save_file()
+
+    assert "Maak die lêer oop." in path.read_text(encoding="utf-8")
+    assert _leftovers(tmp_path) == []
+
+
+def test_save_file_writes_in_place_when_no_file_can_be_made_beside_it(tmp_path, monkeypatch):
+    from virtaal.support import storesave
+    model, path = _saved_model(tmp_path)
+    original = path.read_bytes()
+
+    def refused(target, mode):
+        raise PermissionError(13, "Permission denied", target)
+
+    monkeypatch.setattr(storesave, '_open_temp', refused)
+    model.save_file()
+    assert "Maak die lêer oop." in path.read_text(encoding="utf-8")
+
+    path.write_bytes(original)
+    monkeypatch.setattr(model._trans_store, 'serialize', lambda out: 1 / 0)
+    with pytest.raises(ZeroDivisionError):
+        model.save_file()
+    assert path.read_bytes() == original
+
+
+@pytest.mark.skipif(platform.is_windows or os.geteuid() == 0,
+                    reason="POSIX write permission; root can write anything")
+def test_save_file_refuses_a_read_only_file(tmp_path):
+    model, path = _saved_model(tmp_path)
+    original = path.read_bytes()
+    os.chmod(path, 0o444)
+
+    with pytest.raises(PermissionError):
+        model.save_file()
+
+    assert path.read_bytes() == original
+    assert _leftovers(tmp_path) == []
+
+
+@pytest.mark.skipif(platform.is_windows, reason="POSIX modes")
+def test_save_file_makes_the_temporary_file_owner_only(tmp_path, monkeypatch):
+    from virtaal.support import storesave
+    model, path = _saved_model(tmp_path)
+    os.chmod(path, 0o600)
+    modes = []
+
+    def serialize(out, real=model._trans_store.serialize):
+        modes.append(os.stat(out.name).st_mode & 0o777)
+        real(out)
+
+    def chmod(*args):
+        raise PermissionError(1, "Operation not permitted")
+
+    monkeypatch.setattr(model._trans_store, 'serialize', serialize)
+    # Some file systems refuse mode changes.
+    monkeypatch.setattr(storesave.os, 'chmod', chmod)
+    model.save_file()
+
+    assert modes == [0o600]
+    assert os.stat(path).st_mode & 0o777 == 0o600
+
+
+def test_save_file_without_a_filename_doesnt_write_one(tmp_path, monkeypatch):
+    import io
+
+    model = StoreModel(io.BytesIO(_CHECKS_PO.encode("utf-8")), _FakeController())
+    model._update_header = lambda: None
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(ValueError):
+        model.save_file()
+
+    assert list(tmp_path.iterdir()) == []

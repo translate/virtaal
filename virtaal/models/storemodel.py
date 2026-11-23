@@ -80,6 +80,10 @@ def _usable_plural(nplurals, plural):
     return True
 
 
+# The filename of a store opened from a file object with no name.
+_NO_FILENAME = '<projectfile>'
+
+
 class StoreModel(BaseModel):
     """
     This model represents a translation store/file. It is basically a wrapper
@@ -210,7 +214,7 @@ class StoreModel(BaseModel):
             if filename is None:
                 filename = getattr(fileobj, 'filename', None)
             if filename is None:
-                filename = '<projectfile>'
+                filename = _NO_FILENAME
         import logging
         logging.info('Loading file %s' % (filename))
         from translate.storage import factory
@@ -231,10 +235,11 @@ class StoreModel(BaseModel):
         self._update_header()
         if filename is None:
             filename = self.filename
-        if filename == self.filename:
+        if filename == _NO_FILENAME:
             self._trans_store.save()
         else:
-            self._trans_store.savefile(filename)
+            from virtaal.support.storesave import save_store
+            save_store(self._trans_store, filename)
         self.filename = filename
         self._edited_units = set()
         self.update_stats()

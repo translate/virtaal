@@ -50,8 +50,22 @@ def with_font_fallbacks(font_name):
     if not fallbacks:
         return font_name
     desc = Pango.FontDescription.from_string(font_name)
+    if not desc.get_family():
+        # A fallback would become the font's only family.
+        return font_name
     families = desc.get_family().split(',')
     desc.set_family(','.join(families + [f for f in fallbacks if f not in families]))
+    return desc.to_string()
+
+
+def complete_font_name(font_name):
+    """C{font_name} with the default font's family or size where it
+        has none: Pango leaves them unset, which draws text at 0pt."""
+    desc = Pango.FontDescription.from_string(font_name or '')
+    needed = Pango.FontMask.FAMILY | Pango.FontMask.SIZE
+    if desc.get_set_fields() & needed == needed:
+        return font_name
+    desc.merge(Pango.FontDescription.from_string(pan_app.defaultfont), False)
     return desc.to_string()
 
 
@@ -64,10 +78,13 @@ def set_widget_font(widget, font_desc):
         some descriptions under it ("not a number") and warns it's
         deprecated regardless - set family/size as their own
         properties instead."""
-    size = font_desc.get_size() / Pango.SCALE
-    unit = 'px' if font_desc.get_size_is_absolute() else 'pt'
-    families = ', '.join('"%s"' % family for family in (font_desc.get_family() or '').split(','))
-    css = '* { font-family: %s; font-size: %s%s; }' % (families, size, unit)
+    css = ''
+    if font_desc.get_family():
+        css += 'font-family: %s; ' % ', '.join('"%s"' % family for family in font_desc.get_family().split(','))
+    if font_desc.get_size():
+        size = font_desc.get_size() / Pango.SCALE
+        css += 'font-size: %s%s; ' % (size, 'px' if font_desc.get_size_is_absolute() else 'pt')
+    css = '* { %s}' % css
     provider = Gtk.CssProvider()
     provider.load_from_data(css.encode())
     widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -76,7 +93,7 @@ def get_font_description(code):
     """Provide a Pango.FontDescription and keep it for reuse."""
     global _font_descriptions
     if not code in _font_descriptions:
-        _font_descriptions[code] = Pango.FontDescription(with_font_fallbacks(code))
+        _font_descriptions[code] = Pango.FontDescription(with_font_fallbacks(complete_font_name(code)))
     return _font_descriptions[code]
 
 def get_source_font_description():

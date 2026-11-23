@@ -37,6 +37,79 @@ def test_set_widget_font_passes_every_family_to_pango():
     assert label.get_pango_context().get_font_description().get_family() == 'Monospace,Ebrima'
 
 
+def _css_font(label):
+    return label.get_pango_context().get_font_description()
+
+
+def test_set_widget_font_keeps_the_size_for_a_family_only_font():
+    # #4863: "Sans" has no size; 0pt drew no text.
+    size = _css_font(Gtk.Label()).get_size()
+    label = Gtk.Label()
+
+    set_widget_font(label, Pango.FontDescription('Ebrima'))
+
+    assert _css_font(label).get_family() == 'Ebrima'
+    assert _css_font(label).get_size() == size != 0
+
+
+def test_set_widget_font_keeps_the_family_for_a_size_only_font():
+    family = _css_font(Gtk.Label()).get_family()
+    label = Gtk.Label()
+
+    set_widget_font(label, Pango.FontDescription('17'))
+
+    assert _css_font(label).get_family() == family
+    assert _css_font(label).get_size() == 17 * Pango.SCALE
+
+
+# Settings without a family or size (#4863) #
+
+@pytest.mark.parametrize('setting, expected', [
+    ('Serif', 'Serif 11'),
+    ('17', 'Mono 17'),
+    ('Bold 17', 'Mono Bold 17'),
+    ('Serif Italic', 'Serif Italic 11'),
+    ('', 'Mono 11'),
+    (None, 'Mono 11'),
+    ('Serif 13px', 'Serif 13px'),
+])
+def test_complete_font_name_fills_in_the_default_family_and_size(monkeypatch, setting, expected):
+    monkeypatch.setattr(rendering.pan_app, 'defaultfont', 'Mono 11')
+
+    assert rendering.complete_font_name(setting) == expected
+
+
+def test_complete_font_name_takes_only_the_family_and_size_from_the_default(monkeypatch):
+    monkeypatch.setattr(rendering.pan_app, 'defaultfont', 'Mono Bold Italic 11')
+
+    assert rendering.complete_font_name('Serif') == 'Serif 11'
+    assert rendering.complete_font_name('17') == 'Mono 17'
+
+
+def test_complete_font_name_keeps_a_complete_font_as_written(monkeypatch):
+    monkeypatch.setattr(rendering.pan_app, 'defaultfont', 'Mono 11')
+
+    assert rendering.complete_font_name('DejaVu Sans,Ebrima  12') == 'DejaVu Sans,Ebrima  12'
+
+
+@pytest.mark.parametrize('fallbacks', [(), ('Ebrima',)])
+@pytest.mark.parametrize('setting, family, size', [
+    ('Serif', 'Serif', 11),
+    ('17', 'Mono', 17),
+    ('Serif 13', 'Serif', 13),
+])
+def test_source_and_target_fonts_get_the_default_family_and_size(monkeypatch, fallbacks, setting, family, size):
+    monkeypatch.setattr(rendering, 'font_fallbacks', lambda: fallbacks)
+    monkeypatch.setattr(rendering, '_font_descriptions', {})
+    monkeypatch.setattr(rendering.pan_app, 'defaultfont', 'Mono 11')
+    monkeypatch.setitem(rendering.pan_app.settings.language, 'sourcefont', setting)
+    monkeypatch.setitem(rendering.pan_app.settings.language, 'targetfont', setting)
+
+    for desc in (rendering.get_source_font_description(), rendering.get_target_font_description()):
+        assert desc.get_family().split(',') == [family, *fallbacks]
+        assert desc.get_size() == size * Pango.SCALE
+
+
 # Font fallbacks #
 
 def test_font_fallbacks_keep_the_size_and_style(monkeypatch):
@@ -52,6 +125,14 @@ def test_font_fallbacks_are_added_once(monkeypatch):
     once = rendering.with_font_fallbacks('Segoe UI 9')
 
     assert rendering.with_font_fallbacks(once) == once == 'Segoe UI,Ebrima,Nirmala UI 9'
+
+
+@pytest.mark.parametrize('font', ['12', 'Bold 12', ''])
+def test_font_fallbacks_leave_a_font_without_a_family_alone(monkeypatch, font):
+    # A fallback would replace GTK's default family, not follow it.
+    monkeypatch.setattr(rendering, 'font_fallbacks', lambda: ('Ebrima',))
+
+    assert rendering.with_font_fallbacks(font) == font
 
 
 def test_font_fallbacks_leave_the_font_alone_without_fallbacks(monkeypatch):

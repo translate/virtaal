@@ -410,10 +410,23 @@ class TermAddDialog:
         if comments:
             unit.addnote(comments)
 
-        store.save()
+        try:
+            store.save()
+        except Exception as exc:
+            store.removeunit(unit)
+            if isinstance(exc, OSError):
+                message = _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.")
+            else:
+                import logging
+                logging.exception('TermAddDialog.add_term_unit(filename="%s")' % filename)
+                message = _("Could not save file.\n\n%(error_message)s")
+            self.term_model.controller.main_controller.show_error(
+                message % {'error_message': str(exc)}, parent=self.dialog)
+            GLib.idle_add(self.dialog.present)
+            return False
         self.term_model.matcher.extendtm(unit)
         self.term_model.controller.rescan_current_unit()
-        #logging.debug('Added new term: [%s] => [%s], file=%s' % (source, target, store.filename))
+        return True
 
     def reset(self):
         unitview = self.unit_controller.view
@@ -474,15 +487,16 @@ class TermAddDialog:
         transient_for = self.dialog.get_transient_for()
         self._on_entry_changed(None)
         self.ent_source.grab_focus()
-        response = self.dialog.run()
+        while True:
+            response = self.dialog.run()
+            if response != Gtk.ResponseType.OK:
+                break
+            # Stay open on a failed save so the term isn't lost.
+            if self.add_term_unit(self.ent_source.get_text(), self.ent_target.get_text()) is not False:
+                break
         self.dialog.hide()
         if transient_for is not None:
             GLib.idle_add(transient_for.present)
-
-        if response != Gtk.ResponseType.OK:
-            return
-
-        self.add_term_unit(self.ent_source.get_text(), self.ent_target.get_text())
 
 
     # EVENT HANDLERS #

@@ -806,3 +806,125 @@ def test_on_entry_changed_clears_errors_and_enables_add_when_clean():
 
     assert dialog.btn_add_term.get_sensitive() is True
     assert dialog.eb_add_term_errors.get_visible() is False
+
+
+def _add_dialog_for_store(store, save_error=None):
+    add_dialog = TermAddDialog.__new__(TermAddDialog)
+    add_dialog.dialog = SimpleNamespace(present=lambda: None)
+    add_dialog.cmb_termfile = SimpleNamespace(get_active_text=lambda: store.filename)
+    buff = Gtk.TextBuffer()
+    add_dialog.txt_comment = SimpleNamespace(get_buffer=lambda: buff)
+    extended, errors, rescans = [], [], []
+    add_dialog.term_model = SimpleNamespace(
+        get_store_for_filename=lambda filename: store,
+        matcher=SimpleNamespace(extendtm=extended.append),
+        controller=SimpleNamespace(
+            rescan_current_unit=lambda: rescans.append(True),
+            main_controller=SimpleNamespace(
+                show_error=lambda msg, parent=None: errors.append((msg, parent))),
+        ),
+    )
+    if save_error is not None:
+        def save():
+            raise save_error
+        store.save = save
+    return add_dialog, extended, errors, rescans
+
+
+def _po_glossary(tmp_path):
+    from translate.storage import factory
+    path = tmp_path / 'glossary.po'
+    path.write_text('msgid "dog"\nmsgstr "hond"\n', encoding='utf-8')
+    return factory.getobject(str(path))
+
+
+def test_add_term_unit_saves_and_extends_the_matcher(tmp_path):
+    store = _po_glossary(tmp_path)
+    add_dialog, extended, errors, rescans = _add_dialog_for_store(store)
+
+    assert add_dialog.add_term_unit('cat', 'kat') is True
+
+    assert 'msgid "cat"' in (tmp_path / 'glossary.po').read_text(encoding='utf-8')
+    assert [u.source for u in extended] == ['cat']
+    assert rescans and not errors
+
+
+def test_add_term_unit_reports_a_failed_save_and_drops_the_term(tmp_path):
+    # A read-only glossary, read-only folder or full disk (#4891).
+    store = _po_glossary(tmp_path)
+    add_dialog, extended, errors, rescans = _add_dialog_for_store(
+        store, PermissionError(13, 'Permission denied', store.filename))
+
+    assert add_dialog.add_term_unit('cat', 'kat') is False
+
+    assert [u.source for u in store.units if u.source] == ['dog']
+    assert not extended and not rescans
+    [(msg, parent)] = errors
+    assert msg.startswith('Could not save file.')
+    assert 'Permission denied' in msg
+    assert 'Try saving to a different location.' in msg
+    assert parent is add_dialog.dialog
+
+
+def test_add_term_unit_reports_an_unexpected_save_error(tmp_path):
+    store = _po_glossary(tmp_path)
+    add_dialog, extended, errors, rescans = _add_dialog_for_store(
+        store, ValueError('cannot serialise'))
+
+    assert add_dialog.add_term_unit('cat', 'kat') is False
+
+    assert not extended
+    [(msg, parent)] = errors
+    assert msg == 'Could not save file.\n\ncannot serialise'
+
+
+def test_add_term_unit_drops_the_term_from_a_tbx_glossary_on_a_failed_save(tmp_path):
+    from translate.storage import tbx
+    path = tmp_path / 'glossary.tbx'
+    store = tbx.tbxfile()
+    store.addsourceunit('dog').target = 'hond'
+    store.savefile(str(path))
+    store = tbx.tbxfile.parsefile(str(path))
+    add_dialog, extended, errors, rescans = _add_dialog_for_store(
+        store, OSError(28, 'No space left on device'))
+
+    assert add_dialog.add_term_unit('cat', 'kat') is False
+
+    assert [u.source for u in store.units] == ['dog']
+    assert b'cat' not in bytes(store)
+
+
+def test_run_stays_open_after_a_failed_save_until_the_term_is_added():
+    add_dialog = TermAddDialog.__new__(TermAddDialog)
+    dialog = _FakeDialog()
+    runs = []
+    dialog.run = lambda: runs.append(True) or Gtk.ResponseType.OK
+    add_dialog.dialog = dialog
+    add_dialog.ent_source = SimpleNamespace(get_text=lambda: 'cat', grab_focus=lambda: None)
+    add_dialog.ent_target = SimpleNamespace(get_text=lambda: 'kat')
+    add_dialog.reset = lambda: None
+    add_dialog._on_entry_changed = lambda *args: None
+    results = [False, True]
+    add_dialog.add_term_unit = lambda source, target: results.pop(0)
+
+    add_dialog.run()
+
+    assert len(runs) == 2 and not results
+
+
+def test_run_closes_on_cancel_after_a_failed_save():
+    add_dialog = TermAddDialog.__new__(TermAddDialog)
+    dialog = _FakeDialog()
+    responses = [Gtk.ResponseType.OK, Gtk.ResponseType.CANCEL]
+    dialog.run = lambda: responses.pop(0)
+    add_dialog.dialog = dialog
+    add_dialog.ent_source = SimpleNamespace(get_text=lambda: 'cat', grab_focus=lambda: None)
+    add_dialog.ent_target = SimpleNamespace(get_text=lambda: 'kat')
+    add_dialog.reset = lambda: None
+    add_dialog._on_entry_changed = lambda *args: None
+    added = []
+    add_dialog.add_term_unit = lambda source, target: added.append(source) or False
+
+    add_dialog.run()
+
+    assert added == ['cat'] and not responses

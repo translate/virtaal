@@ -36,7 +36,7 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
 )
 
 sys.path.insert(0, str(PACKAGING))
-from generate_info_plist import bundle_localizations, document_types  # noqa: E402
+from generate_info_plist import bundle_localizations, bundle_version, document_types  # noqa: E402
 from minimum_macos import minimum_macos  # noqa: E402
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
@@ -281,8 +281,10 @@ app = BUNDLE(  # noqa: F821
     info_plist={
         "CFBundleDisplayName": "Virtaal",
         "CFBundleName": "Virtaal",
+        # User-visible, so it keeps the pre-release label (as Firefox does);
+        # CFBundleVersion is the machine-comparable one.
         "CFBundleShortVersionString": virtaal_version,
-        "CFBundleVersion": virtaal_version,
+        "CFBundleVersion": bundle_version(virtaal_version),
         "NSHumanReadableCopyright": COPYRIGHT,
         # Homebrew's bottles target the build machine's macOS (#4369).
         "LSMinimumSystemVersion": minimum_macos(src for _dest, src, _kind in a.binaries),

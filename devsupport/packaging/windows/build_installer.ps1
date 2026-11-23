@@ -9,6 +9,7 @@
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = (git rev-parse --show-toplevel)
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Set-Location $RepoRoot
 
 if (-not (Test-Path "dist\virtaal\virtaal.exe")) {
@@ -23,6 +24,10 @@ if (-not $iscc) {
 }
 
 $version = & python -c "from virtaal.__version__ import ver; print(ver)"
+if ($LASTEXITCODE -ne 0 -or -not $version) {
+    Write-Error "Couldn't read Virtaal's version."
+    exit 1
+}
 
 New-Item -ItemType Directory -Force -Path dist\installer | Out-Null
 
@@ -30,5 +35,6 @@ New-Item -ItemType Directory -Force -Path dist\installer | Out-Null
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & iscc "/DMyAppVersion=$version" devsupport\packaging\windows\virtaal.iss
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "Built dist\installer\virtaal-$version-setup.exe"

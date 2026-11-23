@@ -19,6 +19,7 @@
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = (git rev-parse --show-toplevel)
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Set-Location $RepoRoot
 
 $Python = "python"
@@ -27,10 +28,12 @@ $Python = "python"
 # *any* setup.py invocation (see setup.py's own module docstring) - this
 # is the documented way to trigger it without going through pip/build.
 & $Python setup.py --version | Out-Null
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 $pyinstallerInstalled = & $Python -m pip show pyinstaller 2>$null
 if (-not $pyinstallerInstalled) {
     & $Python -m pip install pyinstaller
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 # pyenchant's Windows wheel is self-contained (libenchant + backends +
@@ -38,6 +41,7 @@ if (-not $pyinstallerInstalled) {
 $pyenchantInstalled = & $Python -m pip show pyenchant 2>$null
 if (-not $pyenchantInstalled) {
     & $Python -m pip install pyenchant
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue build\virtaal, dist\virtaal
@@ -66,5 +70,6 @@ if ($env:VIRTAAL_BUILD_COMMIT) {
 Write-Host "Building from commit $commit"
 
 & $Python -m PyInstaller -y devsupport\packaging\windows\virtaal.spec
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "Built dist\virtaal\virtaal.exe (self-contained)"

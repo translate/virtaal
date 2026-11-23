@@ -20,6 +20,7 @@ from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.support.libi18n.locale import rebind_library_domain
 from virtaal.views import rendering, theme
+from virtaal.views.macmenu import menu_title, strip_bracket_mnemonics
 
 from .baseview import BaseView
 
@@ -365,6 +366,7 @@ class MainView(BaseView):
             # It binds its own catalogs on creation; the app menu's
             # strings are looked up in set_menu_bar() below.
             rebind_library_domain(b"gtk-mac-integration")
+            strip_bracket_mnemonics(self.menubar)
             # Move the menu bar to the mac menu
             self.menubar.hide()
             osxapp.set_menu_bar(self.menubar)
@@ -919,10 +921,7 @@ class MainView(BaseView):
             if menuitem.get_child() and menuitem.get_child().get_text() == label:
                 return menuitem
 
-        if '_' in label:
-            return self.find_menu(label.replace('_', ''))
-
-        return None
+        return self._find_by_display_label(self.find_menu, label)
 
     def find_menu_item(self, label, menu):
         """Find the menu item with the given label in C{menu}'s submenu.
@@ -933,10 +932,18 @@ class MainView(BaseView):
             if item.get_child() and str(item.get_child().get_text()) == str(label):
                 return item, menu
 
-        if '_' in label:
-            return self.find_menu_item(label.replace('_', ''), menu)
+        return self._find_by_display_label(lambda text: self.find_menu_item(text, menu), label) or (None, None)
 
-        return None, None
+    @staticmethod
+    def _find_by_display_label(find, label):
+        # As shown: without the access key's "_", or on macOS without a
+        # bracketed access key.
+        for text in (label.replace('_', ''), menu_title(label)):
+            if text != label:
+                found = find(text)
+                if found and found != (None, None):
+                    return found
+        return None
 
     def open_file(self):
         filename_and_uri = self.show_open_dialog()

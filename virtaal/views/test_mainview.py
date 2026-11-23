@@ -865,6 +865,25 @@ def test_find_menu_item_returns_none_for_no_match():
     assert (item, menu) == (None, None)
 
 
+def test_find_menu_matches_a_label_without_its_bracketed_access_key():
+    # On macOS the menu bar shows "편집" for "편집(_E)" (#4823).
+    view = MainView.__new__(MainView)
+    view.menu_structure = _menu_structure('파일', '편집')
+
+    found = view.find_menu('편집(_E)')
+
+    assert found.get_child().get_text() == '편집'
+
+
+def test_find_menu_item_matches_a_label_with_or_without_its_bracketed_access_key():
+    view = MainView.__new__(MainView)
+    shown = _submenu('용어 추가…')
+    linux = _submenu('용어 추가(_T)…')
+
+    assert view.find_menu_item('용어 추가(_T)…', shown)[0].get_child().get_text() == '용어 추가…'
+    assert view.find_menu_item('용어 추가(_T)…', linux)[0].get_child().get_text() == '용어 추가(T)…'
+
+
 # set_saveable(): the modified-marker/title guard.
 
 def test_set_saveable_skips_redundant_updates_while_already_modified():
@@ -2984,6 +3003,56 @@ def test_preferences_shows_its_key_equivalent_in_the_native_app_menu():
     assert result.stdout.split('\n')[:3] == ["'Settings…'", "','", str(1 << 20)]
 
 
+_FRESH_PROCESS_NATIVE_MENU_TITLES = """
+import ctypes
+from unittest import mock
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from virtaal.views import mainview
+window = Gtk.Window()
+menubar = Gtk.MenuBar()
+window.add(menubar)
+menuitem_file = Gtk.MenuItem.new_with_mnemonic('파일(_F)')
+menu_file = Gtk.Menu()
+menuitem_file.set_submenu(menu_file)
+menu_file.append(Gtk.MenuItem.new_with_mnemonic('열기(_O)…'))
+menubar.append(menuitem_file)
+window.show_all()
+view = mock.Mock(menubar=menubar, main_window=window)
+view.gui.get_object.side_effect = lambda name: Gtk.MenuItem()
+mainview.MainView._setup_macos_integration(view)
+# A plug-in's item, added after ready().
+menu_file.append(Gtk.MenuItem.new_with_mnemonic('도구(_T)'))
+menu_file.show_all()
+view._osxapp.sync_menubar()
+def title(item):
+    return ctypes.string_at(mainview._objc_send(mainview._objc_send(item, 'title'), 'UTF8String')).decode()
+nsapp = mainview._objc_send(mainview._objc_class('NSApplication'), 'sharedApplication')
+item = mainview._objc_send(mainview._objc_send(nsapp, 'mainMenu'), 'itemAtIndex:', 1, argtypes=[ctypes.c_long])
+print(title(item))
+submenu = mainview._objc_send(item, 'submenu')
+for i in range(mainview._objc_send(submenu, 'numberOfItems', restype=ctypes.c_long)):
+    print(title(mainview._objc_send(submenu, 'itemAtIndex:', i, argtypes=[ctypes.c_long])))
+"""
+
+
+@pytest.mark.skipif(not platform.is_mac, reason="AppKit's menu bar is macOS-only")
+def test_native_menu_bar_titles_have_no_bracketed_access_keys():
+    try:
+        gi.require_version('GtkosxApplication', '1.0')
+    except ValueError:
+        pytest.skip('gtk-mac-integration not installed')
+    import subprocess
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    env = dict(os.environ, PYTHONPATH=repo_root)
+
+    result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_NATIVE_MENU_TITLES],
+                            env=env, capture_output=True, text=True, check=True, timeout=60)
+
+    assert result.stdout.split('\n')[:3] == ['파일', '열기…', '도구']
+
+
 def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypatch):
     # macOS renames only an English "Preferences" app-menu item, so a
     # translated UI kept GTK's stock label (#4132).
@@ -3013,6 +3082,53 @@ def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypat
 
     assert titles == ["Settings…"]
     assert not mnu_prefs.get_property('use-stock')
+
+
+def test_macos_integration_drops_bracketed_access_keys_from_the_menu_bar(monkeypatch):
+    # gtk-mac-integration titles native items with gtk_label_get_text(),
+    # which would show "파일(F)" (#4823).
+    from unittest import mock
+
+    titles = []
+    menubar = Gtk.MenuBar()
+    file_item = Gtk.MenuItem.new_with_mnemonic('파일(_F)')
+    file_item.set_submenu(Gtk.Menu())
+    file_item.get_submenu().append(Gtk.MenuItem.new_with_mnemonic('저장(_S)'))
+    menubar.append(file_item)
+    help_item = Gtk.MenuItem.new_with_mnemonic('도움말(_H)')
+    help_item.set_submenu(Gtk.Menu())
+    mnu_about = Gtk.MenuItem.new_with_mnemonic('정보(_A)')
+    help_item.get_submenu().append(mnu_about)
+    menubar.append(help_item)
+
+    def label_text(item):
+        return item.get_child().get_text()
+
+    class FakeApplication:
+        def set_menu_bar(self, shell):
+            for item in shell.get_children():
+                titles.append(label_text(item))
+                titles.extend(label_text(sub) for sub in item.get_submenu().get_children())
+
+        def insert_app_menu_item(self, item, index):
+            if item is mnu_about:
+                titles.append(label_text(item))
+
+        def __getattr__(self, name):
+            return lambda *args: None
+
+    monkeypatch.setattr(gi, 'require_version', lambda *args: None)
+    monkeypatch.setattr(gi.repository, 'GtkosxApplication',
+                        mock.Mock(Application=FakeApplication), raising=False)
+    monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: None)
+    monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
+    monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
+    view = mock.Mock(menubar=menubar)
+    view.gui.get_object.side_effect = lambda name: mnu_about if name == 'mnu_about' else mock.Mock()
+
+    mainview.MainView._setup_macos_integration(view)
+
+    assert titles == ['파일', '저장', '도움말', '정보', '정보']
 
 
 # show_translator_dialog() #

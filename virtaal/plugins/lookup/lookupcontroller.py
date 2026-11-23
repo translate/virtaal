@@ -45,5 +45,7 @@ class LookupController(BaseController):
 
     # METHODS #
     def destroy(self):
-        self.view.destroy()
-        self.plugin_controller.shutdown()
+        try:
+            self.view.destroy()
+        finally:
+            self.plugin_controller.shutdown()

@@ -128,26 +128,28 @@ class TMController(BaseController):
             self.view.display_matches(self.matches)
 
     def destroy(self):
-        # Destroy the view
-        self.view.hide()
-        self.view.destroy()
+        try:
+            # Destroy the view
+            self.view.hide()
+            self.view.destroy()
 
-        # Disconnect signals
-        self.main_controller.store_controller.disconnect(self._store_loaded_id)
-        if getattr(self, '_cursor_changed_id', None):
-            self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
-        if getattr(self, '_mode_selected_id', None):
-            self.main_controller.mode_controller.disconnect(self._mode_selected_id)
-        if getattr(self, '_context_selected_id', None):
-            self.main_controller.mode_controller.disconnect(self._context_selected_id)
-        if getattr(self, '_target_focused_id', None):
-            self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
-        for signal_id in getattr(self, '_lang_changed_ids', []):
-            self.main_controller.lang_controller.disconnect(signal_id)
-        if getattr(self, '_popup_toggled_id', None):
-            self.main_controller.unit_controller.view.disconnect(self._popup_toggled_id)
-
-        self.plugin_controller.shutdown()
+            # Disconnect signals
+            self.main_controller.store_controller.disconnect(self._store_loaded_id)
+            if getattr(self, '_cursor_changed_id', None):
+                self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
+            if getattr(self, '_mode_selected_id', None):
+                self.main_controller.mode_controller.disconnect(self._mode_selected_id)
+            if getattr(self, '_context_selected_id', None):
+                self.main_controller.mode_controller.disconnect(self._context_selected_id)
+            if getattr(self, '_target_focused_id', None):
+                self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
+            for signal_id in getattr(self, '_lang_changed_ids', []):
+                self.main_controller.lang_controller.disconnect(signal_id)
+            if getattr(self, '_popup_toggled_id', None):
+                self.main_controller.unit_controller.view.disconnect(self._popup_toggled_id)
+        finally:
+            # Stops the local TM server child process.
+            self.plugin_controller.shutdown()
 
     def select_match(self, match_data):
         """Handle a match-selection event.

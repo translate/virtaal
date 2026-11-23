@@ -331,6 +331,22 @@ def test_destroy_skips_optional_signals_that_were_never_connected():
     assert calls == ['hide', 'destroy', ('store', 'store-id'), 'shutdown']
 
 
+def test_destroy_stops_the_tm_models_even_if_disconnecting_fails():
+    controller = _bare_controller()
+    calls = []
+    def fail(sid):
+        raise TypeError('not connected')
+    controller.view = SimpleNamespace(hide=lambda: None, destroy=lambda: None)
+    controller.main_controller = SimpleNamespace(store_controller=SimpleNamespace(disconnect=fail))
+    controller._store_loaded_id = 'store-id'
+    controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
+
+    with pytest.raises(TypeError):
+        controller.destroy()
+
+    assert calls == ['shutdown']
+
+
 # select_match() #
 
 def test_select_match_pushes_undo_and_sets_the_focused_target():

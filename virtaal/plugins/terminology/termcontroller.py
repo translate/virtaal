@@ -64,9 +64,11 @@ class TerminologyController(BaseController):
 
     # METHODS #
     def destroy(self):
-        self.view.destroy()
-        self.plugin_controller.shutdown()
-        self.placeables_controller.remove_parsers(terminology.parsers)
+        try:
+            self.view.destroy()
+        finally:
+            self.plugin_controller.shutdown()
+            self.placeables_controller.remove_parsers(terminology.parsers)
 
     def rescan_current_unit(self):
         """Force the current unit's terminology to be re-scanned (#3240).

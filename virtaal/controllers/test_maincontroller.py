@@ -124,6 +124,31 @@ def test_quit_closes_every_open_dialog_not_just_the_first(monkeypatch):
     ]
 
 
+def test_quit_finishes_when_a_plugin_fails_to_destroy(monkeypatch):
+    # A plugin raising in destroy() used to stop quit() after the window
+    # was hidden: no Gtk.main_quit(), so the process kept running.
+    from virtaal.controllers.plugincontroller import PluginController
+
+    calls = []
+    def fail():
+        raise RuntimeError('boom')
+    controller = MainController.__new__(MainController)
+    GObjectWrapper.__init__(controller)
+    controller._store_controller = SimpleNamespace(is_modified=lambda: False)
+    controller.view = SimpleNamespace(
+        main_window=None, hide=lambda: calls.append('hide'), quit=lambda: calls.append('quit'))
+    plugin_controller = PluginController(controller)
+    plugin_controller.plugins = {
+        'broken': SimpleNamespace(destroy=fail),
+        'other': SimpleNamespace(destroy=lambda: calls.append('other destroyed')),
+    }
+    monkeypatch.setattr(Gtk.Window, 'list_toplevels', lambda: [])
+
+    assert controller.quit() is False
+
+    assert calls == ['hide', 'other destroyed', 'quit']
+
+
 def test_open_file_with_no_filename_actually_opens_the_chosen_one(monkeypatch):
     # view.open_file() (the welcome screen's "Open" link, or an empty
     # File>Open) shows a chooser and calls back into open_file() with

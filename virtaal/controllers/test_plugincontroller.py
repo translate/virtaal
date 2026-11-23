@@ -269,6 +269,23 @@ def test_shutdown_disables_every_loaded_plugin():
     assert set(calls) == {'a', 'b'}
 
 
+def test_shutdown_still_destroys_the_others_when_one_plugin_fails(caplog):
+    pc = _make_controller()
+    destroyed = []
+    def fail():
+        raise RuntimeError('boom')
+    pc.plugins = {
+        'a': SimpleNamespace(destroy=lambda: destroyed.append('a')),
+        'broken': SimpleNamespace(destroy=fail),
+        'c': SimpleNamespace(destroy=lambda: destroyed.append('c')),
+    }
+
+    pc.shutdown()  # must not raise
+
+    assert sorted(destroyed) == ['a', 'c']
+    assert any(r.exc_info and 'broken' in r.getMessage() for r in caplog.records)
+
+
 # get_disabled_plugins() #
 
 def test_get_disabled_plugins_reads_from_settings(monkeypatch):

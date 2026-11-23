@@ -148,6 +148,21 @@ def test_destroy_tears_down_the_view_and_plugins(monkeypatch):
     assert main_controller.placeables_controller.removed_parsers == [terminology.parsers]
 
 
+def test_destroy_shuts_down_the_plugins_even_if_the_view_fails(monkeypatch):
+    controller, main_controller = _make_controller()
+    calls = []
+    def fail():
+        raise RuntimeError('boom')
+    monkeypatch.setattr(controller.view, 'destroy', fail)
+    monkeypatch.setattr(controller.plugin_controller, 'shutdown', lambda: calls.append('plugins'))
+
+    with pytest.raises(RuntimeError):
+        controller.destroy()
+
+    assert calls == ['plugins']
+    assert main_controller.placeables_controller.removed_parsers == [terminology.parsers]
+
+
 def test_rescan_current_unit_does_nothing_without_a_unit_controller():
     controller, main_controller = _make_controller()
 

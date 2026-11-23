@@ -7,6 +7,8 @@
 
 from types import SimpleNamespace
 
+import pytest
+
 from virtaal.plugins.lookup.lookupcontroller import LookupController
 
 
@@ -64,3 +66,18 @@ def test_destroy_destroys_the_view_and_shuts_down_the_plugin_controller():
     controller.destroy()
 
     assert calls == ['view', 'plugins']
+
+
+def test_destroy_shuts_down_the_plugin_controller_even_if_the_view_fails():
+    calls = []
+    def fail():
+        raise RuntimeError('boom')
+    controller = _bare_controller(
+        view=SimpleNamespace(destroy=fail),
+        plugin_controller=SimpleNamespace(shutdown=lambda: calls.append('plugins')),
+    )
+
+    with pytest.raises(RuntimeError):
+        controller.destroy()
+
+    assert calls == ['plugins']

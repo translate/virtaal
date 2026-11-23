@@ -513,6 +513,68 @@ def test_save_file_plain_saves_and_marks_clean():
     assert emitted == [True]
 
 
+def _plain_save_controller(view):
+    controller = _controller()
+    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
+    saved = []
+    controller.store = SimpleNamespace(save_file=saved.append)
+    controller._modified = True
+    # UndoController is created by a deferred start-up step, after the
+    # file opens: a Ctrl+S before then has no undo controller (#4849).
+    controller.main_controller = SimpleNamespace(
+        undo_controller=None,
+        set_saveable=lambda v: None,
+        view=view,
+    )
+    return controller, saved
+
+
+def test_save_file_before_the_undo_controller_exists_still_saves():
+    controller, saved = _plain_save_controller(SimpleNamespace(hide_read_only_notice=lambda: None))
+    emitted = []
+    controller.connect('store-saved', lambda *_: emitted.append(True))
+
+    controller.save_file('out.po')
+
+    assert saved == ['out.po']
+    assert controller._modified is False
+    assert emitted == [True]
+
+
+def _broken():
+    raise RuntimeError('not ready')
+
+
+@pytest.mark.parametrize('view', [
+    SimpleNamespace(hide_read_only_notice=_broken),
+    SimpleNamespace(),
+], ids=['raises', 'missing'])
+def test_save_file_logs_a_failure_after_the_write_instead_of_raising(caplog, view):
+    controller, saved = _plain_save_controller(view)
+    emitted = []
+    controller.connect('store-saved', lambda *_: emitted.append(True))
+
+    controller.save_file('out.po')
+
+    assert saved == ['out.po']
+    assert controller._modified is False
+    assert emitted == [True]
+    assert 'after the write' in caplog.text
+
+
+def test_save_file_still_raises_when_the_write_fails():
+    controller, _saved = _plain_save_controller(SimpleNamespace(hide_read_only_notice=lambda: None))
+
+    def fail(filename):
+        raise OSError('disk full')
+
+    controller.store = SimpleNamespace(save_file=fail)
+
+    with pytest.raises(OSError):
+        controller.save_file('out.po')
+    assert controller._modified is True
+
+
 # save_file() - project path #
 
 def test_save_file_project_writes_the_edit_into_the_bundle(tmp_path):

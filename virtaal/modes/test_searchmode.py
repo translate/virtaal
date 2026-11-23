@@ -1518,14 +1518,17 @@ class _StoreUnits(list):
         return self
 
 
-def _refresh_mode(units, current):
+def _refresh_mode(units, current, text=' asseblief', regex=False):
     from virtaal.controllers.cursor import Cursor
     mode = SearchMode.__new__(SearchMode)
     mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
         unit_controller=SimpleNamespace(current_unit=current)))
     mode.storecursor = Cursor(_StoreUnits(units), [])
-    mode.filter = GrepFilter(searchstring=' asseblief', searchparts=('source', 'target'),
-                             ignorecase=True, useregexp=False, max_matches=200)
+    mode.MAX_RESULTS = 200
+    mode.text = text
+    mode.ent_search = SimpleNamespace(get_text=lambda: mode.text)
+    mode.chk_casesensitive = SimpleNamespace(get_active=lambda: False)
+    mode.chk_regex = SimpleNamespace(get_active=lambda: regex)
     mode._match_text_cache = {}
     mode.default_base = 'base'
     mode.backgrounds = []
@@ -1562,13 +1565,54 @@ def test_on_undo_redo_schedules_a_refresh_only_with_search_text(monkeypatch):
     assert scheduled == [mode._refresh_results]
 
 
+def _typing_mode(monkeypatch, units):
+    scheduled = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.source_remove', lambda source: None)
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.idle_add', lambda *a: None)
+    mode = _refresh_mode(units, current=units[0], text='')
+    mode.filter = None
+    mode._search_timeout = 0
+    return mode, scheduled
+
+
+def _type_then_undo(mode, scheduled, text):
+    # Undo before the debounced search for the typed text has run (#4844).
+    mode.text = text
+    mode._on_search_text_changed(mode.ent_search)
+    mode._on_undo_redo(None)
+    scheduled[-1]()
+
+
+def test_undo_before_the_first_search_runs_finds_the_typed_text(monkeypatch):
+    units = [_xliff_unit('Open please', 'Maak oop'),
+             _xliff_unit('Save please', 'Stoor asseblief')]
+    mode, scheduled = _typing_mode(monkeypatch, units)
+
+    _type_then_undo(mode, scheduled, 'asseblief')
+
+    assert [m.unit for m in mode.matches] == [units[1]]
+    assert mode.storecursor.indices == [1]
+    assert mode.storecursor.index == 0  # still on the unit undo loaded
+
+
+def test_undo_before_the_new_search_runs_finds_the_new_text(monkeypatch):
+    units = [_xliff_unit('Open please', 'Maak oop'),
+             _xliff_unit('Save please', 'Stoor asseblief')]
+    mode, scheduled = _typing_mode(monkeypatch, units)
+    mode.text = 'oop'
+    mode.update_search()
+
+    _type_then_undo(mode, scheduled, 'asseblief')
+
+    assert [m.unit for m in mode.matches] == [units[1]]
+    assert mode.storecursor.indices == [1]
+    assert mode.storecursor.index == 0
+
+
 def test_refresh_results_with_no_matches_shows_the_warning_and_stays_put():
     units = [_xliff_unit('Open please', 'Maak oopX')]
-    mode = _refresh_mode(units, current=units[0])
-
-    def invalid(units):
-        raise re.error('missing )')
-    mode.filter = SimpleNamespace(getmatches=invalid, re_search=re.compile('x'))
+    mode = _refresh_mode(units, current=units[0], text='(', regex=True)
 
     mode._refresh_results()
 

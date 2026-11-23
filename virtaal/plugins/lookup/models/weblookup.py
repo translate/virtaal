@@ -11,12 +11,31 @@ from os import path
 from urllib import parse
 
 _PLACEHOLDER_RE = re.compile(r'%%|%\((query|querylang|nonquerylang|srclang|tgtlang)\)s')
+_LANG_PLACEHOLDERS = ('querylang', 'nonquerylang', 'srclang', 'tgtlang')
+_LANG_CODE_RE = re.compile(r'[A-Za-z0-9_@-]+\Z')
+_SITE_RE = re.compile(r'([A-Za-z][A-Za-z0-9+.-]*:)?(?://)?([^/?#]*)')
 
 
 def _fill_url(url, values):
     """Replace the C{%(name)s} placeholders (and C{%%}) in a look-up URL,
         leaving any other C{%}, such as C{%20}, as it is (#4350)."""
     return _PLACEHOLDER_RE.sub(lambda m: values[m.group(1)] if m.group(1) else '%', url)
+
+
+def _languages_used(url):
+    return {m.group(1) for m in _PLACEHOLDER_RE.finditer(url)} & set(_LANG_PLACEHOLDERS)
+
+
+def _site(url):
+    """The scheme and host part of a URL (a scheme-less one too)."""
+    return _SITE_RE.match(url).groups()
+
+
+def _same_site(template, url, values):
+    """Whether the filled C{url} has the scheme and host its C{template}
+        gives, so no substituted value moved them."""
+    expected = tuple(_fill_url(part or '', values) for part in _site(template))
+    return tuple(part or '' for part in _site(url)) == expected
 
 
 def _slugify(display_name):
@@ -176,22 +195,31 @@ class LookupModel(BaseLookupModel):
         querylang = role == 'source' and srclang or tgtlang
         nonquerylang = role != 'source' and srclang or tgtlang
         query = parse.quote(query.encode('utf-8'))
+        langs = {
+            'querylang':    querylang,
+            'nonquerylang': nonquerylang,
+            'srclang':      srclang,
+            'tgtlang':      tgtlang,
+        }
+        invalid = {name for name, code in langs.items() if not _LANG_CODE_RE.match(code or '')}
+        langs = {name: parse.quote(code or '', safe='') for name, code in langs.items()}
         items = []
         for urlinfo in self.URLDATA:
             if not urlinfo.get('enabled', True):
+                continue
+            if invalid & _languages_used(urlinfo['url']):
+                logging.info("Not offering web look-up %r for language codes %r, %r", urlinfo['display_name'], srclang, tgtlang)
                 continue
             uquery = query
             if 'quoted' in urlinfo and urlinfo['quoted']:
                 uquery = '"' + uquery + '"'
 
+            values = dict(langs, query=uquery)
+            lookup_str = _fill_url(urlinfo['url'], values)
+            if not _same_site(urlinfo['url'], lookup_str, values):
+                logging.warning("Not offering web look-up %r: %s is not on the site of %s", urlinfo['display_name'], lookup_str, urlinfo['url'])
+                continue
             i = Gtk.MenuItem(label=urlinfo['display_name'])
-            lookup_str = _fill_url(urlinfo['url'], {
-                'query':        uquery,
-                'querylang':    querylang,
-                'nonquerylang': nonquerylang,
-                'srclang':      srclang,
-                'tgtlang':      tgtlang
-            })
             i.connect('activate', self._on_lookup, lookup_str)
             items.append(i)
         return items

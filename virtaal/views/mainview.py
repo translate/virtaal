@@ -20,7 +20,11 @@ from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.support.libi18n.locale import rebind_library_domain
 from virtaal.views import rendering, theme
-from virtaal.views.macmenu import menu_title, strip_bracket_mnemonics
+from virtaal.views.macmenu import (
+    menu_title,
+    strip_bracket_mnemonics,
+    strip_window_access_keys,
+)
 
 from .baseview import BaseView
 
@@ -354,6 +358,7 @@ class MainView(BaseView):
     def _setup_macos_integration(self):
         self._start_appearance_polling(self._detect_macos_is_dark)
         _disable_window_tabbing()
+        strip_window_access_keys()
 
         # Sometimes we have two resize grips: one from GTK, one from Aqua. We
         # might want to disable the GTK one:

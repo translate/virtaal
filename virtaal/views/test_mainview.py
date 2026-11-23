@@ -176,13 +176,13 @@ def _dropped(path, encoding='utf-8'):
 def test_decode_dropped_uri_handles_spaces():
     view = MainView.__new__(MainView)
     path = '/tmp/a file with spaces.po'
-    assert view._decode_dropped_uri(_dropped(path)) == 'file://' + path
+    assert view._decode_dropped_uri(_dropped(path)) == os.path.normpath(path)
 
 
 def test_decode_dropped_uri_handles_non_ascii_utf8():
     view = MainView.__new__(MainView)
     path = '/tmp/中文/文件.po'
-    assert view._decode_dropped_uri(_dropped(path)) == 'file://' + path
+    assert view._decode_dropped_uri(_dropped(path)) == os.path.normpath(path)
 
 
 def test_decode_dropped_uri_falls_back_to_system_codepage_on_windows(monkeypatch):
@@ -194,7 +194,14 @@ def test_decode_dropped_uri_falls_back_to_system_codepage_on_windows(monkeypatch
 
     view = MainView.__new__(MainView)
     path = '/tmp/中文/文件.po'
-    assert view._decode_dropped_uri(_dropped(path, encoding='gbk')) == 'file://' + path
+    assert view._decode_dropped_uri(_dropped(path, encoding='gbk')) == os.path.normpath(path)
+
+
+@pytest.mark.parametrize('name', ['50% done.po', '%41.po', 'a#b.po'])
+def test_decode_dropped_uri_decodes_escapes_once(name):
+    view = MainView.__new__(MainView)
+    path = '/tmp/' + name
+    assert view._decode_dropped_uri(_dropped(path)) == os.path.normpath(path)
 
 
 def test_decode_dropped_uri_returns_none_for_undecodable_bytes():
@@ -2128,7 +2135,7 @@ def test_on_drag_data_received_opens_a_decoded_file_uri(monkeypatch):
     result = view._on_drag_data_received(None, context, 0, 0, data, 0, 0)
 
     assert result is True
-    assert opened == ['file:///tmp/dropped.po']
+    assert opened == [os.path.normpath('/tmp/dropped.po')]
 
 
 def test_on_drag_data_received_shows_an_error_for_undecodable_bytes(monkeypatch):

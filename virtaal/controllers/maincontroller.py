@@ -13,7 +13,6 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, GObject, Gtk
 
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.common.platform import platform
 from virtaal.views.mainview import MainView
 
 from .basecontroller import BaseController
@@ -207,10 +206,8 @@ class MainController(BaseController):
             # Unnecessary to test for 'discard'
 
         if filename.startswith('file://'):
-            if platform.is_windows:
-                filename = filename[len('file:///'):]
-            else:
-                filename = filename[len('file://'):]
+            from virtaal.common.utils import path_from_file_uri
+            filename = path_from_file_uri(filename)
 
         if self.store_controller.store and self.store_controller.store.get_filename() == filename:
             promptmsg = _('You selected the currently open file for opening. Do you want to reload the file?')

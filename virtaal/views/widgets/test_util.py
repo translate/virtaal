@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import time
+
 import pytest
 from gi.repository import Gdk, Gtk
 
@@ -48,6 +50,14 @@ def test_one_line(text, expected):
     assert one_line(text) == expected
 
 
+def _pump_until(condition, timeout=5):
+    deadline = time.monotonic() + timeout
+    while not condition() and time.monotonic() < deadline:
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        time.sleep(0.01)
+
+
 def _one_line_entry():
     entry = Gtk.Entry()
     keep_one_line(entry)
@@ -75,8 +85,9 @@ def test_keep_one_line_applies_to_a_paste():
         Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text('one\ntwo', -1)
         entry.grab_focus()
         entry.emit('paste-clipboard')
-        while Gtk.events_pending():
-            Gtk.main_iteration()
+        # The pasted text arrives when the clipboard answers, which can take
+        # more than one pass of the main loop (Windows).
+        _pump_until(entry.get_text)
 
         assert entry.get_text() == 'one two'
         assert entry.get_position() == len('one two')

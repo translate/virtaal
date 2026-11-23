@@ -733,6 +733,9 @@ class SearchMode(BaseMode):
         if index >= 0:
             self.storecursor.force_index(index)
         self.storecursor.set_indices(indexes, keep_current=True)
+        # Find Next/Previous go on from that unit's match.
+        self.matchcursor.index = next(
+            (i for i, match in enumerate(self.matches) if match.unit is current), 0)
         if indexes:
             self._set_search_bg(self.default_base)
         else:

@@ -161,7 +161,7 @@ def test_window_access_keys_follow_label_changes(window_access_keys):
 
     button.set_label('閉じる(_C)')
 
-    assert _labels(window) == ['閉じる']
+    assert _labels(button) == ['閉じる']
     window.destroy()
 
 
@@ -179,11 +179,12 @@ def test_window_access_keys_are_stripped_in_gtk_file_chooser_buttons(window_acce
 
 def test_window_access_keys_cover_windows_already_open():
     window = Gtk.Window()
-    window.add(Gtk.Label.new_with_mnemonic('コメント(_O)'))
+    label = Gtk.Label.new_with_mnemonic('コメント(_O)')
+    window.add(label)
     window.show_all()
 
     hook_id = strip_window_access_keys()
     GObject.signal_remove_emission_hook(GObject.signal_lookup('realize', Gtk.Widget), hook_id)
 
-    assert _labels(window) == ['コメント']
+    assert label.get_label() == 'コメント'
     window.destroy()

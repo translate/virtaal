@@ -20,6 +20,7 @@ import json
 import logging
 import os
 
+from virtaal.common.utils import write_file_atomically
 from virtaal.support.autocorrect_source import (
     CONTENTS_URL,
     RAW_BASE,
@@ -77,11 +78,13 @@ class AutocorrectDownloader:
         self._client.get(url, self._on_document_list, error_callback=self._on_error, download=True)
 
     def _on_document_list(self, _request, result):
-        target_dir = self.target_dir or autocorrect_write_dir(self.locale_code)
-        os.makedirs(target_dir, exist_ok=True)
-        dest = os.path.join(target_dir, 'DocumentList.xml')
-        with open(dest, 'wb') as f:
-            f.write(result)
+        try:
+            target_dir = self.target_dir or autocorrect_write_dir(self.locale_code)
+            os.makedirs(target_dir, exist_ok=True)
+            write_file_atomically(os.path.join(target_dir, 'DocumentList.xml'), result)
+        except OSError as e:
+            logging.warning('Could not save autocorrect data for %s: %s', self.locale_code, e)
+            return self.on_done(False)
         logging.debug('Downloaded autocorrect data for %s', self.locale_code)
         self.on_done(True)
 

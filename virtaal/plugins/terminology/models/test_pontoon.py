@@ -14,6 +14,7 @@ from types import SimpleNamespace
 import pytest
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
+from virtaal.common.test_utils import fail_binary_writes
 from virtaal.plugins.terminology.models.pontoon import (
     TerminologyModel,
     _is_english,
@@ -483,6 +484,40 @@ def test_a_stale_cached_file_stays_in_use_while_offline(tmp_path):
     model.update_terms('en', 'af')
 
     assert [unit.target for unit in model.store.getunits()] == ['Hallo']
+
+
+def test_process_header_write_failure_keeps_the_cached_file(tmp_path, monkeypatch, caplog):
+    model = _model(tmp_path)
+    matched = []
+    model.init_matcher = lambda filename='': matched.append(filename)
+    localfile = str(tmp_path / 'en__af.tbx')
+    old = _tbx(_concept_entry([('en', 'old')]))
+    (tmp_path / 'en__af.tbx').write_bytes(old)
+    fail_binary_writes(monkeypatch)
+
+    model._process_header(_FakeRequest(), _tbx(_concept_entry([('en', 'new')])), localfile=localfile)  # must not raise
+
+    monkeypatch.undo()
+    assert 'Could not save' in caplog.text
+    assert (tmp_path / 'en__af.tbx').read_bytes() == old
+    assert [p.name for p in tmp_path.iterdir()] == ['en__af.tbx']
+    assert model.config == {}
+    assert matched == [localfile]
+
+
+def test_process_header_write_failure_with_nothing_cached_clears_the_matcher(tmp_path, monkeypatch, caplog):
+    model = _model(tmp_path)
+    matched = []
+    model.init_matcher = lambda filename='': matched.append(filename)
+    fail_binary_writes(monkeypatch)
+
+    model._process_header(_FakeRequest(), _tbx(), localfile=str(tmp_path / 'en__af.tbx'))  # must not raise
+
+    monkeypatch.undo()
+    assert 'Could not save' in caplog.text
+    assert list(tmp_path.iterdir()) == []
+    assert model.config == {}
+    assert matched == ['']
 
 
 # _on_lang_changed(): re-fetches terminology for whichever side of the

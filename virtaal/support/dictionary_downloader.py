@@ -28,6 +28,7 @@ import os
 
 from lxml import etree
 
+from virtaal.common.utils import write_file_atomically
 from virtaal.support.dictionary_source import (
     RAW_BASE,
     TREE_URL,
@@ -130,8 +131,7 @@ class DictionaryDownloader:
             target_dir = self.target_dir or dictionary_write_dir()
             os.makedirs(target_dir, exist_ok=True)
             dest = os.path.join(target_dir, self._local_name(filename))
-            with open(dest, 'wb') as f:
-                f.write(result)
+            write_file_atomically(dest, result)
             self._written.append(dest)
         except Exception as e:
             logging.debug('dictionary download: could not write %s: %s', filename, e)

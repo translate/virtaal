@@ -13,6 +13,7 @@ import time
 import pytest
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
+from virtaal.common.test_utils import fail_binary_writes
 from virtaal.plugins.terminology.models.autoterm import TerminologyModel
 
 GOOD_PO = b'''msgid ""
@@ -182,6 +183,39 @@ def test_process_header_an_unhandled_status_keeps_the_cached_terms(tmp_path):
     assert open(localfile, 'rb').read() == GOOD_PO
     assert [unit.target for unit in fake_self.store.getunits()] == ['Bonjour']
     assert os.stat(localfile).st_mtime == 1
+
+
+OLD_PO = GOOD_PO.replace(b'Bonjour', b'Salut')
+
+
+def test_process_header_write_failure_keeps_the_cached_file(tmp_path, monkeypatch, caplog):
+    fake_self = _fake_self()
+    localfile = os.path.join(str(tmp_path), 'en__fr.po')
+    open(localfile, 'wb').write(OLD_PO)
+    fail_binary_writes(monkeypatch)
+
+    TerminologyModel._process_header(fake_self, _FakeRequest(), GOOD_PO, localfile=localfile)  # must not raise
+
+    monkeypatch.undo()
+    assert 'Could not save' in caplog.text
+    assert open(localfile, 'rb').read() == OLD_PO
+    assert os.listdir(str(tmp_path)) == ['en__fr.po']
+    assert fake_self.config == {}
+    assert [u.target for u in fake_self.store.getunits()] == ['Salut']
+
+
+def test_process_header_write_failure_with_nothing_cached_uses_an_empty_store(tmp_path, monkeypatch, caplog):
+    fake_self = _fake_self()
+    localfile = os.path.join(str(tmp_path), 'en__fr.po')
+    fail_binary_writes(monkeypatch)
+
+    TerminologyModel._process_header(fake_self, _FakeRequest(), GOOD_PO, localfile=localfile)  # must not raise
+
+    monkeypatch.undo()
+    assert 'Could not save' in caplog.text
+    assert os.listdir(str(tmp_path)) == []
+    assert fake_self.config == {}
+    assert fake_self.store.getunits() == []
 
 
 # init_matcher() #

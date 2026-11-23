@@ -25,6 +25,7 @@ import logging
 import os
 
 from virtaal.common import pan_app
+from virtaal.common.utils import write_file_atomically
 from virtaal.support.dictionary_source import dictionary_file_url_candidates
 
 
@@ -89,8 +90,7 @@ class ThesaurusDownloader:
             target_dir = self.target_dir or self._default_target_dir()
             os.makedirs(target_dir, exist_ok=True)
             dest = os.path.join(target_dir, filename)
-            with open(dest, 'wb') as f:
-                f.write(result)
+            write_file_atomically(dest, result)
             self._written.append(dest)
         except Exception as e:
             logging.debug('thesaurus download: could not write %s: %s', filename, e)

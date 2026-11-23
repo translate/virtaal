@@ -203,6 +203,9 @@ function Invoke-VirtaalCheck {
         # own Add-Result call.
         if ($t -and $t.OpenScreenshot) { Write-Host "  (open screenshot: $($t.OpenScreenshot))" }
         if ($t) { Stop-VirtaalTest $t }
+        # A launch that never reached $t (Start-VirtaalTest threw after
+        # starting it).
+        Stop-VirtaalStartedProcesses | Out-Null
     }
 }
 

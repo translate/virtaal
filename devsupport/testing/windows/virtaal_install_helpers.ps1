@@ -92,9 +92,10 @@ function Uninstall-Virtaal {
     .SYNOPSIS
     Silently and idempotently uninstalls Virtaal. Returns $true if
     Virtaal ends up not installed (whether or not it was installed to
-    begin with) and $false if an uninstall was attempted but didn't
-    complete within the timeout - callers should treat that as a hard
-    failure, not proceed to install on top of a half-removed copy.
+    begin with) and $false if another Virtaal is running from the
+    install, or the uninstall didn't complete within the timeout -
+    callers should treat that as a hard failure, not proceed to install
+    on top of a half-removed copy.
     #>
     param([int]$TimeoutSeconds = 60)
 
@@ -106,7 +107,23 @@ function Uninstall-Virtaal {
 
     # An uninstall can't remove a locked virtaal.exe, and /VERYSILENT
     # would otherwise just fail quietly rather than prompt to close it.
-    Get-Process -Name virtaal -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    # Stop only what virtaal_ui_test_helpers.ps1 launched; any other
+    # Virtaal running from this install is the tester's.
+    if (Get-Command Stop-VirtaalStartedProcesses -ErrorAction SilentlyContinue) {
+        Stop-VirtaalStartedProcesses | Out-Null
+    }
+    if ($entry.InstallLocation) {
+        $installDir = $entry.InstallLocation.TrimEnd('\') + '\'
+        # Win32_Process, not Get-Process: 32-bit PowerShell can't read a
+        # 64-bit process's path.
+        $running = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+            $_.ExecutablePath -and $_.ExecutablePath.StartsWith($installDir, [StringComparison]::OrdinalIgnoreCase)
+        })
+        if ($running) {
+            Write-Host "::error::Virtaal is running from $installDir (PID $(($running | ForEach-Object { $_.ProcessId }) -join ', ')) - close it and retry."
+            return $false
+        }
+    }
 
     $uninstExe = $entry.UninstallString.Trim('"')
     if (-not (Test-Path $uninstExe)) {

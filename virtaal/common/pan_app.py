@@ -184,7 +184,6 @@ import configparser as ConfigParser
 import gettext
 import locale
 import shutil
-import tempfile
 
 from translate.lang import data
 from translate.misc import file_discovery
@@ -311,8 +310,9 @@ def _ensure_dev_locale_installed(lang, localedir):
         setup.py's own compiled C{mo/<lang>/virtaal.mo} copied into
         C{sys.prefix}'s C{share/locale/} - a known setuptools
         limitation with C{data_files} and editable installs. Self-heal
-        it here, once: reuse the repo's own compiled C{mo/} tree if
-        C{setup.py} already built one, otherwise compile C{po/<lang>.po}
+        it here, rebuilt when a source is newer: reuse the repo's own
+        compiled C{mo/} tree if C{setup.py} built one since the last
+        C{po/<lang>.po} change, otherwise compile C{po/<lang>.po}
         directly - translate-toolkit (a hard dependency already) ships
         the exact compiler C{setup.py} itself uses, so this needs
         nothing beyond what's already installed, in a checkout that's
@@ -321,32 +321,40 @@ def _ensure_dev_locale_installed(lang, localedir):
         return
     _ensure_dev_library_catalogs(lang, localedir)
     target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')
-    if os.path.isfile(target):
-        return
-
     repo_root = _repo_root()
     source = os.path.join(repo_root, 'mo', lang, 'virtaal.mo')
-    if os.path.isfile(source):
-        os.makedirs(os.path.dirname(target), exist_ok=True)
-        shutil.copyfile(source, target)
+    po_file = os.path.join(repo_root, 'po', lang + '.po')
+    sources = [p for p in (source, po_file) if os.path.isfile(p)]
+    if not sources or (os.path.isfile(target) and
+                       os.path.getmtime(target) >= max(os.path.getmtime(p) for p in sources)):
         return
 
-    po_file = os.path.join(repo_root, 'po', lang + '.po')
-    if not os.path.isfile(po_file):
-        return
-    from translate.tools.pocompile import convertmo
+    copy = os.path.isfile(source) and (not os.path.isfile(po_file) or
+                                       os.path.getmtime(source) >= os.path.getmtime(po_file))
     os.makedirs(os.path.dirname(target), exist_ok=True)
-    fd, tmp_target = tempfile.mkstemp(dir=os.path.dirname(target))
-    os.close(fd)
+    # A plain file beside the target, not mkstemp()'s 0600 one, so the
+    # catalog keeps the umask's permissions.
+    tmp_target = target + '.tmp'
     try:
-        # convertmo() reopens outfile by its .name; fdopen()'s .name is
-        # an int, not a path, so this must be a real path-backed file.
-        with open(tmp_target, 'w') as outfile, open(po_file, 'rb') as infile:
-            convertmo(infile, outfile, None)
+        if copy:
+            shutil.copyfile(source, tmp_target)
+        else:
+            from translate.tools.pocompile import convertmo
+            # convertmo() reopens outfile by its .name; fdopen()'s .name is
+            # an int, not a path, so this must be a real path-backed file.
+            with open(tmp_target, 'w') as outfile, open(po_file, 'rb') as infile:
+                convertmo(infile, outfile, None)
         os.replace(tmp_target, target)
     except Exception:
-        os.remove(tmp_target)
+        if os.path.exists(tmp_target):
+            os.remove(tmp_target)
         raise
+    # gettext.translation() caches catalogs by path, so a later install
+    # in this process would otherwise keep the old catalog.
+    target = os.path.abspath(target)
+    cache = getattr(gettext, '_translations', {})
+    for key in [key for key in cache if key[1:] == (target,)]:
+        del cache[key]
 
 
 class Settings:

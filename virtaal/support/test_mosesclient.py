@@ -5,7 +5,12 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import threading
 import xmlrpc.client as xmlrpclib
+from xmlrpc.server import SimpleXMLRPCServer
+
+import pycurl
+import pytest
 
 from virtaal.support.mosesclient import MosesClient, fixup, prepare
 
@@ -160,3 +165,57 @@ def test_handle_response_fixes_up_the_translated_text():
     body = xmlrpclib.dumps(({'text': 'hello , world !'},), methodresponse=True)
 
     assert client._handle_response('src', body) == 'hello, world!'
+
+
+NON_ASCII_SOURCES = ['Café', 'Привет', '日本語', '“quoted”']
+
+
+@pytest.mark.parametrize('source', NON_ASCII_SOURCES)
+def test_translate_unit_sends_non_ascii_text_as_utf8(source):
+    client, requests = _client_with_captured_requests()
+
+    client.translate_unit(source)
+
+    request = requests[0]
+    assert isinstance(request.data, bytes)
+    assert f'Content-Length: {len(request.data)}' in request.headers
+    (params,), _method = xmlrpclib.loads(request.data)
+    assert params == {'text': prepare(source)}
+
+
+def test_translate_unit_keeps_ascii_bodies_unchanged():
+    client, requests = _client_with_captured_requests()
+
+    client.translate_unit('Hello')
+
+    expected = xmlrpclib.dumps(({'text': 'hello'},), 'translate').encode('ascii')
+    assert requests[0].data == expected
+    assert f'Content-Length: {len(expected)}' in requests[0].headers
+
+
+@pytest.fixture
+def moses_server():
+    """A local XML-RPC server whose translate() echoes the text upper-cased."""
+    server = SimpleXMLRPCServer(('127.0.0.1', 0), logRequests=False)
+    server.register_function(lambda params: {'text': params['text'].upper()}, 'translate')
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield 'http://127.0.0.1:%d' % server.server_address[1]
+    server.shutdown()
+    server.server_close()
+
+
+@pytest.mark.parametrize('source', ['Hello'] + NON_ASCII_SOURCES)
+def test_translate_unit_round_trips_through_an_xmlrpc_server(moses_server, source):
+    client = MosesClient(moses_server)
+    requests = []
+    client.add = requests.append
+    calls = []
+    client.translate_unit(source, callback=lambda src, translation: calls.append((src, translation)))
+
+    request = requests[0]
+    request.curl.setopt(pycurl.NOPROXY, '*')
+    request.curl.perform()
+    request.handle_result()
+
+    assert calls == [(source, fixup(source, prepare(source).upper()))]

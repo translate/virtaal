@@ -40,6 +40,7 @@ from virtaal.support import (
     fluent_compat,  # noqa: F401 - applies its patch on import
     poparser_compat,  # noqa: F401 - applies its patch on import
     tmdb,
+    ts2_compat,  # noqa: F401 - applies its patch on import
 )
 from virtaal.support.proxy import is_loopback
 from virtaal.support.tmauth import TOKEN_ENV, TOKEN_HEADER, new_token

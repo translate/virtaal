@@ -15,6 +15,7 @@ from virtaal.support import (
     fluent_compat,  # noqa: F401 - applies its patch on import
     poparser_compat,  # noqa: F401 - applies its patch on import
     qm_compat,  # noqa: F401 - applies its patch on import
+    ts2_compat,  # noqa: F401 - applies its patch on import
 )
 
 from .basemodel import BaseModel

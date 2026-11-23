@@ -192,6 +192,19 @@ def read_linguas(path):
         return [line.split("#")[0].strip() for line in f if line.split("#")[0].strip()]
 
 
+def listed_catalogs(root):
+    """PyInstaller datas entries for the catalogs under root/mo/ that
+    po/LINGUAS (virtaal.mo) and po/LINGUAS-lite list. A catalog left in
+    mo/ by a language since dropped from either list isn't one."""
+    listed = {(lang, "virtaal") for lang in read_linguas(os.path.join(root, "po", "LINGUAS"))}
+    listed |= {tuple(reversed(entry.split("/"))) for entry in read_linguas(os.path.join(root, "po", "LINGUAS-lite"))}
+    mo_dir = os.path.join(root, "mo")
+    return sorted(
+        (os.path.join(mo_dir, lang, domain + ".mo"), os.path.join("share", "locale", lang, "LC_MESSAGES"))
+        for lang, domain in listed
+        if os.path.isfile(os.path.join(mo_dir, lang, domain + ".mo")))
+
+
 def bundle_languages(languages):
     """The locale directories a frozen build bundles library catalogs
     from: each language, and the one gettext falls back to for it (pt

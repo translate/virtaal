@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
 from virtaal.support.libi18n.lite import (  # noqa: E402
     bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
+    listed_catalogs, read_linguas,
 )
 
 sys.path.insert(0, str(PACKAGING))
@@ -66,10 +66,7 @@ TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
 # them) only, not for every language the libraries translate.
 LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
 
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
+mo_files = listed_catalogs(ROOT)
 
 # gtkosx_application_init() (gtk-mac-integration's own C code) rebinds
 # its gettext domain to <bundle>/Contents/Resources/share/locale

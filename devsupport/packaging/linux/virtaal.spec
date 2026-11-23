@@ -13,7 +13,7 @@ ROOT = Path(os.getcwd())
 sys.path.insert(0, str(ROOT))
 from virtaal.support.libi18n.lite import (  # noqa: E402
     bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
+    listed_catalogs, read_linguas,
 )
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
@@ -37,10 +37,7 @@ def _required(path):
     return path
 
 
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
+mo_files = listed_catalogs(ROOT)
 
 # libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py).
 # Loaded with ctypes, so nothing else pulls it in.

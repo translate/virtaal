@@ -40,7 +40,7 @@ sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
 from virtaal.support.libi18n.lite import (  # noqa: E402
     bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
-    read_linguas,
+    listed_catalogs, read_linguas,
 )
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
@@ -123,10 +123,7 @@ version_info = VSVersionInfo(
 # them) only, not for every language the libraries translate.
 LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
 
-mo_files = [
-    (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
-    for p in (ROOT / "mo").rglob("*.mo")
-]
+mo_files = listed_catalogs(ROOT)
 
 # gvsbuild's own GTK3 install, from ci.yml's "Download prebuilt GTK3
 # (gvsbuild)" step (always C:\gtk - same convention the env vars there

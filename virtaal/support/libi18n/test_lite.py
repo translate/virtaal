@@ -106,6 +106,24 @@ def test_read_linguas_skips_comments_and_blank_lines(tmp_path):
     assert lite.read_linguas(tmp_path / "LINGUAS") == ["af", "zu"]
 
 
+def test_listed_catalogs_leave_out_what_linguas_no_longer_lists(tmp_path):
+    (tmp_path / "po").mkdir()
+    (tmp_path / "po" / "LINGUAS").write_text("af\nde\n", encoding="utf-8")
+    (tmp_path / "po" / "LINGUAS-lite").write_text("gtk30/zu\n", encoding="utf-8")
+    for lang, domain in [("af", "virtaal"), ("de", "virtaal"), ("zu", "gtk30"),
+                         ("xx", "virtaal"), ("de", "gtk30"), ("zu", "glib20")]:
+        (tmp_path / "mo" / lang).mkdir(parents=True, exist_ok=True)
+        (tmp_path / "mo" / lang / (domain + ".mo")).write_bytes(b"")
+
+    catalogs = lite.listed_catalogs(tmp_path)
+
+    assert catalogs == [
+        (str(tmp_path / "mo" / "af" / "virtaal.mo"), os.path.join("share", "locale", "af", "LC_MESSAGES")),
+        (str(tmp_path / "mo" / "de" / "virtaal.mo"), os.path.join("share", "locale", "de", "LC_MESSAGES")),
+        (str(tmp_path / "mo" / "zu" / "gtk30.mo"), os.path.join("share", "locale", "zu", "LC_MESSAGES")),
+    ]
+
+
 def test_bundle_languages_adds_what_gettext_falls_back_to():
     assert lite.bundle_languages(["pt_BR", "sr@latin", "de"]) == ["de", "pt", "pt_BR", "sr", "sr@latin"]
 

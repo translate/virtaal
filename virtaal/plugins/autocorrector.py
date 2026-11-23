@@ -14,6 +14,7 @@ import re
 from gi.repository import GLib
 
 from virtaal.common import pan_app
+from virtaal.common.langpath import is_safe_lang_code, lang_folder_name, path_inside
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support.asset_manifest import (
@@ -172,8 +173,10 @@ class AutoCorrector:
     def _read_document_list(self, lang):
         """The raw DocumentList.xml bytes for lang, or None if nothing
             local covers it."""
-        exact = os.path.join(self.acorpath, lang, 'DocumentList.xml')
-        if os.path.isfile(exact):
+        if not is_safe_lang_code(lang):
+            return None
+        exact = path_inside(self.acorpath, lang_folder_name(lang), 'DocumentList.xml')
+        if exact is not None and os.path.isfile(exact):
             with open(exact, 'rb') as f:
                 return f.read()
 
@@ -182,8 +185,8 @@ class AutoCorrector:
         langpart = lang.split('_')[0]
         for name in sorted(os.listdir(self.acorpath)):
             if name == langpart or name.startswith(langpart + '_'):
-                candidate = os.path.join(self.acorpath, name, 'DocumentList.xml')
-                if os.path.isfile(candidate):
+                candidate = path_inside(self.acorpath, name, 'DocumentList.xml')
+                if candidate is not None and os.path.isfile(candidate):
                     with open(candidate, 'rb') as f:
                         return f.read()
         return None
@@ -296,7 +299,7 @@ class Plugin(BasePlugin):
             # Nothing local covered it (load_dictionary() always
             # replaces correctiondict, so this reflects lang's own
             # outcome) - try once per language per run.
-            if not lang or self.autocorr.correctiondict or lang in self._autocorr_tried:
+            if not is_safe_lang_code(lang) or self.autocorr.correctiondict or lang in self._autocorr_tried:
                 return
             self._autocorr_tried.add(lang)
 

@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
 from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import thesaurus as thesaurus_module
@@ -758,3 +759,87 @@ def test_a_destroyed_model_no_longer_downloads_for_a_new_language(monkeypatch, t
 
     assert threads == []
     assert 'pl_PL' not in model._auto_tried
+
+
+# A file can declare any language code - only ones safe as a folder
+# name ever reach the cache.
+
+HOSTILE_CODES = ['../x', '/abs', 'a/b', '..']
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+def test_maybe_auto_download_skips_a_code_that_is_not_a_folder_name(monkeypatch, tmp_path, code):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path / 'thesaurus'))
+    threads = _patch_threads(monkeypatch)
+    lull_calls = []
+    model = _make_model(manifest_entries={code: _PL_PL_ENTRY}, lull_calls=lull_calls)
+
+    model._maybe_auto_download(code)
+
+    assert lull_calls == []
+    assert threads == []
+    assert _FakeDownloader.instances == []
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+def test_start_check_skips_a_code_that_is_not_a_folder_name(monkeypatch, code):
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._start_check(code)
+
+    assert threads == []
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+def test_start_download_skips_a_code_that_is_not_a_folder_name(monkeypatch, tmp_path, code):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path / 'thesaurus'))
+    model = _make_model()
+
+    model._start_download(code, 'pl', ['th_pl_PL.dat'])
+
+    assert _FakeDownloader.instances == []
+
+
+def test_create_menu_items_ignores_a_cached_dat_outside_the_cache(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path / 'thesaurus'))
+    _write_dat(tmp_path, 'x', SAMPLE_DAT)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    assert model.create_menu_items('abaja', 'source', '../x', 'en', None) == []
+    assert threads == []
+
+
+def test_start_download_targets_the_locales_own_folder(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    model = _make_model()
+
+    model._start_download('sr@latin', 'sr', ['th_sr.dat'])
+
+    assert _FakeDownloader.instances[0].target_dir == str(tmp_path / 'sr@latin')
+
+
+def test_start_download_uses_a_safe_folder_name_for_a_windows_device_name(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    model = _make_model()
+
+    model._start_download('con', 'con', ['th_con.dat'])
+
+    assert _FakeDownloader.instances[0].target_dir == str(tmp_path / 'con_')
+
+
+def test_create_menu_items_offers_nothing_for_a_folder_linked_outside_the_cache(monkeypatch, tmp_path):
+    cache = tmp_path / 'thesaurus'
+    cache.mkdir()
+    _write_dat(tmp_path, 'outside', SAMPLE_DAT)
+    try:
+        (cache / 'pl_PL').symlink_to(tmp_path / 'outside')
+    except OSError:
+        pytest.skip('no symlink permission')
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(cache))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    assert model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None) == []
+    assert threads == []

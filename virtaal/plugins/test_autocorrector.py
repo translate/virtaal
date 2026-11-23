@@ -541,6 +541,49 @@ def test_maybe_download_reloads_and_reattaches_when_the_download_completes(monke
     assert 'adt' in plugin.autocorr.correctiondict
 
 
+@pytest.mark.parametrize('code', ['../x', '/abs', 'a/b', '..'])
+def test_read_document_list_ignores_a_code_that_is_not_a_folder_name(tmp_path, code):
+    acorpath = tmp_path / 'autocorr'
+    acorpath.mkdir()
+    _write_document_list(tmp_path, 'x')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(acorpath))
+
+    assert corrector._read_document_list(code) is None
+
+
+@pytest.mark.parametrize('code', ['af', 'af_ZA'])
+def test_read_document_list_ignores_a_folder_linked_outside_acorpath(tmp_path, code):
+    acorpath = tmp_path / 'autocorr'
+    acorpath.mkdir()
+    _write_document_list(tmp_path, 'outside')
+    try:
+        (acorpath / 'af').symlink_to(tmp_path / 'outside')
+    except OSError:
+        pytest.skip('no symlink permission')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(acorpath))
+
+    assert corrector._read_document_list(code) is None
+
+
+def test_read_document_list_finds_a_windows_device_name_in_its_safe_folder(tmp_path):
+    _write_document_list(tmp_path, 'con_')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+
+    assert corrector._read_document_list('con') == AF_ZA_DOCUMENT_LIST
+
+
+@pytest.mark.parametrize('code', ['../x', '/abs', 'a/b', '..'])
+def test_on_store_loaded_does_not_download_for_a_code_that_is_not_a_folder_name(monkeypatch, tmp_path, code):
+    plugin, main_controller, calls = _init_plugin(monkeypatch, tmp_path, store=None, targets=[], target_lang_code=code)
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+
+    assert _FakeAutocorrectDownloader.started == []
+    assert _FakeAutocorrectDownloader.known_files_started == []
+
+
 def test_maybe_download_only_tries_once_per_language_per_run(monkeypatch, tmp_path):
     plugin, main_controller, calls = _init_plugin(monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx')
     on_store_loaded = next(h for s, h in calls if s == 'store-loaded')

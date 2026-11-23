@@ -419,3 +419,93 @@ def test_on_lang_changed_updates_the_attribute_and_refreshes_terms(monkeypatch):
 
     assert fake_self.target_lang == 'fr'
     assert calls == [('en', 'fr')]
+
+
+# Cache file names only ever come from language codes that are safe in
+# a file name: a file can declare any source/target language.
+
+HOSTILE_CODES = ['../x', '/abs', 'a/b', '..', '', '../../../../Documents/x']
+
+
+@pytest.mark.parametrize('tgtlang, expected', [
+    ('af', 'en__af.po'),
+    ('pt_BR', 'en__pt_BR.po'),
+    ('sr@latin', 'en__sr@latin.po'),
+    ('zh-Hans', 'en__zh-Hans.po'),
+    ('son', 'en__son.po'),
+    ('con', 'en__con.po'),
+])
+def test_get_curr_term_filename_is_unchanged_for_real_codes(tgtlang, expected):
+    assert TerminologyModel._get_curr_term_filename(_fake_self(), 'en', tgtlang) == expected
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+@pytest.mark.parametrize('which', ['source', 'target'])
+def test_update_terms_skips_a_code_that_is_not_a_file_name(monkeypatch, code, which):
+    fake_self = _fake_self()
+    langs = {'source': 'en', 'target': 'fr'}
+    langs[which] = code
+    fake_self.source_lang = langs['source']
+    fake_self.target_lang = langs['target']
+    fake_self.client = _FakeClient()
+    calls = []
+    monkeypatch.setattr(fake_self, 'init_matcher', lambda filename='': calls.append(filename))
+
+    TerminologyModel.update_terms(fake_self, langs['source'], langs['target'])
+
+    assert calls == ['']
+    assert fake_self.client.calls == []
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+@pytest.mark.parametrize('which', ['source', 'target'])
+def test_process_header_saves_nothing_for_a_code_that_is_not_a_file_name(monkeypatch, tmp_path, code, which):
+    termdir = tmp_path / 'a' / 'b' / 'autoterm'
+    termdir.mkdir(parents=True)
+    monkeypatch.setattr(TerminologyModel, 'TERMDIR', str(termdir))
+    fake_self = _fake_self()
+    langs = {'source': 'en', 'target': 'fr', which: code}
+    fake_self.source_lang = langs['source']
+    fake_self.target_lang = langs['target']
+
+    TerminologyModel._process_header(fake_self, _FakeRequest(), GOOD_PO)
+
+    assert [p for p in tmp_path.rglob('*') if p.is_file()] == []
+    assert fake_self.config == {}
+
+
+def test_check_for_update_quotes_the_codes_in_the_url():
+    fake_self = _fake_self()
+    fake_self.client = _FakeClient()
+
+    TerminologyModel._check_for_update(fake_self, 'en', 'sr@latin')
+
+    assert fake_self.client.calls[0]['url'].endswith('/en/sr%40latin')
+
+
+def test_a_reply_after_a_language_switch_is_saved_for_the_requested_pair(monkeypatch, tmp_path):
+    fake_self = _fake_self()
+    fake_self.source_lang = 'en'
+    fake_self.target_lang = 'af'
+    fake_self.client = _FakeClient()
+    matched = []
+    monkeypatch.setattr(fake_self, 'init_matcher', lambda filename='': matched.append(filename))
+
+    TerminologyModel._check_for_update(fake_self, 'en', 'af')
+    fake_self.target_lang = 'fr'
+    fake_self.client.calls[0]['callback'](_FakeRequest(effective_url='http://example.com/en/af'), GOOD_PO)
+
+    assert sorted(os.listdir(str(tmp_path))) == ['en__af.po']
+    assert matched == []
+
+
+def test_a_stale_unparseable_reply_leaves_the_current_matcher_alone(monkeypatch):
+    fake_self = _fake_self()
+    fake_self.source_lang = 'en'
+    fake_self.target_lang = 'fr'
+    matched = []
+    monkeypatch.setattr(fake_self, 'init_matcher', lambda filename='': matched.append(filename))
+
+    TerminologyModel._process_header(fake_self, _FakeRequest(), SIGNON_PAGE, srclang='en', tgtlang='af')
+
+    assert matched == []

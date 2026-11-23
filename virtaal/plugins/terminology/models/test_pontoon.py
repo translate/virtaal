@@ -381,3 +381,68 @@ def test_on_lang_changed_updates_the_relevant_language_and_refetches(tmp_path):
 
     assert model.target_lang == 'fr'
     assert calls == [('en', 'fr')]
+
+
+# Cache file names only ever come from language codes that are safe in
+# a file name: a file can declare any source/target language.
+
+HOSTILE_CODES = ['../x', '/abs', 'a/b', '..', '', '../../../../Documents/x']
+
+
+@pytest.mark.parametrize('tgtlang, expected', [
+    ('af', 'en__af.tbx'),
+    ('pt_BR', 'en__pt_BR.tbx'),
+    ('sr@latin', 'en__sr@latin.tbx'),
+    ('zh-Hans', 'en__zh-Hans.tbx'),
+    ('son', 'en__son.tbx'),
+    ('con', 'en__con.tbx'),
+])
+def test_curr_term_filename_is_unchanged_for_real_codes(tmp_path, tgtlang, expected):
+    model = _model(tmp_path)
+
+    assert model._get_curr_term_filename('en', tgtlang) == expected
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+@pytest.mark.parametrize('which', ['source', 'target'])
+def test_update_terms_skips_a_code_that_is_not_a_file_name(tmp_path, code, which):
+    termdir = tmp_path / 'pontoon'
+    termdir.mkdir()
+    langs = {'source': 'en', 'target': 'af', which: code}
+    model = _model(termdir, source_lang=langs['source'], target_lang=langs['target'])
+    matched = []
+    model.init_matcher = lambda filename='': matched.append(filename)
+    model.client = SimpleNamespace(get=lambda *a, **kw: pytest.fail('should not fetch'))
+
+    model.update_terms(langs['source'], langs['target'])
+
+    assert matched == ['']
+
+
+@pytest.mark.parametrize('code', HOSTILE_CODES)
+@pytest.mark.parametrize('which', ['source', 'target'])
+def test_process_header_saves_nothing_for_a_code_that_is_not_a_file_name(tmp_path, code, which):
+    termdir = tmp_path / 'a' / 'b' / 'pontoon'
+    termdir.mkdir(parents=True)
+    langs = {'source': 'en', 'target': 'af', which: code}
+    model = _model(termdir, source_lang=langs['source'], target_lang=langs['target'])
+
+    model._process_header(_FakeRequest(), b'<tbx/>')
+
+    assert [p for p in tmp_path.rglob('*') if p.is_file()] == []
+    assert model.config == {}
+
+
+def test_a_reply_after_a_language_switch_is_saved_for_the_requested_pair(tmp_path):
+    model = _model(tmp_path, source_lang='en', target_lang='af')
+    callbacks = []
+    model.client = SimpleNamespace(get=lambda url, callback, *a, **kw: callbacks.append(callback))
+    matched = []
+    model.init_matcher = lambda filename='': matched.append(filename)
+
+    model._check_for_update('en', 'af')
+    model.target_lang = 'fr'
+    callbacks[0](_FakeRequest(), b'<tbx/>')
+
+    assert sorted(os.listdir(str(tmp_path))) == ['en__af.tbx']
+    assert matched == []

@@ -1700,7 +1700,8 @@ class MainView(BaseView):
             self.hide_template_update_notice()
         self.gui.get_object('mnu_saveas').set_sensitive(True)
         self.gui.get_object('mnu_close').set_sensitive(True)
-        self.gui.get_object('mnu_update').set_sensitive(True)
+        self.gui.get_object('mnu_update').set_sensitive(
+            getattr(getattr(store_controller, 'store', None), 'can_update_from_template', False))
         self.gui.get_object('mnu_properties').set_sensitive(True)
         self.gui.get_object('mnu_next_unit').set_sensitive(True)
         self.gui.get_object('mnu_state_advance').set_sensitive(True)

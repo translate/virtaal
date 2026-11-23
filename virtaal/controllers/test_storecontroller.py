@@ -791,6 +791,33 @@ def test_update_file_refuses_a_template_with_nothing_to_translate(tmp_path):
     assert controller.store is store
 
 
+
+def test_update_file_shows_the_open_file_again_when_the_update_fails(tmp_path):
+    # #4840: the view was cleared before the update and never reloaded.
+    controller = _controller()
+
+    def fail(filename):
+        raise ValueError('cannot update')
+    store = controller.store = SimpleNamespace(update_file=fail)
+    indices = []
+    cursor = controller.cursor = SimpleNamespace(index=3, force_index=indices.append)
+    shown = []
+    controller._view = SimpleNamespace(
+        load_store=shown.append,
+        show=lambda: shown.append('shown'),
+    )
+    template = tmp_path / "updated.pot"
+    template.write_text('msgid "Open"\nmsgstr ""\n')
+
+    with pytest.raises(ValueError, match='cannot update'):
+        controller.update_file(str(template))
+
+    assert controller.store is store
+    assert controller.cursor is cursor
+    assert shown == [None, store, 'shown']
+    assert indices == [3]
+
+
 # update_store_checks() #
 
 def test_update_store_checks_raises_without_a_store():

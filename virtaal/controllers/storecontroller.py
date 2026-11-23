@@ -347,7 +347,14 @@ class StoreController(BaseController):
         # are still attached to old models before we start changing things. See
         # bug 1854.
         self.view.load_store(None)
-        self.store.update_file(filename)
+        try:
+            self.store.update_file(filename)
+        except Exception:
+            index = self.cursor.index
+            self.view.load_store(self.store)
+            self.view.show()
+            self.cursor.force_index(index)
+            raise
 
         self._modified = True
         self.main_controller.set_saveable(self._modified)

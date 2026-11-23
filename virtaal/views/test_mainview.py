@@ -643,6 +643,24 @@ def _file_uri(path):
     return GLib.filename_to_uri(os.path.abspath(path), None)
 
 
+@pytest.mark.parametrize("can_update", [True, False])
+def test_on_store_loaded_offers_update_from_template_only_when_the_store_can(monkeypatch, can_update):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
+    update = _FakeSensitiveWidget()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: update if name == 'mnu_update' else _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'af.xlf', project=None,
+        store=SimpleNamespace(filename='/tmp/af.xlf', can_update_from_template=can_update))
+
+    view._on_store_loaded(store_controller)
+
+    assert update.sensitive == [can_update]
+
+
 def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
     from virtaal.views import recent
     added = []

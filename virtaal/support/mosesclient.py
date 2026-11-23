@@ -73,9 +73,7 @@ class MosesClient(GObject.GObject, HTTPClient):
         if self.multilang:
             parameters['system'] = target_language
 
-        request_body = xmlrpclib.dumps(
-                (parameters,), "translate"
-        )
+        request_body = xmlrpclib.dumps((parameters,), "translate").encode('utf-8')
         request = HTTPRequest(
             self.url, "POST", request_body,
             headers=["Content-Type: text/xml", "Content-Length: %s" % len(request_body)],

@@ -20,6 +20,8 @@ $env:VIRTAAL_STACK_DUMP = "$($TimeoutSeconds - 10):$stacks"
 # Not Start-Process -Wait: that also waits for any process virtaal.exe
 # leaves running.
 $p = Start-Process -PassThru -FilePath (Join-Path $Bundle "virtaal.exe") -ArgumentList (@("--run-module", $Module) + $Arguments + $out)
+# Without an open handle, ExitCode stays empty after the process exits.
+$null = $p.Handle
 $exited = $p.WaitForExit($TimeoutSeconds * 1000)
 foreach ($child in Get-CimInstance Win32_Process -Filter "ParentProcessId = $($p.Id)") {
     Write-Host "::warning::virtaal.exe left $($child.Name) running: $($child.CommandLine)"
@@ -35,5 +37,13 @@ if (-not $exited) {
     Write-Host "::error::virtaal.exe --run-module $Module didn't exit in $TimeoutSeconds s (output written: $(Test-Path $out))"
     exit 1
 }
-Get-Content $out -Encoding utf8
+if (Test-Path $out) { Get-Content $out -Encoding utf8 }
+if ($p.ExitCode -ne 0) {
+    Write-Host "::error::virtaal.exe --run-module $Module exited with code $($p.ExitCode)"
+    exit 1
+}
+if (-not (Test-Path $out) -or -not (Get-Item $out).Length) {
+    Write-Host "::error::virtaal.exe --run-module $Module wrote no output"
+    exit 1
+}
 exit 0

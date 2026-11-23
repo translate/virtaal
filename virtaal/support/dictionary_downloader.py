@@ -26,6 +26,8 @@ import json
 import logging
 import os
 
+from lxml import etree
+
 from virtaal.support.dictionary_source import (
     RAW_BASE,
     TREE_URL,
@@ -74,11 +76,10 @@ class DictionaryDownloader:
 
     def _on_tree(self, _request, result):
         try:
-            tree = json.loads(result.decode('utf-8'))
-        except (ValueError, UnicodeDecodeError) as e:
+            folders = list_dictionary_folders(json.loads(result.decode('utf-8')))
+        except (ValueError, AttributeError, TypeError) as e:
             logging.debug('dictionary download: bad tree response: %s', e)
             return self._give_up()
-        folders = list_dictionary_folders(tree)
         candidates = candidate_folders(self.locale_code, folders)
         self._remaining_folders = candidates + [f for f in folders if f not in candidates]
         self._try_next_folder()
@@ -94,7 +95,12 @@ class DictionaryDownloader:
         self._try_next_folder()
 
     def _on_xcu(self, _request, result):
-        for entry in parse_dictionaries_xcu(result):
+        try:
+            entries = parse_dictionaries_xcu(result)
+        except etree.Error as e:
+            logging.debug('dictionary download: bad %s/dictionaries.xcu: %s', self._folder, e)
+            return self._try_next_folder()
+        for entry in entries:
             if locale_covers(self.locale_code, entry['locales']):
                 self._files = list(entry['files'])
                 return self._fetch_next_file()

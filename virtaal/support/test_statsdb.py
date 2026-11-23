@@ -371,6 +371,23 @@ def test_the_default_database_is_in_the_home_directory(tmp_path, monkeypatch, fr
     assert os.path.exists(statsdb.StatsCache.defaultfile)
 
 
+def test_a_file_where_the_default_cache_directory_goes_falls_back_to_memory(
+        tmp_path, monkeypatch, fresh_caches):
+    from virtaal.common.platform import platform
+    monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(platform, 'is_flatpak', False)
+    monkeypatch.setenv('HOME', str(tmp_path))
+    monkeypatch.setenv('USERPROFILE', str(tmp_path))
+    (tmp_path / '.translate_toolkit').write_text('mine')
+
+    cache = statsdb.StatsCache()
+
+    cache.cur.execute("SELECT count(*) FROM files")
+    assert (tmp_path / '.translate_toolkit').read_text() == 'mine'
+    assert statsdb.StatsCache.defaultfile in statsdb.StatsCache.unusable_files
+
+
 def test_the_default_database_in_flatpak_is_under_xdg_cache_home(tmp_path, monkeypatch, fresh_caches):
     from virtaal.common.platform import platform
     monkeypatch.setattr(statsdb.StatsCache, 'defaultfile', None)

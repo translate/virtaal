@@ -10,6 +10,11 @@ from gi.repository import Gtk
 from virtaal.test.test_scaffolding import TestScaffolding
 
 
+def _source_exists(source_id):
+    from gi.repository import GLib
+    return GLib.MainContext.default().find_source_by_id(source_id) is not None
+
+
 class TestStoreView(TestScaffolding):
     def setup_method(self):
         self.store_controller.open_file(self.testfile[1])
@@ -32,6 +37,44 @@ class TestStoreView(TestScaffolding):
         assert view.parent_widget.props.visible is False
         assert view.store is None
         assert not view.mnu_up.get_sensitive()
+
+    def _start_move_burst(self):
+        from gi.repository import GLib
+        treeview = self.store_controller.view._treeview
+        # Key repeats waiting for the next throttle tick.
+        treeview._pending_move_offset = 1
+        treeview._move_throttle_id = GLib.timeout_add(50, treeview._on_move_throttle)
+        return treeview, treeview._move_throttle_id
+
+    def test_close_file_cancels_a_pending_move(self):
+        treeview, timer = self._start_move_burst()
+
+        self.store_controller.close_file()
+
+        assert treeview._move_throttle_id is None
+        assert treeview._pending_move_offset == 0
+        assert not _source_exists(timer)
+
+    def test_opening_another_file_drops_a_pending_move(self):
+        treeview, timer = self._start_move_burst()
+
+        self.store_controller.open_file(self.testfile[1])
+
+        assert treeview._move_throttle_id is None
+        assert treeview._pending_move_offset == 0
+        assert not _source_exists(timer)
+        assert self.store_controller.cursor.index == 0
+
+    def test_move_throttle_tick_without_a_file_does_nothing(self):
+        treeview = self.store_controller.view._treeview
+        self.store_controller.close_file()
+        # A tick already dispatched when the file closed.
+        treeview._pending_move_offset = 1
+        treeview._move_throttle_id = 'timer-id'
+
+        assert treeview._on_move_throttle() is False
+        assert treeview._move_throttle_id is None
+        assert treeview._pending_move_offset == 0
 
     def test_get_store_returns_the_current_store(self):
         view = self.store_controller.view

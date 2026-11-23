@@ -158,6 +158,7 @@ class StoreView(BaseView):
         self.load_store(None)
 
     def load_store(self, store):
+        self._treeview.cancel_pending_move()
         self.store = store
         if store:
             self._treeview.set_model(store)

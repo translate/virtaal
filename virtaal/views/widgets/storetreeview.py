@@ -349,11 +349,22 @@ class StoreTreeView(Gtk.TreeView):
             self.refresh_current_row()
 
     def _on_move_throttle(self):
-        if self._pending_move_offset:
+        if self._pending_move_offset and self.view.controller.get_store():
             self._apply_pending_move()
             return True  # keep ticking - more arrived since the last tick
         self._move_throttle_id = None
+        self._pending_move_offset = 0
+        self._pending_move_advances = False
         return False  # caught up - one-shot until the next burst starts
+
+    def cancel_pending_move(self):
+        """Drop moves still waiting for the throttle, e.g. when the file
+            is closed or replaced."""
+        if self._move_throttle_id is not None:
+            GLib.source_remove(self._move_throttle_id)
+            self._move_throttle_id = None
+        self._pending_move_offset = 0
+        self._pending_move_advances = False
 
     def _move_up(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(-1)
@@ -462,9 +473,7 @@ class StoreTreeView(Gtk.TreeView):
         if self._configure_timeout_id is not None:
             GLib.source_remove(self._configure_timeout_id)
             self._configure_timeout_id = None
-        if self._move_throttle_id is not None:
-            GLib.source_remove(self._move_throttle_id)
-            self._move_throttle_id = None
+        self.cancel_pending_move()
 
     def _window_size(self):
         window = self.get_toplevel()

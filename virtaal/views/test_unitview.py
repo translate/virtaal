@@ -866,15 +866,52 @@ def test_copy_original_applies_punctuation_translation_when_it_differs():
 
 # do_start_editing() #
 
-def test_do_start_editing_focuses_the_first_target():
+def _start_editing_view(focused_unit, focused_target_n, visible=(True, True)):
     view = UnitView.__new__(UnitView)
-    view._widgets = {'targets': ['t0', 't1']}
+    view._widgets = {'targets': [_FakeTextbox() for _ in visible]}
+    for target, shown in zip(view.targets, visible):
+        target.get_parent = lambda shown=shown: SimpleNamespace(props=SimpleNamespace(visible=shown))
+    view.unit = object()
+    view._focused_unit = view.unit if focused_unit == 'same' else focused_unit
+    view._focused_target_n = focused_target_n
     focused = []
-    view.focus_text_view = focused.append
+    view.focus_text_view = lambda textbox: focused.append(view.targets.index(textbox))
+    return view, focused
+
+
+def test_do_start_editing_focuses_the_first_target():
+    view, focused = _start_editing_view(None, None)
 
     view.do_start_editing()
 
-    assert focused == ['t0']
+    assert focused == [0]
+
+
+def test_do_start_editing_on_the_same_unit_stays_in_its_focused_form():
+    # Enter in the last unit's last plural form finishes the unit in
+    # place and restarts editing on it (#4940).
+    view, focused = _start_editing_view('same', 1)
+
+    view.do_start_editing()
+
+    assert focused == [1]
+
+
+def test_do_start_editing_on_another_unit_focuses_its_first_target():
+    view, focused = _start_editing_view(object(), 1)
+
+    view.do_start_editing()
+
+    assert focused == [0]
+
+
+def test_do_start_editing_focuses_the_first_target_when_the_form_is_hidden():
+    # A language with fewer plural forms hides the one that had the focus.
+    view, focused = _start_editing_view('same', 1, visible=(True, False))
+
+    view.do_start_editing()
+
+    assert focused == [0]
 
 
 # load_unit() #
@@ -1412,6 +1449,7 @@ def _focus_view(monkeypatch):
     targets = [_FocusingTextbox(view) for _ in range(3)]
     view._widgets = {'targets': targets, 'sources': []}
     view._focused_target_n = 0
+    view.unit = object()
     emitted = []
     monkeypatch.setattr(view, 'emit', lambda *args: emitted.append(args), raising=False)
     monkeypatch.setattr(view, '_update_edit_menu_sensitivity', lambda: None, raising=False)
@@ -1426,6 +1464,7 @@ def test_clicking_another_plural_form_makes_it_the_focused_one(monkeypatch):
     view._on_textbox_focused(targets[2], None)
 
     assert view.focused_target_n == 2
+    assert view._focused_unit is view.unit
     assert emitted == [('target-focused', 2)]
 
 

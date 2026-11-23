@@ -173,6 +173,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.controller = controller
         self._focused_target_n = None
+        self._focused_unit = None
         self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='UnitEditor', domain="virtaal")
 
         self.must_advance = False
@@ -402,7 +403,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def do_start_editing(self, *_args):
         """C{Gtk.CellEditable.start_editing()}"""
-        self.focus_text_view(self.targets[0])
+        # Editing restarted on the same unit (finished in place at the end
+        # of the list, a refreshed row) stays in the form it was in.
+        target_n = 0
+        if self.unit is not None and self.unit is self._focused_unit:
+            target_n = self._focused_target_n or 0
+            if target_n >= len(self.targets) or not self.targets[target_n].get_parent().props.visible:
+                target_n = 0
+        self.focus_text_view(self.targets[target_n])
 
     def do_editing_done(self, *_args):
         pass
@@ -420,6 +428,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         self._focused_target_n = self.targets.index(textbox)
+        self._focused_unit = self.unit
         #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
@@ -986,6 +995,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if getattr(self, '_focusing_text_view', False) or textbox not in self.targets:
             return
         target_n = self.targets.index(textbox)
+        self._focused_unit = self.unit
         if target_n != self._focused_target_n:
             self._focused_target_n = target_n
             self.emit('target-focused', target_n)

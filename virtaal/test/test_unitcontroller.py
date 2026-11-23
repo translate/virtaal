@@ -8,6 +8,7 @@
 import os
 import tempfile
 
+import pytest
 from gi.repository import Gdk, GLib
 from test_scaffolding import TestScaffolding
 from translate.storage import factory, workflow
@@ -579,6 +580,63 @@ msgstr ""
         assert test_unit.isfuzzy() is not was_fuzzy
         assert self.unit_controller.current_unit is test_unit
         assert test_unit._modified is False
+
+
+    LAST_UNIT_PLURAL_PO = """\
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n"
+
+msgid "Open"
+msgstr "Oop"
+
+msgid "One file"
+msgid_plural "%d files"
+msgstr[0] "Een leer"
+msgstr[1] "%d leers"
+"""
+
+    def _finish_last_form(self, eventname):
+        """Enter (or eventname) in each form of the file's last unit, a
+        plural one, then what the store view does when there's no unit to
+        move to: finish the unit in place and restart editing."""
+        self.main_controller.lang_controller.target_lang.nplurals = 2
+        path = self._make_temp_store('.po', self.LAST_UNIT_PLURAL_PO)
+        try:
+            unit = [u for u in factory.getobject(path).units if not u.isheader()][-1]
+            view = self.unit_controller.load_unit(unit)
+            view.do_start_editing()
+            view.targets[0].emit('key-pressed', self._FakeReturnEvent(), 'enter')
+            assert view.focused_target_n == 1
+            view.targets[1].emit('key-pressed', self._FakeReturnEvent(), eventname)
+            assert view.must_advance
+
+            self.unit_controller.finish_current_unit()
+            view.do_start_editing()
+            return unit, view
+        finally:
+            os.unlink(path)
+
+    @pytest.mark.parametrize('eventname', ['enter', 'ctrl-enter', 'ctrl-shift-enter'])
+    def test_enter_in_the_last_units_last_form_stays_in_that_form(self, eventname):
+        _unit, view = self._finish_last_form(eventname)
+
+        assert view.focused_target_n == 1
+
+    def test_ctrl_shift_enter_in_the_last_units_last_form_applies_the_state(self):
+        unit, _view = self._finish_last_form('ctrl-shift-enter')
+
+        assert unit.isfuzzy()
+
+    def test_finishing_a_singular_unit_in_place_focuses_its_target(self):
+        test_unit = next(u for u in self.trans_store.getunits()[1:] if not u.hasplural())
+        view = self.unit_controller.load_unit(test_unit)
+        view.do_start_editing()
+
+        self.unit_controller.finish_current_unit()
+        view.do_start_editing()
+
+        assert view.focused_target_n == 0
 
 
 def _change_language(old_nplurals, new_nplurals):

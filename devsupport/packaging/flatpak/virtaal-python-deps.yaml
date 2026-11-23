@@ -82,11 +82,13 @@ modules:
       # levenshtein/rapidfuzz use the scikit-build-core backend, which
       # also isn't importable in this sandboxed pip env - bootstrap it
       # (plus cmake/ninja, in case the SDK doesn't provide them) from
-      # local wheels first, then build these two from source.
+      # local wheels first, then build these two from source. The build
+      # tools go in the build directory, not the app.
       - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
-        --prefix=${FLATPAK_DEST} scikit-build-core packaging pathspec cmake ninja
+        --target="${PWD}/build-tools" scikit-build-core packaging pathspec cmake ninja
         --no-build-isolation
-      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+      - PATH="${PWD}/build-tools/bin:${PATH}" PYTHONPATH="${PWD}/build-tools"
+        pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
         --prefix=${FLATPAK_DEST} "python-Levenshtein" --no-build-isolation
     sources:
       - type: file

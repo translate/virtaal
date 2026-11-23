@@ -8,6 +8,7 @@
 import builtins
 import contextlib
 import os
+import sys
 import tempfile
 from types import SimpleNamespace
 
@@ -441,26 +442,41 @@ def test_open_file_returns_false_when_the_save_itself_fails():
     assert controller.open_file('other.po') is False
 
 
-def test_open_file_strips_a_windows_file_uri(monkeypatch):
-    monkeypatch.setattr(platform, 'is_windows', True)
+@pytest.mark.skipif(sys.platform != 'win32', reason='Windows file URI')
+def test_open_file_decodes_a_windows_file_uri():
     opened = []
     controller = _controller_for_open_file()
     controller._store_controller.open_file = lambda filename, uri, forget_dir=False: opened.append(filename)
 
-    controller.open_file('file:///C:/translations/af.po')
+    controller.open_file('file:///C:/translations/50%25%20done.po')
 
-    assert opened == ['C:/translations/af.po']
+    assert opened == [r'C:\translations\50% done.po']
 
 
-def test_open_file_strips_a_posix_file_uri(monkeypatch):
-    monkeypatch.setattr(platform, 'is_windows', False)
+@pytest.mark.skipif(sys.platform == 'win32', reason='POSIX file URI')
+@pytest.mark.parametrize('uri, path', [
+    ('file:///home/user/af.po', '/home/user/af.po'),
+    ('file:///tmp/50%25%20done.po', '/tmp/50% done.po'),
+    ('file:///tmp/%E6%96%87%E4%BB%B6.po', '/tmp/文件.po'),
+])
+def test_open_file_decodes_a_posix_file_uri(uri, path):
     opened = []
     controller = _controller_for_open_file()
     controller._store_controller.open_file = lambda filename, uri, forget_dir=False: opened.append(filename)
 
-    controller.open_file('file:///home/user/af.po')
+    controller.open_file(uri)
 
-    assert opened == ['/home/user/af.po']
+    assert opened == [path]
+
+
+def test_open_file_never_unquotes_a_plain_path():
+    opened = []
+    controller = _controller_for_open_file()
+    controller._store_controller.open_file = lambda filename, uri, forget_dir=False: opened.append(filename)
+
+    controller.open_file('50%25%20done.po')
+
+    assert opened == ['50%25%20done.po']
 
 
 def test_open_file_asks_to_reload_the_currently_open_file():

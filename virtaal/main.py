@@ -18,14 +18,9 @@ from virtaal.common.platform import platform
 
 
 def _resolve_startup_path(startupfile):
-    """Mirrors MainController._open_file()'s own file:// URI handling,
-    just enough to check existence before committing to the deferred
-    open below - not a replacement for that method's own handling,
-    which still runs for real once the open is attempted."""
     if startupfile.startswith('file://'):
-        if platform.is_windows:
-            return startupfile[len('file:///'):]
-        return startupfile[len('file://'):]
+        from virtaal.common.utils import path_from_file_uri
+        return path_from_file_uri(startupfile)
     return startupfile
 
 
@@ -105,7 +100,8 @@ class Virtaal:
             # runs regardless, since it does controller construction
             # later deferred code depends on either way.
             import os
-            if os.path.exists(_resolve_startup_path(startupfile)):
+            startupfile = _resolve_startup_path(startupfile)
+            if os.path.exists(startupfile):
                 main_controller.view.show_loading_notice(startupfile)
             self.defer(self._open_startup_file, startupfile)
         else:

@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import signal
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -21,14 +22,19 @@ def test_resolve_startup_path_leaves_a_plain_path_untouched():
     assert _resolve_startup_path('some.po') == 'some.po'
 
 
-def test_resolve_startup_path_strips_a_posix_file_uri(monkeypatch):
-    monkeypatch.setattr(platform, 'is_windows', False)
+@pytest.mark.skipif(sys.platform == 'win32', reason='POSIX file URI')
+def test_resolve_startup_path_decodes_a_posix_file_uri():
     assert _resolve_startup_path('file:///home/user/af.po') == '/home/user/af.po'
+    assert _resolve_startup_path('file:///tmp/50%25%20done.po') == '/tmp/50% done.po'
 
 
-def test_resolve_startup_path_strips_a_windows_file_uri(monkeypatch):
-    monkeypatch.setattr(platform, 'is_windows', True)
-    assert _resolve_startup_path('file:///C:/translations/af.po') == 'C:/translations/af.po'
+def test_resolve_startup_path_never_unquotes_a_plain_path():
+    assert _resolve_startup_path('50%25%20done.po') == '50%25%20done.po'
+
+
+@pytest.mark.skipif(sys.platform != 'win32', reason='Windows file URI')
+def test_resolve_startup_path_decodes_a_windows_file_uri():
+    assert _resolve_startup_path('file:///C:/translations/af.po') == r'C:\translations\af.po'
 
 
 def _deferer(monkeypatch):
@@ -442,3 +448,14 @@ def test_init_with_a_missing_startupfile_skips_the_loading_notice_but_still_defe
     assert loading_notices == []
     assert failure_notices == []
     assert v.defer.calls == [(v._open_startup_file, ('missing.po',))]
+
+
+@pytest.mark.skipif(sys.platform == 'win32', reason='POSIX file URI')
+def test_init_with_a_startup_file_uri_opens_its_decoded_path(monkeypatch):
+    main_controller, welcome_instances, _FakeWSC, loading_notices, failure_notices = _stub_virtaal_construction(
+        monkeypatch, startupfile_exists=True)
+
+    v = Virtaal('file:///tmp/50%25%20done.po')
+
+    assert loading_notices == ['/tmp/50% done.po']
+    assert v.defer.calls == [(v._open_startup_file, ('/tmp/50% done.po',))]

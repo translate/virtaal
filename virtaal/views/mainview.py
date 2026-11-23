@@ -668,22 +668,25 @@ class MainView(BaseView):
             filename = self._decode_dropped_uri(raw)
             if filename is None:
                 self.controller.show_error(_("Could not open the dropped file - its file name could not be decoded."))
-            elif filename.startswith("file://"):
+            elif raw.startswith(b"file://"):
                 #TODO: only bother if the extension is supported?
                 self.controller.open_file(filename)
 
         return True
 
     def _decode_dropped_uri(self, raw):
-        """Decode one dropped text/uri-list line to a file:// URI
-        string, or None if it can't be decoded at all.
+        """Decode one dropped text/uri-list line to the local path of a
+        file:// URI (any other line as text), or None if it can't be
+        decoded at all.
 
         Percent-encoded non-ASCII bytes are assumed to be UTF-8 - what
         GLib/GDK use on Linux/macOS. GTK's Windows backend has been
         reported to percent-encode using the system codepage instead
         for non-ASCII file names (#3331), so retry with that rather
         than silently losing the file on decode failure."""
-        from urllib.parse import unquote
+        from urllib.parse import quote, unquote
+
+        from virtaal.common.utils import path_from_file_uri
 
         try:
             filename = raw.decode('utf-8')
@@ -692,11 +695,12 @@ class MainView(BaseView):
         if not filename.startswith("file://"):
             return filename
         try:
-            return unquote(filename, errors='strict')
+            unquote(filename, errors='strict')
         except UnicodeDecodeError:
-            if platform.is_windows:
-                return unquote(filename, encoding=locale.getpreferredencoding(False), errors='replace')
-            return unquote(filename, errors='replace')
+            encoding = locale.getpreferredencoding(False) if platform.is_windows else 'utf-8'
+            rest = unquote(filename[len("file://"):], encoding=encoding, errors='replace')
+            filename = "file://" + quote(rest, safe="/:")
+        return path_from_file_uri(filename)
 
     def _on_style_set(self, widget, prev_style=None):
         theme.update_style(widget)

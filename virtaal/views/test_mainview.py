@@ -2876,6 +2876,7 @@ def test_macos_integration_rebinds_its_catalog_before_building_the_app_menu(monk
     monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: calls.append(('rebind', domain)))
     monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
     monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
+    monkeypatch.setattr(mainview, 'strip_window_access_keys', lambda: None)
     view = mock.Mock()
 
     mainview.MainView._setup_macos_integration(view)
@@ -3077,6 +3078,7 @@ def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypat
     monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: None)
     monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
     monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
+    monkeypatch.setattr(mainview, 'strip_window_access_keys', lambda: None)
     view = mock.Mock()
     view.gui.get_object.side_effect = lambda name: mnu_prefs if name == 'mnu_prefs' else mock.Mock()
 
@@ -3125,6 +3127,7 @@ def test_macos_integration_drops_bracketed_access_keys_from_the_menu_bar(monkeyp
     monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: None)
     monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
     monkeypatch.setattr(mainview, '_disable_window_tabbing', lambda: None)
+    monkeypatch.setattr(mainview, 'strip_window_access_keys', lambda: None)
     view = mock.Mock(menubar=menubar)
     view.gui.get_object.side_effect = lambda name: mnu_about if name == 'mnu_about' else mock.Mock()
 

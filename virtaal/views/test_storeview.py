@@ -5,8 +5,12 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gtk
+import os
+import tempfile
 
+from gi.repository import Gdk, Gtk
+
+from virtaal.controllers.placeablescontroller import PlaceablesController
 from virtaal.test.test_scaffolding import TestScaffolding
 
 
@@ -137,3 +141,67 @@ class TestStoreView(TestScaffolding):
     # confirmed live to segfault (real SIGSEGV inside GTK's own theme
     # reload, gtk_widget_get_screen on an invalid widget), not just an
     # intermittent pytest-xdist worker crash.
+
+
+PLURAL_LAST_PO = """msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n"
+
+msgid "Open"
+msgstr "Oop"
+
+msgid "One file"
+msgid_plural "%d files"
+msgstr[0] "Een leer"
+msgstr[1] "%d leers"
+"""
+
+
+class _ReturnEvent:
+    keyval = Gdk.KEY_Return
+
+    def get_state(self):
+        return Gdk.ModifierType(0)
+
+
+def _settle(frames=200):
+    for _ in range(frames):
+        Gtk.main_iteration_do(False)
+
+
+class TestEnterOnTheLastUnit(TestScaffolding):
+    """Enter with no unit to move to finishes the unit in place (#4087)."""
+
+    def setup_class(self):
+        TestScaffolding.setup_class(self)
+        PlaceablesController(self.main_controller)
+        self.main_controller.lang_controller.target_lang.nplurals = 2
+        fd, self.path = tempfile.mkstemp(suffix='.po')
+        os.write(fd, PLURAL_LAST_PO.encode('utf-8'))
+        os.close(fd)
+
+    def teardown_class(self):
+        self.main_controller.view.main_window.hide()
+        os.unlink(self.path)
+        TestScaffolding.teardown_class(self)
+
+    def test_enter_in_the_last_plural_form_stays_in_that_form(self):
+        # It reopened the editor in the first form (#4940).
+        self.store_controller.open_file(self.path)
+        window = self.main_controller.view.main_window
+        window.resize(800, 600)
+        window.show()
+        _settle()
+        self.store_controller.cursor.index = 1
+        _settle()
+        unit_view = self.unit_controller.view
+        assert unit_view.unit.hasplural()
+
+        unit_view.targets[0].emit('key-pressed', _ReturnEvent(), 'enter')
+        unit_view.targets[1].emit('key-pressed', _ReturnEvent(), 'enter')
+        _settle()
+
+        assert self.store_controller.cursor.index == 1
+        assert unit_view.focused_target_n == 1
+        assert unit_view.targets[1].is_focus()

@@ -487,6 +487,7 @@ def test_keyboard_move_throttles_repeats_within_a_burst(monkeypatch):
 def test_on_move_throttle_applies_and_keeps_ticking_while_offset_is_pending():
     calls = []
     view = SimpleNamespace(
+        view=SimpleNamespace(controller=SimpleNamespace(get_store=lambda: object())),
         _pending_move_offset=3,
         _move_throttle_id='throttle-id',
     )
@@ -732,6 +733,7 @@ def test_on_destroy_cancels_a_pending_timer(monkeypatch):
     removed = []
     monkeypatch.setattr(GLib, 'source_remove', removed.append)
     view = SimpleNamespace(_configure_timeout_id='timer-id', _move_throttle_id=None)
+    view.cancel_pending_move = lambda: StoreTreeView.cancel_pending_move(view)
 
     StoreTreeView._on_destroy(view, None)
 
@@ -743,6 +745,7 @@ def test_on_destroy_cancels_a_pending_move_throttle_timer(monkeypatch):
     removed = []
     monkeypatch.setattr(GLib, 'source_remove', removed.append)
     view = SimpleNamespace(_configure_timeout_id=None, _move_throttle_id='timer-id')
+    view.cancel_pending_move = lambda: StoreTreeView.cancel_pending_move(view)
 
     StoreTreeView._on_destroy(view, None)
 
@@ -752,6 +755,7 @@ def test_on_destroy_cancels_a_pending_move_throttle_timer(monkeypatch):
 
 def test_on_destroy_does_nothing_without_a_pending_timer():
     view = SimpleNamespace(_configure_timeout_id=None, _move_throttle_id=None)
+    view.cancel_pending_move = lambda: StoreTreeView.cancel_pending_move(view)
 
     StoreTreeView._on_destroy(view, None)  # must not raise
 

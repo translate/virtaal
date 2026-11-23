@@ -168,6 +168,25 @@ def test_the_child_process_caches_the_file_in_the_given_database(tmp_path, monke
     assert cache.cur.fetchone()[0] == 1
 
 
+def test_the_child_process_drops_rows_left_by_older_recaches(tmp_path, monkeypatch):
+    path = _po(tmp_path)
+    statsfile = tmp_path / 'child.db'
+    cache = statsdb.StatsCache(str(statsfile))
+    cache.cur.execute("INSERT INTO files VALUES (1, '/old', 0, 0, 0)")
+    cache.cur.execute("INSERT INTO units (unitid, fileid, unitindex, source) VALUES ('x', 1, 0, 'x')")
+    cache.cur.execute("DELETE FROM files")
+    cache.con.commit()
+
+    _run_child(monkeypatch, str(statsfile), path)
+
+    cache.cur.execute("SELECT count(*) FROM units WHERE fileid=1")
+    assert cache.cur.fetchone()[0] == 0
+    cache.cur.execute("SELECT count(*) FROM units WHERE fileid IN (SELECT fileid FROM files)")
+    assert cache.cur.fetchone()[0] == len(statsworker.state_lists(factory.getobject(path))['total'])
+    cache.cur.execute("PRAGMA user_version")
+    assert cache.cur.fetchone()[0] == statsdb.ORPHANS_DROPPED
+
+
 def test_the_child_process_exits_with_an_error_for_a_missing_file(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as exit_info:
         _run_child(monkeypatch, str(tmp_path / 'child.db'), str(tmp_path / 'missing.po'))

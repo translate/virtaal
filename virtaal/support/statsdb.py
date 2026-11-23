@@ -39,6 +39,7 @@ import os.path
 import re
 import stat
 import sys
+import time
 from collections import UserDict
 from sqlite3 import dbapi2
 
@@ -75,6 +76,9 @@ extended_state_strings = {
 UNTRANSLATED = StateEnum.EMPTY
 FUZZY = StateEnum.NEEDS_WORK
 TRANSLATED = StateEnum.UNREVIEWED
+
+ORPHANS_DROPPED = 1
+"""PRAGMA user_version once rows left by re-caching are dropped"""
 
 state_strings = {
     UNTRANSLATED: "untranslated",
@@ -447,6 +451,40 @@ class StatsCache:
             ON uniterrors(fileid, configid);""")
 
     @transaction
+    def drop_orphaned_rows(self, seconds=1.0):
+        """Drop the rows that re-caching used to leave behind (#4868), one
+        old file at a time, for about C{seconds}. Return whether all are
+        gone; once they are, this does nothing."""
+        if self.cur.execute("PRAGMA user_version;").fetchone()[0] >= ORPHANS_DROPPED:
+            return True
+        deadline = time.monotonic() + seconds
+        try:
+            row = self.cur.execute("SELECT seq FROM sqlite_sequence WHERE name='files';").fetchone()
+            live = {fileid for (fileid,) in self.cur.execute("SELECT fileid FROM files;")}
+            # Every orphan's fileid is a gap in the files' id sequence.
+            for fileid in range(1, row[0] + 1 if row else 1):
+                if fileid in live:
+                    continue
+                if not any(self.cur.execute("SELECT 1 FROM %s WHERE fileid=? LIMIT 1;" % table,
+                                            (fileid,)).fetchone()
+                           for table in ("units", "uniterrors", "filetotals")):
+                    continue
+                if time.monotonic() > deadline:
+                    return False
+                for table in ("units", "uniterrors", "filetotals"):
+                    self.cur.execute("""DELETE FROM %s WHERE fileid=? AND fileid NOT IN
+                        (SELECT fileid FROM files);""" % table, (fileid,))
+                self.con.commit()
+            self.cur.execute("PRAGMA user_version = %d;" % ORPHANS_DROPPED)
+            self.con.commit()
+            return True
+        except dbapi2.OperationalError as e:
+            # Read-only or locked: the next call carries on.
+            self.con.rollback()
+            logger.debug("Old statistics rows not dropped: %s", e)
+            return False
+
+    @transaction
     def _getfileid(self, filename, check_mod_info=True, store=None):
         """return fileid representing the given file in the statscache.
 
@@ -528,6 +566,11 @@ class StatsCache:
         """Calculates and caches the statistics of the given store
         unconditionally.
         """
+        # Keyed by path so the lookup runs under the write lock the first
+        # DELETE takes, as the stats worker process writes here too.
+        for table in ("units", "uniterrors", "filetotals"):
+            self.cur.execute("""DELETE FROM %s WHERE fileid IN
+                (SELECT fileid FROM files WHERE path=?);""" % table, (realpath,))
         self.cur.execute("""DELETE FROM files WHERE
             path=?;""", (realpath,))
         self.cur.execute(
@@ -536,8 +579,6 @@ class StatsCache:
             (realpath, mod_info[0], mod_info[1], toolkitversion.build))
         # Unusual capitalisation intended. See bug 2073.
         fileid = self.cur.lastrowid
-        self.cur.execute("""DELETE FROM units WHERE
-            fileid=?""", (fileid,))
         self._cacheunitstats(store.units, fileid)
         return fileid
 

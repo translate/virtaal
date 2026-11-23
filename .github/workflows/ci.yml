@@ -1674,6 +1674,7 @@ jobs:
         # The runtime's libgettextpo. Its message stays English: the
         # runner's C locale makes glibc ignore the language.
         run: |
+          set -o pipefail
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --run-module virtaal.support.gettextpo | tee gettextpo.txt

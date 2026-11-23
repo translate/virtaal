@@ -41,9 +41,12 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <mime-type type="text/x-wordfast">
     <sub-class-of type="text/tab-separated-values"/>
     <comment its:translate="yes">Wordfast Translation Memory</comment>
+    <!-- "%Wordfast TM" follows the header's user list, which grows with
+         each user; UTF-16 doubles the offset. -->
     <magic priority="80">
-      <match value="%Wordfast TM" type="string" offset="0:256"/>
-      <match value="\0%\0W\0o\0r\0d\0f\0a\0s\0t\0 \0T\0M" type="string" offset="0:256"/>
+      <match value="%Wordfast TM" type="string" offset="0:512"/>
+      <match value="%\0W\0o\0r\0d\0f\0a\0s\0t\0 \0T\0M\0" type="string" offset="0:1024"/>
+      <match value="\0%\0W\0o\0r\0d\0f\0a\0s\0t\0 \0T\0M" type="string" offset="0:1024"/>
     </magic>
   </mime-type>
 

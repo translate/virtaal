@@ -1525,7 +1525,7 @@ msgstr "용어 파일(_F)…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 msgid "Add _Term…"
-msgstr "용어 추가( _T)…"
+msgstr "용어 추가(_T)…"
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format

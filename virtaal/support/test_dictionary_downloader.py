@@ -16,6 +16,7 @@ import os
 
 import pytest
 
+from virtaal.common.test_utils import fail_binary_writes
 from virtaal.support.dictionary_downloader import DictionaryDownloader
 from virtaal.support.test_dictionary_source import AR_XCU, CA_XCU, DE_XCU
 
@@ -300,13 +301,8 @@ def test_default_target_dir_is_dictionary_write_dir(monkeypatch):
     _, aff_cb, _ = client.calls[-1]
 
     written = []
-    real_open = open
-
-    def fake_open(path, *args, **kwargs):
-        written.append(path)
-        return real_open(os.devnull, *args, **kwargs)
-
-    monkeypatch.setattr('builtins.open', fake_open)
+    monkeypatch.setattr(dictionary_downloader, 'write_file_atomically',
+                        lambda path, data: written.append(path))
     monkeypatch.setattr('os.makedirs', lambda *a, **k: None)
     aff_cb(None, b'aff content')
 
@@ -372,3 +368,20 @@ def test_saves_the_dictionary_under_the_locales_tag(tmp_path, locale, files, sav
 
     assert done == [True]
     assert sorted(p.name for p in tmp_path.iterdir()) == saved
+
+
+def test_disk_full_on_the_second_file_leaves_no_files(tmp_path, monkeypatch):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=done.append,
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('de', ['de_DE_frami.aff', 'de_DE_frami.dic'])
+    _, aff_cb, _ = client.calls[-1]
+    aff_cb(None, b'aff content')
+    fail_binary_writes(monkeypatch)
+    _, dic_cb, _ = client.calls[-1]
+    dic_cb(None, b'dic content')  # must not raise
+
+    assert done == [False]
+    assert list(tmp_path.iterdir()) == []

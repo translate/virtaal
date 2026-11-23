@@ -9,8 +9,12 @@
 _FakeClient records each .get() call instead of doing real network
 I/O, so the test drives the chain step by step, synchronously."""
 
+import errno
 import json
 
+import pytest
+
+from virtaal.common.test_utils import fail_binary_writes
 from virtaal.support.autocorrect_downloader import AutocorrectDownloader
 from virtaal.support.test_autocorrect_source import (
     AF_ZA_DOCUMENT_LIST,
@@ -133,3 +137,62 @@ def test_start_with_known_files_skips_discovery(tmp_path):
 
     assert done == [True]
     assert (tmp_path / 'DocumentList.xml').read_bytes() == AF_ZA_DOCUMENT_LIST
+
+
+def _fetch_known(tmp_path, target_dir=None):
+    client = _FakeClient()
+    done = []
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append, client=client,
+                                        target_dir=target_dir or str(tmp_path))
+    downloader.start_with_known_files('af-ZA', ['DocumentList.xml'])
+    _, doc_cb, _ = client.calls[-1]
+    doc_cb(None, AF_ZA_DOCUMENT_LIST)  # must not raise
+    return done
+
+
+@pytest.mark.parametrize('err', [errno.ENOSPC, errno.EACCES])
+def test_write_failure_gives_up_without_a_partial_file(tmp_path, monkeypatch, caplog, err):
+    fail_binary_writes(monkeypatch, err)
+
+    done = _fetch_known(tmp_path)
+
+    assert done == [False]
+    assert 'Could not save autocorrect data for af_ZA' in caplog.text
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_write_failure_keeps_the_previous_list(tmp_path, monkeypatch):
+    (tmp_path / 'DocumentList.xml').write_bytes(b'old list')
+    fail_binary_writes(monkeypatch)
+
+    done = _fetch_known(tmp_path)
+
+    assert done == [False]
+    assert (tmp_path / 'DocumentList.xml').read_bytes() == b'old list'
+    assert [p.name for p in tmp_path.iterdir()] == ['DocumentList.xml']
+
+
+def test_unwritable_target_folder_gives_up(tmp_path):
+    # A file where the folder should be: makedirs() raises.
+    (tmp_path / 'af_ZA').write_bytes(b'')
+
+    done = _fetch_known(tmp_path, target_dir=str(tmp_path / 'af_ZA'))
+
+    assert done == [False]
+
+
+def test_config_folder_error_gives_up(tmp_path, monkeypatch):
+    import virtaal.support.autocorrect_downloader as autocorrect_downloader
+
+    def raises(_locale_code):
+        raise PermissionError(errno.EACCES, 'injected')
+    monkeypatch.setattr(autocorrect_downloader, 'autocorrect_write_dir', raises)
+    client = _FakeClient()
+    done = []
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append, client=client)
+    downloader.start_with_known_files('af-ZA', ['DocumentList.xml'])
+    _, doc_cb, _ = client.calls[-1]
+
+    doc_cb(None, AF_ZA_DOCUMENT_LIST)  # must not raise
+
+    assert done == [False]

@@ -18,6 +18,7 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
 from virtaal.common.langpath import is_safe_lang_code, path_inside
+from virtaal.common.utils import write_file_atomically
 from virtaal.support.httpclient import HTTPClient
 
 from .basetermmodel import BaseTerminologyModel
@@ -286,10 +287,12 @@ class TerminologyModel(BaseTerminologyModel):
                 return
 
             logging.debug('Saving to %s' % (localfile))
-            # result is real bytes (httpclient.py's BytesIO().getvalue()),
-            # not str - 'wb' preserves it exactly regardless of the
-            # server's actual charset.
-            open(localfile, 'wb').write(result)
+            try:
+                write_file_atomically(localfile, result)
+            except OSError as e:
+                logging.warning('Could not save %s: %s', localfile, e)
+                self._init_matcher_for(srclang, tgtlang, localfile if os.path.isfile(localfile) else '')
+                return
 
             # request.result_headers is httpclient.py's own BytesIO too -
             # .getvalue().splitlines() is a list of bytes lines, so the

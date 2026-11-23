@@ -11,6 +11,7 @@ test drives the chain step by step, synchronously.
 on_done(success) - done lists below record the bool passed, not just
 that it fired."""
 
+from virtaal.common.test_utils import fail_binary_writes
 from virtaal.support.thesaurus_downloader import ThesaurusDownloader
 
 
@@ -150,3 +151,18 @@ def test_a_404_tries_the_dictionaries_subfolder(tmp_path):
 
     assert done == [True]
     assert (tmp_path / 'th_ca_ES_v3.dat').read_bytes() == b'dat content'
+
+
+def test_disk_full_leaves_no_partial_file(tmp_path, monkeypatch):
+    client = _FakeClient()
+    done = []
+    downloader = ThesaurusDownloader('pl_PL', on_done=done.append,
+                                      client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('pl', ['th_pl_PL_v2.dat'])
+    fail_binary_writes(monkeypatch)
+    _, dat_cb, _ = client.calls[-1]
+    dat_cb(None, b'dat content')  # must not raise
+
+    assert done == [False]
+    assert list(tmp_path.iterdir()) == []

@@ -17,6 +17,7 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
 from virtaal.common.langpath import is_safe_lang_code, path_inside
+from virtaal.common.utils import write_file_atomically
 from virtaal.support.httpclient import HTTPClient
 
 from .basetermmodel import BaseTerminologyModel
@@ -241,8 +242,12 @@ class TerminologyModel(BaseTerminologyModel):
                 return
 
             logging.debug('Saving to %s' % (localfile))
-            # result is real bytes - 'wb' preserves it exactly.
-            open(localfile, 'wb').write(result)
+            try:
+                write_file_atomically(localfile, result)
+            except OSError as e:
+                logging.warning('Could not save %s: %s', localfile, e)
+                self._init_matcher_for(srclang, tgtlang, localfile if os.path.isfile(localfile) else '')
+                return
 
             # Headers are bytes too; only the stored etag value itself
             # is decoded to str (used later as a str header value).

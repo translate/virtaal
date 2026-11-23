@@ -192,6 +192,122 @@ def test_getfileid_calls_a_callable_store(tmp_path):
     assert calls == [True]
 
 
+def test_recaching_a_changed_file_replaces_its_rows(tmp_path):
+    po_file = tmp_path / "test.po"
+    cache = statsdb.StatsCache(str(tmp_path / "stats.db"))
+    checker = checks.UnitChecker()
+
+    def row_counts():
+        return [cache.cur.execute("SELECT COUNT(*) FROM %s" % table).fetchone()[0]
+                for table in ("files", "units", "uniterrors", "filetotals")]
+
+    counts = []
+    for target in ("", "Bonjour", "Salut"):
+        po_file.write_text(
+            'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+            'msgid "Hello"\nmsgstr "%s"\n\nmsgid "World"\nmsgstr ""\n' % target)
+        os.utime(po_file, (0, len(counts)))
+        cache.filechecks(str(po_file), checker)
+        counts.append(row_counts())
+
+    assert counts[0][1] == 2
+    assert counts[1] == counts[0]
+    assert counts[2] == counts[0]
+
+
+def test_a_recache_waits_for_another_process_recaching_the_file(tmp_path, fresh_caches):
+    # The stats worker process writes the same database.
+    import sqlite3
+    import threading
+
+    path = tmp_path / "stats.db"
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+    cache = statsdb.StatsCache(str(path))
+    cache.filetotals(str(po_file))
+    os.utime(po_file, (0, 1))
+    other = sqlite3.connect(str(path), isolation_level=None, check_same_thread=False)
+    other.execute("BEGIN IMMEDIATE")
+    other.execute("DELETE FROM units")
+    other.execute("DELETE FROM files")
+    other.execute("INSERT INTO files VALUES (NULL, ?, 0, 0, 0)", (os.path.realpath(po_file),))
+    other.execute("INSERT INTO units (unitid, fileid, unitindex, source) VALUES ('x', last_insert_rowid(), 0, 'x')")
+    timer = threading.Timer(0.5, other.execute, ("COMMIT",))
+    timer.start()
+
+    cache.filetotals(str(po_file))
+
+    timer.join()
+    other.close()
+    orphans = cache.cur.execute(
+        "SELECT COUNT(*) FROM units WHERE fileid NOT IN (SELECT fileid FROM files)").fetchone()[0]
+    assert orphans == 0
+
+
+def _orphaned_cache(tmp_path, fileids):
+    # Rows under old fileids, as re-caching left them before #4868.
+    path = tmp_path / "stats.db"
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+    cache = statsdb.StatsCache(str(path))
+    for fileid in fileids:
+        cache.cur.execute("INSERT INTO files VALUES (?, '/old', 0, 0, 0)", (fileid,))
+        cache.cur.execute("INSERT INTO units (unitid, fileid, unitindex, source) VALUES ('x', ?, 0, 'x')", (fileid,))
+        cache.cur.execute("INSERT INTO uniterrors (unitindex, fileid, configid, name) VALUES (0, ?, 1, 'x')", (fileid,))
+        cache.cur.execute("INSERT INTO filetotals VALUES (?, 0, 0, 0, 0, 0, 0, 0)", (fileid,))
+        cache.cur.execute("DELETE FROM files WHERE fileid=?", (fileid,))
+    cache.con.commit()
+    cache.filetotals(str(po_file))
+    return cache, po_file
+
+
+def _orphan_counts(cache):
+    return [cache.cur.execute(
+        "SELECT COUNT(*) FROM %s WHERE fileid NOT IN (SELECT fileid FROM files)" % table).fetchone()[0]
+        for table in ("units", "uniterrors", "filetotals")]
+
+
+def test_rows_left_by_older_recaches_are_dropped_once(tmp_path, fresh_caches):
+    cache, po_file = _orphaned_cache(tmp_path, [1, 2])
+
+    assert cache.drop_orphaned_rows() is True
+
+    assert _orphan_counts(cache) == [0, 0, 0]
+    assert cache.filetotals(str(po_file))['total'] == 1
+    assert cache.cur.execute("PRAGMA user_version").fetchone()[0] == statsdb.ORPHANS_DROPPED
+    cache.cur.execute("INSERT INTO units (unitid, fileid, unitindex, source) VALUES ('x', 1, 0, 'x')")
+    cache.con.commit()
+    assert cache.drop_orphaned_rows() is True
+    assert _orphan_counts(cache) == [1, 0, 0]
+
+
+def test_dropping_old_rows_stops_at_its_time_limit_and_carries_on_later(tmp_path, fresh_caches):
+    cache, _po_file = _orphaned_cache(tmp_path, [1, 2])
+
+    assert cache.drop_orphaned_rows(seconds=-1) is False
+    assert _orphan_counts(cache) == [2, 2, 2]
+    assert cache.cur.execute("PRAGMA user_version").fetchone()[0] == 0
+
+    assert cache.drop_orphaned_rows() is True
+    assert _orphan_counts(cache) == [0, 0, 0]
+
+
+def test_dropping_old_rows_from_a_locked_database_is_tried_again(tmp_path, fresh_caches):
+    import sqlite3
+
+    cache, _po_file = _orphaned_cache(tmp_path, [1])
+    cache.cur.execute("PRAGMA busy_timeout = 0")
+    other = sqlite3.connect(str(tmp_path / "stats.db"), isolation_level=None)
+    other.execute("BEGIN IMMEDIATE")
+
+    assert cache.drop_orphaned_rows() is False
+
+    other.execute("ROLLBACK")
+    other.close()
+    assert cache.drop_orphaned_rows() is True
+    assert _orphan_counts(cache) == [0, 0, 0]
+
+
 # close() #
 
 def test_close_closes_every_cached_connection_and_clears_the_registry(tmp_path):

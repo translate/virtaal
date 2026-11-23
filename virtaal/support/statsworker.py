@@ -91,6 +91,8 @@ def _finish(proc):
 if __name__ == '__main__':
     statsfile, filename = sys.argv[1:]
     try:
-        statsdb.StatsCache(statsfile).filestatestats(filename)
+        cache = statsdb.StatsCache(statsfile)
+        cache.filestatestats(filename)
+        cache.drop_orphaned_rows()
     except Exception:
         sys.exit(1)

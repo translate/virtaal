@@ -463,7 +463,7 @@ def _checks_model(tmp_path):
     path = tmp_path / "checks.po"
     path.write_text(_CHECKS_PO, encoding="utf-8")
     model = StoreModel(str(path), _FakeController())
-    model._update_header = lambda: None
+    model._update_header = lambda ask=True: None
     return model
 
 
@@ -521,6 +521,48 @@ def test_save_file_forgets_the_edited_units(tmp_path):
 
     assert model._edited_units == set()
     assert model.update_checks() == {}
+
+
+def test_write_copy_writes_the_edits_and_leaves_the_file_alone(tmp_path):
+    import io
+    model = _checks_model(tmp_path)
+    before = (tmp_path / "checks.po").read_bytes()
+    model[0].target = "Maak die l\u00eaer oop."
+    copy = io.BytesIO()
+
+    model.write_copy(copy)
+
+    assert "Maak die l\u00eaer oop." in copy.getvalue().decode("utf-8")
+    assert (tmp_path / "checks.po").read_bytes() == before
+    assert model.filename == str(tmp_path / "checks.po")
+
+
+def test_write_copy_updates_the_copys_header_without_asking(tmp_path, monkeypatch):
+    import io
+
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: pytest.fail("settings written"))
+    monkeypatch.setitem(pan_app.settings.translator, 'name', 'Ann Vertaler')
+    monkeypatch.setitem(pan_app.settings.translator, 'email', 'ann@example.org')
+    monkeypatch.setitem(pan_app.settings.translator, 'team', '')
+    path = tmp_path / "copy.po"
+    path.write_bytes(_STATES_PO)
+    before = path.read_bytes()
+    controller = _SavingController("af")
+    controller.main_controller.get_translator_details = lambda: pytest.fail("asked for details")
+    controller.main_controller.checks_controller.code = "openoffice"
+    copy = io.BytesIO()
+
+    StoreModel(str(path), controller).write_copy(copy)
+
+    copy_path = tmp_path / "copied.po"
+    copy_path.write_bytes(copy.getvalue())
+    header = StoreModel(str(copy_path), _FakeController())._trans_store.parseheader()
+    assert header["Last-Translator"] == "Ann Vertaler <ann@example.org>"
+    assert header["X-Project-Style"] == "openoffice"
+    assert header["Language"] == "af"
+    assert "PO-Revision-Date" in header
+    assert path.read_bytes() == before
 
 
 def test_update_unit_checks_uses_failures_it_is_given(tmp_path):

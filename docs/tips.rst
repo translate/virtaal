@@ -39,6 +39,28 @@ Close Virtaal. Then find the directory with all your settings and the file
 ``tm.db`` (your translation memory database). Copy the contents of the whole
 directory to the corresponding directory on the other account/computer.
 
+.. _tips#recovering_unsaved_changes:
+
+Recovering Unsaved Changes
+==========================
+On Linux and macOS, if Virtaal is closed from outside while a file has unsaved
+changes (closing the terminal it was started from, ``kill``, or on Linux
+logging out or shutting down), it doesn't change the file. Instead it keeps a
+copy with your changes in the ``unsaved`` folder of Virtaal's configuration
+directory (listed at the top of this page, for example ``~/.virtaal/unsaved/``
+on Linux). If it can't write the copy, it asks whether to save your changes, as
+usual. This doesn't happen on Windows. Each copy is named after the time,
+the target language and the file, for example
+``20261123-101500-af-messages.po``, and the ``.json`` file beside it says which
+file it came from. Open the copy in Virtaal and use File > Save As to save it
+over the original. Virtaal never deletes
+these copies: remove them yourself once you're done.
+
+If the file came from a project bundle (a ``.zip``), the copy is the one file
+inside it that ``bundle_member`` in the ``.json`` file names. Don't save the
+copy over the bundle: save it under that file's name and put it back into the
+bundle yourself.
+
 .. _tips#disabling_some_functionality:
 
 Disabling some Functionality

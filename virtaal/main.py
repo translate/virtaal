@@ -114,21 +114,30 @@ class Virtaal:
 
 
     def _install_signal_handlers(self):
-        """An external SIGTERM/SIGINT (a test harness's `kill`, Ctrl+C,
-        systemd/launchd stopping the process) previously killed the
-        process immediately, without reaching quit()'s own
-        plugin-shutdown path - orphaning any subprocess a plugin
-        launched (e.g. localtm.py's tmserver). GLib.unix_signal_add
-        integrates with the main loop, unlike signal.signal() - safe
-        to call back into GTK/GLib from. POSIX-only; Windows has no
+        """SIGTERM/SIGHUP (kill, logout, closing the terminal) keep a
+        copy of unsaved edits, then quit without asking; Ctrl+C asks as
+        usual. Either way quit() shuts down plugins and the subprocesses
+        they launched (e.g. localtm.py's tmserver). GLib.unix_signal_add
+        integrates with the main loop, unlike signal.signal() - safe to
+        call back into GTK/GLib from. POSIX-only; Windows has no
         equivalent signal to catch here."""
         if platform.is_windows:
             return
         import signal
         def handle_signal(signum):
-            self.main_controller.quit(force=True)
+            main_controller = self.main_controller
+            store_controller = main_controller.store_controller
+            if signum == signal.SIGINT or not store_controller.save_unsaved_copies():
+                # The usual prompt, again on the next signal if cancelled.
+                main_controller.quit()
+                return GLib.SOURCE_CONTINUE
+            main_controller.quit(force=True)
             return GLib.SOURCE_REMOVE
-        for sig in (signal.SIGTERM, signal.SIGINT):
+        signals = [signal.SIGTERM, signal.SIGINT]
+        # Closing the terminal; but not when started with nohup.
+        if signal.getsignal(signal.SIGHUP) != signal.SIG_IGN:
+            signals.append(signal.SIGHUP)
+        for sig in signals:
             GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, sig, handle_signal, sig)
 
     def _open_with_file(self, startupfile):

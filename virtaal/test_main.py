@@ -114,6 +114,7 @@ def _fake_glib(unix_signal_add):
     return SimpleNamespace(
         PRIORITY_DEFAULT=GLib.PRIORITY_DEFAULT,
         SOURCE_REMOVE=GLib.SOURCE_REMOVE,
+        SOURCE_CONTINUE=GLib.SOURCE_CONTINUE,
         unix_signal_add=unix_signal_add,
     )
 
@@ -127,8 +128,13 @@ def test_install_signal_handlers_does_nothing_on_windows(monkeypatch):
     v._install_signal_handlers()  # must not raise
 
 
-def test_install_signal_handlers_registers_sigterm_and_sigint(monkeypatch):
+_posix_signals = pytest.mark.skipif(not hasattr(signal, 'SIGHUP'), reason='no SIGHUP on Windows')
+
+
+@_posix_signals
+def test_install_signal_handlers_registers_sigterm_sigint_and_sighup(monkeypatch):
     monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(signal, 'getsignal', lambda sig: signal.SIG_DFL)
     registered = []
     monkeypatch.setattr('virtaal.main.GLib', _fake_glib(
         unix_signal_add=lambda priority, sig, handler, s: registered.append((sig, handler))))
@@ -136,23 +142,84 @@ def test_install_signal_handlers_registers_sigterm_and_sigint(monkeypatch):
 
     v._install_signal_handlers()
 
-    assert [sig for sig, handler in registered] == [signal.SIGTERM, signal.SIGINT]
+    assert [sig for sig, handler in registered] == [signal.SIGTERM, signal.SIGINT, signal.SIGHUP]
 
 
-def test_signal_handler_forces_a_quit_and_removes_its_own_source(monkeypatch):
+@_posix_signals
+def test_install_signal_handlers_leaves_sighup_ignored_under_nohup(monkeypatch):
     monkeypatch.setattr(platform, 'is_windows', False)
-    handlers = []
+    monkeypatch.setattr(signal, 'getsignal', lambda sig: signal.SIG_IGN)
+    registered = []
     monkeypatch.setattr('virtaal.main.GLib', _fake_glib(
-        unix_signal_add=lambda priority, sig, handler, s: handlers.append(handler)))
+        unix_signal_add=lambda priority, sig, handler, s: registered.append(sig)))
     v = Virtaal.__new__(Virtaal)
-    quit_calls = []
-    v.main_controller = SimpleNamespace(quit=lambda force: quit_calls.append(force))
 
     v._install_signal_handlers()
-    result = handlers[0](signal.SIGTERM)
 
-    assert quit_calls == [True]
+    assert registered == [signal.SIGTERM, signal.SIGINT]
+
+
+def _signal_handler(monkeypatch, modified, copied=True):
+    monkeypatch.setattr(platform, 'is_windows', False)
+    # SIGHUP is only handled when not ignored, as it is under nohup.
+    monkeypatch.setattr(signal, 'getsignal', lambda sig: signal.SIG_DFL)
+    handlers = {}
+    monkeypatch.setattr('virtaal.main.GLib', _fake_glib(
+        unix_signal_add=lambda priority, sig, handler, s: handlers.setdefault(sig, handler)))
+    v = Virtaal.__new__(Virtaal)
+    calls = []
+    store_controller = SimpleNamespace(
+        save_unsaved_copies=lambda: (modified and calls.append('copy')) or copied)
+    v.main_controller = SimpleNamespace(
+        store_controller=store_controller,
+        quit=lambda force=False: calls.append(('quit', force)))
+    v._install_signal_handlers()
+    return handlers, calls
+
+
+@_posix_signals
+@pytest.mark.parametrize('signame', ['SIGTERM', 'SIGHUP'])
+def test_signal_without_unsaved_changes_quits_and_removes_its_own_source(monkeypatch, signame):
+    signum = getattr(signal, signame)
+    handlers, calls = _signal_handler(monkeypatch, modified=False)
+
+    result = handlers[signum](signum)
+
+    assert calls == [('quit', True)]
     assert result == GLib.SOURCE_REMOVE
+
+
+@_posix_signals
+@pytest.mark.parametrize('signame', ['SIGTERM', 'SIGHUP'])
+def test_signal_keeps_a_copy_of_unsaved_changes_then_quits_without_asking(monkeypatch, signame):
+    signum = getattr(signal, signame)
+    handlers, calls = _signal_handler(monkeypatch, modified=True)
+
+    result = handlers[signum](signum)
+
+    assert calls == ['copy', ('quit', True)]
+    assert result == GLib.SOURCE_REMOVE
+
+
+@_posix_signals
+def test_sigterm_asks_when_the_copy_cannot_be_written(monkeypatch):
+    handlers, calls = _signal_handler(monkeypatch, modified=True, copied=False)
+
+    result = handlers[signal.SIGTERM](signal.SIGTERM)
+
+    assert calls == ['copy', ('quit', False)]
+    assert result == GLib.SOURCE_CONTINUE
+
+
+@_posix_signals
+@pytest.mark.parametrize('modified', [False, True])
+def test_ctrl_c_quits_through_the_save_prompt_and_stays_registered(monkeypatch, modified):
+    handlers, calls = _signal_handler(monkeypatch, modified=modified)
+
+    result = handlers[signal.SIGINT](signal.SIGINT)
+
+    assert calls == [('quit', False)]
+    assert result == GLib.SOURCE_CONTINUE
 
 
 # Virtaal._open_with_file() / ._open_with_welcome() #

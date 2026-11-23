@@ -224,6 +224,18 @@ class StoreModel(BaseModel):
         self._fill_stats_cache()
         self.nplurals = self._compute_nplurals(self._trans_store)
 
+    def write_copy(self, fileobj):
+        """Write the store as it is now to fileobj, its header updated as
+        a save would but without asking for translator details, leaving
+        its own file and filename untouched (unlike save_file(), which
+        renames)."""
+        try:
+            self._update_header(ask=False)
+        except Exception:
+            import logging
+            logging.exception("Couldn't update the header of the copy")
+        self._trans_store.serialize(fileobj)
+
     def save_file(self, filename=None):
         # ttk's save() truncates the file before a format that can't be
         # written (Qt .qm) raises, so fail before touching it.
@@ -418,20 +430,27 @@ class StoreModel(BaseModel):
                     if isinstance(unit.target, multistring)),
                 default=None)
 
-    def _update_header(self):
-        """Make sure that headers are complete and update with current time (if applicable)."""
+    def _update_header(self, ask=True):
+        """Make sure that headers are complete and update with current time (if applicable).
+            With ask=False the translator details are the saved ones, with
+            no dialog."""
         # This method comes from Virtaal 0.2's main_window.py:Virtaal._on_file_save().
         # It makes sure that, if we are working with a PO file, that all header info is present.
         from translate.storage.poheader import poheader, tzstring
         if isinstance(self._trans_store, poheader):
-            name, email, team = self.controller.main_controller.get_translator_details()
-            if name:
-                pan_app.settings.translator["name"] = name
-            if email:
-                pan_app.settings.translator["email"] = email
-            if team:
-                pan_app.settings.translator["team"] = team
-            pan_app.settings.write()
+            if ask:
+                name, email, team = self.controller.main_controller.get_translator_details()
+                if name:
+                    pan_app.settings.translator["name"] = name
+                if email:
+                    pan_app.settings.translator["email"] = email
+                if team:
+                    pan_app.settings.translator["team"] = team
+                pan_app.settings.write()
+            else:
+                translator = pan_app.settings.translator
+                name, email, team = (' '.join((translator[key] or '').split())
+                                     for key in ('name', 'email', 'team'))
 
             header_updates = {}
             import time

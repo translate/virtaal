@@ -244,6 +244,145 @@ def test_unit_controller_setter_disconnects_the_previous_one():
     assert controller.handler_ids['unitview.unit-modified'] == 'new-handler'
 
 
+# save_unsaved_copies() #
+
+def _unsaved_copy_controller(monkeypatch, tmp_path, filename, target_lang='af', source_lang='en'):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path / 'config'))
+    controller = _controller()
+    controller._modified = True
+    controller.main_controller = SimpleNamespace(lang_controller=None)
+    prepared = []
+    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: prepared.append(True))
+    controller.store = SimpleNamespace(
+        get_filename=lambda: filename,
+        get_source_language=lambda: source_lang,
+        get_target_language=lambda: target_lang,
+        get_store_type=lambda: 'Gettext PO file',
+        write_copy=lambda fileobj: fileobj.write(b'msgid "a"\nmsgstr "b"\n'))
+    return controller, prepared
+
+
+def _unsaved_folder(tmp_path):
+    return tmp_path / 'config' / 'unsaved'
+
+
+def _copies(tmp_path):
+    return sorted(p.name for p in _unsaved_folder(tmp_path).iterdir() if not p.name.endswith('.json'))
+
+
+def test_save_unsaved_copies_writes_a_copy_and_a_note_in_the_config_dir(monkeypatch, tmp_path):
+    import json
+    controller, prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/af/messages.po.gz')
+
+    assert controller.save_unsaved_copies()
+
+    assert prepared == [True]
+    [name] = _copies(tmp_path)
+    assert name.endswith('-af-messages.po')
+    copy = _unsaved_folder(tmp_path) / name
+    assert copy.read_bytes() == b'msgid "a"\nmsgstr "b"\n'
+    note = json.loads((_unsaved_folder(tmp_path) / (name + '.json')).read_text(encoding='utf-8'))
+    assert note['file'] == os.path.abspath('/work/af/messages.po.gz')
+    assert note['bundle_member'] is None
+    assert (note['source_language'], note['target_language']) == ('en', 'af')
+    assert note['format'] == 'Gettext PO file'
+    assert note['extension'] == '.po'
+    if sys.platform != 'win32':
+        assert os.stat(_unsaved_folder(tmp_path)).st_mode & 0o777 == 0o700
+
+
+def test_save_unsaved_copies_keeps_same_named_files_of_different_languages_apart(monkeypatch, tmp_path):
+    # e.g. af/messages.po and de/messages.po from the same project.
+    import json
+    for lang in ('af', 'de'):
+        controller, _prepared = _unsaved_copy_controller(
+            monkeypatch, tmp_path, '/work/%s/messages.po' % lang, target_lang=lang)
+        assert controller.save_unsaved_copies()
+
+    names = _copies(tmp_path)
+    assert [n.split('-')[2] for n in names] == ['af', 'de']
+    notes = [json.loads((_unsaved_folder(tmp_path) / (n + '.json')).read_text(encoding='utf-8')) for n in names]
+    assert [n['file'] for n in notes] == [os.path.abspath('/work/af/messages.po'), os.path.abspath('/work/de/messages.po')]
+
+
+def test_save_unsaved_copies_numbers_a_name_already_taken(monkeypatch, tmp_path):
+    import time
+    monkeypatch.setattr(time, 'strftime', lambda fmt, *a: '20261123-101500' if '%H%M%S' in fmt else 'T')
+    for _ in range(3):
+        controller, _prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/af/messages.po')
+        assert controller.save_unsaved_copies()
+
+    assert _copies(tmp_path) == [
+        '20261123-101500-af-messages-2.po', '20261123-101500-af-messages-3.po', '20261123-101500-af-messages.po']
+
+
+@pytest.mark.parametrize('lang', ['../../escaped', '/tmp/escaped', '..', 'a\\..\\b'])
+def test_save_unsaved_copies_keeps_a_hostile_language_code_in_the_folder(monkeypatch, tmp_path, lang):
+    controller, _prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/messages.po', target_lang=lang)
+
+    assert controller.save_unsaved_copies()
+
+    [name] = _copies(tmp_path)
+    assert '/' not in name and '\\' not in name and '..' not in name
+    assert list((tmp_path / 'config').iterdir()) == [_unsaved_folder(tmp_path)]
+
+
+def test_save_unsaved_copies_falls_back_to_the_languages_chosen_in_the_window(monkeypatch, tmp_path):
+    controller, _prepared = _unsaved_copy_controller(
+        monkeypatch, tmp_path, '/work/messages.po', target_lang=None, source_lang=None)
+    controller.main_controller = SimpleNamespace(lang_controller=SimpleNamespace(
+        source_lang=SimpleNamespace(code='en'), target_lang=SimpleNamespace(code='zu')))
+
+    assert controller.save_unsaved_copies()
+
+    assert _copies(tmp_path)[0].endswith('-zu-messages.po')
+
+
+def test_save_unsaved_copies_names_a_bundle_copy_after_its_member(monkeypatch, tmp_path):
+    import json
+    controller, _prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/tmp/tmpXYZ.po')
+    controller.project = SimpleNamespace(
+        store=_fake_bundle('/work/project.zip'), get_proj_filename=lambda name: 'trans/af.xlf')
+
+    assert controller.save_unsaved_copies()
+
+    [name] = _copies(tmp_path)
+    assert name.endswith('-af-af.xlf')
+    note = json.loads((_unsaved_folder(tmp_path) / (name + '.json')).read_text(encoding='utf-8'))
+    assert (note['file'], note['bundle_member']) == (os.path.abspath('/work/project.zip'), 'trans/af.xlf')
+
+
+def test_save_unsaved_copies_does_nothing_without_unsaved_changes(monkeypatch, tmp_path):
+    controller, prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/af.po')
+    controller._modified = False
+
+    assert controller.save_unsaved_copies()
+
+    assert prepared == []
+    assert not _unsaved_folder(tmp_path).exists()
+
+
+def test_save_unsaved_copies_fails_and_leaves_nothing_when_it_cannot_write(monkeypatch, tmp_path):
+    controller, _prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/af.po')
+    def fail(fileobj):
+        raise OSError('disk full')
+    controller.store.write_copy = fail
+
+    assert not controller.save_unsaved_copies()
+    assert os.listdir(_unsaved_folder(tmp_path)) == []
+
+
+def test_save_unsaved_copies_fails_and_leaves_nothing_when_it_cannot_write_the_note(monkeypatch, tmp_path):
+    controller, _prepared = _unsaved_copy_controller(monkeypatch, tmp_path, '/work/af.po')
+    def fail():
+        raise OSError('disk full')
+    controller.store.get_store_type = fail
+
+    assert not controller.save_unsaved_copies()
+    assert os.listdir(_unsaved_folder(tmp_path)) == []
+
+
 # select_unit() #
 
 def test_select_unit_is_a_noop_when_already_selected():

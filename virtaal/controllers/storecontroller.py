@@ -264,6 +264,54 @@ class StoreController(BaseController):
         finally:
             self._loading_store = False
 
+    def _unsaved_files(self):
+        """(store model, original file, bundle member or None, source
+        language, target language) for each open file with unsaved
+        changes."""
+        if not (self.store and self.is_modified()):
+            return []
+        filename, member = self.store.get_filename(), None
+        bundle = self.get_bundle_filename()
+        if bundle:
+            filename = bundle
+            member = self.project.get_proj_filename(self.store.get_filename())
+        lang_controller = getattr(self.main_controller, 'lang_controller', None)
+        def language(get_language, chosen):
+            # The file's own, else the pair chosen in the window.
+            try:
+                return get_language() or getattr(chosen, 'code', None)
+            except Exception:
+                return getattr(chosen, 'code', None)
+        source_lang = language(self.store.get_source_language, getattr(lang_controller, 'source_lang', None))
+        target_lang = language(self.store.get_target_language, getattr(lang_controller, 'target_lang', None))
+        return [(self.store, filename, member, source_lang, target_lang)]
+
+    def save_unsaved_copies(self):
+        """Write each open file's unsaved edits to a new file under the
+        config directory's "unsaved" folder, with a .json note of where
+        it came from, leaving the real files as they are. Returns whether
+        every file with unsaved edits now has a copy."""
+        import logging
+
+        try:
+            files = self._unsaved_files()
+            if files:
+                self.unit_controller.prepare_for_save()
+        except Exception:
+            logging.exception("Couldn't prepare the unsaved changes for copying")
+            return False
+        kept = True
+        for store, filename, member, source_lang, target_lang in files:
+            try:
+                copy, note = _write_unsaved_copy(store, filename, member, source_lang, target_lang)
+            except Exception:
+                logging.exception("Couldn't keep a copy of the unsaved changes to %s", filename)
+                kept = False
+                continue
+            logging.warning("Quitting on a signal: unsaved changes to %s kept in %s (details in %s), "
+                            "the file itself is unchanged", filename, copy, note)
+        return kept
+
     def save_file(self, filename=None):
         self.unit_controller.prepare_for_save()
         if self.project is None:
@@ -444,3 +492,70 @@ class StoreController(BaseController):
         if unit not in self.store.get_units():
             return
         self.set_modified(True)
+
+
+def _filename_part(text, default):
+    """text as a safe part of a file name: no path separators or dots."""
+    import re
+    return re.sub(r'[^\w@+-]+', '_', text or '').strip('_') or default
+
+
+def _write_unsaved_copy(store, filename, member, source_lang, target_lang):
+    """Write store to a new file under the config directory's "unsaved"
+    folder, named <time>-<target language>-<file name>, and a .json note
+    beside it. Returns both paths."""
+    import time
+
+    from virtaal.common import pan_app
+
+    name = os.path.basename(member or filename or 'untitled')
+    # write_copy() doesn't compress.
+    for suffix in ('.gz', '.bz2'):
+        name = name.removesuffix(suffix)
+    stem, ext = os.path.splitext(name)
+    folder = os.path.join(pan_app.get_config_dir(), 'unsaved')
+    os.makedirs(folder, mode=0o700, exist_ok=True)
+    stamp = time.strftime('%Y%m%d-%H%M%S')
+    prefix = '%s-%s-%s' % (stamp, _filename_part(target_lang, 'und'), _filename_part(stem, 'untitled'))
+    ext = '.' + _filename_part(ext[1:], 'txt') if ext else ''
+    for n in range(1, 1000):
+        path = os.path.join(folder, prefix + ('-%d' % n if n > 1 else '') + ext)
+        try:
+            copy = open(path, 'xb')
+        except FileExistsError:
+            continue
+        break
+    else:
+        raise FileExistsError(path)
+    try:
+        with copy:
+            store.write_copy(copy)
+    except Exception:
+        os.remove(path)
+        raise
+    note = path + '.json'
+    try:
+        _write_note(note, {
+            'file': os.path.abspath(filename) if filename else None,
+            'bundle_member': member,
+            'source_language': source_lang,
+            'target_language': target_lang,
+            'format': store.get_store_type(),
+            'extension': os.path.splitext(name)[1],
+            'time': time.strftime('%Y-%m-%dT%H:%M:%S%z'),
+        })
+    except Exception:
+        os.remove(path)
+        raise
+    return path, note
+
+
+def _write_note(note, details):
+    import json
+    with open(note, 'x', encoding='utf-8') as f:
+        try:
+            json.dump(details, f, ensure_ascii=False, indent=1)
+        except Exception:
+            f.close()
+            os.remove(note)
+            raise

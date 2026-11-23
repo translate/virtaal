@@ -126,7 +126,7 @@ if this repo checkout is itself a shared folder (e.g. a UTM share from
 a macOS host into a Windows VM), that transcript is readable directly
 from the host side afterwards without anything needing to be
 copy-pasted out of the Windows terminal. The app's own stdout/stderr
-logs (`%APPDATA%\Virtaal\std{out,err}_virtaal.log`) and the installer's
+logs (`Virtaal\std{out,err}_virtaal.log` in the run's own `APPDATA`, below) and the installer's
 log (`%TEMP%\virtaal-install-*.log`) live outside the repo tree and
 aren't captured this way on their own - but their content gets printed
 to the console (and so into the transcript too) automatically whenever
@@ -134,6 +134,9 @@ a check that reads them fails. The click-navigation check also saves
 before/after screenshots to the same `.local-test-runs\` directory
 regardless of outcome, for the same reason - readable from the host
 side without anything needing to be copied out by hand.
+
+Virtaal runs with `APPDATA` pointing at a new folder under `%TEMP%`,
+deleted at the end, so your own Virtaal settings and logs are left alone.
 
 ### What the battery covers
 

@@ -230,12 +230,12 @@ function New-VirtaalScratchFile {
 function Set-VirtaalTranslatorInfo {
     <#
     .SYNOPSIS
-    Directly writes (or removes) %APPDATA%\Virtaal\virtaal.ini's
-    [translator] section, so a check can force a deterministic "header
-    info already known" or "header info missing" state instead of
-    depending on whatever this VM's config happens to already have from
-    earlier runs. storemodel.py's _update_header() (called on every
-    save of a PO file) prompts for name/email/team individually via
+    Directly writes (or removes) the run's own
+    %APPDATA%\Virtaal\virtaal.ini [translator] section, so a check can
+    force a deterministic "header info already known" or "header info
+    missing" state instead of depending on what earlier checks left.
+    storemodel.py's _update_header() (called on every save of a PO file)
+    prompts for name/email/team individually via
     maincontroller.py's get_translator_*() whenever
     pan_app.settings.translator[...] is empty - Settings' own Python-
     level default already fills "name" from the OS, so on a genuinely
@@ -378,6 +378,14 @@ try {
 } catch {
     Write-Host "(could not start transcript at $transcriptPath - continuing without one: $_)"
 }
+
+# Virtaal reads its settings and writes its logs under %APPDATA%; give
+# the test pass its own so the tester's are never touched.
+$realAppData = $env:APPDATA
+$testAppData = Join-Path $env:TEMP "virtaal-test-appdata-$([guid]::NewGuid().ToString('N'))"
+New-Item -ItemType Directory -Path $testAppData -Force | Out-Null
+$env:APPDATA = $testAppData
+Write-Host "Virtaal settings for this run: $testAppData"
 
 try {
 
@@ -1754,5 +1762,7 @@ Write-Host "All checks passed (or were skipped with a stated reason)."
 exit 0
 
 } finally {
+    $env:APPDATA = $realAppData
+    Remove-Item -Path $testAppData -Recurse -Force -ErrorAction SilentlyContinue
     try { Stop-Transcript | Out-Null } catch { }
 }

@@ -836,6 +836,16 @@ jobs:
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport\packaging\windows\build_standalone.ps1
 
+      - name: Check the bundle has no build files
+        shell: pwsh
+        run: |
+          $found = Get-ChildItem -Recurse -File dist\virtaal -Include *.lib, *.pdb
+          if ($found) {
+            $found | ForEach-Object { Write-Output $_.FullName }
+            Write-Output "::error::.lib/.pdb build files in the bundle; see above"
+            exit 1
+          }
+
       - name: Verify the bundled msgfmt check
         # The bundled libgettextpo translating through the bundled
         # gettext-tools catalog.

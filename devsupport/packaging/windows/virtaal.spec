@@ -129,23 +129,13 @@ mo_files = [
 ]
 
 # gvsbuild's own GTK3 install, from ci.yml's "Download prebuilt GTK3
-# (gvsbuild)" step (always C:\gtk - same convention the env vars there
-# use). PyInstaller's own build log for this spec warned "Could not
-# determine Gio modules path! / Bundling Gio modules is not supported on
-# your platform." - GIO modules cover things like network-monitor/D-Bus
-# backends, and a GTK app failing to find them is a known way for one to
-# hang (retrying a backend connection) rather than fail cleanly. Bundle
-# gvsbuild's own gio/modules directory explicitly rather than relying on
-# PyInstaller's own (apparently absent-on-this-platform) GIO-module
-# discovery. Guarded on the directory actually existing rather than a
-# hard path reference, in case a future gvsbuild layout changes this -
-# better to build without it (and re-hit the same warning) than hard-fail
-# the whole build over one optional directory.
+# (gvsbuild)" step. PyInstaller can't find GIO modules on Windows ("Could
+# not determine Gio modules path!"), so bundle gvsbuild's: the modules and
+# their cache, not the .lib and .pdb build files beside them. A GTK app
+# missing its GIO modules can hang retrying a backend connection.
 GTK_ROOT = Path(r"C:\gtk")
 gio_modules_dir = GTK_ROOT / "lib" / "gio" / "modules"
-binaries = []
-if gio_modules_dir.is_dir():
-    binaries.append((str(gio_modules_dir), "lib/gio/modules"))
+binaries = [(str(p), "lib/gio/modules") for p in gio_modules_dir.glob("*.dll")]
 # libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py). Loaded
 # with ctypes, so nothing else pulls it in.
 GETTEXTPO = GTK_ROOT / "bin" / "gettextpo.dll"
@@ -162,6 +152,8 @@ datas = [
     # recognised by GitHub/the AUTHORS convention in a checkout too.
     (str(ROOT / "AUTHORS.md"), "."),
 ] + mo_files
+if (gio_modules_dir / "giomodule.cache").is_file():
+    datas.append((str(gio_modules_dir / "giomodule.cache"), "lib/gio/modules"))
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
     # Only en_US (the traditional software source language) and en_GB
     # (checks.po's own target language, exercised by ci.yml's bundle-

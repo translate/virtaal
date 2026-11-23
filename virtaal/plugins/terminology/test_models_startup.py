@@ -119,6 +119,48 @@ class TestTerminologyModelsStartup(TestScaffolding):
 
         assert [len(store.units) for store in model.stores] == [2, 1]
 
+    @pytest.mark.parametrize('name, content', [
+        ('bad.po', 'msgid "a\nmsgstr "b"\n'),
+        ('bad.tbx', '<?xml version="1.0"?><martif><text><body><termEntry>'),
+        ('bad.xyz', 'not a glossary'),
+    ])
+    def test_a_glossary_that_does_not_load_is_skipped_and_logged(self, name, content, tmp_path, monkeypatch, caplog):
+        bad = tmp_path / name
+        bad.write_text(content)
+        good = tmp_path / 'terms0.po'
+        good.write_text(TERMS_PO)
+        monkeypatch.setitem(localfile.TerminologyModel.default_config, 'extendfile', str(good))
+        (tmp_path / 'terminology.ini').write_text(
+            '[localfile]\nfiles = %s,%s\nextendfile = %s\n' % (bad, good, good))
+
+        with caplog.at_level(logging.WARNING):
+            model = localfile.TerminologyModel('localfile', self.term_controller)
+        self.models.append(model)
+
+        assert [store.filename for store in model.stores] == [str(good)]
+        assert [match.source for match in model.matcher.matches('the file')] == ['file']
+        assert model.matcher in TerminologyPlaceable.matchers
+        assert str(bad) in model.config['files']
+        assert str(bad) in caplog.text
+
+    def test_an_unreadable_glossary_is_skipped_on_reload(self, tmp_path, monkeypatch, caplog):
+        model, paths = self._local_model(tmp_path, monkeypatch, files=2)
+        real_getobject = localfile.factory.getobject
+
+        def getobject(filename):
+            if filename == paths[0]:
+                raise PermissionError(13, 'Permission denied', filename)
+            return real_getobject(filename)
+        monkeypatch.setattr(localfile.factory, 'getobject', getobject)
+
+        with caplog.at_level(logging.WARNING):
+            model.load_files()
+
+        assert [store.filename for store in model.stores] == [paths[1]]
+        assert [match.source for match in model.matcher.matches('the file')] == ['file']
+        assert model.config['files'] == paths
+        assert paths[0] in caplog.text
+
     def test_get_store_for_an_unknown_filename_is_none(self, tmp_path, monkeypatch):
         model, _paths = self._local_model(tmp_path, monkeypatch)
 
@@ -347,6 +389,20 @@ class TestTerminologyModelsStartup(TestScaffolding):
 
         assert self.requests == []
         assert [unit.source for unit in model.store.units if unit.source] == ['file']
+
+    @pytest.mark.parametrize('module, name', [(pontoon, 'en__af.po'), (pontoon, 'en__af.tbx'), (autoterm, 'en__af.po')])
+    def test_a_download_that_does_not_load_is_an_empty_store(self, module, name, tmp_path, monkeypatch, caplog):
+        self.lang_controller.set_language_pair('en', 'af')
+        termdir = tmp_path / module.__name__.rsplit('.', 1)[-1]
+        termdir.mkdir()
+        (termdir / name).write_text('msgid "a\nmsgstr "b"\n')
+
+        with caplog.at_level(logging.WARNING):
+            model, _termdir = self._web_model(module, tmp_path, monkeypatch)
+
+        assert len(model.store.units) == 0
+        assert model.matcher in TerminologyPlaceable.matchers
+        assert str(termdir / name) in caplog.text
 
     def test_destroying_a_download_model_saves_its_config(self, tmp_path, monkeypatch):
         self.lang_controller.set_language_pair('en', 'af')

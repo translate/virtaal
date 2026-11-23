@@ -609,6 +609,24 @@ def test_check_editor_height_skips_an_invisible_textbox():
     assert visible_source.get_parent().get_size_request()[1] == 100
 
 
+def test_check_editor_height_skips_a_textbox_whose_parent_is_hidden():
+    # Unused source forms are hidden by their parent only, e.g. a PO
+    # msgid_plural box left over when a single-source unit loads.
+    renderer = StoreCellRenderer(None)
+    stale_source = _sized_textbox(500)
+    stale_source.get_parent().hide()
+    target = _sized_textbox(500)
+    editor = SimpleNamespace(_widgets={
+        'notes': {},
+        'sources': [stale_source],
+        'targets': [target],
+    })
+
+    renderer.check_editor_height(editor, width=200, parentheight=100)
+
+    assert target.get_parent().get_size_request()[1] == 100
+
+
 def test_check_editor_height_gives_up_when_notes_leave_no_room():
     renderer = StoreCellRenderer(None)
     tall_target = _sized_textbox(500)

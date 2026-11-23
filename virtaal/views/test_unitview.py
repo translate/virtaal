@@ -15,6 +15,7 @@ from types import SimpleNamespace
 import pytest
 from gi.repository import Gdk, Gtk
 from translate.misc.multistring import multistring
+from translate.storage import pypo, ts2
 from translate.storage.placeables.strelem import StringElem
 
 from virtaal.views.unitview import (
@@ -27,6 +28,8 @@ from virtaal.views.unitview import (
 
 
 class _FakeParent:
+    props = SimpleNamespace(visible=True)
+
     def show_all(self):
         pass
 
@@ -118,6 +121,36 @@ def test_targets_fall_back_to_the_single_source_when_there_is_only_one():
 
     assert view.targets[0].selector_textbox is view.sources[0]
     assert view.targets[1].selector_textbox is view.sources[0]
+
+
+class _SourceLabel(Gtk.Label):
+    def set_text(self, text):
+        Gtk.Label.set_text(self, str(text))
+
+
+def test_a_ts_plural_after_a_po_plural_uses_only_its_own_source():
+    # Only the source's parent is hidden, so a source box left over from
+    # an earlier gettext plural (msgid_plural) is still visible itself.
+    po = pypo.pofile.parsestring(
+        b'msgid "%d file"\nmsgid_plural "%d files"\nmsgstr[0] ""\nmsgstr[1] ""\n')
+    ts = ts2.tsfile.parsestring(
+        b'<?xml version="1.0" encoding="utf-8"?><!DOCTYPE TS><TS version="2.1">'
+        b'<context><name>C</name><message numerus="yes"><source>%n file(s)</source>'
+        b'<translation><numerusform></numerusform><numerusform></numerusform>'
+        b'</translation></message></context></TS>')
+    view = _make_view([], multistring(['', '']))
+    parents = [Gtk.Box() for _ in range(UnitView.MAX_SOURCES)]
+    for parent in parents:
+        parent.add(_SourceLabel())
+        view.sources.append(parent.get_children()[0])
+
+    for unit in (po.units[0], ts.units[0]):
+        view.unit = unit
+        view._layout_update_sources()
+        view._layout_update_targets()
+
+    assert view.targets[1].selector_textbox is view.sources[0]
+    assert view.targets[1].selector_textboxes == [view.sources[0]]
 
 
 def test_every_target_anchors_tm_suggestions_below_the_last_target_and_the_comment():

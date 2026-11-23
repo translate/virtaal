@@ -808,7 +808,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             num_unit_targets = len(self.unit.target.strings)
             nplurals = self.controller.main_controller.lang_controller.get_target_nplurals()
 
-        visible_sources = [src for src in self.sources if src.props.visible]
+        visible_sources = [src for src in self.sources if src.get_parent().props.visible]
 
         text_filter = valid_chars_only if isinstance(self.unit, LISAunit) else None
         for textbox in self.targets:

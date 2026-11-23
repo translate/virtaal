@@ -553,7 +553,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
 
         visible_textboxes = []
         for textbox in (editor._widgets['sources'] + editor._widgets['targets']):
-            if textbox.props.visible:
+            if textbox.props.visible and textbox.get_parent().props.visible:
                 visible_textboxes.append(textbox)
 
         max_tb_height = maxheight / len(visible_textboxes)

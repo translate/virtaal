@@ -499,7 +499,7 @@ def _suggestions_controller(unit, active=True, summoned=False, isvisible=False):
     (True, False, ['hide']),
 ])
 def test_on_cursor_changed_never_changes_the_toggle(translated, active, expected):
-    unit = SimpleNamespace(istranslated=lambda: translated)
+    unit = SimpleNamespace(istranslated=lambda: translated, hasplural=lambda: False)
     controller, events = _suggestions_controller(unit, active=active, summoned=True)
 
     controller._on_cursor_changed(SimpleNamespace(deref=lambda: unit))
@@ -510,7 +510,7 @@ def test_on_cursor_changed_never_changes_the_toggle(translated, active, expected
 
 @pytest.mark.parametrize('active', [True, False])
 def test_summon_queries_a_translated_unit_whether_or_not_suggestions_are_on(active):
-    unit = SimpleNamespace(istranslated=lambda: True)
+    unit = SimpleNamespace(istranslated=lambda: True, hasplural=lambda: False)
     controller, events = _suggestions_controller(None, active=active)
     controller.storecursor = SimpleNamespace(deref=lambda: unit)
 
@@ -522,7 +522,7 @@ def test_summon_queries_a_translated_unit_whether_or_not_suggestions_are_on(acti
 
 
 def test_summon_with_suggestions_already_shown_does_not_requery():
-    unit = SimpleNamespace(istranslated=lambda: False)
+    unit = SimpleNamespace(istranslated=lambda: False, hasplural=lambda: False)
     controller, events = _suggestions_controller(None, isvisible=True)
     controller.storecursor = SimpleNamespace(deref=lambda: unit)
 
@@ -550,6 +550,80 @@ def test_summon_without_a_file_does_nothing():
     assert events == []
 
 
+# A partly translated plural unit (#4941) #
+
+def _po_unit(*forms):
+    from translate.storage import pypo
+    msgstrs = ''.join('msgstr[%d] "%s"\n' % (i, form) for i, form in enumerate(forms))
+    store = pypo.pofile(('msgid "%d file"\nmsgid_plural "%d files"\n' + msgstrs).encode('utf-8'))
+    return store.units[0]
+
+
+def _ts_unit(*forms):
+    from translate.storage import ts2
+    numerus = ''.join('<numerusform>%s</numerusform>' % form for form in forms)
+    store = ts2.tsfile((
+        '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE TS><TS version="2.1">'
+        '<context><name>c</name><message numerus="yes"><source>%n file(s)</source>'
+        '<translation>' + numerus + '</translation></message></context></TS>').encode('utf-8'))
+    return store.units[0]
+
+
+def _qm_unit(*forms):
+    from translate.misc.multistring import multistring
+    from translate.storage import qm
+
+    from virtaal.support import qm_compat  # noqa: F401 - its hasplural()
+    unit = qm.qmunit('%n file(s)')
+    unit.target = multistring(list(forms))
+    return unit
+
+
+def _controller_with_nplurals(nplurals, unit):
+    controller, events = _suggestions_controller(unit)
+    controller.main_controller = SimpleNamespace(
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: nplurals))
+    return controller, events
+
+
+@pytest.mark.parametrize('make_unit', [_po_unit, _ts_unit, _qm_unit])
+@pytest.mark.parametrize('forms, nplurals, expected', [
+    (('een', ''), 2, ['query']),
+    (('', 'twee'), 2, ['query']),
+    (('een', 'twee'), 3, ['query']),   # a form the file doesn't store yet
+    (('een', 'twee'), 2, ['hide']),
+    (('een', 'twee', ''), 2, ['hide']),  # a stored form the editor doesn't show
+    (('een', 'twee'), 0, ['hide']),      # no plural count known: the stored forms
+    (('1', '2', '3', '4', '5', '6'), 7, ['hide']),  # the editor shows six forms at most
+])
+def test_a_plural_unit_with_an_empty_form_gets_suggestions(make_unit, forms, nplurals, expected):
+    unit = make_unit(*forms)
+    assert unit.istranslated()
+    controller, events = _controller_with_nplurals(nplurals, unit)
+
+    controller.update_suggestions()
+
+    assert events == expected
+
+
+@pytest.mark.parametrize('forms, queries', [
+    (('een', ''), [True]),
+    (('een', 'twee'), []),
+])
+def test_a_context_change_queries_a_plural_unit_with_an_empty_form(forms, queries):
+    unit = _po_unit(*forms)
+    calls = []
+    controller = _bare_controller(storecursor=SimpleNamespace(deref=lambda: unit))
+    controller.main_controller = SimpleNamespace(
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 2))
+    controller.view = SimpleNamespace(active=True, summoned=False)
+    controller.start_query = lambda: calls.append(True)
+
+    controller._on_context_selected(None, 1)
+
+    assert calls == queries
+
+
 # _on_mode_selected() / _on_target_focused() #
 
 @pytest.mark.parametrize('translated, active, summoned, queries', [
@@ -559,7 +633,7 @@ def test_summon_without_a_file_does_nothing():
     (True, False, True, [True]),  # asked for with F9
 ])
 def test_a_context_change_queries_again_where_suggestions_apply(translated, active, summoned, queries):
-    unit = SimpleNamespace(istranslated=lambda: translated)
+    unit = SimpleNamespace(istranslated=lambda: translated, hasplural=lambda: False)
     calls = []
     controller = _bare_controller(storecursor=SimpleNamespace(deref=lambda: unit))
     controller.view = SimpleNamespace(active=active, summoned=summoned)

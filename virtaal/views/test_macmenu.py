@@ -6,9 +6,13 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import pytest
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 
-from virtaal.views.macmenu import menu_title, strip_bracket_mnemonics
+from virtaal.views.macmenu import (
+    menu_title,
+    strip_bracket_mnemonics,
+    strip_window_access_keys,
+)
 
 
 @pytest.mark.parametrize('label, title', [
@@ -22,6 +26,12 @@ from virtaal.views.macmenu import menu_title, strip_bracket_mnemonics
     ('术语文件(_F)：', '术语文件：'),                           # po/zh_CN.po
     ('文件（_F）', '文件'),
     ('開く(_O)', '開く'),                                      # GTK's ja stock label
+    ('原文(_S) — %(langname)s', '原文 — %(langname)s'),         # po/ja.po
+    ('移動対象(_a):', '移動対象:'),
+    ('Version (_2) of', 'Version of'),
+    ('용어 추가( _T)…', '용어 추가…'),                          # po/ko.po
+    ('용어 추가(_T )…', '용어 추가…'),
+    ('文件（ _F）', '文件'),
 ])
 def test_menu_title_drops_a_bracketed_access_key(label, title):
     assert menu_title(label) == title
@@ -31,9 +41,9 @@ def test_menu_title_drops_a_bracketed_access_key(label, title):
     '_File',
     'R_edigera',
     'Properties (beta)',
-    'Version (_2) of',
     'Copy (__F)',
-    '原文(_S) — %(langname)s',
+    'Copy ( __F)',
+    '(printf)',
 ])
 def test_menu_title_keeps_other_labels(label):
     assert menu_title(label) == label
@@ -112,3 +122,68 @@ def test_strip_bracket_mnemonics_finds_a_label_inside_the_item():
 
     assert stock_label.get_label() == '開く'
     assert box.get_children()[1].get_label() == '파일'
+
+
+@pytest.fixture
+def window_access_keys():
+    hook_id = strip_window_access_keys()
+    yield
+    GObject.signal_remove_emission_hook(GObject.signal_lookup('realize', Gtk.Widget), hook_id)
+
+
+def _labels(widget):
+    if isinstance(widget, Gtk.Label):
+        return [widget.get_label()]
+    labels = []
+    if isinstance(widget, Gtk.Container):
+        widget.forall(lambda child: labels.extend(_labels(child)))
+    return labels
+
+
+def test_window_access_keys_are_stripped_in_a_dialog_built_in_code(window_access_keys):
+    dialog = Gtk.Dialog()
+    dialog.add_button('닫기(_C)', Gtk.ResponseType.CLOSE)
+    area = dialog.get_content_area()
+    area.add(Gtk.Label.new_with_mnemonic('탐색(_A):'))
+    area.add(Gtk.CheckButton.new_with_mnemonic('正規表現(_R)'))
+    area.add(Gtk.Label(label='Qt (_Q)'))  # no access key
+    dialog.show_all()
+
+    assert {'닫기', '탐색:', '正規表現', 'Qt (_Q)'} <= set(_labels(dialog))
+    dialog.destroy()
+
+
+def test_window_access_keys_follow_label_changes(window_access_keys):
+    window = Gtk.Window()
+    button = Gtk.Button.new_with_mnemonic('_Close')
+    window.add(button)
+    window.show_all()
+
+    button.set_label('閉じる(_C)')
+
+    assert _labels(window) == ['閉じる']
+    window.destroy()
+
+
+def test_window_access_keys_are_stripped_in_gtk_file_chooser_buttons(window_access_keys):
+    dialog = Gtk.FileChooserDialog(action=Gtk.FileChooserAction.OPEN)
+    dialog.add_buttons('キャンセル(_C)', Gtk.ResponseType.CANCEL, '選択(_S)', Gtk.ResponseType.OK)
+    dialog.show_all()
+
+    labels = set(_labels(dialog))
+
+    assert {'キャンセル', '選択'} <= labels
+    assert not {'キャンセル(_C)', '選択(_S)'} & labels
+    dialog.destroy()
+
+
+def test_window_access_keys_cover_windows_already_open():
+    window = Gtk.Window()
+    window.add(Gtk.Label.new_with_mnemonic('コメント(_O)'))
+    window.show_all()
+
+    hook_id = strip_window_access_keys()
+    GObject.signal_remove_emission_hook(GObject.signal_lookup('realize', Gtk.Widget), hook_id)
+
+    assert _labels(window) == ['コメント']
+    window.destroy()

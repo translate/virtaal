@@ -299,6 +299,7 @@ def _load_full_view(monkeypatch, source_lang=None, target_lang=None):
         ),
     )
     view._widgets = {}
+    view._font_settings = {}
     view._init_gui()
     return view
 
@@ -432,6 +433,42 @@ def test_font_data_round_trips_through_the_font_buttons(monkeypatch):
     view.font_data = {'source': 'Sans 10', 'target': 'Serif 12'}
 
     assert view.font_data == {'source': 'Sans 10', 'target': 'Serif 12'}
+
+
+def test_font_buttons_show_a_font_setting_without_a_size_or_family_at_the_default(monkeypatch):
+    # #4863: "Serif" and "17" have no size or family of their own.
+    monkeypatch.setattr(prefsview.rendering.pan_app, 'defaultfont', 'Mono 11')
+    view = _load_full_view(monkeypatch)
+
+    view.font_data = {'source': 'Serif', 'target': '17'}
+
+    assert view._widgets['fbtn_source'].get_font() == 'Serif 11'
+    assert view._widgets['fbtn_target'].get_font() == 'Mono 17'
+    # Left unchanged, the settings stay as written.
+    assert view.font_data == {'source': 'Serif', 'target': '17'}
+
+
+@pytest.mark.parametrize('picked', ['Serif 14', 'Serif 11'])
+def test_font_data_returns_a_picked_font_for_a_setting_without_a_size(monkeypatch, picked):
+    monkeypatch.setattr(prefsview.rendering.pan_app, 'defaultfont', 'Mono 11')
+    view = _load_full_view(monkeypatch)
+    view.font_data = {'source': 'Serif', 'target': 'Serif'}
+
+    view._widgets['fbtn_source'].set_font(picked)
+    view._widgets['fbtn_source'].emit('font-set')
+
+    assert view.font_data == {'source': picked, 'target': 'Serif'}
+
+
+def test_default_fonts_button_replaces_a_setting_without_a_size(monkeypatch):
+    monkeypatch.setattr(prefsview.rendering.pan_app, 'defaultfont', 'Mono 11')
+    monkeypatch.setattr(prefsview.pan_app, 'get_default_font', lambda: 'Mono 11')
+    view = _load_full_view(monkeypatch)
+    view.font_data = {'source': 'Mono', 'target': '11'}
+
+    view._widgets['btn_default_fonts'].emit('clicked')
+
+    assert view.font_data == {'source': 'Mono 11', 'target': 'Mono 11'}
 
 
 def test_font_data_setter_rejects_a_non_dict_value(monkeypatch):

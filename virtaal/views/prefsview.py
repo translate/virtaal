@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import GLib, GObject, Gtk, Pango
+from gi.repository import GLib, GObject, Gtk
 from translate.lang.data import languages as toolkit_langs
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -14,6 +14,7 @@ from virtaal.support.translate_compat import tr_lang
 from virtaal.views.widgets.selectview import SelectView
 from virtaal.views.widgets.util import entry_value, keep_one_line
 
+from . import rendering
 from .baseview import BaseView
 
 
@@ -30,6 +31,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         GObjectWrapper.__init__(self)
         self.controller = controller
         self._widgets = {}
+        self._font_settings = {}
         self._setup_menu_item()
 
     def _get_widgets(self):
@@ -76,12 +78,15 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _init_font_gui(self):
         def reset_fonts(button):
+            self._font_settings.clear()
             self._widgets['fbtn_source'].set_font(pan_app.get_default_font())
             self._widgets['fbtn_target'].set_font(pan_app.get_default_font())
         self._widgets['btn_default_fonts'].connect('clicked', reset_fonts)
 
-        for fbtn in (self._widgets['fbtn_source'], self._widgets['fbtn_target']):
+        for role in ('source', 'target'):
+            fbtn = self._widgets['fbtn_' + role]
             fbtn.connect('clicked', self._on_font_button_clicked)
+            fbtn.connect('font-set', lambda fbtn, role=role: self._font_settings.pop(role, None))
 
         # Preview both fonts with the whole language pair, source and
         # target, in their own scripts - either font may end up showing
@@ -168,17 +173,17 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     # ACCESSORS #
     def _get_font_data(self):
+        # A font not picked is saved as it was written, not as shown.
         return {
-            'source': self._widgets['fbtn_source'].get_font(),
-            'target': self._widgets['fbtn_target'].get_font(),
+            role: self._font_settings.get(role, self._widgets['fbtn_' + role].get_font())
+            for role in ('source', 'target')
         }
     def _set_font_data(self, value):
         if not isinstance(value, dict) or not 'source' in value or not 'target' in value:
             raise ValueError('Value must be a dictionary')
-        sourcefont = Pango.FontDescription(value['source'])
-        targetfont = Pango.FontDescription(value['target'])
-        self._widgets['fbtn_source'].set_font(value['source'])
-        self._widgets['fbtn_target'].set_font(value['target'])
+        self._font_settings = {role: value[role] for role in ('source', 'target')}
+        for role in ('source', 'target'):
+            self._widgets['fbtn_' + role].set_font(rendering.complete_font_name(value[role]))
     font_data = property(_get_font_data, _set_font_data)
 
     def _get_placeables_data(self):

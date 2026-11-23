@@ -219,12 +219,12 @@ def test_create_menu_items_treats_a_missing_enabled_key_as_enabled(monkeypatch, 
     assert [i.get_label() for i in items] == ['Custom']
 
 
-def _lookup_urls(monkeypatch, tmp_path, urls, query='word', role='source'):
+def _lookup_urls(monkeypatch, tmp_path, urls, query='word', role='source', srclang='en', tgtlang='af'):
     model = _model(monkeypatch, tmp_path)
     model.URLDATA = [{'display_name': str(n), 'url': url, 'quoted': False} for n, url in enumerate(urls)]
     opened = []
     monkeypatch.setattr(model, '_on_lookup', lambda item, url: opened.append(url))
-    for item in model.create_menu_items(query, role, 'en', 'af', None):
+    for item in model.create_menu_items(query, role, srclang, tgtlang, None):
         item.activate()
     return opened
 
@@ -254,6 +254,68 @@ def test_create_menu_items_fills_every_placeholder_and_a_doubled_percent(monkeyp
     ], query='a b', role='target')
 
     assert opened == ['https://af.example.org/en/en-af/a%20b?off=50%']
+
+
+# The language codes come from the file being translated.
+@pytest.mark.parametrize('code', [
+    'evil.example/?', 'x@evil.example/', 'evil.example#', 'evil.example:80', 'a?b', 'a/b', 'a b', '',
+])
+def test_create_menu_items_skips_language_lookups_for_an_invalid_code(monkeypatch, tmp_path, code):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(querylang)s.example.org/wiki/%(query)s',
+        'https://example.org/%(srclang)s/%(tgtlang)s?q=%(query)s',
+        'https://example.org/?q=%(query)s',
+    ], role='target', tgtlang=code)
+
+    assert opened == ['https://example.org/?q=word']
+
+
+def test_create_menu_items_skips_language_lookups_for_an_invalid_source_code(monkeypatch, tmp_path):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(querylang)s.example.org/wiki/%(query)s',
+        'https://example.org/%(srclang)s/%(tgtlang)s?q=%(query)s',
+        'https://example.org/?q=%(query)s',
+    ], srclang='evil.example/?')
+
+    assert opened == ['https://example.org/?q=word']
+
+
+def test_create_menu_items_keeps_a_lookup_in_the_other_valid_language(monkeypatch, tmp_path):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(querylang)s.example.org/wiki/%(query)s',
+        'https://example.org/%(tgtlang)s?q=%(query)s',
+    ], role='source', tgtlang='evil.example/?')
+
+    assert opened == ['https://en.example.org/wiki/word']
+
+
+def test_create_menu_items_skips_wikipedia_for_an_invalid_target_language(monkeypatch, tmp_path):
+    opened = []
+    monkeypatch.setattr('virtaal.support.openmailto.open', opened.append)
+    model = _model(monkeypatch, tmp_path)
+
+    for item in model.create_menu_items('word', 'target', 'en', 'evil.example/?', None):
+        item.activate()
+
+    assert opened == ['https://www.google.com/search?q="word"']
+
+
+def test_create_menu_items_quotes_a_language_code(monkeypatch, tmp_path):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(tgtlang)s.example.org/',
+        'https://example.org/%(tgtlang)s/%(query)s',
+    ], role='target', tgtlang='sr@latin')
+
+    assert opened == ['https://sr%40latin.example.org/', 'https://example.org/sr%40latin/word']
+
+
+def test_create_menu_items_skips_a_url_whose_host_the_query_changes(monkeypatch, tmp_path):
+    opened = _lookup_urls(monkeypatch, tmp_path, [
+        'https://%(query)s.example.org/',
+        'example.org/?q=%(query)s',
+    ], query='evil.example/x')
+
+    assert opened == ['example.org/?q=evil.example/x']
 
 
 def test_activating_a_lookup_opens_its_url_in_the_browser(monkeypatch, tmp_path):

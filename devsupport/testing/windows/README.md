@@ -120,6 +120,10 @@ Useful switches:
 The script exits 0 if every check passed, 1 otherwise - safe to use as
 a gate in a self-hosted Windows CI runner later, not just interactively.
 
+It only stops the Virtaal processes it launched. If another Virtaal is
+running from the install it is about to remove, the uninstall step
+fails and asks you to close it.
+
 Every run's full console output is also written to a transcript under
 `.local-test-runs\<timestamp>.log` (gitignored) next to this README -
 if this repo checkout is itself a shared folder (e.g. a UTM share from

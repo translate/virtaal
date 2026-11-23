@@ -105,6 +105,106 @@ function Find-VirtaalMainWindow {
     return [IntPtr]::Zero
 }
 
+# Every virtaal.exe Start-VirtaalTest launched, by PID, so cleanup
+# stops only those (and their children, e.g. the TM server), never a
+# Virtaal the tester has open.
+if (-not (Test-Path variable:script:VirtaalStartedProcesses)) {
+    $script:VirtaalStartedProcesses = @{}
+}
+
+function Get-VirtaalChildProcesses {
+    <#
+    .SYNOPSIS
+    Child processes of $ParentId created while that parent was running
+    (between $NotBefore and $NotAfter); any other has a reused parent
+    PID, not this parent.
+    #>
+    param(
+        [Parameter(Mandatory)][int]$ParentId,
+        [Parameter(Mandatory)][datetime]$NotBefore,
+        [Parameter(Mandatory)][datetime]$NotAfter
+    )
+    @(Get-CimInstance Win32_Process -Filter "ParentProcessId = $ParentId" -ErrorAction SilentlyContinue |
+        Where-Object { $_.CreationDate -ge $NotBefore -and $_.CreationDate -le $NotAfter } |
+        ForEach-Object { [PSCustomObject]@{ Id = [int]$_.ProcessId; StartTime = $_.CreationDate } })
+}
+
+function Get-VirtaalProcessTree {
+    <#
+    .SYNOPSIS
+    PIDs of $Process (unless it has exited) and all its running
+    descendants, parents first.
+    #>
+    param([Parameter(Mandatory)][System.Diagnostics.Process]$Process)
+    $ids = [System.Collections.Generic.List[int]]::new()
+    try {
+        $start = $Process.StartTime
+        $end = if ($Process.HasExited) { $Process.ExitTime } else { [datetime]::MaxValue }
+    } catch {
+        # Without its start time the PID might be someone else's now.
+        throw "Can't read PID $($Process.Id)'s start time: $_"
+    }
+    if ($end -eq [datetime]::MaxValue) { $ids.Add($Process.Id) }
+    $queue = [System.Collections.Generic.Queue[object]]::new()
+    $queue.Enqueue([PSCustomObject]@{ Id = $Process.Id; StartTime = $start; EndTime = $end })
+    while ($queue.Count) {
+        $current = $queue.Dequeue()
+        foreach ($child in Get-VirtaalChildProcesses $current.Id $current.StartTime $current.EndTime) {
+            if ($ids.Contains($child.Id)) { continue }
+            $ids.Add($child.Id)
+            # Listed by CIM, so still running: its PID isn't reused yet.
+            $queue.Enqueue([PSCustomObject]@{ Id = $child.Id; StartTime = $child.StartTime; EndTime = [datetime]::MaxValue })
+        }
+    }
+    return $ids
+}
+
+function Stop-VirtaalProcessTree {
+    <#
+    .SYNOPSIS
+    Force-stops a process Start-VirtaalTest launched and its
+    descendants, then waits up to $TimeoutSeconds for them to exit.
+    Returns $true once they're gone.
+    #>
+    param([Parameter(Mandatory)][System.Diagnostics.Process]$Process, [int]$TimeoutSeconds = 10)
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        # Rescanned each time: a child started while the root was being
+        # stopped is caught on the next pass.
+        try {
+            $ids = @(Get-VirtaalProcessTree $Process)
+        } catch {
+            Write-Host "::warning::$_ - not stopping it"
+            return $false
+        }
+        if (-not $ids) {
+            $script:VirtaalStartedProcesses.Remove($Process.Id)
+            return $true
+        }
+        foreach ($id in $ids) {
+            Stop-Process -Id $id -Force -ErrorAction SilentlyContinue
+        }
+        Start-Sleep -Milliseconds 200
+    }
+    return $false
+}
+
+function Stop-VirtaalStartedProcesses {
+    <#
+    .SYNOPSIS
+    Stops every Virtaal Start-VirtaalTest launched, with its children.
+    Returns $false if any is still running afterwards.
+    #>
+    $ok = $true
+    foreach ($proc in @($script:VirtaalStartedProcesses.Values)) {
+        if (-not (Stop-VirtaalProcessTree $proc)) {
+            Write-Host "::warning::Virtaal (PID $($proc.Id)) still running 10s after it was stopped"
+            $ok = $false
+        }
+    }
+    return $ok
+}
+
 function Start-VirtaalTest {
     <#
     .SYNOPSIS
@@ -142,11 +242,13 @@ function Start-VirtaalTest {
     $startProcessArgs = @{ FilePath = $ExePath; PassThru = $true }
     if ($Arguments) { $startProcessArgs['ArgumentList'] = $Arguments }
     $proc = Start-Process @startProcessArgs
+    $script:VirtaalStartedProcesses[$proc.Id] = $proc
     Start-Sleep -Seconds $WaitSeconds
 
     $stillRunning = Get-Process -Id $proc.Id -ErrorAction SilentlyContinue
     if (-not $stillRunning) {
         Write-Host "::error::$ExePath exited within ${WaitSeconds}s of launch"
+        Stop-VirtaalProcessTree $proc | Out-Null
         Write-VirtaalLogs
         return $null
     }
@@ -160,7 +262,7 @@ function Start-VirtaalTest {
     }
     if ($hwnd -eq [IntPtr]::Zero) {
         Write-Host "::error::Never got a main window handle for $ExePath"
-        Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+        Stop-VirtaalProcessTree $proc | Out-Null
         return $null
     }
 
@@ -545,25 +647,10 @@ function Assert-VirtaalLogsClean {
 
 function Stop-VirtaalTest {
     param($Instance)
-    if ($Instance -and $Instance.Process) {
-        Stop-Process -Id $Instance.Process.Id -Force -ErrorAction SilentlyContinue
+    if (-not ($Instance -and $Instance.Process)) { return }
+    # Waits for the processes to exit: the next check's launch could
+    # otherwise find the previous window still tearing down.
+    if (-not (Stop-VirtaalProcessTree $Instance.Process)) {
+        Write-Host "::warning::virtaal.exe still running 10s after Stop-VirtaalTest - a later check may see a stale window"
     }
-    # Belt-and-suspenders, same as ci.yml's existing steps: catches any
-    # child/renamed process Stop-Process on the original PID missed.
-    Get-Process -Name virtaal -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-    # Stop-Process -Force requests termination but returns before the
-    # process (and its window) has actually finished going away - the
-    # next check's Start-VirtaalTest could launch a fresh instance
-    # while the previous one's window is still tearing down, leaving
-    # two live windows on screen at once and a later action landing on
-    # the wrong one. Poll for "virtaal" to actually disappear from the
-    # process list instead of trusting Stop-Process's return to mean
-    # "gone" - bounded, so a genuinely stuck process can't hang the
-    # whole battery.
-    $deadline = (Get-Date).AddSeconds(10)
-    while ((Get-Date) -lt $deadline) {
-        if (-not (Get-Process -Name virtaal -ErrorAction SilentlyContinue)) { return }
-        Start-Sleep -Milliseconds 200
-    }
-    Write-Host "::warning::virtaal.exe still running 10s after Stop-VirtaalTest - a later check may see a stale window"
 }

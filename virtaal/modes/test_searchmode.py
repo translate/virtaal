@@ -1550,6 +1550,18 @@ def test_refresh_results_finds_text_an_undo_brought_back_without_moving():
     assert mode.backgrounds == ['base']
 
 
+def test_refresh_results_puts_the_match_cursor_on_the_loaded_units_match():
+    units = [_xliff_unit('Save please', 'Stoor asseblief'),
+             _xliff_unit('Open please', 'Maak oop'),
+             _xliff_unit('Close please', 'Maak toe asseblief')]
+    mode = _refresh_mode(units, current=units[2])
+
+    mode._refresh_results()
+
+    # Find Next/Previous go on from here, not from the file's first match.
+    assert mode.matches[mode.matchcursor.index].unit is units[2]
+
+
 def test_on_undo_redo_schedules_a_refresh_only_with_search_text(monkeypatch):
     scheduled = []
     monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)

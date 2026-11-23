@@ -383,7 +383,11 @@ class StatsCache:
                 else:
                     cachedir = os.path.join(userdir, ".translate_toolkit")
                 # The stats worker may create it at the same time.
-                os.makedirs(cachedir, exist_ok=True)
+                try:
+                    os.makedirs(cachedir, exist_ok=True)
+                except FileExistsError:
+                    # Not a directory: the statistics are kept in memory.
+                    pass
                 cls.defaultfile = os.path.realpath(os.path.join(cachedir, "stats.db"))
             statsfile = cls.defaultfile
         else:

@@ -15,18 +15,21 @@ import tempfile
 
 
 def isolate_home():
-    """Redirect $HOME to a throwaway directory.
+    """Redirect $HOME, %APPDATA% and %LOCALAPPDATA% to a throwaway directory.
 
     Must be called before any `virtaal` import: pan_app.get_config_dir()
     resolves against $HOME ("~/.virtaal" on Linux, "~/Library/Application
-    Support/Virtaal" on macOS), and MainView.quit() would otherwise persist
-    a capture window's size into a real user's Virtaal config. Callers
+    Support/Virtaal" on macOS) or %APPDATA% on Windows, and MainView.quit()
+    would otherwise persist a capture window's size into a real user's
+    Virtaal config. Callers
     should call Gtk.main_quit() directly instead of main_controller.quit()
     for the same reason (no save-prompt, no settings write).
     """
     fake_home = tempfile.mkdtemp(prefix="virtaal-screenshot-home-")
     atexit.register(shutil.rmtree, fake_home, ignore_errors=True)
     os.environ["HOME"] = fake_home
+    os.environ["APPDATA"] = os.path.join(fake_home, "AppData", "Roaming")
+    os.environ["LOCALAPPDATA"] = os.path.join(fake_home, "AppData", "Local")
 
 
 def force_light_theme():

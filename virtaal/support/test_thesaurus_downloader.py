@@ -11,6 +11,10 @@ test drives the chain step by step, synchronously.
 on_done(success) - done lists below record the bool passed, not just
 that it fired."""
 
+import sys
+
+import pytest
+
 from virtaal.common.test_utils import fail_binary_writes
 from virtaal.support.thesaurus_downloader import ThesaurusDownloader
 
@@ -166,3 +170,42 @@ def test_disk_full_leaves_no_partial_file(tmp_path, monkeypatch):
 
     assert done == [False]
     assert list(tmp_path.iterdir()) == []
+
+
+def test_file_error_after_a_written_file_vanished_still_gives_up(tmp_path):
+    client = _FakeClient()
+    done = []
+    downloader = ThesaurusDownloader('pl_PL', on_done=done.append,
+                                      client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('pl', ['th_pl_PL_v2.dat', 'th_pl_PL_extra.dat'])
+    _, dat_cb, _ = client.calls[-1]
+    dat_cb(None, b'dat content')
+    (tmp_path / 'th_pl_PL_v2.dat').unlink()
+    _, _cb, err = client.calls[-1]
+    err(None, 500)  # must not raise
+
+    assert done == [False]
+
+
+@pytest.mark.skipif(sys.platform == 'win32', reason='symlinks need privileges on Windows')
+def test_file_error_removes_what_a_symlinked_file_pointed_to(tmp_path):
+    client = _FakeClient()
+    done = []
+    elsewhere = tmp_path / 'elsewhere'
+    elsewhere.mkdir()
+    target = tmp_path / 'thes'
+    target.mkdir()
+    (elsewhere / 'a.dat').write_bytes(b'old a')
+    (target / 'a.dat').symlink_to(elsewhere / 'a.dat')
+    downloader = ThesaurusDownloader('pl_PL', on_done=done.append,
+                                      client=client, target_dir=str(target))
+
+    downloader.start_with_known_files('pl', ['a.dat', 'b.dat'])
+    _, a_cb, _ = client.calls[-1]
+    a_cb(None, b'new a')
+    _, _b_cb, b_err = client.calls[-1]
+    b_err(None, 500)
+
+    assert done == [False]
+    assert not (elsewhere / 'a.dat').exists()  # no half-downloaded set left

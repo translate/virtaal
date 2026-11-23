@@ -132,7 +132,8 @@ class DictionaryDownloader:
             os.makedirs(target_dir, exist_ok=True)
             dest = os.path.join(target_dir, self._local_name(filename))
             write_file_atomically(dest, result)
-            self._written.append(dest)
+            # A symlink's target is what was written, so remove that.
+            self._written.append(os.path.realpath(dest))
         except Exception as e:
             logging.debug('dictionary download: could not write %s: %s', filename, e)
             return self._on_file_error(filename, None)
@@ -151,7 +152,10 @@ class DictionaryDownloader:
         logging.debug('dictionary download: could not get %s/%s: status=%r',
                        self._folder, filename, status)
         for path in self._written:
-            os.remove(path)
+            try:
+                os.remove(path)
+            except OSError as e:
+                logging.debug('could not remove %s: %s', path, e)
         self._give_up()
 
     def _on_success(self):

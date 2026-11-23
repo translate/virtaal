@@ -13,6 +13,7 @@ that it fired."""
 
 import json
 import os
+import sys
 
 import pytest
 
@@ -385,3 +386,42 @@ def test_disk_full_on_the_second_file_leaves_no_files(tmp_path, monkeypatch):
 
     assert done == [False]
     assert list(tmp_path.iterdir()) == []
+
+
+def test_file_error_after_a_written_file_vanished_still_gives_up(tmp_path):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=done.append,
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('de', ['de_DE_frami.aff', 'de_DE_frami.dic'])
+    _, aff_cb, _ = client.calls[-1]
+    aff_cb(None, b'aff content')
+    (tmp_path / 'de_DE.aff').unlink()
+    _, _dic_cb, dic_err = client.calls[-1]
+    dic_err(None, 500)  # must not raise
+
+    assert done == [False]
+
+
+@pytest.mark.skipif(sys.platform == 'win32', reason='symlinks need privileges on Windows')
+def test_file_error_removes_what_a_symlinked_file_pointed_to(tmp_path):
+    client = _FakeClient()
+    done = []
+    elsewhere = tmp_path / 'elsewhere'
+    elsewhere.mkdir()
+    target = tmp_path / 'dicts'
+    target.mkdir()
+    (elsewhere / 'de_DE.aff').write_bytes(b'old aff')
+    (target / 'de_DE.aff').symlink_to(elsewhere / 'de_DE.aff')
+    downloader = DictionaryDownloader('de_DE', on_done=done.append,
+                                       client=client, target_dir=str(target))
+
+    downloader.start_with_known_files('de', ['de_DE_frami.aff', 'de_DE_frami.dic'])
+    _, aff_cb, _ = client.calls[-1]
+    aff_cb(None, b'new aff')
+    _, _dic_cb, dic_err = client.calls[-1]
+    dic_err(None, 500)
+
+    assert done == [False]
+    assert not (elsewhere / 'de_DE.aff').exists()  # no half-downloaded pair left

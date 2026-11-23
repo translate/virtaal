@@ -407,7 +407,7 @@ class MainController(BaseController):
                 window.response(Gtk.ResponseType.CANCEL)
                 dialogs_open = True
         if dialogs_open:
-            GLib.idle_add(self.quit, force)
+            GLib.idle_add(self._quit_after_dialogs, force)
             return False
 
         if self.store_controller.is_modified() and not force:
@@ -424,6 +424,10 @@ class MainController(BaseController):
         self.emit('quit')
         self.view.quit()
         return False
+
+    def _quit_after_dialogs(self, force):
+        self.quit(force)
+        return GLib.SOURCE_REMOVE
 
     def run(self):
         self.view.show()

@@ -12,7 +12,7 @@ import tempfile
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import GLib, Gtk
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
@@ -94,8 +94,60 @@ def test_quit_closes_a_still_open_dialog_and_retries_instead_of_hanging(monkeypa
     result = controller.quit()
 
     assert responses == [Gtk.ResponseType.CANCEL]
-    assert idle_calls == [(controller.quit, (False,))]
+    assert idle_calls == [(controller._quit_after_dialogs, (False,))]
     assert result is False
+
+
+def test_cancel_at_the_save_prompt_after_closing_a_dialog_asks_only_once(monkeypatch):
+    # Closing the window (or Cmd+Q, or Quit from the Dock) while Help >
+    # Show Logs is open with unsaved changes: quit() closes the dialog
+    # and retries from an idle callback, which then shows the prompt.
+    from virtaal.views.mainview import MainView
+
+    leftovers = set(Gtk.Window.list_toplevels())
+    real_list_toplevels = Gtk.Window.list_toplevels
+    monkeypatch.setattr(Gtk.Window, 'list_toplevels', lambda: [w for w in real_list_toplevels() if w not in leftovers])
+    main_window = Gtk.Window()
+    confirm_dialog = Gtk.Dialog(transient_for=main_window)
+    confirm_dialog._MainView__save_button = confirm_dialog.add_button('Save', Gtk.ResponseType.YES)
+    view = MainView.__new__(MainView)
+    view.main_window = view._top_window = main_window
+    view.confirm_dialog = confirm_dialog
+    controller = MainController.__new__(MainController)
+    controller.view = view
+    controller._store_controller = SimpleNamespace(is_modified=lambda: True)
+    view.controller = controller
+    main_window.connect('delete-event', view._on_quit)
+    main_window.show()
+
+    prompts = []
+    real_prompt = view.show_save_confirm_dialog
+    def cancel_the_prompt():
+        prompts.append(1)
+        GLib.timeout_add(50, lambda: confirm_dialog.response(Gtk.ResponseType.CANCEL) or False)
+        return real_prompt()
+    view.show_save_confirm_dialog = cancel_the_prompt
+
+    sources = []
+    real_idle_add = GLib.idle_add
+    monkeypatch.setattr(GLib, 'idle_add', lambda *args, **kwargs: sources.append(real_idle_add(*args, **kwargs)) or sources[-1])
+    loop = GLib.MainLoop()
+    GLib.idle_add(lambda: view._on_show_logs() or False)
+    GLib.timeout_add(300, lambda: main_window.emit('delete-event', Gdk.Event.new(Gdk.EventType.DELETE)) and False)
+    GLib.timeout_add(1500, lambda: loop.quit() or False)
+    try:
+        loop.run()
+    finally:
+        context = GLib.MainContext.default()
+        for source_id in sources:
+            source = context.find_source_by_id(source_id)
+            if source and not source.is_destroyed():
+                source.destroy()
+        confirm_dialog.destroy()
+        main_window.destroy()
+
+    assert prompts == [1]
+    assert [w for w in Gtk.Window.list_toplevels() if isinstance(w, Gtk.Dialog) and w.get_visible()] == []
 
 
 def test_quit_closes_every_open_dialog_not_just_the_first(monkeypatch):

@@ -141,6 +141,66 @@ def test_bad_tree_response_gives_up(tmp_path):
     assert done == [False]
 
 
+@pytest.mark.parametrize('result', [b'[]', b'"tree"', b'{"tree": null}', b'{"tree": ["de"]}'],
+                         ids=['list', 'string', 'null-tree', 'entry-not-object'])
+def test_tree_reply_of_another_shape_gives_up(tmp_path, result):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=done.append, client=client, target_dir=str(tmp_path))
+
+    downloader.start()
+    client.calls[-1][1](None, result)
+
+    assert done == [False]
+
+
+# A captive portal's page, a cut-off or empty reply, or bytes that
+# aren't the UTF-8 the file declares (#4872).
+BAD_XCU = [
+    b'<html><head><title>Sign in</title></head><body><p>Log in<br></body></html>',
+    DE_XCU[:len(DE_XCU) // 2],
+    b'',
+    DE_XCU.replace(b'de_DE_frami', b'de_DE_fr\xe4mi'),
+]
+
+
+@pytest.mark.parametrize('result', BAD_XCU, ids=['html', 'truncated', 'empty', 'bad-utf-8'])
+def test_unreadable_xcu_tries_the_next_folder(tmp_path, result):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=done.append, client=client, target_dir=str(tmp_path))
+
+    downloader.start()
+    client.calls[-1][1](None, TREE_RESULT)
+    assert client.last_url().endswith('/de/dictionaries.xcu')
+    client.calls[-1][1](None, result)
+
+    assert client.last_url().endswith('/ar/dictionaries.xcu')
+    assert done == []
+
+
+@pytest.mark.parametrize('result', BAD_XCU, ids=['html', 'truncated', 'empty', 'bad-utf-8'])
+def test_unreadable_last_xcu_gives_up_and_a_retry_still_works(tmp_path, result):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=done.append, client=client, target_dir=str(tmp_path))
+
+    downloader.start()
+    client.calls[-1][1](None, json.dumps({'tree': [{'path': 'de/dictionaries.xcu'}]}).encode('utf-8'))
+    client.calls[-1][1](None, result)
+
+    assert done == [False]
+    assert list(tmp_path.iterdir()) == []
+
+    retry = DictionaryDownloader('de_DE', on_done=done.append, client=client, target_dir=str(tmp_path))
+    retry.start()
+    for reply in (TREE_RESULT, DE_XCU, b'aff content', b'dic content'):
+        client.calls[-1][1](None, reply)
+
+    assert done == [False, True]
+    assert (tmp_path / 'de_DE.dic').read_bytes() == b'dic content'
+
+
 def test_tree_request_error_gives_up(tmp_path):
     client = _FakeClient()
     done = []

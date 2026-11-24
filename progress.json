@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-21T17:26:36Z",
- "commit": "6b98ee18807a74a010c541e66deabf78f338b57d",
+ "generated": "2026-11-24T18:47:17Z",
+ "commit": "cbaaafd3622d8b7084a5278867d8c404b0d3278e",
  "tolerance": 3,
  "fifty_percent_until": "1.1",
  "libraries": true,
@@ -22,28 +22,6 @@
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
-  },
-  {
-   "code": "ak",
-   "name": "Akan",
-   "endonym": "Akan",
-   "core_missing": 40,
-   "rest_missing": 33,
-   "needed": 70,
-   "level2_missing": 133,
-   "level3_missing": 73,
-   "ships": null
-  },
-  {
-   "code": "am",
-   "name": "Amharic",
-   "endonym": "አማርኛ",
-   "core_missing": 72,
-   "rest_missing": 58,
-   "needed": 127,
-   "level2_missing": 135,
-   "level3_missing": 83,
-   "ships": null
   },
   {
    "code": "ar",
@@ -79,17 +57,6 @@
    "ships": "50%"
   },
   {
-   "code": "bg",
-   "name": "Bulgarian",
-   "endonym": "български",
-   "core_missing": 38,
-   "rest_missing": 54,
-   "needed": 89,
-   "level2_missing": 138,
-   "level3_missing": 73,
-   "ships": null
-  },
-  {
    "code": "bn_IN",
    "name": "Bangla (India)",
    "endonym": "বাংলা (ভারত)",
@@ -121,17 +88,6 @@
    "level2_missing": 0,
    "level3_missing": 0,
    "ships": "level 1"
-  },
-  {
-   "code": "cgg",
-   "name": "Chiga",
-   "endonym": "Rukiga",
-   "core_missing": 40,
-   "rest_missing": 44,
-   "needed": 81,
-   "level2_missing": 133,
-   "level3_missing": 76,
-   "ships": null
   },
   {
    "code": "co",
@@ -277,17 +233,6 @@
    "ships": "level 1"
   },
   {
-   "code": "hu",
-   "name": "Hungarian",
-   "endonym": "magyar",
-   "core_missing": 36,
-   "rest_missing": 64,
-   "needed": 97,
-   "level2_missing": 201,
-   "level3_missing": 135,
-   "ships": null
-  },
-  {
    "code": "is",
    "name": "Icelandic",
    "endonym": "íslenska",
@@ -332,17 +277,6 @@
    "ships": "level 1"
   },
   {
-   "code": "lg",
-   "name": "Ganda",
-   "endonym": "Luganda",
-   "core_missing": 38,
-   "rest_missing": 43,
-   "needed": 78,
-   "level2_missing": 133,
-   "level3_missing": 73,
-   "ships": null
-  },
-  {
    "code": "lt",
    "name": "Lithuanian",
    "endonym": "lietuvių",
@@ -352,17 +286,6 @@
    "level2_missing": 45,
    "level3_missing": 0,
    "ships": "level 1"
-  },
-  {
-   "code": "ne",
-   "name": "Nepali",
-   "endonym": "नेपाली",
-   "core_missing": 55,
-   "rest_missing": 66,
-   "needed": 118,
-   "level2_missing": 201,
-   "level3_missing": 122,
-   "ships": null
   },
   {
    "code": "nl",
@@ -396,17 +319,6 @@
    "level2_missing": 123,
    "level3_missing": 55,
    "ships": "50%"
-  },
-  {
-   "code": "pa",
-   "name": "Punjabi",
-   "endonym": "ਪੰਜਾਬੀ",
-   "core_missing": 40,
-   "rest_missing": 56,
-   "needed": 93,
-   "level2_missing": 150,
-   "level3_missing": 88,
-   "ships": null
   },
   {
    "code": "pl",
@@ -453,17 +365,6 @@
    "ships": "50%"
   },
   {
-   "code": "si",
-   "name": "Sinhala",
-   "endonym": "සිංහල",
-   "core_missing": 83,
-   "rest_missing": 67,
-   "needed": 147,
-   "level2_missing": 140,
-   "level3_missing": 75,
-   "ships": null
-  },
-  {
    "code": "sk",
    "name": "Slovak",
    "endonym": "slovenčina",
@@ -497,17 +398,6 @@
    "ships": "50%"
   },
   {
-   "code": "st",
-   "name": "Southern Sotho",
-   "endonym": "Sesotho",
-   "core_missing": 55,
-   "rest_missing": 56,
-   "needed": 108,
-   "level2_missing": 139,
-   "level3_missing": 75,
-   "ships": null
-  },
-  {
    "code": "sv",
    "name": "Swedish",
    "endonym": "svenska",
@@ -517,39 +407,6 @@
    "level2_missing": 0,
    "level3_missing": 0,
    "ships": "level 1"
-  },
-  {
-   "code": "sw",
-   "name": "Swahili",
-   "endonym": "Kiswahili",
-   "core_missing": 73,
-   "rest_missing": 70,
-   "needed": 140,
-   "level2_missing": 149,
-   "level3_missing": 100,
-   "ships": null
-  },
-  {
-   "code": "te",
-   "name": "Telugu",
-   "endonym": "తెలుగు",
-   "core_missing": 36,
-   "rest_missing": 50,
-   "needed": 83,
-   "level2_missing": 182,
-   "level3_missing": 100,
-   "ships": null
-  },
-  {
-   "code": "th",
-   "name": "Thai",
-   "endonym": "ไทย",
-   "core_missing": 37,
-   "rest_missing": 49,
-   "needed": 83,
-   "level2_missing": 137,
-   "level3_missing": 77,
-   "ships": null
   },
   {
    "code": "tr",
@@ -618,5 +475,5 @@
    "ships": "50%"
   }
  ],
- "packs": "https://github.com/translate/virtaal/actions/runs/44929792307"
+ "packs": "https://github.com/translate/virtaal/actions/runs/45460410822"
 }

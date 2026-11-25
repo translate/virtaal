@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import sys
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, quote_plus, urlsplit
 
 import pytest
 
@@ -37,10 +37,36 @@ def test_truncate_for_report_leaves_short_text_alone():
 
 
 def test_truncate_for_report_keeps_the_tail_of_long_text():
-    text = "x" * 50 + "THE ACTUAL ERROR"
-    truncated = crash_dialog.truncate_for_report(text, limit=20)
+    text = "x" * 100 + "THE ACTUAL ERROR"
+    truncated = crash_dialog.truncate_for_report(text, limit=80)
     assert truncated.endswith("THE ACTUAL ERROR")
     assert len(truncated) < len(text)
+
+
+def test_truncate_for_report_limits_the_encoded_length():
+    # Backslashes, quotes and newlines take three characters each encoded.
+    line = '  File "C:\\Program Files\\Virtaal\\virtaal\\views\\mainview.py", line 1\n'
+    text = line * 200 + "ValueError: boom"
+
+    truncated = crash_dialog.truncate_for_report(text, limit=1000)
+
+    assert truncated.endswith("ValueError: boom")
+    assert len(quote_plus(truncated)) <= 1000
+    tail = truncated.removeprefix(crash_dialog._TRUNCATED_NOTE)
+    one_more = crash_dialog._TRUNCATED_NOTE + text[-len(tail) - 1 :]
+    assert len(quote_plus(one_more)) > 1000
+
+
+def test_build_report_url_fits_githubs_url_limit():
+    # A non-Latin user name: each letter takes six characters encoded.
+    line = '  File "C:\\Users\\Александр\\Documents\\virtaal\\mainview.py", line 1\n'
+    text = line * 200 + "ValueError: boom"
+
+    url = crash_dialog.build_report_url(text)
+
+    assert len(url) <= 8000
+    fields = {k: v[0] for k, v in parse_qs(urlsplit(url).query).items()}
+    assert fields['logs'].endswith("ValueError: boom")
 
 
 def test_keyboard_interrupt_bypasses_the_dialog(monkeypatch):

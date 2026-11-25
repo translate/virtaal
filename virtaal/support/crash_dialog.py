@@ -13,11 +13,13 @@ routes those through sys.excepthook rather than crashing outright."""
 import logging
 import sys
 import traceback
+from urllib.parse import quote_plus
 
-# Comfortably under GitHub's URL length limit even after the other
-# prefilled fields and percent-encoding overhead; the full traceback is
-# always in the log file regardless.
-MAX_REPORTED_TRACEBACK_CHARS = 4000
+# The traceback's length once percent-encoded, leaving room under
+# GitHub's 8 KB URL limit for the other prefilled fields; the full
+# traceback is always in the log file regardless.
+MAX_ENCODED_TRACEBACK_CHARS = 6000
+_TRUNCATED_NOTE = "(truncated - see the full log)\n...\n"
 
 _showing_dialog = False
 # Errors already shown this session, by type and stack - not message,
@@ -69,12 +71,25 @@ def _error_key(exc_type, tb):
     return (exc_type, frames)
 
 
-def truncate_for_report(text, limit=MAX_REPORTED_TRACEBACK_CHARS):
+def _encoded_len(text):
+    return len(quote_plus(text))
+
+
+def truncate_for_report(text, limit=MAX_ENCODED_TRACEBACK_CHARS):
     """Keep the tail of a traceback - that's where the actual exception
-        is - noting that it was cut if so."""
-    if len(text) <= limit:
+    is - so that it is at most `limit` characters percent-encoded,
+    noting that it was cut if so."""
+    if _encoded_len(text) <= limit:
         return text
-    return "(truncated - see the full log)\n...\n" + text[-limit:]
+    # The longest tail that fits.
+    shortest, longest = 0, len(text)
+    while shortest < longest:
+        middle = (shortest + longest + 1) // 2
+        if _encoded_len(_TRUNCATED_NOTE + text[-middle:]) <= limit:
+            shortest = middle
+        else:
+            longest = middle - 1
+    return _TRUNCATED_NOTE + text[len(text) - shortest :]
 
 
 def build_report_url(full_text):

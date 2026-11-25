@@ -10,6 +10,7 @@ from types import SimpleNamespace
 
 import pytest
 from gi.repository import Gdk, Gtk
+from lxml import etree
 from translate.storage import pypo, xliff
 
 from virtaal.modes import searchmode
@@ -55,14 +56,6 @@ class _FakeStoreModel:
         return self.units[index]
 
 
-class _FakeUnit:
-    def __init__(self, strings):
-        self.target = SimpleNamespace(strings=list(strings))
-
-    def hasplural(self):
-        return True
-
-
 class _FakeMatch:
     def __init__(self, unit, part_n, start, end):
         self.unit = unit
@@ -81,12 +74,66 @@ def test_replace_match_updates_plural_target_string():
     mode.controller = SimpleNamespace(
         main_controller=SimpleNamespace(unit_controller=None))
 
-    unit = _FakeUnit(['cat', 'cats'])
-    match = _FakeMatch(unit, part_n=1, start=0, end=4)
+    unit = pypo.pofile.parsestring(
+        b'msgid "cat"\nmsgid_plural "cats"\nmsgstr[0] "kat"\nmsgstr[1] "katte"\n'
+    ).units[0]
+    match = _FakeMatch(unit, part_n=1, start=0, end=5)
 
-    mode.replace_match(match, 'dogs')
+    mode.replace_match(match, 'honde')
 
-    assert unit.target == ['cat', 'dogs']
+    assert unit.target.strings == ['kat', 'honde']
+
+
+_TAGGED_XLIFF = (
+    '<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">'
+    '<file original="x" source-language="en" target-language="af" datatype="plaintext"><body>'
+    '<trans-unit id="1"><source>Click <g id="1">here</g> now</source>'
+    '<target state="translated">Klik <g id="1">hier</g> nou</target></trans-unit>'
+    '<trans-unit id="2"><source>Open <x id="1"/> now</source>'
+    '<target>Klik <x id="1"/> nou</target></trans-unit>'
+    '</body></file></xliff>'
+)
+
+
+def _tagged_unit(n=0):
+    return xliff.xlifffile.parsestring(_TAGGED_XLIFF.encode('utf-8')).units[n]
+
+
+@pytest.mark.parametrize(
+    ('rich', 'plain', 'offsets'),
+    [
+        ('Klik  nou', 'Klik nou', [0, 1, 2, 3, 4, 6, 7, 8, 9]),
+        # A whitespace run other than one space still maps to plain's space.
+        ('a\nb c', 'a b c', [0, 1, 2, 3, 4, 5]),
+        ('a \n b', 'a b', [0, 1, 4, 5]),
+    ],
+)
+def test_rich_offset_maps_collapsed_whitespace(rich, plain, offsets):
+    assert [searchmode._rich_offset(rich, plain, k) for k in range(len(plain) + 1)] == offsets
+
+
+@pytest.mark.parametrize(
+    ('n', 'word', 'replacement', 'expected'),
+    [
+        # #4714: Replace dropped the inline tags.
+        (0, 'nou', 'dadelik', 'Klik <g id="1">hier</g> dadelik'),
+        (0, 'hier', 'daar', 'Klik <g id="1">daar</g> nou'),
+        (0, 'hier nou', 'nou', 'Klik <g id="1">nou</g>'),
+        # The target's own spaces round <x/> collapse to one in unit.target.
+        (1, 'nou', 'dadelik', 'Klik <x id="1"/> dadelik'),
+    ],
+)
+def test_replace_match_keeps_the_inline_tags_of_an_xliff_target(n, word, replacement, expected):
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(unit_controller=None))
+    unit = _tagged_unit(n)
+    start = unit.target.index(word)
+
+    mode.replace_match(_FakeMatch(unit, 0, start, start + len(word)), replacement)
+
+    target = unit.xmlelement.find('{urn:oasis:names:tc:xliff:document:1.2}target')
+    xml = etree.tostring(target, encoding='unicode', with_tail=False)
+    assert xml[xml.index('>') + 1 : xml.rindex('<')] == expected
 
 
 def _xliff_unit(source, target):
@@ -596,17 +643,11 @@ def test_replace_match_ignores_a_source_match():
     mode.replace_match(match, 'x')  # must not raise - must not touch match.unit
 
 
-def test_replace_match_uses_the_unit_controller_when_one_is_wired_in():
-    """The other branch of replace_match() (no unit_controller wired
-    in) is covered by test_replace_match_updates_plural_target_string
-    and test_replace_all_on_xliff_units - this is the normal,
-    interactive "Replace" click path."""
+def _unit_controller_mode(calls):
     mode = SearchMode.__new__(SearchMode)
-    calls = []
     target = object()
     unit_controller = SimpleNamespace(
         view=SimpleNamespace(targets=[target]),
-        get_unit_target=lambda part_n: 'a cat sat',
         set_unit_target=lambda part_n, text: calls.append(('set', part_n, text)),
     )
     mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
@@ -614,12 +655,37 @@ def test_replace_match_uses_the_unit_controller_when_one_is_wired_in():
         unit_controller=unit_controller,
         undo_controller=SimpleNamespace(push_current_text=lambda tb: calls.append(('undo', tb))),
     ))
-    match = SimpleNamespace(unit=object(), part='target', part_n=0, start=2, end=5)
+    return mode, target
+
+
+def test_replace_match_uses_the_unit_controller_when_one_is_wired_in():
+    """The other branch of replace_match() (no unit_controller wired
+    in) is covered by test_replace_match_updates_plural_target_string
+    and test_replace_all_on_xliff_units - this is the normal,
+    interactive "Replace" click path."""
+    calls = []
+    mode, target = _unit_controller_mode(calls)
+    unit = pypo.pofile.parsestring(b'msgid "a"\nmsgstr "a cat sat"\n').units[0]
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=2, end=5)
 
     mode.replace_match(match, 'dog')
 
     # #4384: the target is saved for undo before it changes.
-    assert calls == [('select', match.unit), ('undo', target), ('set', 0, 'a dog sat')]
+    assert calls == [('select', unit), ('undo', target), ('set', 0, 'a dog sat')]
+
+
+def test_replace_match_gives_the_editor_the_tagged_target():
+    calls = []
+    mode, _target = _unit_controller_mode(calls)
+    unit = _tagged_unit()
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=10, end=13)
+
+    mode.replace_match(match, 'dadelik')
+
+    elem = calls[-1][2]
+    assert str(elem) == 'Klik hier dadelik'
+    assert [type(e).__name__ for e in elem.flatten()] == ['StringElem', 'G', 'StringElem']
+    assert unit.target == 'Klik hier nou'  # the editor saves it
 
 
 def test_sync_matches_for_key_updates_matchcursor_indices_when_a_match_is_dropped():

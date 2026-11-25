@@ -273,8 +273,14 @@ class StoreController(BaseController):
             self.store.save_file()
 
             proj_fname = self.project.get_proj_filename(self.real_filename)
+            bundle = filename and self.get_bundle_filename()
+            save_as = bool(bundle) and os.path.abspath(filename) != os.path.abspath(bundle)
             with open(self.real_filename, 'rb') as infile:
-                self.project.update_file(proj_fname, infile)
+                if save_as:
+                    # Save As leaves the opened bundle as it was.
+                    self.project.store.stage_file(proj_fname, infile)
+                else:
+                    self.project.update_file(proj_fname, infile)
             try:
                 self.project.convert_forward(proj_fname, overwrite_output=True)
             except UnsupportedConversionError:

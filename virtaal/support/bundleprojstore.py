@@ -37,6 +37,8 @@
 # new archive over the opened one. A bundle that can't be written to opens
 # read-only, keeps changes in temporary files and can only be saved under
 # another name - see translate/virtaal#4713.
+# Saving under another name leaves the opened archive unchanged;
+# stage_file() keeps an edit for it - see translate/virtaal#4718.
 # remove_file() refuses a read-only archive before changing anything.
 
 import contextlib
@@ -188,10 +190,9 @@ class BundleProjectStore(ProjectStore):
         """Save all project files to the bundle zip file."""
         if filename and os.path.abspath(filename) == os.path.abspath(self.zip.filename):
             filename = None
-        if self.read_only:
-            if not filename:
+        if not filename:
+            if self.read_only:
                 raise PermissionError(errno.EACCES, os.strerror(errno.EACCES), self.zip.filename)
-        else:
             self._update_from_tempfiles()
         newzip = ZipFile(filename, "w") if filename else self._create_temp_zipfile()
 
@@ -227,6 +228,18 @@ class BundleProjectStore(ProjectStore):
         if pfname in self.zip.namelist() and not self.read_only:
             self._zip_delete([pfname])
         self._zip_add(pfname, infile)
+
+    def stage_file(self, pfname, infile) -> None:
+        """
+        Keep the contents of ``infile`` as project file ``pfname`` in its
+        temporary file, without changing the archive, for :meth:`save`
+        under another name to pick up.
+        """
+        if pfname not in self._files:
+            raise FileNotInProjectError(pfname)
+        if hasattr(infile, "seek"):
+            infile.seek(0)
+        self._keep_in_tempfile(pfname, infile)
 
     @property
     def read_only(self):

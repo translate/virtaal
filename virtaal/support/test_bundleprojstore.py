@@ -8,10 +8,13 @@
 #   blob sha:  775861905e312ff56bf3e70081026500424c1db7
 # Tests virtaal/support/bundleprojstore.py, vendored alongside it for
 # the same reason - see that file's own header, or translate/virtaal#3632.
+# The save_as tests are Virtaal's own, for its changes to save() listed
+# in that header (translate/virtaal#4718).
 #
 """Tests for the bundleprojstore module."""
 
 import contextlib
+import io
 import os
 import shutil
 import sys
@@ -107,6 +110,28 @@ class TestBundleProjectStore:
             bundle.close()
             if os.path.exists(test_file.name):
                 os.unlink(test_file.name)
+
+    def test_save_as_leaves_an_edit_out_of_the_opened_bundle(self) -> None:
+        bundle = bundleprojstore.BundleProjectStore(self.bundle_file)
+        try:
+            bundle.append_file(io.BytesIO(b"old"), "x.po", ftype="trans")
+            bundle.save()
+            with open(self.bundle_file, "rb") as f:
+                original = f.read()
+            with bundle.get_file("trans/x.po") as transfile:
+                real_filename = transfile.name
+            with open(real_filename, "wb") as f:
+                f.write(b"new")
+            copy_path = os.path.join(self.test_dir, "copy.zip")
+
+            bundle.save(copy_path)
+
+            with ZipFile(copy_path) as copy:
+                assert copy.read("trans/x.po") == b"new"
+            with open(self.bundle_file, "rb") as f:
+                assert f.read() == original
+        finally:
+            bundle.close()
 
     def test_save_as_the_current_bundle_name_saves_in_place(self) -> None:
         bundle = bundleprojstore.BundleProjectStore(self.bundle_file)

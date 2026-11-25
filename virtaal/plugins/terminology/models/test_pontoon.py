@@ -406,16 +406,63 @@ def test_process_header_records_no_etag_when_the_response_has_none(tmp_path):
     assert model.config == {'en__af.tbx': ''}
 
 
-def test_process_header_clears_the_matcher_on_an_unhandled_status(tmp_path):
+def test_process_header_keeps_the_cached_file_on_an_unhandled_status(tmp_path):
+    good = _tbx(_concept_entry([('en', 'Hello'), ('af', 'Hallo')]))
+    localfile = tmp_path / 'en__af.tbx'
+    localfile.write_bytes(good)
+    os.utime(str(localfile), (1, 1))
+    model = _model(tmp_path)
+
+    model._process_header(SimpleNamespace(status=500), b'', localfile=str(localfile))
+
+    # And it doesn't count as a fresh check (#4883).
+    assert [unit.target for unit in model.store.getunits()] == ['Hallo']
+    assert os.stat(str(localfile)).st_mtime == 1
+    assert model.config == {}
+
+
+def test_process_header_uses_an_empty_store_on_an_unhandled_status_with_no_cache(tmp_path):
     model = _model(tmp_path)
     matched = []
     model.init_matcher = lambda filename='': matched.append(filename)
-    request = SimpleNamespace(status=500)
 
-    model._process_header(request, b'', localfile='/tmp/unused.tbx')
+    model._process_header(SimpleNamespace(status=503), b'', localfile=None)
 
     assert matched == ['']
-    assert model.config == {}
+
+
+def test_update_term_file_still_checks_for_an_update_when_the_cache_does_not_parse(tmp_path):
+    (tmp_path / 'en__af.po').write_bytes(b'<html>Please log in</html>')
+    fetched = []
+    model = _model(
+        tmp_path,
+        source_lang='en',
+        target_lang='af',
+        client=SimpleNamespace(get=lambda url, *args, **kwargs: fetched.append(url)),
+    )
+
+    model._update_term_file('en', 'af')
+
+    assert model.store.getunits() == []
+    assert len(fetched) == 1
+
+
+def test_a_stale_cached_file_stays_in_use_while_offline(tmp_path):
+    # The download fails without calling back (#4883).
+    localfile = tmp_path / 'en__af.tbx'
+    localfile.write_bytes(_tbx(_concept_entry([('en-US', 'Hello'), ('af', 'Hallo')])))
+    stale = time.time() - (60 * 60 * 24 * 4)
+    os.utime(str(localfile), (stale, stale))
+    model = _model(
+        tmp_path,
+        source_lang='en',
+        target_lang='af',
+        client=SimpleNamespace(get=lambda *args, **kwargs: None),
+    )
+
+    model.update_terms('en', 'af')
+
+    assert [unit.target for unit in model.store.getunits()] == ['Hallo']
 
 
 # _on_lang_changed(): re-fetches terminology for whichever side of the

@@ -298,8 +298,10 @@ class TerminologyModel(BaseTerminologyModel):
                 etag = etagline[0][7:-1].decode('ascii', errors='replace')
             self.config[os.path.basename(localfile)] = etag
         else:
+            # Keep the cached copy, and try again next time.
             logging.debug('Unhandled status code: %d' % (request.status))
-            localfile = ''
+            self._init_matcher_for(srclang, tgtlang, localfile or '')
+            return
 
         if os.path.isfile(localfile):
             # Update mtime
@@ -308,7 +310,14 @@ class TerminologyModel(BaseTerminologyModel):
 
     def _update_term_file(self, srclang, tgtlang):
         """Update the terminology file for the given languages."""
-        self.init_matcher() # Make sure that the matcher is empty until we have an update
+        # The cached copy until a download replaces it: a failed one may
+        # never call back.
+        localfile = self._term_path(srclang, tgtlang)
+        try:
+            self.init_matcher(localfile or '')
+        except Exception:
+            logging.debug('Could not load %s' % (localfile), exc_info=True)
+            self.init_matcher()
         self._check_for_update(srclang, tgtlang)
 
 

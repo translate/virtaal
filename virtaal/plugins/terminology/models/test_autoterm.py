@@ -167,19 +167,21 @@ def test_process_header_saves_the_etag_from_the_response_headers(tmp_path):
     assert fake_self.config[os.path.abspath(localfile)] == 'abc123'
 
 
-def test_process_header_an_unhandled_status_resets_the_matcher(tmp_path):
+def test_process_header_an_unhandled_status_keeps_the_cached_terms(tmp_path):
     fake_self = _fake_self()
     localfile = os.path.join(str(tmp_path), 'en__fr.po')
     open(localfile, 'wb').write(GOOD_PO)
+    os.utime(localfile, (1, 1))
     request = _FakeRequest()
     request.status = 404
 
     TerminologyModel._process_header(fake_self, request, b'', localfile=localfile)
 
-    # The file on disk is untouched, but the matcher was rebuilt from
-    # an empty store (localfile treated as '' for this response).
+    # A failed refresh leaves the cached terms in use, and doesn't count
+    # as a fresh check (#4883).
     assert open(localfile, 'rb').read() == GOOD_PO
-    assert fake_self.store.getunits() == []
+    assert [unit.target for unit in fake_self.store.getunits()] == ['Bonjour']
+    assert os.stat(localfile).st_mtime == 1
 
 
 # init_matcher() #
@@ -403,15 +405,30 @@ def test_get_ext_from_store_guess_returns_none_for_unrecognisable_content():
 
 # _update_term_file() #
 
-def test_update_term_file_resets_the_matcher_before_checking_for_an_update(monkeypatch):
+def test_update_term_file_uses_the_cached_file_while_checking_for_an_update(monkeypatch):
+    # Not an empty store: a download that fails may never call back (#4883).
     fake_self = _fake_self()
     calls = []
-    monkeypatch.setattr(fake_self, 'init_matcher', lambda: calls.append('init_matcher'))
+    monkeypatch.setattr(fake_self, 'init_matcher', lambda filename: calls.append(filename))
     monkeypatch.setattr(fake_self, '_check_for_update', lambda s, t: calls.append(('_check_for_update', s, t)))
 
     TerminologyModel._update_term_file(fake_self, 'en', 'fr')
 
-    assert calls == ['init_matcher', ('_check_for_update', 'en', 'fr')]
+    assert calls == [
+        os.path.join(fake_self.TERMDIR, 'en__fr.po'),
+        ('_check_for_update', 'en', 'fr'),
+    ]
+
+
+def test_update_term_file_still_checks_for_an_update_when_the_cache_does_not_parse(tmp_path):
+    fake_self = _fake_self()
+    fake_self.client = _FakeClient()
+    (tmp_path / 'en__fr.po').write_bytes(SIGNON_PAGE)
+
+    TerminologyModel._update_term_file(fake_self, 'en', 'fr')
+
+    assert fake_self.store.getunits() == []
+    assert len(fake_self.client.calls) == 1
 
 
 # _on_lang_changed() #

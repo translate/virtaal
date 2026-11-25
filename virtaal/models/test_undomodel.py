@@ -68,16 +68,50 @@ def test_a_fresh_push_clears_the_redo_stack():
     assert model.pop_redo() is None
 
 
-def test_record_start_clears_the_redo_stack():
+def test_a_recording_with_an_act_clears_the_redo_stack():
     model = UndoModel(controller=None)
     model.push(_entry(1))
     model.pop()
     model.push_redo(_entry('redo-of-1'))
 
     model.record_start()
+    model.push(_entry(2))
     model.record_stop()
 
     assert model.pop_redo() is None
+
+
+def test_an_empty_recording_keeps_undo_redo_and_clean_position():
+    model = UndoModel(controller=None)
+    model.push(_entry(1))
+    model.push(_entry(2))
+    model.mark_clean()
+    model.pop()
+    model.push_redo(_entry('redo-of-2'))
+
+    model.record_start()
+    model.record_stop()
+
+    assert model.can_undo()
+    assert model.peek()['id'] == 1
+    assert model.peek_redo()['id'] == 'redo-of-2'
+    assert len(model.undo_stack) == 2
+    assert not model.is_at_clean_position()
+    model.pop_redo()
+    assert model.is_at_clean_position()
+
+
+def test_an_empty_recording_on_an_empty_stack_leaves_nothing_to_undo():
+    model = UndoModel(controller=None)
+    model.mark_clean()
+
+    model.record_start()
+    model.record_stop()
+
+    assert not model.can_undo()
+    assert model.is_at_clean_position()
+    model.push(_entry(1))
+    assert model.peek()['id'] == 1
 
 
 def test_clear_empties_the_redo_stack():

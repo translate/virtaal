@@ -18,6 +18,7 @@ class UndoModel(BaseModel):
         super().__init__()
         self.index = -1
         self.recording = False
+        self._group_open = False
         self.undo_stack = []
         self.redo_stack = []
         # Undo-stack position at the last "file is unmodified" point
@@ -25,7 +26,7 @@ class UndoModel(BaseModel):
         self.clean_index = -1
         # The unit push() last recorded an act for - lets push() detect
         # a navigation between two pushed acts and record it as its own
-        # undo-able step. See _maybe_insert_navigation().
+        # undo-able step. See push().
         self._last_pushed_unit = None
 
 
@@ -43,6 +44,7 @@ class UndoModel(BaseModel):
         self.index = -1
         self.clean_index = -1
         self._last_pushed_unit = None
+        self._group_open = False
 
     def mark_clean(self):
         """Record the current undo-stack position as "the file is
@@ -106,12 +108,7 @@ class UndoModel(BaseModel):
                     raise ValueError('Invalid undo dictionary!')
 
         unit = undo_dict['unit']
-        if self.recording:
-            group = self.undo_stack[-1]
-            if not group and self._navigated_to(unit):
-                # First push into this group - the navigation entry
-                # belongs before the (already-appended) group, not in it.
-                self.undo_stack.insert(-1, self._navigation_entry(unit))
+        if self.recording and self._group_open:
             self.undo_stack[-1].append(undo_dict)
         else:
             if self.index < 0:
@@ -122,7 +119,13 @@ class UndoModel(BaseModel):
             self._resync_last_pushed_unit()
             if self._navigated_to(unit):
                 self.undo_stack.append(self._navigation_entry(unit))
-            self.undo_stack.append(undo_dict)
+            if self.recording:
+                # The group starts with its first act, so a recording
+                # that pushes nothing leaves the stacks alone.
+                self.undo_stack.append([undo_dict])
+                self._group_open = True
+            else:
+                self.undo_stack.append(undo_dict)
         self.index = len(self.undo_stack) - 1
         self._last_pushed_unit = unit
 
@@ -132,7 +135,7 @@ class UndoModel(BaseModel):
     def _resync_last_pushed_unit(self):
         """Recompute _last_pushed_unit from whatever's actually on top of
             the stack now - must run right after truncating it (a fresh
-            push/record_start after undoing something discards whatever
+            push after undoing something discards whatever
             redo history followed). Otherwise a stale value surviving
             from a since-discarded future push can make the very next
             push think it's crossing a unit boundary that, on the
@@ -155,12 +158,8 @@ class UndoModel(BaseModel):
         return entry
 
     def _last_completed_entry(self):
-        """The most recently pushed entry, ignoring the current
-            recording group while it's still empty (record_start()
-            already appended it before this push() call runs)."""
+        """The most recently pushed entry."""
         stack = self.undo_stack
-        if self.recording and stack and isinstance(stack[-1], list) and not stack[-1]:
-            stack = stack[:-1]
         if not stack:
             return None
         top = stack[-1]
@@ -187,16 +186,8 @@ class UndoModel(BaseModel):
     def record_start(self):
         if self.recording:
             raise Exception('Undo already recording.')
-
-        if self.index < 0:
-            self.undo_stack = []
-        if self.index != len(self.undo_stack) - 1:
-            self.undo_stack = self.undo_stack[:self.index+1]
-
-        self.redo_stack = []
-        self._resync_last_pushed_unit()
-        self.undo_stack.append([])
-        self.index = len(self.undo_stack) - 1
+        # push() opens the group on the first act recorded.
+        self._group_open = False
         self.recording = True
 
     def push_redo(self, redo_dict):
@@ -219,13 +210,8 @@ class UndoModel(BaseModel):
         if not self.recording:
             raise Exception("Undo can't stop recording if it was not recording in the first place.")
 
-        # In some cases we can get rid of an unnecessary list containing
-        # nothing or a single dictionary. That saves 32 bytes on 32 bit python
-        # per entry.
-        last_entry_len = len(self.undo_stack[-1])
-        if last_entry_len == 0:
-            # this can happen with something like Ctrl+C
-            del self.undo_stack[-1]
-        elif last_entry_len == 1:
+        # A group of one act is stored as that act.
+        if self._group_open and len(self.undo_stack[-1]) == 1:
             self.undo_stack[-1] = self.undo_stack[-1][0]
+        self._group_open = False
         self.recording = False

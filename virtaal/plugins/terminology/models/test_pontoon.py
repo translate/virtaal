@@ -60,7 +60,7 @@ def test_process_header_config_key_is_a_bare_filename(tmp_path):
     fake_self.matcher = None
 
     localfile = os.path.join(str(tmp_path), 'en__am.tbx')
-    TerminologyModel._process_header(fake_self, _FakeRequest(), b'<tbx/>', localfile=localfile)
+    TerminologyModel._process_header(fake_self, _FakeRequest(), _tbx(), localfile=localfile)
 
     assert list(fake_self.config.keys()) == ['en__am.tbx']
     assert os.path.isfile(localfile)
@@ -328,9 +328,9 @@ def test_process_header_saves_the_file_and_records_its_etag(tmp_path):
     model.init_matcher = lambda filename='': None
     localfile = str(tmp_path / 'en__af.tbx')
 
-    model._process_header(_FakeRequest(), b'<tbx/>', localfile=localfile)
+    model._process_header(_FakeRequest(), _tbx(), localfile=localfile)
 
-    assert (tmp_path / 'en__af.tbx').read_bytes() == b'<tbx/>'
+    assert (tmp_path / 'en__af.tbx').read_bytes() == _tbx()
     assert model.config == {'en__af.tbx': 'abc123'}
 
 
@@ -339,7 +339,7 @@ def test_process_header_derives_the_filename_and_extension_when_not_given(tmp_pa
     model.init_matcher = lambda filename='': None
     request = _FakeRequest(effective_url='https://pontoon.mozilla.org/terminology/af.tbx')
 
-    model._process_header(request, b'<tbx/>', localfile=None)
+    model._process_header(request, _tbx(), localfile=None)
 
     assert (tmp_path / 'en__af.tbx').is_file()
     assert model.config == {'en__af.tbx': 'abc123'}
@@ -350,9 +350,50 @@ def test_process_header_falls_back_to_po_when_no_extension_can_be_determined(tmp
     model.init_matcher = lambda filename='': None
     request = _FakeRequest(effective_url='https://pontoon.mozilla.org/terminology/af', headers=b'')
 
-    model._process_header(request, b'not a recognizable store format', localfile=None)
+    model._get_ext_from_store_guess = lambda content: None
+    model._process_header(request, b'msgid "Hello"\nmsgstr "Hallo"\n', localfile=None)
 
     assert (tmp_path / 'en__af.po').is_file()
+
+
+_PORTAL_PAGE = b'<html><body><p>Please log in to continue</p></body></html>'
+
+
+@pytest.mark.parametrize('content', [_PORTAL_PAGE, b'Please log in', b'', b'<tbx/>'])
+def test_process_header_keeps_the_cached_file_when_the_reply_is_not_tbx(tmp_path, content):
+    # A captive portal answers 200 with its own page (#4884).
+    good = _tbx(_concept_entry([('en', 'Hello'), ('af', 'Hallo')]))
+    localfile = tmp_path / 'en__af.tbx'
+    localfile.write_bytes(good)
+    os.utime(str(localfile), (1, 1))
+    model = _model(tmp_path, source_lang='en', target_lang='af')
+
+    model._process_header(_FakeRequest(), content, localfile=str(localfile))
+
+    assert localfile.read_bytes() == good
+    assert os.stat(str(localfile)).st_mtime == 1
+    assert [unit.target for unit in model.store.getunits()] == ['Hallo']
+    assert model.config == {}
+
+
+def test_process_header_saves_nothing_new_when_the_reply_is_not_a_store(tmp_path):
+    model = _model(tmp_path, source_lang='en', target_lang='af')
+    request = _FakeRequest(effective_url='https://pontoon.mozilla.org/terminology/af')
+
+    model._process_header(request, _PORTAL_PAGE, localfile=None)
+
+    assert os.listdir(str(tmp_path)) == []
+    assert model.store.getunits() == []
+
+
+def test_process_header_saves_a_tbx_reply_with_no_terms(tmp_path):
+    # Pontoon's file for a locale with no terminology yet.
+    localfile = tmp_path / 'en__af.tbx'
+    model = _model(tmp_path, source_lang='en', target_lang='af')
+
+    model._process_header(_FakeRequest(), _tbx(), localfile=str(localfile))
+
+    assert localfile.read_bytes() == _tbx()
 
 
 def test_process_header_records_no_etag_when_the_response_has_none(tmp_path):
@@ -360,7 +401,7 @@ def test_process_header_records_no_etag_when_the_response_has_none(tmp_path):
     model.init_matcher = lambda filename='': None
     localfile = str(tmp_path / 'en__af.tbx')
 
-    model._process_header(_FakeRequest(headers=b''), b'<tbx/>', localfile=localfile)
+    model._process_header(_FakeRequest(headers=b''), _tbx(), localfile=localfile)
 
     assert model.config == {'en__af.tbx': ''}
 
@@ -435,7 +476,7 @@ def test_process_header_saves_nothing_for_a_code_that_is_not_a_file_name(tmp_pat
     langs = {'source': 'en', 'target': 'af', which: code}
     model = _model(termdir, source_lang=langs['source'], target_lang=langs['target'])
 
-    model._process_header(_FakeRequest(), b'<tbx/>')
+    model._process_header(_FakeRequest(), _tbx())
 
     assert [p for p in tmp_path.rglob('*') if p.is_file()] == []
     assert model.config == {}
@@ -450,7 +491,7 @@ def test_a_reply_after_a_language_switch_is_saved_for_the_requested_pair(tmp_pat
 
     model._check_for_update('en', 'af')
     model.target_lang = 'fr'
-    callbacks[0](_FakeRequest(), b'<tbx/>')
+    callbacks[0](_FakeRequest(), _tbx())
 
     assert sorted(os.listdir(str(tmp_path))) == ['en__af.tbx']
     assert matched == []

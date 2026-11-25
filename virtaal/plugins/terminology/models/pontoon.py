@@ -240,6 +240,22 @@ class TerminologyModel(BaseTerminologyModel):
             pass
         return None
 
+    def _parses_as(self, content, ext):
+        """Whether a 200 response is a real C{ext} file: a captive portal
+        or proxy answers with its own page and a 200 status."""
+        if ext.lower() == 'tbx':
+            # _parse_tbx_basic() takes anything, as an empty store.
+            return _is_tbx(content)
+        from io import BytesIO
+
+        buf = BytesIO(content)
+        buf.name = 'dummy.%s' % (ext)
+        try:
+            factory.getobject(buf)
+        except Exception:
+            return False
+        return True
+
     def _process_header(self, request, result, localfile=None, srclang=None, tgtlang=None):
         if request.status == 304:
             logging.debug('ETag matches for file %s :)' % (localfile))
@@ -255,6 +271,14 @@ class TerminologyModel(BaseTerminologyModel):
                 if localfile is None:
                     self._init_matcher_for(srclang, tgtlang)
                     return
+            else:
+                ext = os.path.splitext(localfile)[1].lstrip(os.extsep)
+
+            if not self._parses_as(result, ext):
+                logging.debug('Response for %s does not parse as %s - discarding' % (localfile, ext))
+                self._init_matcher_for(srclang, tgtlang, localfile if os.path.isfile(localfile) else '')
+                return
+
             logging.debug('Saving to %s' % (localfile))
             # result is real bytes (httpclient.py's BytesIO().getvalue()),
             # not str - 'wb' preserves it exactly regardless of the
@@ -325,6 +349,18 @@ def _pontoon_locale_code(langcode):
 # TerminologyModel's own docstring).
 _TBX_BASIC_NS = 'urn:iso:std:iso:30042:ed-2'
 _XML_NS = 'http://www.w3.org/XML/1998/namespace'
+
+
+def _is_tbx(content):
+    """Whether content is a TBX document."""
+    from lxml import etree
+
+    try:
+        root = etree.fromstring(content)
+    except (etree.Error, ValueError):
+        return False
+    qname = etree.QName(root)
+    return qname.namespace == _TBX_BASIC_NS and qname.localname == 'tbx'
 
 
 def _parse_tbx_basic(content):

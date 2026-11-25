@@ -75,14 +75,14 @@ class TestTMStartup(TestScaffolding):
             "U moet 'n gids of vertaallêer spesifiseer vir --terminology"]
         assert found[0][0]['tmsource'] == 'This file'
 
-    def test_current_file_model_adds_a_newly_opened_file(self):
+    def test_current_file_model_starts_afresh_for_a_newly_opened_file(self):
         model = self._controller('currentfile').plugin_controller.plugins['currentfile']
         matcher = model.matcher
         model.cache['stale'] = []
 
         model.recreate_matcher(self.store_controller)
 
-        assert model.matcher is matcher
+        assert model.matcher is not matcher
         assert model.cache == {}
 
     def test_current_file_model_waits_for_a_file(self, monkeypatch):

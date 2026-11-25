@@ -40,16 +40,15 @@ class TMModel(BaseTMModel):
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
-        if self.matcher is None:
-            options = {
-                'max_length': pan_app.config_int(
-                    self.config['max_length'], self.default_config['max_length'], 1, 1000000, 'max_length'),
-                'max_candidates': self.controller.max_matches,
-                'min_similarity': self.controller.min_quality
-            }
-            self.matcher = _matcher(store, **options)
-        else:
-            self.matcher.extendtm(store.units)
+        # A new matcher for each file: an earlier file's translations
+        # aren't "This file" ones, and may be in another language.
+        options = {
+            'max_length': pan_app.config_int(
+                self.config['max_length'], self.default_config['max_length'], 1, 1000000, 'max_length'),
+            'max_candidates': self.controller.max_matches,
+            'min_similarity': self.controller.min_quality
+        }
+        self.matcher = _matcher(store, **options)
         self.cache = {}
 
     def query(self, tmcontroller, unit):

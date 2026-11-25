@@ -246,3 +246,30 @@ def test_query_does_not_leak_alttrans_between_units_with_the_same_source():
         ['Maak lêer oop', 'A'],
     ]
     assert [m['target'] for m in model.cache['Open']] == ['Maak lêer oop']
+
+
+def _po_store(pairs):
+    from translate.storage import po as pofile
+
+    store = pofile.pofile()
+    for source, target in pairs:
+        store.addsourceunit(source).target = target
+    return store
+
+
+def _open(model, store):
+    model.recreate_matcher(SimpleNamespace(get_store=lambda: SimpleNamespace(_trans_store=store)))
+
+
+def test_opening_another_file_drops_the_previous_files_translations():
+    # #4880: they were offered as "This file" suggestions, even for a file
+    # in another language.
+    model = _make_model()
+    model.controller.max_matches = 5
+    model.config = dict(TMModel.default_config)
+    model.matcher = None
+    _open(model, _po_store([('Open the files', 'Maak die lêers oop')]))
+
+    _open(model, _po_store([('Open the file', '')]))
+
+    assert model._check_other_units(_FakeUnit('Open the file')) == []

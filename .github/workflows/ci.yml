@@ -1604,7 +1604,11 @@ jobs:
 
       - name: Build the Flatpak
         working-directory: devsupport/packaging/flatpak
+        # The commit the About dialog and bug reports show (#4991).
+        env:
+          VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
+          echo "commit = \"$VIRTAAL_BUILD_COMMIT\"" > ../../../virtaal/_build_info.py
           flatpak-builder --user --install-deps-from=flathub --force-clean \
             --repo=repo build-dir io.github.translate.Virtaal.yml
 
@@ -1655,10 +1659,14 @@ jobs:
         working-directory: devsupport/packaging/flatpak
         # No display server on this runner - same headless gap the
         # Linux `test` job's own `xvfb-run` step already solves.
+        env:
+          VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
-            virtaal --version
+            virtaal --version > version.txt
+          cat version.txt
+          grep -qF "(${VIRTAAL_BUILD_COMMIT:0:7})" version.txt
 
       - name: Smoke test - the spell checker's GtkSpell loads
         if: steps.queue.outputs.tested != 'true'

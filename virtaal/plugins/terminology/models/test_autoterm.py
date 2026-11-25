@@ -232,6 +232,14 @@ def test_get_curr_term_filename_finds_an_existing_file_regardless_of_extension(t
     assert TerminologyModel._get_curr_term_filename(fake_self, 'en', 'fr') == 'en__fr.tbx'
 
 
+def test_get_curr_term_filename_ignores_a_longer_code_with_the_same_start(tmp_path):
+    # en__pt is not en__pt_BR (#4881).
+    (tmp_path / 'en__pt_BR.po').write_bytes(GOOD_PO)
+    fake_self = _fake_self()
+
+    assert TerminologyModel._get_curr_term_filename(fake_self, 'en', 'pt') == 'en__pt.po'
+
+
 def test_get_curr_term_filename_falls_back_to_po_when_nothing_exists():
     fake_self = _fake_self()
 

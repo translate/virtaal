@@ -91,7 +91,8 @@ class TerminologyModel(BaseTerminologyModel):
 
         base = '%s__%s' % (srclang, tgtlang)
         for filename in os.listdir(self.TERMDIR):
-            if filename.startswith(base):
+            # Exactly, or en__pt would find en__pt_BR's file (#4881).
+            if filename.startswith(base + os.extsep):
                 return filename
         return base + os.extsep + ext
     curr_term_filename = property(_get_curr_term_filename)

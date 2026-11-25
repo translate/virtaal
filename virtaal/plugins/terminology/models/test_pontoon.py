@@ -195,6 +195,14 @@ def test_curr_term_filename_finds_an_existing_file_regardless_of_extension(tmp_p
     assert model.curr_term_filename == 'en__af.po'
 
 
+def test_curr_term_filename_ignores_a_longer_code_with_the_same_start(tmp_path):
+    # en__pt is not en__pt_BR (#4881).
+    (tmp_path / 'en__pt_BR.tbx').write_text('')
+    model = _model(tmp_path, source_lang='en', target_lang='pt')
+
+    assert model.curr_term_filename == 'en__pt.tbx'
+
+
 def test_curr_term_filename_defaults_to_tbx_for_a_new_pair(tmp_path):
     model = _model(tmp_path, source_lang='en', target_lang='af')
 

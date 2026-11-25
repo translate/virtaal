@@ -44,7 +44,7 @@ def _tmmodel(display_name='Some TM'):
 def test_accept_response_ignores_a_response_after_the_file_was_closed():
     controller = _make_controller(storecursor=None)
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': 90}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 90}])
 
     assert controller.matches == []
     assert controller.displayed == []
@@ -53,7 +53,7 @@ def test_accept_response_ignores_a_response_after_the_file_was_closed():
 def test_accept_response_ignores_a_stale_query():
     controller = _make_controller(current_query='goodbye')
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': 90}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 90}])
 
     assert controller.matches == []
 
@@ -70,15 +70,44 @@ def test_accept_response_ignores_an_empty_matches_list():
 def test_accept_response_coerces_a_string_quality_to_int():
     controller = _make_controller()
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': '90'}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': '90'}])
 
     assert controller.matches[0]['quality'] == 90
+
+
+def test_accept_response_takes_a_quality_with_a_fraction():
+    # #4879: int('85.5') showed the crash dialog.
+    controller = _make_controller()
+
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': '85.5'}])
+
+    assert controller.matches[0]['quality'] == 85
+
+
+def test_accept_response_leaves_out_a_match_it_cannot_read():
+    # #4879: a reply from a server can hold anything.
+    controller = _make_controller()
+    matches = [
+        {'source': 'hello', 'target': 42, 'quality': 90},
+        {'source': 7, 'target': 'hallo', 'quality': 90},
+        {'source': 'hello', 'target': 'hallo', 'quality': 'high'},
+        {'source': 'hello', 'target': 'hallo', 'quality': [90]},
+        {'source': 'hello', 'target': 'hallo', 'quality': True},
+        {'source': 'hello', 'quality': 90},
+        {'target': 'hallo', 'quality': 90},
+        'hallo',
+        {'source': 'hello', 'target': 'hallo daar', 'quality': 80},
+    ]
+
+    controller.accept_response(_tmmodel(), 'hello', matches)
+
+    assert [m['target'] for m in controller.matches] == ['hallo daar']
 
 
 def test_accept_response_defaults_a_missing_tmsource_to_the_models_display_name():
     controller = _make_controller()
 
-    controller.accept_response(_tmmodel('Amagama'), 'hello', [{'target': 'hallo', 'quality': 90}])
+    controller.accept_response(_tmmodel('Amagama'), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 90}])
 
     assert controller.matches[0]['tmsource'] == 'Amagama'
 
@@ -86,7 +115,7 @@ def test_accept_response_defaults_a_missing_tmsource_to_the_models_display_name(
 def test_accept_response_adds_a_genuinely_new_match_and_displays_it():
     controller = _make_controller()
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': 90}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 90}])
 
     assert len(controller.matches) == 1
     assert controller.displayed == [controller.matches]
@@ -99,7 +128,7 @@ def test_accept_response_keeps_an_existing_qualified_match_over_a_duplicate_targ
     existing = {'target': 'hallo', 'quality': 95, 'tmsource': 'Local TM', 'query_str': 'hello'}
     controller = _make_controller(matches=[existing])
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': 80}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 80}])
 
     assert controller.matches == [existing]
     assert controller.displayed == []  # nothing new, so display_matches is never called
@@ -109,7 +138,7 @@ def test_accept_response_replaces_an_unqualified_duplicate_with_a_qualified_one(
     existing = {'target': 'hallo', 'quality': None, 'tmsource': 'Machine Translation', 'query_str': 'hello'}
     controller = _make_controller(matches=[existing])
 
-    controller.accept_response(_tmmodel(), 'hello', [{'target': 'hallo', 'quality': 90}])
+    controller.accept_response(_tmmodel(), 'hello', [{'source': 'hello', 'target': 'hallo', 'quality': 90}])
 
     assert len(controller.matches) == 1
     assert controller.matches[0]['quality'] == 90
@@ -120,9 +149,9 @@ def test_accept_response_sorts_by_quality_descending_and_truncates_to_max_matche
     controller = _make_controller(max_matches=2)
 
     controller.accept_response(_tmmodel(), 'hello', [
-        {'target': 'laag', 'quality': 60},
-        {'target': 'hoog', 'quality': 95},
-        {'target': 'middel', 'quality': 80},
+        {'source': 'hello', 'target': 'laag', 'quality': 60},
+        {'source': 'hello', 'target': 'hoog', 'quality': 95},
+        {'source': 'hello', 'target': 'middel', 'quality': 80},
     ])
 
     assert [m['target'] for m in controller.matches] == ['hoog', 'middel']

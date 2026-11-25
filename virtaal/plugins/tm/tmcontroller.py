@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
+
 from gi.repository import GLib, GObject
 from translate.lang.data import normalize
 
@@ -92,13 +94,32 @@ class TMController(BaseController):
         query_str = forceunicode(query_str)
         if query_str != self.current_query or not matches:
             return
-        # Perform some sanity checks on matches first
+        # A server's reply can hold anything: leave out a match without a
+        # text source and target or a number for its quality.
+        usable = []
         for match in matches:
-            if not isinstance(match.get('quality', 0), int):
-                match['quality'] = int(match['quality'] or 0)
+            if not (
+                isinstance(match, dict)
+                and isinstance(match.get('source'), str)
+                and isinstance(match.get('target'), str)
+            ):
+                logging.debug('%s: a match without a text source or target', tmmodel)
+                continue
+            quality = match.get('quality', 0)
+            if isinstance(quality, bool):
+                logging.debug('%s: a match with quality %r', tmmodel, quality)
+                continue
+            if not isinstance(quality, int):
+                try:
+                    match['quality'] = int(float(quality or 0))
+                except (TypeError, ValueError, OverflowError):
+                    logging.debug('%s: a match with quality %r', tmmodel, quality)
+                    continue
             if 'tmsource' not in match or match['tmsource'] is None:
                 match['tmsource'] = tmmodel.display_name
             match['query_str'] = query_str
+            usable.append(match)
+        matches = usable
 
         anything_new = False
         for match in matches:

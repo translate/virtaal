@@ -593,6 +593,23 @@ def test_save_file_project_keeps_a_target_document_it_cant_regenerate(tmp_path):
         assert b'targets/x.txt' in z.read('project.xtp')
 
 
+def test_save_file_project_save_as_leaves_the_opened_bundle_alone(tmp_path):
+    bundle = tmp_path / 'b.zip'
+    _make_bundle(bundle)
+    original = bundle.read_bytes()
+    copy = tmp_path / 'copy.zip'
+    controller = _bundle_controller(bundle)
+    try:
+        controller.save_file(str(copy))
+        assert controller.get_bundle_filename() == str(copy)
+    finally:
+        _close_bundle(controller.project.store)
+
+    assert bundle.read_bytes() == original
+    with zipfile.ZipFile(copy) as z:
+        assert b'Goeiedag' in z.read('trans/x.po')
+
+
 def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     real_file = tmp_path / 'source.po'
     real_file.write_bytes((
@@ -624,31 +641,6 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     assert updated['proj_fname'] == 'trans/source.po'
     assert updated['mode'] == 'rb'
     assert updated['content'] == real_file.read_bytes()
-
-
-def test_save_file_project_saves_the_bundle_under_the_given_name(tmp_path):
-    real_file = tmp_path / 'source.po'
-    real_file.write_bytes(b'msgid "a"\nmsgstr ""\n')
-    saved = []
-    controller = _controller()
-    controller.project = SimpleNamespace(
-        get_proj_filename=lambda fname: 'trans/source.po',
-        update_file=lambda proj_fname, infile: None,
-        convert_forward=lambda *a, **k: None,
-        save=lambda filename=None: saved.append(filename),
-    )
-    controller.real_filename = str(real_file)
-    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
-    controller.store = SimpleNamespace(save_file=lambda: None)
-    controller.main_controller = SimpleNamespace(
-        undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
-        set_saveable=lambda v: None,
-        view=SimpleNamespace(hide_read_only_notice=lambda: None),
-    )
-
-    controller.save_file('copy.zip')
-
-    assert saved == ['copy.zip']
 
 
 # binary_export() #

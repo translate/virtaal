@@ -5,8 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import io
 import os
 import sys
+import zipfile
 from types import SimpleNamespace
 
 import pytest
@@ -515,30 +517,41 @@ def test_save_file_plain_saves_and_marks_clean():
 
 # save_file() - project path #
 
-def test_save_file_project_writes_the_edit_into_the_bundle(tmp_path):
-    """A real bundle with only a translatable file: translate-toolkit
-    has no converter to regenerate a target document from it."""
-    from virtaal.support.project import Project
+_BUNDLE_PO = (
+    b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n'
+    b'\nmsgid "Hello"\nmsgstr "Hallo"\n'
+)
 
-    po = tmp_path / 'x.po'
-    po.write_bytes(
-        b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n'
-        b'\nmsgid "Hello"\nmsgstr "Hallo"\n'
-    )
-    bundle = tmp_path / 'b.zip'
-    store = BundleProjectStore(str(bundle))
-    with open(po, 'rb') as f:
-        store.append_file(f, 'x.po', ftype='trans')
-    store.save()
+
+def _close_bundle(store):
     store.cleanup()
+    store.zip.close()
+
+
+def _make_bundle(path, target=None):
+    """A real bundle with trans/x.po and, if given, a target document
+    targets/x.txt recorded as converted from it."""
+    store = BundleProjectStore(str(path))
+    try:
+        store.append_file(io.BytesIO(_BUNDLE_PO), 'x.po', ftype='trans')
+        if target is not None:
+            store.append_file(io.BytesIO(target), 'x.txt', ftype='tgt')
+            store.convert_map['trans/x.po'] = ('targets/x.txt', None)
+        store.save()
+    finally:
+        _close_bundle(store)
+
+
+def _bundle_controller(bundle):
+    """A controller with bundle open and its trans/x.po edited, as
+    StoreController.save_file() finds it after store.save_file()."""
+    from virtaal.support.project import Project
 
     controller = _controller()
     controller.project = Project(BundleProjectStore(str(bundle)))
     real_filename = controller.project.get_real_filename('trans/x.po')
-    with open(real_filename, 'rb') as f:
-        edited = f.read().replace(b'Hallo', b'Goeiedag')
     with open(real_filename, 'wb') as f:
-        f.write(edited)
+        f.write(_BUNDLE_PO.replace(b'Hallo', b'Goeiedag'))
     controller.real_filename = real_filename
     controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
     controller.store = SimpleNamespace(save_file=lambda: None)
@@ -547,14 +560,37 @@ def test_save_file_project_writes_the_edit_into_the_bundle(tmp_path):
         set_saveable=lambda v: None,
         view=SimpleNamespace(hide_read_only_notice=lambda: None),
     )
+    return controller
 
-    controller.save_file()
-    controller.project.store.cleanup()
 
-    import zipfile
+def test_save_file_project_writes_the_edit_into_the_bundle(tmp_path):
+    """A real bundle with only a translatable file: translate-toolkit
+    has no converter to regenerate a target document from it."""
+    bundle = tmp_path / 'b.zip'
+    _make_bundle(bundle)
+    controller = _bundle_controller(bundle)
+    try:
+        controller.save_file()
+    finally:
+        _close_bundle(controller.project.store)
 
     with zipfile.ZipFile(bundle) as z:
         assert b'Goeiedag' in z.read('trans/x.po')
+
+
+def test_save_file_project_keeps_a_target_document_it_cant_regenerate(tmp_path):
+    bundle = tmp_path / 'b.zip'
+    _make_bundle(bundle, target=b'target text')
+    controller = _bundle_controller(bundle)
+    try:
+        controller.save_file()
+    finally:
+        _close_bundle(controller.project.store)
+
+    with zipfile.ZipFile(bundle) as z:
+        assert z.read('targets/x.txt') == b'target text'
+        assert b'Goeiedag' in z.read('trans/x.po')
+        assert b'targets/x.txt' in z.read('project.xtp')
 
 
 def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):

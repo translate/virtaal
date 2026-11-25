@@ -94,3 +94,20 @@ def test_a_new_file_in_a_read_only_bundle_is_kept_for_save_as(read_only_bundle, 
         store.close()
     with open(path, 'rb') as f:
         assert f.read() == data
+
+
+def test_removing_a_file_from_a_read_only_bundle_changes_nothing(read_only_bundle):
+    path, data = read_only_bundle
+    bundle = bundleprojstore.BundleProjectStore(path)
+    try:
+        with pytest.raises(PermissionError):
+            bundle.remove_file('trans/af.po')
+
+        assert bundle.transfiles == ('trans/af.po',)
+        with bundle.get_file('trans/af.po') as transfile:
+            assert transfile.read() == PO
+    finally:
+        bundle.cleanup()
+        bundle.zip.close()
+    with open(path, 'rb') as f:
+        assert f.read() == data

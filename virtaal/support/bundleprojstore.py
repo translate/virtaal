@@ -37,6 +37,7 @@
 # new archive over the opened one. A bundle that can't be written to opens
 # read-only, keeps changes in temporary files and can only be saved under
 # another name - see translate/virtaal#4713.
+# remove_file() refuses a read-only archive before changing anything.
 
 import contextlib
 import errno
@@ -99,6 +100,9 @@ class BundleProjectStore(ProjectStore):
 
     def remove_file(self, fname, ftype=None) -> None:
         """Remove the file with the given project name from the project."""
+        if self.read_only:
+            # Before changing anything, so memory and archive stay in step.
+            raise PermissionError(errno.EACCES, os.strerror(errno.EACCES), self.zip.filename)
         super().remove_file(fname, ftype)
         self._zip_delete([fname])
         tempfiles = [tmpf for tmpf, prjf in self._tempfiles.items() if prjf == fname]

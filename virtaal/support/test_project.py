@@ -321,6 +321,27 @@ def test_convert_forward_removes_the_previous_output_before_reconverting(tmp_pat
     assert 'trans/old-output.xlf' not in store
 
 
+def test_convert_forward_keeps_the_previous_output_when_the_conversion_fails(tmp_path, monkeypatch):
+    def failing_convert(inputfile, template, options, convert_options):
+        raise project_module.convert_factory.UnsupportedConversionError()
+    monkeypatch.setattr(project_module.convert_factory, 'convert', failing_convert)
+    src_path = tmp_path / 'greeting.odt'
+    src_path.write_bytes(b'source bytes')
+    old_output_path = tmp_path / 'old-output.xlf'
+    old_output_path.write_bytes(b'stale')
+    store = ProjectStore()
+    project = Project(store)
+    project.add_source(str(src_path))
+    store.append_transfile(str(old_output_path))
+    store.convert_map['sources/greeting.odt'] = ('trans/old-output.xlf', None)
+
+    with pytest.raises(project_module.convert_factory.UnsupportedConversionError):
+        project.convert_forward('sources/greeting.odt')
+
+    assert 'trans/old-output.xlf' in store
+    assert store.convert_map['sources/greeting.odt'] == ('trans/old-output.xlf', None)
+
+
 def test_convert_forward_keeps_the_previous_output_when_overwrite_is_disabled(tmp_path, monkeypatch):
     _stub_convert(monkeypatch, tmp_path)
     src_path = tmp_path / 'greeting.odt'

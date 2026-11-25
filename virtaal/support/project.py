@@ -30,6 +30,8 @@
 # Virtaal's own project/bundle file support (open_file()'s .zip branch,
 # save_file()'s project branch) still needs it, so it's vendored rather
 # than dropped - see translate/virtaal#3632.
+# convert_forward() removes the previous output only once the conversion
+# has worked, so a failed one doesn't drop it from the project.
 
 import os
 from typing import cast
@@ -158,10 +160,12 @@ class Project:
         # Populate the conv_options dict with the options we can detect
         conv_options = {"in_fname": input_fname}
 
+        # Removed only once the conversion has worked.
+        old_output = None
         if input_fname in self.store.convert_map:
             out_name, _tmpl_name = self.store.convert_map[input_fname]
             if out_name in self.store._files and options.get("overwrite_output", True):
-                self.remove_file(out_name)
+                old_output = out_name
 
         converted_file, converted_ext = convert_factory.convert(
             inputfile,
@@ -205,6 +209,13 @@ class Project:
             # to overwrite it.
             os.unlink(converted_file.name)
             raise OSError(f"Output file already exists: {output_fname}")
+
+        if old_output:
+            try:
+                self.remove_file(old_output)
+            except Exception:
+                os.unlink(converted_file.name)
+                raise
 
         os.rename(converted_file.name, output_fname)
 

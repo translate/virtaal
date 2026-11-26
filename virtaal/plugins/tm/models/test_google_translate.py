@@ -193,8 +193,9 @@ def test_disable_all_without_an_api_key_leaves_nothing_held(monkeypatch):
     monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {'api_key': ''}))
 
     model = TMModel('google_translate', _fake_controller())
+    model.query(None, SimpleNamespace(source='hello'))
 
-    assert model.languages_known
+    assert getattr(model, '_held_query', None) is None
 
 
 # got_translation()

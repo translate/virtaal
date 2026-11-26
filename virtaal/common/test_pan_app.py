@@ -1044,17 +1044,16 @@ def test_write_ini_private_makes_an_open_file_owner_only(tmp_path):
 
 
 @pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
-@pytest.mark.parametrize('mode', [0o600, 0o400])
+@pytest.mark.parametrize('mode', [0o600, 0o700])
 def test_write_ini_private_never_loosens_a_stricter_mode(tmp_path, mode):
     path = tmp_path / 'tm.ini'
     path.write_text('')
     path.chmod(mode)
-    try:
-        pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
 
-        assert path.stat().st_mode & 0o777 == mode
-    finally:
-        path.chmod(0o600)
+    pan_app.save_config(str(path), {'key': 'new'}, section='google_translate', private=True)
+
+    assert pan_app.load_config(str(path), 'google_translate') == {'key': 'new'}
+    assert path.stat().st_mode & 0o777 == mode
 
 
 @pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")

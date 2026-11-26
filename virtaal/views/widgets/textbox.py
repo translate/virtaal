@@ -393,7 +393,7 @@ class TextBox(Gtk.TextView):
         gui_info = self.elem.gui_info
         for index, char in enumerate(text):
             if char == '\0':
-                start = gui_info.treeindex_to_iter(index)
+                start = gui_info.treeindex_to_iter(index, elem_len=len(text))
                 end = start.copy()
                 end.forward_char()
                 self.buffer.apply_tag(tag, start, end)
@@ -889,7 +889,8 @@ class TextBox(Gtk.TextView):
         """Whether a buffer with C{text} and C{length} positions (text and
             widgets) shows self.elem as it is now."""
         self.add_default_gui_info(self.elem)
-        return text == str(self.elem) and length == self.elem.gui_info.length()
+        # A NUL shows as a symbol (#4349).
+        return text == str(self.elem).replace('\0', '\u2400') and length == self.elem.gui_info.length()
 
     def _delete_inside_widget_leaf(self, leaf, start, end):
         """Delete tree range [start, end) from the content of C{leaf}, a

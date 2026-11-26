@@ -212,6 +212,34 @@ class TestTextBox(TestScaffolding):
             # The text box is shared with the other tests.
             textbox.set_text('%s files copied')
 
+    def test_a_buffer_with_a_nul_symbol_matches_its_tree(self):
+        # Otherwise every edit in the text forces a full rebuild.
+        textbox = self._target_for('%s files copied')
+        try:
+            textbox.set_text('a\0b %s')
+
+            assert textbox._matches_tree(textbox.get_text(), textbox.buffer.get_char_count())
+        finally:
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
+    def test_dimming_nul_symbols_measures_the_tree_once(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        try:
+            textbox.set_text('a\0b\0c\0 %s')
+            calls = []
+            measure = StringElem.__len__
+            monkeypatch.setattr(StringElem, '__len__', lambda elem: calls.append(elem) or measure(elem))
+
+            textbox._dim_nul_symbols()
+
+            assert len(calls) <= 1
+            assert _tagged_offsets(textbox, 'nul_symbol') == [1, 3, 5]
+        finally:
+            monkeypatch.undo()
+            # The text box is shared with the other tests.
+            textbox.set_text('%s files copied')
+
     @pytest.mark.parametrize('text', ['a\r\nb', 'a\nb'])
     def test_selecting_a_newline_puts_the_cursor_after_it(self, text):
         # #4348: the cursor went between the CR and LF of a CRLF.

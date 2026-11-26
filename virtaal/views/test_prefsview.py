@@ -392,6 +392,18 @@ def test_pair_preview_text_uses_french_quotes_on_windows(monkeypatch):
     assert result == 'English » French'
 
 
+def test_pair_preview_text_names_a_script_variant(monkeypatch):
+    monkeypatch.setattr(prefsview.platform, 'is_windows', False)
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name, lang_code=None: name))
+    view = PreferencesView.__new__(PreferencesView)
+    view._widgets = {'fbtn_target': Gtk.Button()}
+    view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.LTR)
+
+    result = view._pair_preview_text(SimpleNamespace(code='en'), SimpleNamespace(code='sr@latin'))
+
+    assert result == 'English → Serbian (Latin)'
+
+
 def test_on_font_button_clicked_presents_the_open_font_dialog_and_restores_focus(monkeypatch):
     idle_calls = []
     monkeypatch.setattr(prefsview.GLib, 'idle_add', lambda func, *args: idle_calls.append((func, args)))

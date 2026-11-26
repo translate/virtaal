@@ -10,6 +10,7 @@ from translate.lang.data import languages as toolkit_langs
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
+from virtaal.models.langmodel import VARIANT_LANGUAGES
 from virtaal.support.translate_compat import tr_lang
 from virtaal.views.widgets.selectview import SelectView
 from virtaal.views.widgets.util import entry_value, keep_one_line
@@ -131,9 +132,12 @@ class PreferencesView(BaseView, GObjectWrapper):
         return '%s → %s' % (source_name, target_name)
 
     def _lang_endonym(self, lang):
-        if lang is None or lang.code not in toolkit_langs:
+        if lang is None:
             return None
-        return tr_lang(lang.code)(toolkit_langs[lang.code][0], lang.code)
+        known = toolkit_langs.get(lang.code) or VARIANT_LANGUAGES.get(lang.code)
+        if known is None:
+            return None
+        return tr_lang(lang.code)(known[0], lang.code)
 
     def _init_placeables_page(self):
         self.placeables_select = SelectView()

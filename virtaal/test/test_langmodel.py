@@ -33,6 +33,8 @@ def test_unknown_langcode_falls_back():
     ('sr@latin', 'sr@latin', 'Serbian (Latin)'),
     ('sr_Latn', 'sr@latin', 'Serbian (Latin)'),
     ('sr-Latn-RS', 'sr@latin', 'Serbian (Latin)'),
+    ('sr_latn', 'sr@latin', 'Serbian (Latin)'),
+    ('sr-latn-rs', 'sr@latin', 'Serbian (Latin)'),
     ('uz@cyrillic', 'uz@cyrillic', 'Uzbek (Cyrillic)'),
     ('be@latin', 'be@latin', 'Belarusian (Latin)'),
     # A language's default script stays the plain language.

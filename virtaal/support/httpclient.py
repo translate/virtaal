@@ -21,18 +21,22 @@ _SECRET_PARAMS = {'key', 'api_key', 'apikey', 'auth_key', 'token', 'access_token
 
 
 def loggable_url(url):
-    """url with the values of secret query parameters (API keys) masked."""
+    """url with its user:password@ and the values of secret query
+        parameters (API keys) masked, or only *** if it can't be parsed."""
     try:
         parts = parse.urlsplit(url)
     except ValueError:
-        return url
-    if not parts.query:
-        return url
+        return '***'
+    changed = False
+    if '@' in parts.netloc:
+        parts = parts._replace(netloc='***@' + parts.netloc.rpartition('@')[2])
+        changed = True
     pairs = parse.parse_qsl(parts.query, keep_blank_values=True)
-    if not any(name.lower() in _SECRET_PARAMS for name, _value in pairs):
-        return url
-    masked = [(name, '***' if name.lower() in _SECRET_PARAMS else value) for name, value in pairs]
-    return parse.urlunsplit(parts._replace(query=parse.urlencode(masked, safe='*')))
+    if any(name.lower() in _SECRET_PARAMS for name, _value in pairs):
+        masked = [(name, '***' if name.lower() in _SECRET_PARAMS else value) for name, value in pairs]
+        parts = parts._replace(query=parse.urlencode(masked, safe='*'))
+        changed = True
+    return parse.urlunsplit(parts) if changed else url
 
 
 __all__ = ['HTTPClient', 'HTTPRequest', 'RESTRequest']

@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import time
+import tracemalloc
 from types import SimpleNamespace
 
 import pytest
@@ -511,6 +512,18 @@ def test_match_text_is_right_aligned_in_a_right_to_left_view():
 ])
 def test_shown_cuts_a_suggestion_to_what_a_row_can_show(text, expected):
     assert tmwidgets._shown(text) == expected
+
+
+def test_shown_only_splits_the_start_of_a_huge_suggestion():
+    text = 'line\n' * 200000
+    tracemalloc.start()
+    try:
+        tmwidgets._shown(text)
+        peak = tracemalloc.get_traced_memory()[1]
+    finally:
+        tracemalloc.stop()
+
+    assert peak < 100000
 
 
 @pytest.mark.parametrize('target', ['line\n' * 2000, 'word ' * 2000])

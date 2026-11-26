@@ -24,7 +24,7 @@ def _shown(text):
     """The start of text that fits in a row, and whether it's cut."""
     if not text:
         return text, False
-    shown = '\n'.join(text.split('\n')[:SHOWN_LINES])[:SHOWN_CHARS]
+    shown = '\n'.join(text[:SHOWN_CHARS].split('\n', SHOWN_LINES)[:SHOWN_LINES])
     return shown, shown != text
 
 

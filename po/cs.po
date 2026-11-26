@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-10-13 18:54+0100\n"
-"PO-Revision-Date: 2026-10-15 22:26+0200\n"
+"PO-Revision-Date: 2026-11-26 18:41+0200\n"
 "Last-Translator: khagaroth <khagaroth@gmail.com>\n"
 "Language-Team: NONE\n"
 "Language: cs\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Virtaal 1.0.0-rc1\n"
+"X-Generator: Virtaal 1.0.0\n"
 
 #: share/applications/io.github.translate.Virtaal.desktop.in
 #: share/virtaal/virtaal.ui virtaal/views/mainview.py
@@ -560,7 +560,7 @@ msgstr "Upravit v aplikaci Virtaal"
 #. l10n: Windows installer option, shown only when Virtaal 0.7 is installed
 #: devsupport/tmp_strings.py
 msgid "Uninstall the older Virtaal 0.7 first"
-msgstr ""
+msgstr "Nejdříve odinstalujte starší verzi Virtaal 0.7"
 
 #: devsupport/tmp_strings.py
 msgid "usage: "

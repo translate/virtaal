@@ -136,6 +136,31 @@ def test_read_ini_recovering_backs_up_a_corrupt_file(tmp_path):
     assert parser.sections() == []
 
 
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes")
+def test_read_ini_recovering_makes_the_backup_owner_only(tmp_path):
+    # A corrupt tm.ini can still hold API keys.
+    path = tmp_path / "tm.ini"
+    path.write_bytes(b"\x00" * 10)
+    path.chmod(0o644)
+
+    backup_path = _read_ini_recovering(pan_app.ConfigParser.RawConfigParser(), str(path))
+
+    assert os.stat(backup_path).st_mode & 0o777 == 0o600
+
+
+@pytest.mark.skipif(os.name == 'nt', reason="POSIX file modes and symlinks")
+def test_read_ini_recovering_leaves_a_symlinks_target_mode_alone(tmp_path):
+    real = tmp_path / "shared.ini"
+    real.write_bytes(b"\x00" * 10)
+    real.chmod(0o644)
+    link = tmp_path / "tm.ini"
+    link.symlink_to(real)
+
+    _read_ini_recovering(pan_app.ConfigParser.RawConfigParser(), str(link))
+
+    assert real.stat().st_mode & 0o777 == 0o644
+
+
 def test_read_ini_recovering_does_not_clobber_an_existing_backup(tmp_path):
     path = tmp_path / "settings.ini"
     path.write_bytes(b"\x00" * 10)

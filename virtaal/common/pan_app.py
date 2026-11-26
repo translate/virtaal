@@ -26,7 +26,8 @@ def _read_ini_recovering(parser, filename):
     file instead of crashing - it may be a user's own hand-edited file
     they'd want back, so back it up rather than overwriting or
     discarding it silently, and leave parser empty so the caller falls
-    back to its own defaults.
+    back to its own defaults. The backup is readable only by its owner
+    (on macOS and Linux).
 
     Returns the backup path, or None if the file was fine (or absent)."""
     try:
@@ -41,6 +42,15 @@ def _read_ini_recovering(parser, filename):
         while os.path.exists(backup_path):
             n += 1
             backup_path = '%s.broken.%d' % (filename, n)
+        if not platform.is_windows and not os.path.islink(filename):
+            # It may hold keys (tm.ini). If this fails, it is backed up
+            # no more readable than it is now; a symlink's target is
+            # left alone.
+            try:
+                import stat
+                os.chmod(filename, stat.S_IMODE(os.stat(filename).st_mode) & ~0o077)
+            except OSError:
+                pass
         try:
             os.replace(filename, backup_path)
         except OSError:

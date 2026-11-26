@@ -10,9 +10,12 @@ first time a target language is selected that enchant has no
 dictionary for.
 
 Wired directly to LanguageController's own target-lang-changed signal,
-independent of spellchecker.py's Plugin (which refuses to load in any
-frozen build - exactly where this matters most, since there's no
-system package manager to fall back on) and of ChecksController.
+so it works without spellchecker.py's Plugin (which refuses to load in
+some frozen builds, where there's no system package manager to fall
+back on). A finished download is announced with LanguageController's
+dictionary-installed signal, which the Plugin listens for, and drops
+the quality checks' remembered "no dictionary" for that language from
+translate-toolkit's shared spelling state.
 
 Looks the language up in asset_manifest.py's cached manifest first -
 no live discovery needed once it's cached, and nothing to fetch at all
@@ -47,8 +50,8 @@ def _forget_missing_dictionary(language):
         from translate.filters import spelling
     except ImportError:
         return
-    base = language.split('_')[0]
-    for lang in [lang for lang in getattr(spelling, 'checkers', {}) if lang.split('_')[0] == base]:
+    base = enchant_tag(language).split('_')[0]
+    for lang in [lang for lang in getattr(spelling, 'checkers', {}) if enchant_tag(lang).split('_')[0] == base]:
         del spelling.checkers[lang]
     if hasattr(spelling.simple_check, 'cache_clear'):
         spelling.simple_check.cache_clear()

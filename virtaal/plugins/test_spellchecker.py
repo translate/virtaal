@@ -996,3 +996,20 @@ def test_a_downloaded_dictionary_is_checked_without_a_restart(monkeypatch):
     _run(scheduled)
 
     assert target.spell_lang == 'af_ZA'
+
+
+@pytest.mark.parametrize('code, tag', [('ca@valencia', 'ca_VALENCIA'), ('pt-BR', 'pt_BR')])
+def test_a_downloaded_variant_dictionary_is_checked_without_a_restart(monkeypatch, code, tag):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, set())
+    target = _text_view()
+    plugin.unit_view = SimpleNamespace(sources=[], targets=[target])
+    plugin._on_unit_lang_changed(None, target, code)
+    assert plugin._seen_languages == {tag: None}
+
+    plugin.enchant.known_dicts.add(tag)
+    plugin.enchant.list_languages = lambda: [tag]
+    lang_controller = SimpleNamespace(source_lang=SimpleNamespace(code='en'), target_lang=SimpleNamespace(code=code))
+    plugin._on_dictionary_installed(lang_controller, code)
+    _run(scheduled)
+
+    assert target.spell_lang == tag

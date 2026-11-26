@@ -290,3 +290,15 @@ def test_a_downloaded_dictionary_is_announced_and_the_checks_forget_its_absence(
     _FakeDownloader.instances[0].on_done(True)
     assert main_controller.lang_controller.emitted == [('dictionary-installed', 'af_ZA')]
     assert spelling.checkers == {'de': 'kept'}
+
+
+def test_the_checks_forget_a_variants_absence(monkeypatch):
+    from translate.filters import spelling
+    _reset_installed_assets()
+    monkeypatch.setattr(spelling, 'checkers', {'pt-BR': None, 'de': 'kept'}, raising=False)
+    lull_calls = []
+    main_controller, _watcher = _make_watcher(known_dicts=set(), manifest_entries={}, lull_calls=lull_calls)
+    main_controller.lang_controller.emit_target_lang_changed('pt_BR')
+    _FakeDownloader.instances[0].on_done(True)
+
+    assert spelling.checkers == {'de': 'kept'}

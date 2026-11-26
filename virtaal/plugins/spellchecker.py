@@ -311,7 +311,7 @@ class Plugin(BasePlugin):
 
     def _on_dictionary_installed(self, lang_controller, language):
         """Check spelling with a dictionary downloaded since start-up (#4585)."""
-        base = language.split('_')[0]
+        base = enchant_tag(language).split('_')[0]
         for seen in [seen for seen in self._seen_languages if seen.split('_')[0] == base]:
             del self._seen_languages[seen]
         self._enchant_languages = self.enchant.list_languages()

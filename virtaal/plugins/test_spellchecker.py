@@ -127,7 +127,8 @@ def test_on_unit_lang_changed_falls_back_to_any_region_without_the_default_one()
         Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=text_view, language='es')
 
     assert plugin.enchant.checked == ['es_ES', 'es']
-    assert calls == [((plugin._activate_checker, text_view, 'es_MX'), {'priority': GLib.PRIORITY_LOW})]
+    assert calls == [((plugin._run_activation, text_view), {'priority': GLib.PRIORITY_LOW})]
+    assert text_view.spell_pending == 'es_MX'
 
 
 def test_on_unit_lang_changed_does_nothing_once_gtkspell_is_gone():
@@ -154,7 +155,8 @@ def test_on_unit_lang_changed_reuses_a_previously_seen_country_variant():
 
     # Already resolved once, so enchant is never re-asked about 'xx' itself.
     assert plugin.enchant.checked == []
-    assert calls == [((plugin._activate_checker, text_view, 'xx_YY'), {'priority': GLib.PRIORITY_LOW})]
+    assert calls == [((plugin._run_activation, text_view), {'priority': GLib.PRIORITY_LOW})]
+    assert text_view.spell_pending == 'xx_YY'
 
 
 def test_on_unit_lang_changed_finds_a_country_variant_enchant_supports():
@@ -171,7 +173,8 @@ def test_on_unit_lang_changed_finds_a_country_variant_enchant_supports():
         Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=text_view, language='xx')
 
     assert plugin._seen_languages['xx'] == 'xx_YY'
-    assert calls == [((plugin._activate_checker, text_view, 'xx_YY'), {'priority': GLib.PRIORITY_LOW})]
+    assert calls == [((plugin._run_activation, text_view), {'priority': GLib.PRIORITY_LOW})]
+    assert text_view.spell_pending == 'xx_YY'
 
 
 def test_on_unit_lang_changed_asks_enchant_for_the_locales_tag():
@@ -188,7 +191,8 @@ def test_on_unit_lang_changed_asks_enchant_for_the_locales_tag():
         mp.setattr(GLib, 'idle_add', lambda *a, **k: calls.append((a, k)))
         Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=text_view, language='ca@valencia')
 
-    assert calls == [((plugin._activate_checker, text_view, 'ca_VALENCIA'), {'priority': GLib.PRIORITY_LOW})]
+    assert calls == [((plugin._run_activation, text_view), {'priority': GLib.PRIORITY_LOW})]
+    assert text_view.spell_pending == 'ca_VALENCIA'
 
 
 def test_on_unit_lang_changed_disables_and_caches_a_language_with_no_dictionary(monkeypatch):
@@ -431,6 +435,12 @@ def _run(scheduled):
         func(*args)
 
 
+def _insert(plugin, text_view, text):
+    """The plugin's view of text typed or pasted at the end."""
+    buffer = text_view.get_buffer()
+    plugin._on_insert_text(buffer, buffer.get_end_iter(), text, -1, text_view)
+
+
 def test_a_large_insert_is_checked_after_it_goes_in(monkeypatch):
     # #4443: GtkSpell checks a long paste word by word against the whole line.
     plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
@@ -438,10 +448,10 @@ def test_a_large_insert_is_checked_after_it_goes_in(monkeypatch):
     plugin._on_unit_lang_changed(None, text_view, 'en')
     _run(scheduled)
 
-    plugin._on_insert_text(text_view.get_buffer(), None, 'x' * spellchecker.LARGE_INSERT, -1, text_view)
+    _insert(plugin, text_view, 'x' * spellchecker.LARGE_INSERT)
 
     assert text_view.spell_lang is None
-    assert [func for func, _ in scheduled] == [plugin._activate_checker]
+    assert [func for func, _ in scheduled] == [plugin._run_activation]
 
 
 def test_a_small_insert_is_left_to_gtkspell(monkeypatch):
@@ -450,10 +460,41 @@ def test_a_small_insert_is_left_to_gtkspell(monkeypatch):
     plugin._on_unit_lang_changed(None, text_view, 'en')
     _run(scheduled)
 
-    plugin._on_insert_text(text_view.get_buffer(), None, 'word', -1, text_view)
+    _insert(plugin, text_view, 'word')
 
     assert text_view.spell_lang == 'en_US'
     assert scheduled == []
+
+
+def test_an_insert_that_makes_its_line_too_long_is_checked_again(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view('x' * spellchecker.LONGEST_CHECKED_LINE)
+    buffer = text_view.get_buffer()
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+    assert text_view.spell_lang == 'en_US'
+
+    plugin._on_insert_text(buffer, buffer.get_iter_at_line_offset(0, 3), 'y', -1, text_view)
+    buffer.insert(buffer.get_iter_at_line_offset(0, 3), 'y')
+    _run(scheduled)
+
+    assert text_view.spell_lang is None
+    assert text_view.spell_too_long
+
+
+def test_typing_in_a_long_line_queues_one_check_at_a_time(monkeypatch):
+    plugin, created, scheduled = _lang_plugin(monkeypatch, {'en_US'})
+    text_view = _text_view('x' * (spellchecker.LONGEST_CHECKED_LINE + 1))
+    plugin._on_unit_lang_changed(None, text_view, 'en')
+    _run(scheduled)
+
+    for _ in range(5):
+        _insert(plugin, text_view, 'a')
+
+    assert len(scheduled) == 1
+    _run(scheduled)
+    _insert(plugin, text_view, 'a')
+    assert len(scheduled) == 1
 
 
 def test_text_with_a_very_long_line_is_not_checked(monkeypatch):
@@ -487,7 +528,7 @@ def test_checking_resumes_once_the_long_line_is_gone(monkeypatch, edit):
 
     buffer.set_text('short')
     if edit == 'insert':
-        plugin._on_insert_text(buffer, None, 'a', -1, text_view)
+        _insert(plugin, text_view, 'a')
     else:
         plugin._on_delete_range(buffer, None, None, text_view)
     _run(scheduled)
@@ -502,7 +543,7 @@ def test_an_insert_doesnt_turn_checking_back_on_once_disabled(monkeypatch):
     _run(scheduled)
     plugin._disable_checking(text_view)
 
-    plugin._on_insert_text(text_view.get_buffer(), None, 'x' * spellchecker.LARGE_INSERT, -1, text_view)
+    _insert(plugin, text_view, 'x' * spellchecker.LARGE_INSERT)
 
     assert scheduled == []
     assert text_view.spell_lang is None

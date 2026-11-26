@@ -137,12 +137,11 @@ class TMModel(BaseTMModel):
         """Handle the response from the web service to set up language pairs."""
         try:
             data = json.loads(val)
-            data['data']
-            languages = data['data']['languages']
+            languages = {l['language'] for l in data['data']['languages']}
         except Exception as e:
             self._disable_all("Error with json response: %s" % e)
             return
-        self._languages = set([l['language'] for l in languages])
+        self._languages = languages
         self.set_languages_known()
 
     def got_error(self, val, query_str):

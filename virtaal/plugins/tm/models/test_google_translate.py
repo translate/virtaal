@@ -178,6 +178,17 @@ def test_a_failed_languages_request_stops_holding_queries(monkeypatch):
     assert len(model.client.added) == 1
 
 
+def test_a_malformed_languages_reply_stops_holding_queries(monkeypatch):
+    model = _model_fetching_languages(monkeypatch)
+
+    model.query(None, SimpleNamespace(source='hello'))
+    model.client.added[0].emit('http-success', json.dumps({'data': {'languages': [{'name': 'English'}]}}))
+
+    assert model.languages_known
+    assert model._held_query is None
+    assert len(model.client.added) == 1
+
+
 def test_disable_all_without_an_api_key_leaves_nothing_held(monkeypatch):
     monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {'api_key': ''}))
 

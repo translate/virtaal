@@ -19,7 +19,7 @@ import pytest
 
 from virtaal.common.test_utils import fail_binary_writes
 from virtaal.support.dictionary_downloader import DictionaryDownloader
-from virtaal.support.test_dictionary_source import AR_XCU, CA_XCU, DE_XCU
+from virtaal.support.test_dictionary_source import AR_XCU, CA_XCU, DE_XCU, SR_XCU
 
 TREE_RESULT = json.dumps({
     'tree': [
@@ -105,6 +105,20 @@ def test_no_matching_locale_gives_up(tmp_path):
 
     assert done == [False]
     assert list(tmp_path.iterdir()) == []
+
+
+def test_a_script_variant_finds_its_default_regions_dictionary(tmp_path):
+    client = _FakeClient()
+    downloader = DictionaryDownloader('sr@latin', client=client, target_dir=str(tmp_path))
+
+    downloader.start()
+    _, tree_cb, _ = client.calls[-1]
+    tree_cb(None, json.dumps({'tree': [{'path': 'de/dictionaries.xcu'}, {'path': 'sr/dictionaries.xcu'}]}).encode())
+    assert client.last_url().endswith('/sr/dictionaries.xcu')
+    _, xcu_cb, _ = client.calls[-1]
+    xcu_cb(None, SR_XCU)
+
+    assert client.last_url().endswith('/sr/sr-Latn.aff')
 
 
 def test_file_error_cleans_up_and_gives_up(tmp_path):

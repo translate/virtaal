@@ -25,6 +25,10 @@ from virtaal.support import regexsearch
     r'(x+x+)+y',
     r'((ab)*c)+',
     r'(?=(a+)+)b',
+    r'(a?){30}a{30}',
+    r'(a{1,2})+$',
+    pytest.param(r'((a+)+b)++', marks=pytest.mark.skipif(
+        sys.version_info < (3, 11), reason='possessive repeats are Python 3.11+')),
 ])
 def test_nested_repetition_is_risky(pattern):
     assert regexsearch.is_risky(pattern)
@@ -40,6 +44,7 @@ def test_nested_repetition_is_risky(pattern):
     r'(a|b)+',  # a character set, not an alternation, once parsed
     r'cat|dog',
     r'(a+)?b',
+    r'a++b',
     re.escape('(a+)+b'),
     '(',  # invalid: re.compile() reports it
 ])

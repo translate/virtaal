@@ -69,6 +69,14 @@ def _check_cost(buffer):
     return sum(len(line) ** 2 for line in _LINE_END_RE.split(text))
 
 
+def _line_length(iter):
+    """The length of iter's line, without its line end."""
+    end = iter.copy()
+    if not end.ends_line():
+        end.forward_to_line_end()
+    return end.get_line_offset()
+
+
 def _in_placeable(textbox, start, end):
     """Whether the text from C{start} to C{end} is in a placeable that
         isn't translated, such as a variable."""
@@ -229,7 +237,21 @@ class Plugin(BasePlugin):
         if getattr(text_view, 'spell_lang', None) == language:
             # No change necessary - already enabled
             return
-        GLib.idle_add(self._activate_checker, text_view, language, priority=GLib.PRIORITY_LOW)
+        self._queue_activation(text_view)
+
+    def _queue_activation(self, text_view):
+        """Activate text_view's pending language on idle: one job at most."""
+        if getattr(text_view, 'spell_queued', False):
+            return
+        text_view.spell_queued = True
+        GLib.idle_add(self._run_activation, text_view, priority=GLib.PRIORITY_LOW)
+
+    def _run_activation(self, text_view):
+        text_view.spell_queued = False
+        language = getattr(text_view, 'spell_pending', None)
+        if language is not None:
+            self._activate_checker(text_view, language)
+        return False
 
     def _activate_checker(self, text_view, language):
         # All the expensive stuff in here called on idle.
@@ -268,8 +290,10 @@ class Plugin(BasePlugin):
             self.gtkspell = None
 
     def _on_insert_text(self, buffer, iter, text, length, text_view):
-        """Check a large insert after it, not word by word as it goes in."""
-        if len(text) >= LARGE_INSERT or getattr(text_view, 'spell_too_long', False):
+        """Check a large insert after it, not word by word as it goes in,
+            and one that makes its line too long to check."""
+        if (len(text) >= LARGE_INSERT or getattr(text_view, 'spell_too_long', False)
+                or _line_length(iter) + len(text) > LONGEST_CHECKED_LINE):
             self._check_again(text_view)
 
     def _on_delete_range(self, buffer, start, end, text_view):
@@ -283,7 +307,7 @@ class Plugin(BasePlugin):
             return
         self._detach(text_view)
         text_view.spell_pending = language
-        GLib.idle_add(self._activate_checker, text_view, language, priority=GLib.PRIORITY_LOW)
+        self._queue_activation(text_view)
 
     def _on_dictionary_installed(self, lang_controller, language):
         """Check spelling with a dictionary downloaded since start-up (#4585)."""

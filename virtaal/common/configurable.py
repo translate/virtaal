@@ -18,7 +18,8 @@ class Configurable:
 
     CONFIG_FILENAME = None
     CONFIG_PRIVATE = False
-    """True if the file holds keys, so only its owner may read it."""
+    """True if the file holds keys, so only its owner may read it (on
+    macOS and Linux)."""
     default_config = {}
 
     def load_config(self):

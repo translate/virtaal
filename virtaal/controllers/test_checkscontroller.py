@@ -158,7 +158,10 @@ def test_spelling_check_uses_the_default_region_for_a_bare_code(flatpak_enchant)
 
 
 def test_a_new_target_language_gets_its_dictionary(flatpak_enchant, caplog):
+    from translate.filters import spelling
     controller = _checks_controller('af')
+    # Setting up primed en as the source language.
+    del spelling.checkers['en']
 
     with caplog.at_level(logging.ERROR):
         controller._on_target_lang_changed(None, 'en')

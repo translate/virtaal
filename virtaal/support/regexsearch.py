@@ -35,7 +35,8 @@ try:
 except ImportError:  # Python < 3.11
     import sre_parse as _sre_parse
 
-# A possessive repeat (Python 3.11+) never backtracks into itself.
+# A possessive repeat (Python 3.11+) never backtracks into itself, but
+# its body can.
 _REPEATS = ('MAX_REPEAT', 'MIN_REPEAT')
 
 
@@ -58,11 +59,15 @@ def _nested(subpattern, in_repeat):
     for op, av in subpattern:
         name = str(op)
         if name in _REPEATS:
-            _min, max_, item = av
+            min_, max_, item = av
             repeats = max_ > 1
-            if repeats and in_repeat:
+            # An optional item in a loop is as risky as a repeat: (a?){30}.
+            if in_repeat and (repeats or min_ != max_):
                 return True
             if _nested(item, in_repeat or repeats):
+                return True
+        elif name == 'POSSESSIVE_REPEAT':
+            if _nested(av[2], in_repeat):
                 return True
         elif name == 'BRANCH':
             if in_repeat:

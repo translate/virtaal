@@ -85,24 +85,21 @@ def test_gettext_domain_falls_back_to_the_system_locale_on_windows(monkeypatch):
 
 # gettext_lang() / gettext_country() #
 
-def test_gettext_lang_uses_pycountrys_locale_dir_when_available():
-    f = gettext_lang('en')
+@pytest.mark.parametrize('function, domain, fallback', [
+    (gettext_lang, 'iso639-3', 'iso_639'),
+    (gettext_country, 'iso3166-1', 'iso_3166'),
+    (gettext_script, 'iso15924', 'iso_15924'),
+])
+def test_gettext_names_use_pycountrys_catalogs_or_iso_codes(monkeypatch, function, domain, fallback):
+    locales_dir = translate_compat.pycountry.LOCALES_DIR
+    looked_up = []
+    monkeypatch.setattr(translate_compat, 'gettext_domain', lambda *args: looked_up.append(args))
 
-    assert f('anything') == 'anything'
-
-
-def test_gettext_lang_falls_back_to_iso_639_without_pycountry(monkeypatch):
+    function('de')
     monkeypatch.setattr(translate_compat, 'pycountry', None)
+    function('de')
 
-    f = gettext_lang('en')
-
-    assert f('anything') == 'anything'
-
-
-def test_gettext_country_uses_pycountrys_locale_dir_when_available():
-    f = gettext_country('en')
-
-    assert f('anything') == 'anything'
+    assert looked_up == [('de', domain, locales_dir), ('de', fallback)]
 
 
 def test_tr_lang_translates_a_semicolon_joined_name_by_its_cleaned_up_form():
@@ -126,12 +123,6 @@ def test_tr_lang_keeps_a_qualifier_neither_catalog_has():
 
 def test_gettext_script_uses_pycountrys_locale_dir_when_available():
     assert gettext_script('de')('Cyrillic') == 'Kyrillisch'
-
-
-def test_gettext_script_falls_back_to_iso_15924_without_pycountry(monkeypatch):
-    monkeypatch.setattr(translate_compat, 'pycountry', None)
-
-    assert gettext_script('en')('Latin') == 'Latin'
 
 
 def test_tr_lang_names_a_language_family_by_its_code():

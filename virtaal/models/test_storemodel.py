@@ -370,6 +370,8 @@ def test_saving_adds_missing_plural_forms(tmp_path, monkeypatch):
     (2, '('),                          # not an equation
     (2, 'n'),                          # forms 2 and up: msgfmt rejects the file
     (3, '(n != 1)'),                   # form 2 never used
+    (2, '(n%1000 == 201 ? 2 : (n == 0 ? 0 : 1))'),  # form 2 only from 201
+    (2, '(n%1000 == 201 ? 2 + 0 : (n == 0 ? 0 : 1))'),
     (0, '0'),
 ])
 def invalid_plural_language(request):

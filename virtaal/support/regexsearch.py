@@ -45,6 +45,10 @@ class SearchTimeout(Exception):
         failed, and was stopped."""
 
 
+class SearchTooSlow(SearchTimeout):
+    """The search, or its child process's start, ran out of time."""
+
+
 def is_risky(pattern, flags=0):
     """Whether pattern repeats a repetition or an alternation, the shapes
         that make re backtrack exponentially."""
@@ -122,10 +126,10 @@ def find_spans(pattern, flags, strings, timeout=None):
         if stage == 'startup':
             logging.warning('Search for %r stopped: the search process took over %s seconds to start',
                             pattern, STARTUP_LIMIT)
-            raise SearchTimeout(pattern)
+            raise SearchTooSlow(pattern)
         if stage == 'search':
             logging.warning('Search for %r stopped after %s seconds', pattern, timeout)
-            raise SearchTimeout(pattern)
+            raise SearchTooSlow(pattern)
         if proc.returncode:
             logging.warning('Search for %r stopped: exit status %s', pattern, proc.returncode)
             raise SearchTimeout(pattern)

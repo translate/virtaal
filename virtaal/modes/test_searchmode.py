@@ -1644,6 +1644,42 @@ def test_on_undo_redo_schedules_a_refresh_only_with_search_text(monkeypatch):
     assert scheduled == [mode._refresh_results]
 
 
+def test_undo_doesnt_rerun_a_search_that_took_too_long(monkeypatch):
+    # Each refresh would block Virtaal for the whole time limit again (#4692).
+    from virtaal.support import regexsearch
+    monkeypatch.setattr(regexsearch, 'TIME_LIMIT', 1)
+    scheduled = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)
+    units = [_xliff_unit('Open the file before you save your changes.', 'x')]
+    mode = _refresh_mode(units, current=units[0], text=r'(\w+\s?)+$', regex=True)
+    mode._search_timeout = 0
+    mode._search_units()
+
+    mode._on_undo_redo(None)
+    assert scheduled == []
+
+    mode.text = 'file'
+    mode._on_undo_redo(None)
+    assert scheduled == [mode._refresh_results]
+
+
+def test_undo_reruns_a_search_whose_helper_failed(monkeypatch):
+    import sys
+
+    from virtaal.support import helperprocess
+    monkeypatch.setattr(helperprocess, 'command', lambda name: [sys.executable, '-c', 'import sys; sys.exit(3)'])
+    scheduled = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)
+    units = [_xliff_unit('Open the file before you save your changes.', 'x')]
+    mode = _refresh_mode(units, current=units[0], text=r'(\w+\s?)+$', regex=True)
+    mode._search_timeout = 0
+    mode._search_units()
+
+    mode._on_undo_redo(None)
+
+    assert scheduled == [mode._refresh_results]
+
+
 def _typing_mode(monkeypatch, units):
     scheduled = []
     monkeypatch.setattr('virtaal.modes.searchmode.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 1)

@@ -75,6 +75,7 @@ class SearchMode(BaseMode):
 
     MAX_RESULTS = 200000
     SEARCH_DELAY = 500
+    _timed_out_search = None
 
     # INITIALIZERS #
     def __init__(self, controller):
@@ -299,6 +300,7 @@ class SearchMode(BaseMode):
         # See virtaal.support.pogrep_compat for why this isn't imported
         # straight from translate.tools.pogrep.
         from virtaal.support.pogrep_compat import GrepFilter, SearchTimeout
+        from virtaal.support.regexsearch import SearchTooSlow
         store_units = self.storecursor.model.get_units()
         filter_args = dict(
             searchparts=('source', 'target'),
@@ -306,12 +308,15 @@ class SearchMode(BaseMode):
             useregexp=self.chk_regex.get_active(),
             max_matches=self.MAX_RESULTS
         )
+        self._timed_out_search = None
         try:
             self.filter = GrepFilter(searchstring=self.ent_search.get_text(), **filter_args)
             self.matches, indexes = self.filter.getmatches(store_units)
-        except (re.error, OverflowError, SearchTimeout):
+        except (re.error, OverflowError, SearchTimeout) as e:
             # An invalid or unfinished regular expression matches nothing,
             # nor does one stopped for taking too long (#4692).
+            if isinstance(e, SearchTooSlow):
+                self._timed_out_search = self.ent_search.get_text()
             self.filter = GrepFilter(searchstring='', **filter_args)
             self.matches, indexes = [], []
         return indexes
@@ -766,7 +771,9 @@ class SearchMode(BaseMode):
     def _on_undo_redo(self, _item):
         # Undo and redo can bring back text the search matches (#4384).
         # Wait for the undo's own deferred refresh to write the text back.
-        if self.ent_search.get_text():
+        # A search that took too long would only block again.
+        text = self.ent_search.get_text()
+        if text and text != self._timed_out_search:
             self._cancel_search_timeout()
             self._search_timeout = GLib.timeout_add(self.SEARCH_DELAY, self._refresh_results)
 

@@ -9,6 +9,7 @@ import errno
 import os
 
 import pytest
+from translate.__version__ import ver as ttk_version
 
 from virtaal.common.platform import platform
 from virtaal.models.storemodel import StoreModel
@@ -284,6 +285,39 @@ def test_set_language_reports_whether_the_file_changed(tmp_path):
     assert model.set_source_language("de") is False
     assert model.set_target_language("af") is True
     assert model.set_target_language("af") is False
+
+
+_SEGMENTED_XLIFF = b'''<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file original="x" source-language="en" target-language="fr" datatype="plaintext"><body>
+<trans-unit id="1"><source><mrk mtype="seg" mid="1">Final sentence.</mrk><mrk mtype="seg" mid="2"> And one.</mrk></source><target><mrk mtype="seg" mid="1">Phrase finale.</mrk><mrk mtype="seg" mid="2"> Et une.</mrk></target></trans-unit>
+<trans-unit id="2"><source>Other</source><target>Autre</target></trans-unit>
+</body></file></xliff>
+'''
+
+
+@pytest.mark.xfail(ttk_version < (3, 20, 5), strict=True,
+                   reason="fixed in translate-toolkit 3.20.5")
+def test_a_unit_only_viewed_is_saved_unchanged(tmp_path):
+    # Earlier translate-toolkit dropped the space at a <mrk> edge in a
+    # unit that was only shown, once another unit was saved.
+    from translate.storage import xliff
+    path = tmp_path / "segmented.xlf"
+    path.write_bytes(_SEGMENTED_XLIFF)
+    model = StoreModel(str(path), _FakeController())
+    model._update_header = lambda ask=True: None
+    for unit in model.get_units():
+        unit.rich_source
+        unit.rich_target
+    model[1].target = "Autre chose"
+
+    model.save_file()
+
+    saved = path.read_bytes()
+    assert b'<mrk mtype="seg" mid="2"> And one.</mrk>' in saved
+    assert b'<mrk mtype="seg" mid="2"> Et une.</mrk>' in saved
+    unit = xliff.xlifffile.parsestring(saved).units[0]
+    assert (unit.source, unit.target) == ("Final sentence. And one.", "Phrase finale. Et une.")
 
 
 class _SavingController(_FakeController):

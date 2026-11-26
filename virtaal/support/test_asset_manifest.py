@@ -301,6 +301,8 @@ def test_get_leaves_a_bare_language_without_a_default_region_alone(tmp_path):
     ('ca@valencia', ['ca', 'pt'], 'ca'),
     ('zh_HK', ['zh_CN', 'zh_TW'], 'zh_TW'),
     ('en', ['en_GB', 'en_US', 'en_ZA'], 'en_US'),
+    # The default region wins over the bare language, as for installed dictionaries
+    ('pt', ['pt', 'pt_BR', 'pt_PT'], 'pt_PT'),
     ('sr', ['sr_CS', 'sr_Latn_RS', 'sr_RS'], 'sr_RS'),
     # Serbian (Latin) gets the Latin-script files, not Cyrillic sr (#4681).
     ('sr@latin', ['sr_CS', 'sr_Latn_RS', 'sr_RS'], 'sr_Latn_RS'),

@@ -262,6 +262,11 @@ class _Enchant:
     # then any region enchant lists
     ('es', set(), ['es_MX'], 'es_MX'),
     ('ca@valencia', {'ca_VALENCIA'}, [], 'ca_VALENCIA'),
+    # A code with a region or variant tries its own tag, then DEFAULT_REGIONS
+    ('zh_HK', {'zh_HK', 'zh_TW'}, [], 'zh_HK'),
+    ('zh_HK', {'zh_TW'}, [], 'zh_TW'),
+    ('ca@valencia', {'ca_ES'}, [], 'ca_ES'),
+    ('sr@latin', {'sr_LATNRS'}, [], 'sr_LATNRS'),
     ('zz', set(), ['zza'], None),
 ])
 def test_find_dictionary(code, tags, languages, found):

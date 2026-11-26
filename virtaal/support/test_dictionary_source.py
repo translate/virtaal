@@ -26,6 +26,7 @@ from virtaal.support.dictionary_source import (
     download_dictionary,
     find_dictionary,
     list_dictionary_folders,
+    lookup_codes,
     parse_dictionaries_xcu,
 )
 
@@ -244,6 +245,73 @@ CA_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
 def test_find_dictionary_matches_a_bare_language_against_regional_variants():
     result = find_dictionary('ca', {'ca': 's1'}, lambda folder: CA_XCU)
     assert result == ('ca', ['ca.aff', 'ca.dic'])
+
+
+# Actual copy (trimmed to its spelling nodes) of sr/dictionaries.xcu
+# (blob b01ebd0a75dfdfff857d99add6ef38485222ab83) - Cyrillic first, so
+# a bare prefix match on "sr" alone can't tell the scripts apart.
+SR_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
+<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Linguistic" oor:package="org.openoffice.Office">
+ <node oor:name="ServiceManager">
+    <node oor:name="Dictionaries">
+        <node oor:name="HunSpellDic_sr" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/sr.aff %origin%/sr.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>sr-RS sr-CS</value>
+            </prop>
+        </node>
+        <node oor:name="HunSpellDic_sr_Latn" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/sr-Latn.aff %origin%/sr-Latn.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>sr-Latn-RS sr-Latn-CS</value>
+            </prop>
+        </node>
+    </node>
+ </node>
+</oor:component-data>
+"""
+
+
+@pytest.mark.parametrize('code, codes', [
+    ('en', ['en_US', 'en']),
+    ('zh_HK', ['zh_HK', 'zh_TW']),
+    ('zh-HK', ['zh_HK', 'zh_TW']),
+    ('sr@latin', ['sr@latin', 'sr_Latn_RS']),
+    ('af', ['af']),
+])
+def test_lookup_codes(code, codes):
+    assert lookup_codes(code) == codes
+
+
+@pytest.mark.parametrize('code, folders, xcu, found', [
+    # Script and regional variants use DEFAULT_REGIONS live too
+    ('sr@latin', {'sr': 's1'}, SR_XCU, ('sr', ['sr-Latn.aff', 'sr-Latn.dic'])),
+    ('sr', {'sr': 's1'}, SR_XCU, ('sr', ['sr.aff', 'sr.dic'])),
+    ('ca@valencia', {'ca': 's1'}, CA_XCU, ('ca', ['ca-valencia.aff', 'ca-valencia.dic'])),
+], ids=['sr@latin', 'sr', 'ca@valencia'])
+def test_find_dictionary_uses_default_regions(code, folders, xcu, found):
+    assert find_dictionary(code, folders, lambda folder: xcu) == found
+
+
+def test_find_dictionary_tries_a_default_regions_folder_first():
+    fetched = []
+
+    def fetch_xcu(folder):
+        fetched.append(folder)
+        return CA_XCU if folder == 'ca' else DE_XCU
+
+    assert find_dictionary('ca@valencia', {'de': 's1', 'ca': 's2'}, fetch_xcu)[0] == 'ca'
+    assert fetched == ['ca']
 
 
 def test_parse_dictionaries_xcu_can_select_a_thesaurus_instead():

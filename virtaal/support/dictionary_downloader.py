@@ -18,7 +18,7 @@ callback chain (tree -> candidate xcu(s) -> files) instead, kept as the
 fallback for when the manifest can't say what to fetch - find_dictionary()/
 download_dictionary() are both written as blocking loops, so one
 request in flight at a time doesn't fit that shape. The pure logic
-(list_dictionary_folders/candidate_folders/parse_dictionaries_xcu) is
+(list_dictionary_folders/folder_search_order/parse_dictionaries_xcu) is
 reused unchanged either way.
 """
 
@@ -32,11 +32,11 @@ from virtaal.common.utils import write_file_atomically
 from virtaal.support.dictionary_source import (
     RAW_BASE,
     TREE_URL,
-    candidate_folders,
+    covering_entry,
     dictionary_file_url_candidates,
     dictionary_write_dir,
+    folder_search_order,
     list_dictionary_folders,
-    locale_covers,
     parse_dictionaries_xcu,
 )
 from virtaal.support.enchant_compat import enchant_tag
@@ -81,8 +81,7 @@ class DictionaryDownloader:
         except (ValueError, AttributeError, TypeError) as e:
             logging.debug('dictionary download: bad tree response: %s', e)
             return self._give_up()
-        candidates = candidate_folders(self.locale_code, folders)
-        self._remaining_folders = candidates + [f for f in folders if f not in candidates]
+        self._remaining_folders = folder_search_order(self.locale_code, folders)
         self._try_next_folder()
 
     def _try_next_folder(self):
@@ -101,11 +100,11 @@ class DictionaryDownloader:
         except etree.Error as e:
             logging.debug('dictionary download: bad %s/dictionaries.xcu: %s', self._folder, e)
             return self._try_next_folder()
-        for entry in entries:
-            if locale_covers(self.locale_code, entry['locales']):
-                self._files = list(entry['files'])
-                return self._fetch_next_file()
-        self._try_next_folder()
+        entry = covering_entry(self.locale_code, entries)
+        if entry is None:
+            return self._try_next_folder()
+        self._files = list(entry['files'])
+        self._fetch_next_file()
 
     def _fetch_next_file(self):
         if not self._files:

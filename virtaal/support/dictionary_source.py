@@ -124,6 +124,17 @@ DEFAULT_REGIONS = {
 }
 
 
+def lookup_codes(locale_code):
+    """locale_code and its DEFAULT_REGIONS, in the order to try them: a
+    bare language's region first (en_US before en), otherwise the code
+    itself first (zh_HK before zh_TW)."""
+    code = locale_code.replace('-', '_')
+    regions = DEFAULT_REGIONS.get(code, [])
+    if '_' not in code and '@' not in code:
+        return regions + [code]
+    return [code] + regions
+
+
 def candidate_folders(locale_code, known_folders):
     """Folder names worth trying first for locale_code (e.g. 'de_DE'),
     cheapest/most-specific first, given the set of real folder names
@@ -171,6 +182,25 @@ def locale_covers(locale_code, entry_locales):
     return False
 
 
+def folder_search_order(locale_code, folders):
+    """Every folder in folders, the candidate_folders() of each of
+    lookup_codes() first."""
+    ordered = []
+    for code in lookup_codes(locale_code):
+        ordered += [f for f in candidate_folders(code, folders) if f not in ordered]
+    return ordered + [f for f in folders if f not in ordered]
+
+
+def covering_entry(locale_code, entries):
+    """The first of entries (from parse_dictionaries_xcu()) covering
+    the earliest of lookup_codes(), or None."""
+    for code in lookup_codes(locale_code):
+        for entry in entries:
+            if locale_covers(code, entry['locales']):
+                return entry
+    return None
+
+
 def find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_SPELL'):
     """Find the dictionary entry (of `dict_format` - see
     parse_dictionaries_xcu()) covering locale_code.
@@ -179,18 +209,15 @@ def find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_SPELL'):
     fetch_xcu: callable(folder_path) -> xcu bytes - injected so this
     is testable without real network access.
 
-    Tries the likely candidate folders first (candidate_folders());
+    Tries the likely candidate folders first (folder_search_order());
     falls back to every remaining folder if none of those actually
     cover this locale, since folder naming isn't fully predictable.
     Returns (folder_path, files) for the first match, or None.
     """
-    locale_code = locale_code.replace('-', '_')
-    ordered = candidate_folders(locale_code, folders)
-    ordered += [f for f in folders if f not in ordered]
-    for folder in ordered:
-        for entry in parse_dictionaries_xcu(fetch_xcu(folder), dict_format):
-            if locale_covers(locale_code, entry['locales']):
-                return folder, entry['files']
+    for folder in folder_search_order(locale_code, folders):
+        entry = covering_entry(locale_code, parse_dictionaries_xcu(fetch_xcu(folder), dict_format))
+        if entry is not None:
+            return folder, entry['files']
     return None
 
 

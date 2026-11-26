@@ -100,8 +100,8 @@ class LanguageModel(BaseModel):
     def _script_variant(self, langcode):
         """sr_Latn or sr_Latn_RS as sr@latin, when that is a known language."""
         parts = langcode.replace('-', '_').split('_')
-        if len(parts) > 1 and parts[1] in SCRIPT_VARIANTS:
-            variant = '%s@%s' % (parts[0], SCRIPT_VARIANTS[parts[1]])
+        if len(parts) > 1 and parts[1].title() in SCRIPT_VARIANTS:
+            variant = '%s@%s' % (parts[0].lower(), SCRIPT_VARIANTS[parts[1].title()])
             if variant in self.languages:
                 return variant
         return langcode

@@ -15,7 +15,7 @@ import logging
 
 import pycurl
 
-from virtaal.support.httpclient import HTTPClient, RESTRequest
+from virtaal.support.httpclient import HTTPClient, RESTRequest, loggable_url
 from virtaal.support.tmauth import TOKEN_HEADER
 
 
@@ -27,7 +27,7 @@ def _json_callback(callback):
         try:
             decoded = json.loads(response)
         except ValueError as exc:
-            logging.warning('Ignoring a reply from %s that is not JSON: %s', getattr(widget, 'url', '?'), exc)
+            logging.warning('Ignoring a reply from %s that is not JSON: %s', loggable_url(getattr(widget, 'url', '?')), exc)
             return
         callback(widget, widget.id, decoded)
     return handler

@@ -281,6 +281,20 @@ def test_a_reply_that_is_not_json_is_dropped_without_raising(monkeypatch, reply)
     assert calls == []
 
 
+def test_a_reply_that_is_not_json_logs_no_password(monkeypatch, caplog):
+    monkeypatch.setattr(tmclient, 'RESTRequest', _FakeRequest)
+    client = TMClient('http://ann:SECRET123@example.com')
+    requests = []
+    monkeypatch.setattr(client, 'add', requests.append)
+    client.translate_unit('hello', 'en', 'af', lambda *args: None)
+    signal, handler = requests[0].connected[0]
+
+    handler(requests[0], b'<html>502 Bad Gateway</html>')
+
+    assert 'http://***@example.com/' in caplog.text
+    assert 'ann' not in caplog.text and 'SECRET123' not in caplog.text
+
+
 _EVERY_REQUEST = [
     lambda client: client.translate_unit('hello', 'en', 'af'),
     lambda client: client.add_unit({'source': 'hello', 'target': 'hallo'}, 'en', 'af'),

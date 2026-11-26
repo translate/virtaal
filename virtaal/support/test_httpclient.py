@@ -14,6 +14,7 @@ from types import SimpleNamespace
 
 import certifi
 import pycurl
+import pytest
 from gi.repository import GLib
 
 from virtaal.support import httpclient
@@ -524,6 +525,16 @@ def test_loggable_url_leaves_a_url_without_secrets_alone():
     url = 'https://amagama-live.translatehouse.org/api/v1/en/af/unit/Open?x=1'
 
     assert httpclient.loggable_url(url) == url
+
+
+@pytest.mark.parametrize('url, logged', [
+    ('https://ann:SECRET123@example.com:8080/tm?q=hi', 'https://***@example.com:8080/tm?q=hi'),
+    ('https://SECRET123@example.com/v2?key=SECRET123', 'https://***@example.com/v2?key=***'),
+    # urlsplit refuses an unclosed IPv6 bracket
+    ('https://[example.com/v2?key=SECRET123', '***'),
+])
+def test_loggable_url_masks_credentials(url, logged):
+    assert httpclient.loggable_url(url) == logged
 
 
 def test_a_failed_request_logs_no_api_key(caplog):

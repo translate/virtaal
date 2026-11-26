@@ -65,6 +65,8 @@ def test_name_and_plural_equation_are_kept_on_one_line_and_trimmed():
     dialog.ent_langname.insert_text(' Mmoqish\r\nSouth ', 0)
     dialog.ent_plural.insert_text('n != 1\n', 0)
 
+    assert dialog.ent_langname.get_text() == ' Mmoqish South '
+    assert dialog.ent_plural.get_text() == 'n != 1 '
     assert dialog.langname == 'Mmoqish South'
     assert dialog.plural == 'n != 1'
 

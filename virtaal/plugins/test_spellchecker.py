@@ -848,7 +848,7 @@ def _windows_plugin(monkeypatch, config_dir, bundle_dir=None):
     monkeypatch.setattr(platform, 'is_frozen', bundle_dir is not None)
     monkeypatch.setattr(platform, 'bundles_spelling', True)
     monkeypatch.setattr(platform, 'bundle_dir', bundle_dir)
-    enchant = SimpleNamespace(get_user_config_dir=lambda: config_dir)
+    enchant = SimpleNamespace(get_user_config_dir=lambda: config_dir, list_languages=lambda: [])
     monkeypatch.setattr(spellchecker, 'import_enchant', lambda: enchant)
     Plugin('spellchecker', None)
 
@@ -867,7 +867,7 @@ def test_unsupported_on_windows_installed_in_a_non_ascii_folder(monkeypatch):
 
 def test_supported_on_windows_with_ascii_folders(monkeypatch):
     # Gets past the check, to where it needs a main_controller.
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError, match='unit_controller'):
         _windows_plugin(monkeypatch, 'C:\\Users\\elise\\AppData\\Local\\enchant',
                         'C:\\Program Files (x86)\\Virtaal')
 
@@ -940,8 +940,8 @@ def _recording_glib(monkeypatch):
         data of every handler it set that is still installed (a crash
         at the next warning)."""
     glib = SimpleNamespace(
-        LogLevelFlags=GLib.LogLevelFlags, calls=[], passed=[],
-        log_set_handler=lambda *args: glib.calls.append(('set', args[0])) or 7,
+        LogLevelFlags=GLib.LogLevelFlags, calls=[], passed=[], handlers=[],
+        log_set_handler=lambda *args: glib.calls.append(('set', args[0])) or glib.handlers.append(args) or 7,
         log_remove_handler=lambda *args: glib.calls.append(('remove',) + args),
         log_default_handler=lambda *args: glib.passed.append(args[2]))
     monkeypatch.setattr(spellchecker, 'GLib', glib)
@@ -964,6 +964,18 @@ def test_the_iso_codes_filter_is_removed_afterwards(monkeypatch):
         pass
 
     assert glib.calls == [('set', ''), ('remove', '', 7)]
+
+
+def test_the_iso_codes_filter_installed_drops_only_those_warnings(monkeypatch):
+    glib = _recording_glib(monkeypatch)
+
+    with spellchecker._NoIsoCodesWarnings():
+        [(domain, level, callback, data)] = glib.handlers
+        for message in ('iso_639.xml: Failed to open file', 'Something else'):
+            callback(domain, GLib.LogLevelFlags.LEVEL_WARNING, message, data)
+
+    assert level == GLib.LogLevelFlags.LEVEL_WARNING
+    assert glib.passed == ['Something else']
 
 
 def test_a_popup_that_never_ends_leaves_no_filter_after_destroy(monkeypatch):

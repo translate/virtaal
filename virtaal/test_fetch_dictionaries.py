@@ -8,6 +8,7 @@
 import hashlib
 import importlib.util
 import os
+import re
 
 import pytest
 
@@ -61,4 +62,5 @@ def test_refuses_a_changed_file(tmp_path):
 
 def test_pins_a_commit_not_a_branch():
     module = _fetch_dictionaries()
-    assert len(module.COMMIT) == 40 and module.COMMIT in module.RAW
+    assert re.fullmatch('[0-9a-f]{40}', module.COMMIT)
+    assert module.RAW == 'https://raw.githubusercontent.com/LibreOffice/dictionaries/%s/' % module.COMMIT

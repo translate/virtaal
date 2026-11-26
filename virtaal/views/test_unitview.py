@@ -335,8 +335,12 @@ def test_active_dialog_is_an_active_window_over_the_main_one(monkeypatch, window
     (lambda main: [main, _FakeWindow(modal=True)], None),
     (lambda main: [main, _FakeWindow(modal=True, visible=False, over=main)], None),
     (lambda main: [main, prefs := _FakeWindow(modal=True, over=main), _FakeWindow(modal=True, over=prefs)], 2),
+    (lambda main: [main, prefs := _FakeWindow(modal=True, over=main),
+                   _FakeWindow(modal=True, over=_FakeWindow(over=prefs))], 2),
+    (lambda main: [main, _FakeWindow(modal=True, over=main), _FakeWindow(modal=True, over=main)], 2),
+    (lambda main: [main, _FakeWindow(modal=True, over=main, active=True), _FakeWindow(modal=True, over=main)], 1),
 ], ids=['modal dialog', 'non-modal window', 'unrelated modal window', 'hidden modal dialog',
-        'About over Preferences'])
+        'About over Preferences', 'over a window over Preferences', 'the newer of two', 'the active one of two'])
 def test_modal_dialog_is_a_visible_modal_window_over_the_main_one(monkeypatch, windows, expected):
     main = _FakeWindow()
     toplevels = windows(main)

@@ -33,18 +33,22 @@ def _get_focused_widget(widgets):
     return None
 
 
+def _is_over(window, other):
+    """Whether C{window} is over C{other}, directly or through another."""
+    parent = window.get_transient_for()
+    while parent is not None:
+        if parent is other:
+            return True
+        parent = parent.get_transient_for()
+    return False
+
+
 def _dialogs_over(widget):
     """Visible windows over C{widget}'s window, directly or through another."""
     toplevel = widget.get_toplevel()
     for window in Gtk.Window.list_toplevels():
-        if not window.get_visible() or window is toplevel:
-            continue
-        parent = window.get_transient_for()
-        while parent is not None:
-            if parent is toplevel:
-                yield window
-                break
-            parent = parent.get_transient_for()
+        if window.get_visible() and window is not toplevel and _is_over(window, toplevel):
+            yield window
 
 
 def _active_dialog(widget):
@@ -55,10 +59,10 @@ def _active_dialog(widget):
 
 def modal_dialog(widget):
     """The top modal dialog over C{widget}'s window, if any: the one no other
-        is over."""
+        is over. Of two side by side, the active one, else the newest."""
     dialogs = [window for window in _dialogs_over(widget) if window.get_modal()]
-    return next((dialog for dialog in dialogs
-                 if not any(other.get_transient_for() is dialog for other in dialogs)), None)
+    top = [dialog for dialog in dialogs if not any(_is_over(other, dialog) for other in dialogs)]
+    return next((dialog for dialog in top if dialog.is_active()), top[-1] if top else None)
 
 
 def dialog_active(widget):

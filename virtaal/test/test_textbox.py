@@ -260,8 +260,9 @@ class TestTextBox(TestScaffolding):
         monkeypatch.setattr(textbox_module.platform, 'is_mac', True)
         textbox = self._target_for('%s files copied')
         try:
-            # GTK's own paste would take this, not the plain text below.
-            Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text('rich', -1)
+            # Not GTK's own paste: it would read the real clipboard.
+            gtk_pastes = []
+            monkeypatch.setattr(textbox_module.Gtk.TextView, 'do_paste_clipboard', gtk_pastes.append)
             plain = SimpleNamespace(wait_for_text=lambda: 'pasted')
             monkeypatch.setattr(textbox_module.Gtk.Clipboard, 'get', lambda selection: plain)
             buffer = textbox.buffer
@@ -270,6 +271,7 @@ class TestTextBox(TestScaffolding):
             textbox.emit('paste-clipboard')
 
             assert textbox.get_text() == '%s pasted copied'
+            assert gtk_pastes == []
         finally:
             # The text box is shared with the other tests.
             textbox.set_text('%s files copied')

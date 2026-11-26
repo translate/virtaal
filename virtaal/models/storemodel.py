@@ -8,6 +8,7 @@
 import functools
 import io
 import os
+import re
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
@@ -63,6 +64,45 @@ def _update_contributor(store, name, email=None):
 _PLURAL_SAMPLES = (*range(200), *(m * 10**k for k in range(3, 10) for m in range(1, 10)))
 
 
+def _close_paren(tokens, i):
+    depth = 0
+    for j in range(i, len(tokens)):
+        depth += (tokens[j] == '(') - (tokens[j] == ')')
+        if not depth:
+            return j
+
+
+def _plural_branches(tokens):
+    """The ?: branches of a tokenised plural equation, or the equation."""
+    while tokens[0] == '(' and _close_paren(tokens, 0) == len(tokens) - 1:
+        tokens = tokens[1:-1]
+    depth, question, nested = 0, None, 0
+    for i, t in enumerate(tokens):
+        depth += (t == '(') - (t == ')')
+        if depth or t not in '?:':
+            continue
+        if question is None:
+            if t == '?':
+                question = i
+        elif t == '?':
+            nested += 1
+        elif nested:
+            nested -= 1
+        else:
+            yield from _plural_branches(tokens[question + 1:i])
+            yield from _plural_branches(tokens[i + 1:])
+            return
+    yield tokens
+
+
+def _plural_constants(plural):
+    """The forms plural's branches without n give, including any the
+    samples never reach."""
+    import gettext
+    branches = _plural_branches(re.findall(r'\d+|\w+|\S', plural))
+    return {gettext.c2py(''.join(b))(0) for b in branches if 'n' not in b}
+
+
 @functools.cache
 def _usable_plural(nplurals, plural):
     """Whether gettext can read this plural equation and it gives exactly
@@ -70,7 +110,7 @@ def _usable_plural(nplurals, plural):
     Edit Translation Language isn't checked (#4351)."""
     import gettext
     try:
-        forms = {gettext.c2py(plural)(n) for n in _PLURAL_SAMPLES}
+        forms = {gettext.c2py(plural)(n) for n in _PLURAL_SAMPLES} | _plural_constants(plural)
         expected = set(range(int(nplurals)))
     except (TypeError, ValueError, ZeroDivisionError):
         forms, expected = None, set()

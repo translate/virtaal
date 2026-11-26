@@ -1548,7 +1548,7 @@ def test_update_search_treats_an_invalid_regular_expression_as_no_matches(monkey
     assert mode.backgrounds == [searchmode.current_theme['warning_bg']]
 
 
-def test_update_search_stops_a_regular_expression_that_takes_too_long(monkeypatch):
+def test_update_search_stops_a_regular_expression_that_takes_too_long(monkeypatch, caplog):
     # #4692: nested repetition made re backtrack for minutes, freezing Virtaal.
     from virtaal.modes import searchmode
     from virtaal.support import regexsearch
@@ -1564,6 +1564,7 @@ def test_update_search_stops_a_regular_expression_that_takes_too_long(monkeypatc
     assert mode.storecursor.indices == []
     assert mode.filter.re_search is None
     assert mode.backgrounds == [searchmode.current_theme['warning_bg']]
+    assert 'stopped after 1 seconds' in caplog.text
 
 
 def test_update_search_finds_a_valid_regular_expression(monkeypatch):

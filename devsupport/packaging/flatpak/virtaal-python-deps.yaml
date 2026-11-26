@@ -14,19 +14,19 @@ modules:
         url: https://files.pythonhosted.org/packages/23/ad/28ecd7cb894d172f3c9c80a075eeeb2017ac62e3632cee05a5f9493547eb/lxml-6.1.3.tar.gz
         sha256: 45222d94ddd511536f3b2f7d9deae3b2339b4ce0f075f1ca25703b07cad9dd21
       - type: file
-        url: https://files.pythonhosted.org/packages/12/1d/c935763bd2eaaf285fe523cba1dd5361b82a9aeb3ac8b08f72ffb74e77af/translate_toolkit-3.20.0-py3-none-any.whl
-        sha256: 7f11fc8addccc1f4aafa073f5624b264897a2bb688d4308a53154f2792b929f3
+        url: https://files.pythonhosted.org/packages/5d/69/e3c2c729dc5513931e7ddda382d4b3a60d297e44427be0018e67772b0ba6/translate_toolkit-3.20.6-py3-none-any.whl
+        sha256: f67aa96dc90f274f4715bfe9f72610db7ee39469c5743105148ff7b545fa3f92
       # Rust/maturin sdist can't build in this sandboxed pip env -
       # swapped for the manylinux wheels instead. Both architectures
       # present: pip picks whichever matches the platform building
       # this module, so the same manifest works for both the x86_64
       # and aarch64 build-flatpak CI legs.
       - type: file
-        url: https://files.pythonhosted.org/packages/ac/3e/1098f0173c72842abb9ed0c290c4ce431efbe72e735423091653e1414e8a/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-        sha256: 2cc0bdaf83102e048b71e39229642854f3661a0a3377b302f1d807e16a390eb3
+        url: https://files.pythonhosted.org/packages/75/3f/049f48cbdcb22b65a50ee96aa83abdcdde2982942d88c1dd3d83dc73b0c7/unicode_segmentation_rs-1.0.1-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        sha256: a770e1f70dcf156b1280f4a43f6b0f09eaf61062407d23d708e2d86a265b848d
       - type: file
-        url: https://files.pythonhosted.org/packages/6f/e3/e415eebcebdfe75b8c2f38c6f5d45925de08e55f96599b9a017113463bff/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-        sha256: 958aaa06d801c087bdc4b9bc02b3897efc283677f27861bbc6ee5136eaa3ab32
+        url: https://files.pythonhosted.org/packages/5b/4f/ac54cc35019ed8c0d26c8254ffb5ed0b51b037ffd58a056f564b363c65f2/unicode_segmentation_rs-1.0.1-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl
+        sha256: c7041926e0e9e09663b321b5f107010aaf28eba6469c6b9e98bd263a10fa558c
   - name: python3-fluent.syntax
     buildsystem: simple
     build-commands:

@@ -15,7 +15,6 @@
 # directory on every launch instead, which would move data files
 # somewhere unpredictable and defeat that assumption.
 import os
-import re
 import sys
 from pathlib import Path
 
@@ -32,6 +31,7 @@ from virtaal.__version__ import ver as virtaal_version  # noqa: E402
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
 import enchant_data  # noqa: E402
 import pyinstaller_common as common  # noqa: E402
+from release_version import file_version  # noqa: E402
 
 # pyenchant's Windows wheel is self-contained (libenchant + backends +
 # English dictionaries under enchant/data/); _enchant.py finds it via
@@ -44,14 +44,9 @@ except ImportError:
     ENCHANT_DATA = None
 
 
-def _version_tuple(ver):
-    """VSVersionInfo needs a plain 4-int tuple - ver is e.g. "1.0.0-beta1",
-        so take the numeric release part only and pad/truncate to 4."""
-    nums = [int(n) for n in re.findall(r'\d+', ver.split('-')[0])][:4]
-    return tuple(nums + [0] * (4 - len(nums)))
-
-
-_ver_tuple = _version_tuple(virtaal_version)
+# 1.0.0-rc3 is 1.0.0.63 and 1.0.0 is 1.0.0.99: the string versions below
+# keep the pre-release label.
+_ver_tuple = file_version(virtaal_version)
 
 version_info = VSVersionInfo(
     ffi=FixedFileInfo(

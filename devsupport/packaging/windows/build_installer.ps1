@@ -29,12 +29,18 @@ if ($LASTEXITCODE -ne 0 -or -not $version) {
     exit 1
 }
 
+$fileVersion = & python -c "import sys; sys.path.insert(0, 'devsupport/packaging'); from release_version import file_version; from virtaal.__version__ import ver; print('.'.join(map(str, file_version(ver))))"
+if ($LASTEXITCODE -ne 0 -or -not $fileVersion) {
+    Write-Error "Couldn't make a numeric file version from $version."
+    exit 1
+}
+
 New-Item -ItemType Directory -Force -Path dist\installer | Out-Null
 
 & python devsupport\packaging\windows\generate_installer_translations.py devsupport\packaging\windows\installer-strings.iss
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-& iscc "/DMyAppVersion=$version" devsupport\packaging\windows\virtaal.iss
+& iscc "/DMyAppVersion=$version" "/DMyAppFileVersion=$fileVersion" devsupport\packaging\windows\virtaal.iss
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "Built dist\installer\virtaal-$version-setup.exe"

@@ -531,10 +531,15 @@ def test_a_long_suggestion_fits_in_the_tm_window(target):
     # #4453: a 2,000-line target was laid out in full on every focus change,
     # and a long one hid its percentage below the window's edge.
     tmwindow = _make_tmwindow_with_matches(n=0, show=False)
-    match = {'quality': 90, 'tmsource': 'Current file', 'query_str': 'query',
-             'source': 'source', 'target': target}
-    tmwindow.liststore.append([match, 'match'])
+    try:
+        match = {'quality': 90, 'tmsource': 'Current file', 'query_str': 'query',
+                 'source': 'source', 'target': target}
+        tmwindow.liststore.append([match, 'match'])
 
-    assert tmwindow.rows_height() < tmwindow.MAX_HEIGHT
-    renderer = tmwindow.tvc_match.get_cells()[0]
-    assert renderer.target_layout.get_text().count('\n') < tmwidgets.SHOWN_LINES
+        assert tmwindow.rows_height() < tmwindow.MAX_HEIGHT
+        renderer = tmwindow.tvc_match.get_cells()[0]
+        shown = renderer.target_layout.get_text()
+        assert shown.count('\n') < tmwidgets.SHOWN_LINES
+        assert shown.endswith('…')
+    finally:
+        tmwindow.destroy()

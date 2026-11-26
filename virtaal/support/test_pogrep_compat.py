@@ -88,10 +88,12 @@ def test_getmatches_finds_a_nested_repetition_match():
     assert [(m.part, m.start, m.end) for m in matches] == [('target', 1, 4), ('source', 0, 3)]
 
 
-def test_getmatches_stops_a_nested_repetition_that_takes_too_long(monkeypatch):
+def test_getmatches_stops_a_nested_repetition_that_takes_too_long(monkeypatch, caplog):
     # #4692: re backtracks exponentially on this, for minutes.
     monkeypatch.setattr(regexsearch, 'TIME_LIMIT', 1)
     units = [_unit("Open the file before you save your changes.", "x")]
 
     with pytest.raises(SearchTimeout):
         _regexp_filter(r'(\w+\s?)+$').getmatches(units)
+
+    assert 'stopped after 1 seconds' in caplog.text

@@ -5,10 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import time
-
 import pytest
-from gi.repository import Gdk, Gtk
+from gi.repository import Gtk
 
 from virtaal.views.widgets.util import (
     entry_value,
@@ -50,16 +48,25 @@ def test_one_line(text, expected):
     assert one_line(text) == expected
 
 
-def _pump_until(condition, timeout=5):
-    deadline = time.monotonic() + timeout
-    while not condition() and time.monotonic() < deadline:
-        while Gtk.events_pending():
-            Gtk.main_iteration()
-        time.sleep(0.01)
+class _PastingEntry(Gtk.Entry):
+    """Pastes 'one\ntwo' as GTK's paste does (insert, place the cursor, then
+        one "changed"), without the real clipboard: tests on other xdist
+        workers share the display's."""
+
+    def __init__(self):
+        super().__init__()
+        self._pasting = False
+        self.connect('changed', lambda entry: self._pasting and entry.stop_emission_by_name('changed'))
+
+    def do_paste_clipboard(self):
+        self._pasting = True
+        self.set_position(self.insert_text('one\ntwo', self.get_position()))
+        self._pasting = False
+        self.emit('changed')
 
 
-def _one_line_entry():
-    entry = Gtk.Entry()
+def _one_line_entry(entry_class=Gtk.Entry):
+    entry = entry_class()
     keep_one_line(entry)
     window = Gtk.Window()
     window.add(entry)
@@ -80,17 +87,17 @@ def test_keep_one_line_turns_inserted_line_breaks_into_spaces():
 
 
 def test_keep_one_line_applies_to_a_paste():
-    entry, window = _one_line_entry()
+    entry, window = _one_line_entry(_PastingEntry)
     try:
-        Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text('one\ntwo', -1)
-        entry.grab_focus()
+        entry.set_text('pasted: ')
+        entry.set_position(-1)
         entry.emit('paste-clipboard')
-        # The pasted text arrives when the clipboard answers, which can take
-        # more than one pass of the main loop (Windows).
-        _pump_until(entry.get_text)
+        # keep_one_line puts the cursor back from an idle callback.
+        while Gtk.events_pending():
+            Gtk.main_iteration()
 
-        assert entry.get_text() == 'one two'
-        assert entry.get_position() == len('one two')
+        assert entry.get_text() == 'pasted: one two'
+        assert entry.get_position() == len('pasted: one two')
     finally:
         window.destroy()
 

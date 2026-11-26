@@ -1783,6 +1783,7 @@ jobs:
         working-directory: devsupport/packaging/flatpak
         # The app's GtkSpell and the runtime's enchant mark a misspelt word.
         run: |
+          set -o pipefail
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --run-module virtaal.support.enchant_compat en_US | tee enchant.txt
@@ -1797,6 +1798,7 @@ jobs:
         # The runtime's libgettextpo. Its message stays English: the
         # runner's C locale makes glibc ignore the language.
         run: |
+          set -o pipefail
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --run-module virtaal.support.gettextpo | tee gettextpo.txt
@@ -1836,6 +1838,7 @@ jobs:
       - name: Smoke test - spell checking Hungarian
         if: steps.queue.outputs.tested != 'true'
         run: |
+          set -o pipefail
           python3 devsupport/packaging/fetch_dictionaries.py build/dictionaries/hu_HU hu_HU
           config="$RUNNER_TEMP/enchant-hu"
           mkdir -p "$config/hunspell"

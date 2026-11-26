@@ -1,0 +1,22 @@
+name: Check every leg of the needed jobs
+description: >-
+  Fails unless every leg of each named job succeeded. A matrix job's
+  combined needs.<job>.result can be success while one leg was
+  cancelled (#4993), so this reads each leg's own result from the jobs
+  API. Needs a checkout of devsupport/testing/check_job_legs.py.
+inputs:
+  needs:
+    description: "The calling job's toJSON(needs); its keys name the jobs to check."
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        NEEDS: ${{ inputs.needs }}
+      run: |
+        gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs?filter=latest&per_page=100" \
+          --paginate > "$RUNNER_TEMP/jobs.json"
+        mapfile -t jobs < <(jq -r 'keys[]' <<<"$NEEDS")
+        python3 devsupport/testing/check_job_legs.py "$RUNNER_TEMP/jobs.json" "${jobs[@]}"

@@ -1558,7 +1558,7 @@ jobs:
     needs: [test-macos, build-macos-app]
     if: always()
     runs-on: ubuntu-24.04
-    timeout-minutes: 1
+    timeout-minutes: 5
     steps:
       - name: Fail if test-macos or any build-macos-app leg failed
         run: |
@@ -1566,6 +1566,16 @@ jobs:
             echo "::error::test-macos or build-macos-app did not succeed."
             exit 1
           fi
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            .github/actions/job-legs
+            devsupport/testing/check_job_legs.py
+          sparse-checkout-cone-mode: false
+      - name: Fail if any leg of these jobs didn't succeed
+        uses: $/.github/actions/job-legs
+        with:
+          needs: ${{ toJSON(needs) }}
 
   publish-translation-progress:
     # The "Translate Virtaal" page on gh-pages reads progress.json from
@@ -2003,9 +2013,18 @@ jobs:
     # endpoint's own comment for why no `if: always()` is needed here.
     needs: [test, test-distro, build-flatpak, build-appimage]
     runs-on: ubuntu-24.04
-    timeout-minutes: 1
+    timeout-minutes: 5
     steps:
-      - run: echo "test, test-distro, build-flatpak and build-appimage all passed"
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            .github/actions/job-legs
+            devsupport/testing/check_job_legs.py
+          sparse-checkout-cone-mode: false
+      - name: Fail if any leg of these jobs didn't succeed
+        uses: $/.github/actions/job-legs
+        with:
+          needs: ${{ toJSON(needs) }}
 
   core-checks:
     name: core checks
@@ -2034,6 +2053,16 @@ jobs:
             echo "::error::One or more required jobs did not succeed."
             exit 1
           fi
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            .github/actions/job-legs
+            devsupport/testing/check_job_legs.py
+          sparse-checkout-cone-mode: false
+      - name: Fail if any leg of these jobs didn't succeed
+        uses: $/.github/actions/job-legs
+        with:
+          needs: ${{ toJSON(needs) }}
 
   release:
     # Fires only on a v* tag push. Deliberately depends on the

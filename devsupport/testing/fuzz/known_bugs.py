@@ -30,8 +30,6 @@ KNOWN_BUGS = [
     dict(issue=4400, sweep=EVERY_SWEEP, kind='critical', match='gtk_box_gadget_distribute', cases=ALL, strict=False),
     # Malformed files (#4388).
     # Not filed in Virtaal: to report to translate-toolkit after 1.0.0.
-    dict(upstream='translate-toolkit: XLIFF entity references', sweep='file-xlf', kind='exception',
-         match='TypeError _layout_update_sources', cases=['internal entity', 'external entity', 'entity expansion']),
     dict(upstream='translate-toolkit: XLIFF entity references', sweep='file-xlf', kind='save-unreadable',
          match='XMLSyntaxError', cases=['external entity', 'entity expansion']),
     dict(issue=4410, sweep=EVERY_SWEEP, kind='critical', match='width >= -1', cases=ALL, strict=False),

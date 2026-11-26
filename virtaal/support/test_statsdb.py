@@ -270,7 +270,7 @@ def _orphan_counts(cache):
 def test_rows_left_by_older_recaches_are_dropped_once(tmp_path, fresh_caches):
     cache, po_file = _orphaned_cache(tmp_path, [1, 2])
 
-    assert cache.drop_orphaned_rows() is True
+    assert cache.drop_orphaned_rows(seconds=60) is True
 
     assert _orphan_counts(cache) == [0, 0, 0]
     assert cache.filetotals(str(po_file))['total'] == 1
@@ -288,7 +288,7 @@ def test_dropping_old_rows_stops_at_its_time_limit_and_carries_on_later(tmp_path
     assert _orphan_counts(cache) == [2, 2, 2]
     assert cache.cur.execute("PRAGMA user_version").fetchone()[0] == 0
 
-    assert cache.drop_orphaned_rows() is True
+    assert cache.drop_orphaned_rows(seconds=60) is True
     assert _orphan_counts(cache) == [0, 0, 0]
 
 
@@ -304,7 +304,7 @@ def test_dropping_old_rows_from_a_locked_database_is_tried_again(tmp_path, fresh
 
     other.execute("ROLLBACK")
     other.close()
-    assert cache.drop_orphaned_rows() is True
+    assert cache.drop_orphaned_rows(seconds=60) is True
     assert _orphan_counts(cache) == [0, 0, 0]
 
 

@@ -2,7 +2,7 @@
 ;
 ; Compile with (from the repo root, after build_standalone.ps1 has produced
 ; dist\virtaal\):
-;   iscc /DMyAppVersion=1.0.0 devsupport\packaging\windows\virtaal.iss
+;   iscc /DMyAppVersion=1.0.0 /DMyAppFileVersion=1.0.0.99 devsupport\packaging\windows\virtaal.iss
 ; (or via build_installer.ps1, which reads the version from
 ; virtaal/__version__.py itself rather than needing it typed in by hand.)
 ;
@@ -15,6 +15,10 @@
 
 #ifndef MyAppVersion
   #define MyAppVersion "0.0.0"
+#endif
+; Numeric, the pre-release stage last (release_version.py's file_version()).
+#ifndef MyAppFileVersion
+  #define MyAppFileVersion "0.0.0.0"
 #endif
 
 #define MyAppName "Virtaal"
@@ -29,6 +33,9 @@
 AppId={{6249E57B-4B71-4E69-8174-F261A0DD9DAE}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppFileVersion}
+VersionInfoTextVersion={#MyAppVersion}
+VersionInfoProductTextVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}

@@ -1,6 +1,6 @@
 # Runs one of Virtaal's modules in a built Windows bundle and outputs
 # what it wrote:
-#   run_module.ps1 dist\virtaal virtaal.support.gettextpo [-Arguments en_GB] [-TimeoutSeconds 60]
+#   run_module.ps1 dist\virtaal virtaal.support.enchant_compat [-Arguments en_GB] [-TimeoutSeconds 60]
 #
 # virtaal.exe has no console, so the module writes to a file.
 

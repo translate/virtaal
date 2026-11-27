@@ -121,21 +121,37 @@ def test_cancel_at_the_save_prompt_after_closing_a_dialog_asks_only_once(monkeyp
     main_window.connect('delete-event', view._on_quit)
     main_window.show()
 
+    loop = GLib.MainLoop()
     prompts = []
     real_prompt = view.show_save_confirm_dialog
     def cancel_the_prompt():
         prompts.append(1)
         GLib.timeout_add(50, lambda: confirm_dialog.response(Gtk.ResponseType.CANCEL) or False)
-        return real_prompt()
+        response = real_prompt()
+        # Long enough for a repeated retry to show the prompt again.
+        GLib.timeout_add(300, lambda: loop.quit() or False)
+        return response
     view.show_save_confirm_dialog = cancel_the_prompt
+
+    def show_logs():
+        # Added here, the close can only come once Show Logs is running.
+        GLib.timeout_add(50, lambda: main_window.emit('delete-event', Gdk.Event.new(Gdk.EventType.DELETE)) and False)
+        view._on_show_logs()
+        return False
+
+    def give_up():
+        # A dialog still running would otherwise hang the test.
+        for window in Gtk.Window.list_toplevels():
+            if isinstance(window, Gtk.Dialog) and window.get_visible():
+                window.response(Gtk.ResponseType.CANCEL)
+        loop.quit()
+        return False
 
     sources = []
     real_idle_add = GLib.idle_add
     monkeypatch.setattr(GLib, 'idle_add', lambda *args, **kwargs: sources.append(real_idle_add(*args, **kwargs)) or sources[-1])
-    loop = GLib.MainLoop()
-    GLib.idle_add(lambda: view._on_show_logs() or False)
-    GLib.timeout_add(300, lambda: main_window.emit('delete-event', Gdk.Event.new(Gdk.EventType.DELETE)) and False)
-    GLib.timeout_add(1500, lambda: loop.quit() or False)
+    GLib.idle_add(show_logs)
+    sources.append(GLib.timeout_add(10000, give_up))
     try:
         loop.run()
     finally:

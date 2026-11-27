@@ -7,6 +7,7 @@
 
 import os
 import tempfile
+import time
 
 from gi.repository import Gdk, Gtk
 
@@ -170,6 +171,17 @@ def _settle(frames=200):
         Gtk.main_iteration_do(False)
 
 
+def _settle_editing(treeview, timeout=10):
+    """Settle until the tree view has restarted editing: Enter is ignored
+        while that is pending, and on Windows 200 frames weren't always
+        enough to get there (#5049)."""
+    deadline = time.monotonic() + timeout
+    while treeview._waiting_for_row_change and time.monotonic() < deadline:
+        Gtk.main_iteration_do(False)
+    _settle()
+    assert not treeview._waiting_for_row_change
+
+
 class TestEnterOnTheLastUnit(TestScaffolding):
     """Enter with no unit to move to finishes the unit in place (#4087)."""
 
@@ -192,15 +204,17 @@ class TestEnterOnTheLastUnit(TestScaffolding):
         window = self.main_controller.view.main_window
         window.resize(800, 600)
         window.show()
-        _settle()
+        treeview = self.store_controller.view._treeview
+        _settle_editing(treeview)
         self.store_controller.cursor.index = 1
-        _settle()
+        _settle_editing(treeview)
         unit_view = self.unit_controller.view
         assert unit_view.unit.hasplural()
 
         unit_view.targets[0].emit('key-pressed', _ReturnEvent(), 'enter')
+        assert unit_view.focused_target_n == 1
         unit_view.targets[1].emit('key-pressed', _ReturnEvent(), 'enter')
-        _settle()
+        _settle_editing(treeview)
 
         assert self.store_controller.cursor.index == 1
         assert unit_view.focused_target_n == 1

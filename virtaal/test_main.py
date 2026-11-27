@@ -399,18 +399,19 @@ def test_check_for_update_runs_the_update_checker(monkeypatch):
     calls = []
 
     class _FakeUpdateChecker:
-        def __init__(self, ver, callback):
-            calls.append(('init', ver, callback))
+        def __init__(self, ver, callback, ignored_version=''):
+            calls.append(('init', ver, callback, ignored_version))
 
         def check(self):
             calls.append('checked')
     monkeypatch.setattr('virtaal.support.update_check.UpdateChecker', _FakeUpdateChecker)
+    monkeypatch.setitem(pan_app.settings.general, 'ignored_update_version', '1.1.0-beta1')
     v = Virtaal.__new__(Virtaal)
     v.main_controller = SimpleNamespace(view=SimpleNamespace(show_update_notice='show-update-notice'))
 
     v._check_for_update()
 
-    assert calls[0][2] == 'show-update-notice'
+    assert calls[0][2:] == ('show-update-notice', '1.1.0-beta1')
     assert calls[1] == 'checked'
 
 

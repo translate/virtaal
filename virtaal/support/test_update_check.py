@@ -149,3 +149,35 @@ def test_on_success_does_nothing_when_not_newer():
     checker._on_success(None, _releases_payload())
 
     assert calls == []
+
+
+# The version the update bar was closed for (#5061).
+
+@pytest.mark.parametrize('tag_name, ignored, offered', [
+    ('v1.1.0-beta1', '1.1.0-beta1', False),
+    ('v1.1.0-beta1', '1.1.0-beta2', False),
+    ('v1.1.0-beta1', '1.1.0', False),
+    ('v1.1.0-beta2', '1.1.0-beta1', True),
+    ('v1.1.0-rc1', '1.1.0-beta1', True),
+    ('v1.1.0', '1.1.0-rc1', True),
+    ('v1.1.0-beta1', '', True),
+    ('v1.1.0-beta1', 'junk', True),
+    ('v1.1.0-beta1', 'v1.1.0-beta1', False),
+], ids=['same', 'older', 'older-than-final', 'next-beta', 'next-rc', 'final',
+        'nothing-ignored', 'garbled', 'with-v'])
+def test_on_success_skips_the_ignored_version_and_older(tag_name, ignored, offered):
+    calls = []
+    checker = UpdateChecker('1.0.1', lambda *args: calls.append(args), ignored)
+
+    checker._on_success(None, _releases_payload(tag_name))
+
+    assert bool(calls) == offered
+
+
+def test_on_success_still_needs_newer_than_running_with_nothing_ignored():
+    calls = []
+    checker = UpdateChecker('1.1.0-beta1', lambda *args: calls.append(args), 'junk')
+
+    checker._on_success(None, _releases_payload('v1.1.0-beta1'))
+
+    assert calls == []

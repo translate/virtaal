@@ -1739,6 +1739,33 @@ def test_show_update_notice_closes_only_on_download_or_close(monkeypatch, respon
         bar.destroy()
 
 
+@pytest.mark.parametrize('response_id, ignored', [
+    (Gtk.ResponseType.CLOSE, '1.1.0-beta1'),
+    (Gtk.ResponseType.OK, None),
+    (Gtk.ResponseType.HELP, None),
+], ids=['close', 'download', 'release-notes'])
+def test_show_update_notice_close_ignores_the_offered_version(monkeypatch, response_id, ignored):
+    # #5061: closing the bar stops the same version being offered at every start.
+    from virtaal.common import pan_app
+    from virtaal.support import openmailto
+    monkeypatch.setattr(openmailto, 'open', lambda url: None)
+    monkeypatch.setattr(pan_app.settings, 'general', {})
+    writes = []
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: writes.append(dict(pan_app.settings.general)))
+    view = _real_view_for_update_notice()
+    MainView.show_update_notice(
+        view, 'v1.1.0-beta1', 'https://github.com/translate/virtaal/releases/tag/v1.1.0-beta1',
+        asset_url='https://github.com/translate/virtaal/releases/download/v1.1.0-beta1/virtaal-1.1.0-beta1-setup.exe')
+    (infobar,) = _update_bars(view)
+
+    infobar.emit('response', response_id)
+
+    assert pan_app.settings.general.get('ignored_update_version') == ignored
+    assert writes == ([{'ignored_update_version': ignored}] if ignored else [])
+    for bar in _update_bars(view):
+        bar.destroy()
+
+
 # _open_recent_item() / _on_recent_file_activated() #
 
 class _FakeRecentInfo:

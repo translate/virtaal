@@ -59,6 +59,19 @@ def is_newer(remote_version, local_version):
         return False
 
 
+def is_ignored(remote_version, ignored_version):
+    """Whether remote_version is ignored_version or older: the user
+        closed the update bar for ignored_version (#5061). A blank or
+        unparsable ignored_version ignores nothing."""
+    if not ignored_version:
+        return False
+    try:
+        _parse_version(ignored_version)
+    except ValueError:
+        return False
+    return not is_newer(remote_version, ignored_version)
+
+
 def find_asset_url(assets, plat=platform):
     """Pick the release asset's browser_download_url matching this
         platform, or None if no confident match exists - either an
@@ -86,12 +99,14 @@ class UpdateChecker:
     """Checks once, asynchronously, whether a newer release exists than
         local_version - calling on_update_available(tag_name, html_url,
         asset_url) if so, where asset_url is find_asset_url()'s result
-        (None if no matching downloadable asset was found). Silent
+        (None if no matching downloadable asset was found), unless
+        that release is ignored_version or older. Silent
         (just logs) on any failure: network errors must never surface
         as an application error to the user."""
 
-    def __init__(self, local_version, on_update_available):
+    def __init__(self, local_version, on_update_available, ignored_version=''):
         self.local_version = local_version
+        self.ignored_version = ignored_version
         self.on_update_available = on_update_available
         self._client = HTTPClient()
 
@@ -112,6 +127,9 @@ class UpdateChecker:
             # yet) - all equally "nothing to report", not errors worth
             # surfacing to the user.
             logging.debug('update check: could not use response: %s' % (e,))
+            return
+        if is_ignored(tag_name, self.ignored_version):
+            logging.debug('update check: %s is ignored' % (tag_name,))
             return
         if is_newer(tag_name, self.local_version):
             self.on_update_available(tag_name, html_url, find_asset_url(assets))

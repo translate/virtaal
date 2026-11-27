@@ -1253,6 +1253,10 @@ class MainView(BaseView):
                 return
             if response_id == Gtk.ResponseType.OK:
                 openmailto.open(asset_url or html_url)
+            elif response_id == Gtk.ResponseType.CLOSE:
+                # Not offered again; a newer release is (#5061).
+                pan_app.settings.general['ignored_update_version'] = tag_name.removeprefix('v')
+                pan_app.settings.write()
             infobar.destroy()
         infobar.connect('response', on_response)
 

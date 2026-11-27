@@ -394,6 +394,8 @@ class Settings:
         "windowy": '',
         "assets_manifest_fetched": "",
         "assets_manifest_etag": "",
+        # The version the update bar was closed for (#5061).
+        "ignored_update_version": "",
     }
     language =      {
         "nplurals": 0,

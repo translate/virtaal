@@ -224,9 +224,11 @@ class Virtaal:
 
     def _check_for_update(self):
         from virtaal.__version__ import ver
+        from virtaal.common import pan_app
         from virtaal.support.update_check import UpdateChecker
 
-        UpdateChecker(ver, self.main_controller.view.show_update_notice).check()
+        ignored = pan_app.settings.general.get('ignored_update_version', '')
+        UpdateChecker(ver, self.main_controller.view.show_update_notice, ignored).check()
 
 
     # METHODS #

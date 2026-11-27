@@ -252,6 +252,19 @@ def test_save_config_with_a_section_leaves_other_sections_alone(tmp_path):
     assert conf['plugin_b'] == {'name': 'de_DE'}
 
 
+def test_settings_keeps_the_ignored_update_version(tmp_path):
+    # #5061: the version the update bar was closed for survives a restart.
+    path = tmp_path / "virtaal.ini"
+    path.write_text("", encoding='utf-8')
+    settings = pan_app.Settings(str(path))
+    assert settings.general['ignored_update_version'] == ''
+
+    settings.general['ignored_update_version'] = '1.1.0-beta1'
+    settings.write()
+
+    assert pan_app.Settings(str(path)).general['ignored_update_version'] == '1.1.0-beta1'
+
+
 def test_save_config_round_trips_non_ascii_values(tmp_path):
     # save_config()'s own file open had no explicit encoding, so it
     # silently used the platform default (cp1252 on Windows) instead

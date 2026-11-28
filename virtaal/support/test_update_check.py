@@ -116,6 +116,38 @@ def test_find_asset_url_missing_expected_asset_returns_none():
     assert find_asset_url([], plat) is None
 
 
+# A later release may put the version in its file names (#5071); this
+# build must still find its download.
+
+_MAC_ARM = Platform(os_name='posix', sys_platform='darwin', machine='arm64')
+_MAC_INTEL = Platform(os_name='posix', sys_platform='darwin', machine='x86_64')
+_APPIMAGE = Platform(os_name='posix', sys_platform='linux', machine='x86_64', frozen=True,
+                     environ={'APPIMAGE': '/home/u/Virtaal.AppImage'})
+
+
+@pytest.mark.parametrize("plat,name", [
+    (_MAC_ARM, 'Virtaal-1.1.0-macos-arm64.dmg'),
+    (_MAC_ARM, 'virtaal-1.1.0-beta1-macos-arm64.dmg'),
+    (_MAC_INTEL, 'Virtaal-1.1.0-rc2-macos-x86_64.dmg'),
+    (_APPIMAGE, 'Virtaal-1.1.0-linux-x86_64.AppImage'),
+])
+def test_find_asset_url_accepts_a_versioned_name(plat, name):
+    assets = [{'name': name, 'browser_download_url': 'https://example.invalid/' + name}]
+    assert find_asset_url(assets, plat) == 'https://example.invalid/' + name
+
+
+@pytest.mark.parametrize("plat,name", [
+    (_MAC_ARM, 'Virtaal-macos-x86_64.dmg'),
+    (_MAC_ARM, 'Virtaal-1.1.0-macos-arm64.dmg.sha256'),
+    (_MAC_ARM, 'Virtaal-1.1-macos-arm64.dmg'),
+    (_MAC_ARM, 'Other-1.1.0-macos-arm64.dmg'),
+    (_APPIMAGE, 'Virtaal-1.1.0-linux-aarch64.AppImage'),
+])
+def test_find_asset_url_rejects_other_names(plat, name):
+    assets = [{'name': name, 'browser_download_url': 'https://example.invalid/' + name}]
+    assert find_asset_url(assets, plat) is None
+
+
 # UpdateChecker._on_success() - parsing an already-fetched response,
 # no real network call involved.
 

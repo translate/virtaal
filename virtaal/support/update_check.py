@@ -72,26 +72,37 @@ def is_ignored(remote_version, ignored_version):
     return not is_newer(remote_version, ignored_version)
 
 
+def _asset_name(rest):
+    """'Virtaal-<rest>', with or without a version after 'Virtaal-'
+        ('Virtaal-1.1.0-beta1-<rest>'), so a later release can put the
+        version in its file names (#5071) without this build losing its
+        download link."""
+    return re.compile(
+        r'^virtaal-(?:\d+\.\d+\.\d+(?:-(?:alpha|beta|rc)\d*)?-)?' + re.escape(rest) + r'$',
+        re.IGNORECASE)
+
+
 def find_asset_url(assets, plat=platform):
     """Pick the release asset's browser_download_url matching this
         platform, or None if no confident match exists - either an
         unsupported platform (e.g. a Linux Flatpak, which isn't frozen
         and so never checks) or a release missing the expected
-        asset. Names are exactly what .github/workflows/ci.yml's
-        release job produces: 'virtaal-<version>-setup.exe' and the
-        version-independent 'Virtaal-macos-<arch>.dmg' and
-        'Virtaal-linux-<arch>.AppImage'."""
+        asset. ci.yml's release job names them 'virtaal-<version>-setup.exe',
+        'Virtaal-macos-<arch>.dmg' and 'Virtaal-linux-<arch>.AppImage';
+        the last two may also carry the version (_asset_name())."""
     if plat.is_windows:
         suffix = '-setup.exe'
         matches = [a for a in assets if a.get('name', '').endswith(suffix)]
-    elif plat.is_mac and plat.is_arm:
-        matches = [a for a in assets if a.get('name') == 'Virtaal-macos-arm64.dmg']
-    elif plat.is_mac and plat.is_intel:
-        matches = [a for a in assets if a.get('name') == 'Virtaal-macos-x86_64.dmg']
-    elif plat.is_appimage:
-        matches = [a for a in assets if a.get('name') == 'Virtaal-linux-%s.AppImage' % plat.machine]
     else:
-        matches = []
+        if plat.is_mac and plat.is_arm:
+            pattern = _asset_name('macos-arm64.dmg')
+        elif plat.is_mac and plat.is_intel:
+            pattern = _asset_name('macos-x86_64.dmg')
+        elif plat.is_appimage:
+            pattern = _asset_name('linux-%s.AppImage' % plat.machine)
+        else:
+            pattern = None
+        matches = [a for a in assets if pattern and pattern.match(a.get('name', ''))]
     return matches[0]['browser_download_url'] if matches else None
 
 
